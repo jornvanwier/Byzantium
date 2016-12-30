@@ -45,11 +45,11 @@
 
 			int HexX = (int)posX; //Absolute hexcoords
 			int HexY = (int)posY; //Absolute hexcoords
-			
-			
 
+			float q = (posX * sqrt(3) / 3 - posY / 3) / 50;
+			float r = posY * 2 / 3 / 50;
 
-			if (hexProps[ HexX * _ArraySize + HexY ] == 0)
+			if (hexProps[ q * _ArraySize + r ] == 0)
 			{
 				c.rgb = Water;
 			}

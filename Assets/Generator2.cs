@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Worldgen;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 
 public class Generator2 : MonoBehaviour
@@ -20,16 +21,15 @@ public class Generator2 : MonoBehaviour
 
     public int size = 1;
 
-    [Range(0,100)]
+    [Range(0, 100)]
     public int WaterChance = 45;
-    [Range(0,25)]
+    [Range(0, 25)]
     public int iterations = 1;
 
 
-
-
     // Use this for initialization
-    void Start()
+    [UsedImplicitly]
+    private void Start()
     {
         Hexes = new byte[size, size];
         positions = new Vector3[size * size];
@@ -53,8 +53,8 @@ public class Generator2 : MonoBehaviour
             {
                 for (int y = 0; y < size; ++y)
                 {
-                    int NGHC = GetNeighbourWaterTileCount(x, y);
-                    if (NGHC > 4)
+                    int nghc = GetNeighbourWaterTileCount(x, y);
+                    if (nghc > 4)
                     {
                         //Water
                         Hexes[x, y] = (byte)TileType.Water;
@@ -62,14 +62,13 @@ public class Generator2 : MonoBehaviour
                     else
                     {
                         //Land
-                        if (NGHC < 4)
+                        if (nghc < 4)
                         {
                             Hexes[x, y] = (byte)TileType.Grass;
                         }
                         else
                         {
-                            Hexes[x,y] = (byte)ra.Next(0,2);
-
+                            Hexes[x, y] = (byte)ra.Next(0, 2);
                         }
                     }
                 }
@@ -78,33 +77,28 @@ public class Generator2 : MonoBehaviour
 
         gpuBuffer = new ComputeBuffer(size * size * sizeof(int), sizeof(int), ComputeBufferType.GPUMemory);
 
-        int[,] data = new int[size,size];
+        int[,] data = new int[size, size];
 
         for (int x = 0; x < size; ++x)
         {
             for (int y = 0; y < size; ++y)
             {
-                data[x, y] = (int)Hexes[x,y];
+                data[x, y] = Hexes[x, y];
             }
         }
 
-
-
         gpuBuffer.SetData(data);
-        data = null;
         b = new MaterialPropertyBlock();
-        
+
         HexagonGameObjects = new List<GameObject>();
         mat = Resources.Load("HexMat", typeof(Material)) as Material;
 
-        b.SetFloat(Shader.PropertyToID("_ArraySize"), (float)size);
+        b.SetFloat(Shader.PropertyToID("_ArraySize"), size);
 
         b.SetBuffer(Shader.PropertyToID("hexProps"), gpuBuffer);
 
         thisObject = GameObject.Find("Core");
         // HexMesh = WorldGenerator.GenerateHexagonMesh(0.5f);
-
-
 
 
         MeshFilter f = thisObject.AddComponent<MeshFilter>();
@@ -113,14 +107,11 @@ public class Generator2 : MonoBehaviour
         r.material = mat;
 
         r.SetPropertyBlock(b);
-        
-
-
     }
 
-    int GetNeighbourWaterTileCount(int x, int y)
+    private int GetNeighbourWaterTileCount(int x, int y)
     {
-        int NCount = 0;
+        int nCount = 0;
         for (int i = -1; i <= 1; ++i)
         {
             for (int j = -1; j <= 1; ++j)
@@ -128,20 +119,19 @@ public class Generator2 : MonoBehaviour
                 if (i == 0 && j == 0)
                     continue;
                 //Bounds Checking
-                if ((x + i) >= 0 && (x + i) < size && (y + j) >= 0 && (y + j) < size)
+                if (x + i < 0 || x + i >= size || y + j < 0 || y + j >= size) continue;
+                if (Hexes[x + i, y + j] == (byte)TileType.Water)
                 {
-                    if (Hexes[x + i,y + j] == (byte)TileType.Water)
-                    {
-                        NCount++;
-                    }
+                    nCount++;
                 }
             }
         }
-        return NCount;
+        return nCount;
     }
 
     // Update is called once per frame
-    void Update()
+    [UsedImplicitly]
+    private void Update()
     {
         //gpuBuffer.SetData(Hexes);
     }
