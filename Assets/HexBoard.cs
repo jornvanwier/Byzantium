@@ -135,7 +135,7 @@ namespace Assets
             Smooth();
         }
 
-        private void Smooth(int iterations = 2, byte threshold = 2)
+        private void Smooth(int iterations = 5, byte threshold = 2)
         {
             for (int i = 0; i < iterations; i++)
             {
@@ -150,15 +150,12 @@ namespace Assets
                             Debug.LogError("NO GOOD " + currentPos);
                         }
                         byte[] nearbyTiles = GetNeighborValues(currentPos);
-//                        Debug.Log(string.Join("-", nearbyTiles.Select(b => b.ToString()).ToArray()));
                         IGrouping<byte, byte> found = nearbyTiles
                             .GroupBy(v => v)
                             .OrderByDescending(g => g.Count())
                             .FirstOrDefault(t => t.Count() > threshold && t.Key != NotFound);
                         if (found == null) continue;
                         byte tile = found.Key;
-
-                        Debug.Log("changing");
 
                         storage[x, z] = tile;
                     }
