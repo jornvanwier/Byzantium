@@ -135,7 +135,7 @@ namespace Assets
             Smooth();
         }
 
-        private void Smooth(int iterations = 1, byte threshold = 3)
+        private void Smooth(int iterations = 2, byte threshold = 2)
         {
             for (int i = 0; i < iterations; i++)
             {
