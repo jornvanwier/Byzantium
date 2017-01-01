@@ -37,6 +37,7 @@
 			#ifdef SHADER_API_D3D11
 			float3 Grass = float3(0,1,0);
 			float3 Water = float3(0,0,1);
+			float3 Desert = float3(1,0,0);
 
 			float step = 1.0f / _ArraySize;
 
@@ -46,15 +47,17 @@
 			int HexX = (int)posX; //Absolute hexcoords
 			int HexY = (int)posY; //Absolute hexcoords
 
-			float q = (posX * sqrt(3) / 3 - posY / 3) / 50;
-			float r = posY * 2 / 3 / 50;
-
-			if (hexProps[ q * _ArraySize + r ] == 0)
+            int pixelVal = hexProps[ HexX * _ArraySize + HexY ];
+			if (pixelVal == 0)
 			{
-				c.rgb = Water;
-			}
-			else
 				c.rgb = Grass;
+			}
+			else if (pixelVal == 1)
+				c.rgb = Water;
+			else
+			{
+			    c.rgb = Desert;
+			}
 
 			#endif
 			o.Albedo = c.rgb;
