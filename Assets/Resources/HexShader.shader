@@ -44,6 +44,13 @@
 			float posX = IN.uv_MainTex.x * _ArraySize; //Position as float in 0 - size
 			float posY = IN.uv_MainTex.y * _ArraySize; //Position as float in 0 - size
 
+			int q = posX * 2/3;
+			int r = (-posX / 3 + sqrt(3)/3 * posY);
+
+            int x = q + (r - (r & 1)) / 2;
+            int y = r;
+
+
 			int HexX = (int)posX; //Absolute hexcoords
 			int HexY = (int)posY; //Absolute hexcoords
 

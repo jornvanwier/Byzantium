@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using UnityEngine;
 using UnityEngine.WSA;
 using Worldgen;
+using Object = UnityEngine.Object;
 
 namespace Assets
 {
@@ -39,7 +41,6 @@ namespace Assets
 
         public static AxialCoordinate FromIndices(int x, int z)
         {
-//            int col = x + (z + (z & 1)) / 2;
             int col = x - (z - (z & 1)) / 2;
 
             return new AxialCoordinate(col, z);
@@ -52,7 +53,6 @@ namespace Assets
     public class HexBoard
     {
         public Mesh DrawMesh { get; }
-        private const byte NotFound = 255;
 
         public int Size { get; }
 
@@ -63,6 +63,7 @@ namespace Assets
         };
 
         private readonly byte[,] storage;
+        private const byte NotFound = 255;
 
         public HexBoard(Mesh drawMesh, int size)
         {
@@ -116,10 +117,6 @@ namespace Assets
             return GetNeighbors(ac).Select(neighborAc => this[neighborAc]).Where(nb => nb != NotFound).ToArray();
         }
 
-        private void InitMesh()
-        {
-        }
-
         private void Generate()
         {
             TileType[] tiles = (TileType[]) Enum.GetValues(typeof(TileType));
@@ -128,14 +125,25 @@ namespace Assets
             {
                 for (int y = 0; y < Size; y++)
                 {
-                    storage[x, y] = (byte) tiles[UnityEngine.Random.Range(0, tiles.Length)];
+                    if (x < Size * 0.05 || Math.Abs(x - Size) < Size * 0.05)
+                    {
+                        storage[x, y] = (byte) TileType.Water;
+                    }
+                    else if (y < Size * 0.05 || Math.Abs(y - Size) < Size * 0.05)
+                    {
+                        storage[x, y] = (byte) TileType.Water;
+                    }
+                    else
+                    {
+                        storage[x, y] = (byte) tiles[UnityEngine.Random.Range(0, tiles.Length)];
+                    }
                 }
             }
 
             Smooth();
         }
 
-        private void Smooth(int iterations = 5, byte threshold = 2)
+        private void Smooth(int iterations = 3, byte threshold = 2)
         {
             for (int i = 0; i < iterations; i++)
             {
@@ -149,6 +157,7 @@ namespace Assets
                             // Panic if the current position somehow isn't on the map
                             Debug.LogError("NO GOOD " + currentPos);
                         }
+
                         byte[] nearbyTiles = GetNeighborValues(currentPos);
                         IGrouping<byte, byte> found = nearbyTiles
                             .GroupBy(v => v)

@@ -10,16 +10,17 @@ namespace Assets
 
         // Use this for initialization
         [UsedImplicitly]
-        private void Start () {
-		    HexBoard hb = new HexBoard(DrawMesh, Size);
+        private void Start()
+        {
+            HexBoard hb = new HexBoard(DrawMesh, Size);
 
 //            hb.LogString();
         }
-	
+
         // Update is called once per frame
         [UsedImplicitly]
-        private void Update () {
-		
+        private void Update()
+        {
         }
     }
 }
