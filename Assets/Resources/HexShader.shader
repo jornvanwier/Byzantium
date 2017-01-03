@@ -41,20 +41,47 @@
 
 			float step = 1.0f / _ArraySize;
 
-			float posX = IN.uv_MainTex.x * _ArraySize; //Position as float in 0 - size
-			float posY = IN.uv_MainTex.y * _ArraySize; //Position as float in 0 - size
+			float posX = IN.uv_MainTex.x * _ArraySize; //Position as float in 0 - array size
+			float posY = IN.uv_MainTex.y * _ArraySize; //Position as float in 0 - array size
 
-			int q = posX * 2/3;
-			int r = (-posX / 3 + sqrt(3)/3 * posY);
+            float hexSize = 1;
 
-            int x = q + (r - (r & 1)) / 2;
-            int y = r;
+            // Float coords in axial
+			float cubeX = posX * 2/3 / hexSize;
+			float cubeZ = (-posX / 3 + sqrt(3)/3 * posY) / hexSize;
+			float cubeY = -cubeX-cubeZ;
+
+            // Round float hex to int using cube
+            int rX = round(cubeX);
+            int rZ = round(cubeZ);
+            int rY = round(cubeY);
+
+            float xDiff = abs(cubeX - rX);
+            float zDiff = abs(cubeZ - rZ);
+            float yDiff = abs(cubeY - rY);
+
+            if (xDiff > yDiff && xDiff > zDiff)
+            {
+                rX = -rY-rZ;
+            }
+            else if (yDiff > zDiff)
+            {
+                rY = -rX-rZ;
+            }
+            else
+            {
+                rZ = -rX-rY;
+            }
+
+            int x = rX + (rZ - (rZ & 1)) / 2,
+                z = rZ;
 
 
 			int HexX = (int)posX; //Absolute hexcoords
 			int HexY = (int)posY; //Absolute hexcoords
 
-            int pixelVal = hexProps[ HexX * _ArraySize + HexY ];
+            // int pixelVal = hexProps[ HexX * _ArraySize + HexY ];
+            int pixelVal = hexProps[ z * _ArraySize + x ];
 			if (pixelVal == 0)
 			{
 				c.rgb = Grass;
