@@ -4,6 +4,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.WSA;
 using Worldgen;
@@ -119,17 +120,18 @@ namespace Assets
 
         private void Generate()
         {
+            const float waterBoundary = 0.1f;
             TileType[] tiles = (TileType[]) Enum.GetValues(typeof(TileType));
 
             for (int x = 0; x < Size; x++)
             {
                 for (int y = 0; y < Size; y++)
                 {
-                    if (x < Size * 0.05 || Math.Abs(x - Size) < Size * 0.05)
+                    if (x < Size * waterBoundary || Math.Abs(x - Size) < Size * waterBoundary)
                     {
                         storage[x, y] = (byte) TileType.Water;
                     }
-                    else if (y < Size * 0.05 || Math.Abs(y - Size) < Size * 0.05)
+                    else if (y < Size * waterBoundary || Math.Abs(y - Size) < Size * waterBoundary)
                     {
                         storage[x, y] = (byte) TileType.Water;
                     }

@@ -14,7 +14,7 @@ namespace Worldgen
             List<Vector3> verts = new List<Vector3>();
             List<int> tris = new List<int>();
 
-            float AngleIncrement = Mathf.PI * 2.0f / segments;
+            float AngleIncrement = (Mathf.PI * 2.0f) / segments;
 
             Vector3 InnerVec = Vector3.zero;
             verts.Add(InnerVec);
