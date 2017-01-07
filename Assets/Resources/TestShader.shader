@@ -1,4 +1,4 @@
-﻿Shader "Custom/TestShader" {
+﻿Shader "Custom/HexShader" {
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
@@ -8,7 +8,7 @@
 	SubShader {
 		Tags { "RenderType"="Opaque" }
 		LOD 200
-		
+
 		CGPROGRAM
 		// Physically based Standard lighting model, and enable shadows on all light types
 		#pragma surface surf Standard fullforwardshadows
@@ -22,15 +22,14 @@
 			float2 uv_MainTex;
 		};
 
-        float _ArraySize;
+		float _ArraySize;
 		half _Glossiness;
 		half _Metallic;
 		fixed4 _Color;
 
-
-        #ifdef SHADER_API_D3D11
-        	StructuredBuffer<int> hexProps;
-        #endif
+		#ifdef SHADER_API_D3D11
+				StructuredBuffer<int> hexProps;
+		#endif
 		void surf (Input IN, inout SurfaceOutputStandard o) {
 			// Albedo comes from a texture tinted by color
 			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
@@ -40,19 +39,15 @@
 			float3 Water = float3(0,0,1);
 			float3 Desert = float3(1,0,0);
 
-			float step = 1.0f / _ArraySize;
+			float posX = IN.uv_MainTex.x * (_ArraySize) - 0.075 * _ArraySize;
+			float posY = IN.uv_MainTex.y * (_ArraySize);
 
-			float posX = IN.uv_MainTex.x * _ArraySize; //Position as float in 0 - array size
-			float posY = IN.uv_MainTex.y * _ArraySize; //Position as float in 0 - array size
+            float hexSize = sqrt(3)/3;
 
-            float hexSize = 1;
-
-            // Float coords in axial
 			float cubeX = posX * 2/3 / hexSize;
 			float cubeZ = (-posX / 3 + sqrt(3)/3 * posY) / hexSize;
 			float cubeY = -cubeX-cubeZ;
 
-            // Round float hex to int using cube
             int rX = round(cubeX);
             int rZ = round(cubeZ);
             int rY = round(cubeY);
@@ -74,8 +69,8 @@
                 rZ = -rX-rY;
             }
 
-            int x = rX + (rZ - (rZ & 1)) / 2,
-                z = rZ;
+            int x = rZ + (rX - (rX & 1)) / 2.0f,
+                z = rX;
 
             int pixelVal = hexProps[ z * _ArraySize + x ];
 			if (pixelVal == 0)
@@ -88,13 +83,16 @@
 			{
 			    c.rgb = Desert;
 			}
+			if(x < 0 || x >= _ArraySize || z < 0 || z >= _ArraySize)
+			    c.rgb = Water;
+			//if(x == 0 && z == 0)
+			//    c.rgb = float3(0.5,0.5,0.5);
 
-            if(cubeX >= 1.5 && cubeX <= 2.5 && cubeY >= 1.5 && cubeY <= 2.5)
-                c.rgb = float3(0.5,0.5,0.5);
+
 
 			#endif
-
 			o.Albedo = c.rgb;
+
 			// Metallic and smoothness come from slider variables
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;

@@ -23,7 +23,7 @@ namespace HexBoard
                 for (int y = 0; y < _size; ++y)
                 {
 
-                    if ((x <= borderPercentage * _size || x >= _size - borderPercentage * _size) ||                        (y <= borderPercentage * _size || y >= _size - borderPercentage * _size))
+                    if ((x <= borderPercentage * _size || x >= _size - borderPercentage * _size) || (y <= borderPercentage * _size || y >= _size - borderPercentage * _size))
                     {
                         _map[x,y] = (byte)TileType.Water;
                         continue;
