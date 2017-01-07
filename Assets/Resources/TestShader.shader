@@ -4,6 +4,7 @@
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
 		_Glossiness ("Smoothness", Range(0,1)) = 0.5
 		_Metallic ("Metallic", Range(0,1)) = 0.0
+		_MidpointDetectionLimit ("MidpointDetectionLimit", Range(0,1)) = 0.05
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
@@ -26,6 +27,7 @@
 		half _Glossiness;
 		half _Metallic;
 		fixed4 _Color;
+		float _MidpointDetectionLimit;
 
 		#ifdef SHADER_API_D3D11
 				StructuredBuffer<int> hexProps;
@@ -85,10 +87,13 @@
 			}
 			if(x < 0 || x >= _ArraySize || z < 0 || z >= _ArraySize)
 			    c.rgb = Water;
-			//if(x == 0 && z == 0)
-			//    c.rgb = float3(0.5,0.5,0.5);
 
+            float midpointx = hexSize * 3 / 2 * z;
+            float midpointy = hexSize * sqrt(3) * (x + 0.5 * (z&1));
 
+            if(abs(posX - midpointx) < _MidpointDetectionLimit && abs(posY - midpointy) < _MidpointDetectionLimit)
+                c.rgb = float3(1,0,0);
+            c = tex2D (_MainTex, float2(midpointx - posX - 0.5,midpointx - posY - 0.5));
 
 			#endif
 			o.Albedo = c.rgb;
