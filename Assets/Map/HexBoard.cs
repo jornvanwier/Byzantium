@@ -41,12 +41,12 @@ namespace Map
             get
             {
                 OddRCoordinate oc = cc.ToOddR();
-                return Storage[oc.Q,oc.R];
+                return Storage[oc.R,oc.Q];
             }
             set
             {
                 OddRCoordinate oc = cc.ToOddR();
-                Storage[oc.Q, oc.R] = value;
+                Storage[oc.R, oc.Q] = value;
             }
         }
 

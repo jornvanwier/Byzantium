@@ -26,12 +26,12 @@ namespace Map
             CubicalCoordinate start = new CubicalCoordinate(20, 30);
             hexBoard[start] = (byte) TileType.Desert;
 
-//            foreach (Tuple<CubicalCoordinate, byte> tuple in hexBoard.GetNeighbours(start))
-//            {
-//                hexBoard[start + tuple.Item1] = (byte) TileType.Water;
-//            }
+            foreach (Tuple<CubicalCoordinate, byte> tuple in hexBoard.GetNeighbours(start))
+            {
+                hexBoard[start + tuple.Item1] = (byte) TileType.Water;
+            }
 
-            hexBoard[start + new CubicalCoordinate(0, -1)] = (byte) TileType.Water;
+//            hexBoard[start + new CubicalCoordinate(0, -1)] = (byte) TileType.Water;
 
             SetupShader(hexBoard.Storage);
         }
