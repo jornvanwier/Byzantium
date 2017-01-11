@@ -32,10 +32,11 @@
 
         float2 ParallaxOcclusionMapping(float3 viewDir, float2 texCoords, float heightScale, sampler2D parallaxMap)
         {
-            static const float numLayers = 10;
+            static const float minLayers = 10;
+            static const float maxLayers = 20;
+            float numLayers = lerp(maxLayers, minLayers, abs(dot(float3(0.0, 0.0, 1.0), viewDir)));
 
-            static float layerDepth = 1.0 / numLayers;
-
+            float layerDepth = 1.0 / numLayers;
             static float currentLayerDepth = 0.0;
 
             float2 P = viewDir.xz / viewDir.y * heightScale;
@@ -148,13 +149,18 @@
 
             float2 uvn = float2(remap(diffx, -sqrt(3)/3, sqrt(3)/3,0,1), remap(diffy, -sqrt(3)/3, sqrt(3)/3,0,1));
 
-            uvn = ParallaxOcclusionMapping(viewDirNormalized, uvn, _PXHeightScale, _ParallaxMap);
-            uvn = clamp(uvn,0.0,1.0);
 
-            float4 grass = tex2D (_MainTex,uvn );
-            float4 water = tex2D (_MainTex2, uvn );
+            float2 offset = ParallaxOcclusionMapping(viewDirNormalized, uvn, _PXHeightScale, _ParallaxMap);
+            //uvn = clamp(uvn,0.0,1.0);
 
-             o.Normal = UnpackNormal(tex2D(_NormalMap, uvn));
+            if(offset.x > 1.0 || offset.y > 1.0 || offset.x < 0.0 || offset.y < 0.0)
+                discard;
+
+
+            float4 grass = tex2D (_MainTex, offset );
+            float4 water = tex2D (_MainTex2, offset );
+
+             o.Normal = UnpackNormal(tex2D(_NormalMap, offset));
              o.Normal = 1.0 - o.Normal;
 
 
