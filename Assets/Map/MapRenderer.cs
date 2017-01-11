@@ -33,10 +33,10 @@ namespace Map
 
 //            hexBoard[start + new CubicalCoordinate(0, -1)] = (byte) TileType.Water;
 
-            SetupShader(hexBoard.Storage);
+            SetupShader();
         }
 
-        private void SetupShader(byte[,] map)
+        private void SetupShader()
         {
             computeBuffer = new ComputeBuffer(MapSize * MapSize, sizeof(int), ComputeBufferType.GPUMemory);
 
@@ -66,6 +66,12 @@ namespace Map
         [UsedImplicitly]
         private void Update()
         {
+        }
+
+        [UsedImplicitly]
+        private void OnDisable()
+        {
+            computeBuffer.Dispose();
         }
     }
 }
