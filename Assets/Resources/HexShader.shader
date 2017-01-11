@@ -126,6 +126,10 @@
                 {
                     c.rgb = Water;
                 }
+                else if (pixelVal == 2)
+                {
+                    c.rgb = Desert;
+                }
             }
 
             float PI = 3.14159265f;

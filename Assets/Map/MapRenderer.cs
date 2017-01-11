@@ -1,4 +1,7 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 using Map.Generation;
 using UnityEngine;
 
@@ -20,6 +23,21 @@ namespace Map
             hexBoard = new HexBoard(MapSize) {Generator = new SquareGenerator()};
             hexBoard.GenerateMap();
 
+            CubicalCoordinate start = new CubicalCoordinate(20, 30);
+            hexBoard[start] = (byte) TileType.Desert;
+
+//            foreach (Tuple<CubicalCoordinate, byte> tuple in hexBoard.GetNeighbours(start))
+//            {
+//                hexBoard[start + tuple.Item1] = (byte) TileType.Water;
+//            }
+
+            hexBoard[start + new CubicalCoordinate(0, -1)] = (byte) TileType.Water;
+
+            SetupShader(hexBoard.Storage);
+        }
+
+        private void SetupShader(byte[,] map)
+        {
             computeBuffer = new ComputeBuffer(MapSize * MapSize, sizeof(int), ComputeBufferType.GPUMemory);
 
             int[,] data = new int[MapSize, MapSize];
