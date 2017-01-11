@@ -94,7 +94,6 @@
             int x = rZ + (rX - (rX & 1)) / 2.0f,
                 z = rX;
 
-            int pixelVal = hexProps[ z * _ArraySize + x ];
 
             float midpointx = hexSize * 3 / 2 * z;
             float midpointy = hexSize * sqrt(3) * (x + 0.5 * (z&1));
@@ -109,23 +108,25 @@
             float4 grass = tex2D (_MainTex, uvn + offset );
             float4 water = tex2D (_MainTex2, uvn + offset );
 
-                o.Normal = UnpackNormal(tex2D(_NormalMap, uvn + offset));
-                o.Normal = 1.0 - o.Normal;
-
-			if (pixelVal == 0)
-			{
-				c.rgb = grass.rgb;
-
-			}
-			else if (pixelVal == 1)
-				c.rgb = water.rgb;
-			else
-			{
-			    c.rgb = Desert;
-			}
+            // o.Normal = UnpackNormal(tex2D(_NormalMap, uvn + offset));
+            // o.Normal = 1.0 - o.Normal;
 
 			if(x < 0 || x >= _ArraySize || z < 0 || z >= _ArraySize)
-			    c.rgb = water.rgb;
+			{
+			    c.rgb = Water;
+			}
+			else
+			{
+                int pixelVal = hexProps[ z * _ArraySize + x ];
+                if (pixelVal == 0)
+                {
+                    c.rgb = Grass;
+                }
+                else if (pixelVal == 1)
+                {
+                    c.rgb = Water;
+                }
+            }
 
             float PI = 3.14159265f;
 
