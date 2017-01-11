@@ -31,7 +31,7 @@ namespace Map
 
         public static int DistanceBetween(CubicalCoordinate a, CubicalCoordinate b)
         {
-            return (Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y) - Math.Abs(a.Z - b.Z)) / 2;
+            return (Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y) + Math.Abs(a.Z - b.Z)) / 2;
         }
 
 

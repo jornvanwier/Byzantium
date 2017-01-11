@@ -76,6 +76,12 @@ namespace Map
             return neighbours;
         }
 
+        // TODO Replace from with unit or legion
+        public List<CubicalCoordinate> FindPath(CubicalCoordinate from, CubicalCoordinate to)
+        {
 
+
+            throw new NotImplementedException();
+        }
     }
 }
