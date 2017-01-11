@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Assets.Map.Generation;
 using JetBrains.Annotations;
 using Map.Generation;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace Map
         [UsedImplicitly]
         private void Start()
         {
-            hexBoard = new HexBoard(MapSize) {Generator = new SquareGenerator()};
+            hexBoard = new HexBoard(MapSize) {Generator = new PerlinGenerator()};
             hexBoard.GenerateMap();
 
             CubicalCoordinate start = new CubicalCoordinate(20, 30);

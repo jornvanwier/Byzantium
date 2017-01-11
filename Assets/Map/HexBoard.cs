@@ -14,7 +14,7 @@ namespace Map
 
     public class HexBoard
     {
-        private const float BorderPercentage = 0.2f;
+        private const float BorderPercentage = 0.03f;
 
         private readonly int size;
         private IEnumerable<CubicalCoordinate> Directions { get; } = new[] {
