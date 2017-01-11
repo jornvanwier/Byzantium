@@ -1,4 +1,6 @@
-﻿namespace Map
+﻿using System;
+
+namespace Map
 {
     public struct CubicalCoordinate
     {
@@ -16,6 +18,22 @@
         {
             return new CubicalCoordinate(a.X + b.X, a.Z + b.Z);
         }
+
+        public static CubicalCoordinate operator -(CubicalCoordinate a, CubicalCoordinate b)
+        {
+            return new CubicalCoordinate(a.X - b.X, a.Z - b.Z);
+        }
+
+        public int DistanceTo(CubicalCoordinate other)
+        {
+            return DistanceBetween(this, other);
+        }
+
+        public static int DistanceBetween(CubicalCoordinate a, CubicalCoordinate b)
+        {
+            return (Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y) - Math.Abs(a.Z - b.Z)) / 2;
+        }
+
 
         public OddRCoordinate ToOddR()
         {
