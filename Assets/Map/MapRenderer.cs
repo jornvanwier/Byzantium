@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using Map.Generation;
 using UnityEngine;
@@ -24,14 +23,26 @@ namespace Map
             hexBoard.GenerateMap();
 
             CubicalCoordinate start = new CubicalCoordinate(20, 30);
-            hexBoard[start] = (byte) TileType.Desert;
 
-            foreach (Tuple<CubicalCoordinate, byte> tuple in hexBoard.GetNeighbours(start))
+            CubicalCoordinate goal = new CubicalCoordinate(40, 20);
+
+            for (int i = 0; i < MapSize; i++)
             {
-                hexBoard[start + tuple.Item1] = (byte) TileType.Water;
+                hexBoard[new CubicalCoordinate(25, i)] = (byte) TileType.Water;
             }
 
-//            hexBoard[start + new CubicalCoordinate(0, -1)] = (byte) TileType.Water;
+            hexBoard[new CubicalCoordinate(25, 15)] = (byte) TileType.Grass;
+
+            List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
+
+            foreach (CubicalCoordinate hex in path)
+            {
+                hexBoard[hex] = (byte) TileType.Desert;
+            }
+
+
+            hexBoard[start] = (byte) TileType.Desert;
+            hexBoard[goal] = (byte) TileType.Desert;
 
             SetupShader();
         }
@@ -71,7 +82,7 @@ namespace Map
         [UsedImplicitly]
         private void OnDisable()
         {
-            computeBuffer.Dispose();
+            computeBuffer?.Dispose();
         }
     }
 }
