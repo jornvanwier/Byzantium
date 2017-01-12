@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using Map.Generation;
-using UnityEngine;
-using UnityEngine.EventSystems;
+using Priority_Queue;
+using Random = UnityEngine.Random;
 
 namespace Map
 {
@@ -12,7 +10,8 @@ namespace Map
     {
         Grass,
         Water,
-        Desert
+        Desert,
+        Path
     }
 
     public class HexBoard
@@ -65,6 +64,17 @@ namespace Map
             return CheckCoordinate(cc.ToOddR());
         }
 
+        public CubicalCoordinate RandomValidTile()
+        {
+            CubicalCoordinate cc;
+            do
+            {
+                cc = new OddRCoordinate(Random.Range(0, size), Random.Range(0, size)).ToCubical();
+            } while (this[cc] == (byte) TileType.Water);
+
+            return cc;
+        }
+
         public List<Tuple<CubicalCoordinate, byte>> GetNeighbours(CubicalCoordinate cc)
         {
             List<Tuple<CubicalCoordinate, byte>> neighbours = new List<Tuple<CubicalCoordinate, byte>>();
@@ -85,7 +95,6 @@ namespace Map
         public List<CubicalCoordinate> FindPath(CubicalCoordinate start, CubicalCoordinate goal)
         {
             List<CubicalCoordinate> closedSet = new List<CubicalCoordinate>();
-            List<CubicalCoordinate> openSet = new List<CubicalCoordinate>() {start};
 
             Dictionary<CubicalCoordinate, CubicalCoordinate> cameFrom =
                 new Dictionary<CubicalCoordinate, CubicalCoordinate>();
@@ -94,27 +103,30 @@ namespace Map
             {
                 [start] = 0
             };
+//
+//            Dictionary<CubicalCoordinate, float> fScore = new Dictionary<CubicalCoordinate, float>
+//            {
+//                [start] = CubicalCoordinate.DistanceBetween(start, goal)
+//            };
 
-            Dictionary<CubicalCoordinate, float> fScore = new Dictionary<CubicalCoordinate, float>
-            {
-                [start] = CubicalCoordinate.DistanceBetween(start, goal)
-            };
+            SimplePriorityQueue<CubicalCoordinate> queue = new SimplePriorityQueue<CubicalCoordinate>();
+            queue.Enqueue(start,  0);
 
-            while (openSet.Count > 0)
+            while (queue.Count > 0)
             {
-                CubicalCoordinate current = openSet.Aggregate((a, b) => fScore[a] < fScore[b] ? a : b);
+                CubicalCoordinate current = queue.Dequeue();
                 if (current == goal)
                 {
                     List<CubicalCoordinate> totalPath = new List<CubicalCoordinate>() {current};
-                    while (cameFrom.ContainsKey(current))
+                    while (current != start)
                     {
                         current = cameFrom[current];
                         totalPath.Add(current);
                     }
+                    totalPath.Add(start);
                     return totalPath;
                 }
 
-                openSet.Remove(current);
                 closedSet.Add(current);
 
                 foreach (Tuple<CubicalCoordinate, byte> tuple in GetNeighbours(current))
@@ -137,9 +149,9 @@ namespace Map
                     float tentativeGScore = gScore[current] + traverseCost;
 
                     // Neighbour is new
-                    if (!openSet.Contains(tuple.Item1))
+                    if (!queue.Contains(tuple.Item1))
                     {
-                        openSet.Add(tuple.Item1);
+                        queue.Enqueue(tuple.Item1, tentativeGScore + CubicalCoordinate.DistanceBetween(tuple.Item1, goal));
                     }
                     // This path is not better
                     else if (tentativeGScore >= gScore[tuple.Item1])
@@ -148,9 +160,9 @@ namespace Map
                     }
 
                     // This path is the best we've found so far
+
                     cameFrom[tuple.Item1] = current;
                     gScore[tuple.Item1] = tentativeGScore;
-                    fScore[tuple.Item1] = gScore[tuple.Item1] + CubicalCoordinate.DistanceBetween(tuple.Item1, goal);
                 }
             }
 

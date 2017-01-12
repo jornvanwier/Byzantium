@@ -1,8 +1,6 @@
-﻿using Map;
-using Map.Generation;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.Map.Generation
+namespace Map.Generation
 {
     public class PerlinGenerator : IMapGenerator
     {

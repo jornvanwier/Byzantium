@@ -109,6 +109,7 @@
 			float3 Grass = float3(0,1,0);
 			float3 Water = float3(0,0,1);
 			float3 Desert = float3(1,0,0);
+			float3 Path = float3(0,0,0);
 
 			float posX = IN.uv_MainTex.x * (_ArraySize) - 0.075 * _ArraySize;
 			float posY = IN.uv_MainTex.y * (_ArraySize);
@@ -180,6 +181,9 @@
                 else if (pixelVal == 2)
                 {
                     c.rgb = Desert;
+                }
+                else if (pixelVal == 3) {
+                    c.rgb = Path;
                 }
             }
 

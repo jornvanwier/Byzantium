@@ -1,11 +1,7 @@
 ﻿using System;
-<<<<<<< HEAD
 using System.Collections.Generic;
-=======
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Assets.Map.Generation;
->>>>>>> 2b366a73d2ba02185eadfafc02cb2ee7593e2ee3
 using JetBrains.Annotations;
 using Map.Generation;
 using UnityEngine;
@@ -25,30 +21,23 @@ namespace Map
         [UsedImplicitly]
         private void Start()
         {
-            hexBoard = new HexBoard(MapSize) {Generator = new SquareGenerator()};
+            hexBoard = new HexBoard(MapSize) {Generator = new PerlinGenerator()};
             hexBoard.GenerateMap();
 
-            CubicalCoordinate start = new CubicalCoordinate(20, 30);
+            CubicalCoordinate start = hexBoard.RandomValidTile();
 
-            CubicalCoordinate goal = new CubicalCoordinate(40, 20);
-
-            for (int i = 0; i < MapSize; i++)
-            {
-                hexBoard[new CubicalCoordinate(25, i)] = (byte) TileType.Water;
-            }
-
-            hexBoard[new CubicalCoordinate(25, 15)] = (byte) TileType.Grass;
+            CubicalCoordinate goal = hexBoard.RandomValidTile();
 
             List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
 
             foreach (CubicalCoordinate hex in path)
             {
-                hexBoard[hex] = (byte) TileType.Desert;
+                hexBoard[hex] = (byte) TileType.Path;
             }
 
 
-            hexBoard[start] = (byte) TileType.Desert;
-            hexBoard[goal] = (byte) TileType.Desert;
+            hexBoard[start] = (byte) TileType.Path;
+            hexBoard[goal] = (byte) TileType.Path;
 
             SetupShader();
         }
