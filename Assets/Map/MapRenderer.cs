@@ -30,9 +30,12 @@ namespace Map
 
             List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
 
-            foreach (CubicalCoordinate hex in path)
+            if (path != null)
             {
-                hexBoard[hex] = (byte) TileType.Path;
+                foreach (CubicalCoordinate hex in path)
+                {
+                    hexBoard[hex] = (byte) TileType.Path;
+                }
             }
 
 

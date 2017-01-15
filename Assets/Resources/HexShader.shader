@@ -11,6 +11,8 @@
 		_BorderSize ("BorderSize", Range(0.0,0.5)) = 0.05
 		_BorderColor ("BorderColor", Color) = (1,1,1,1)
 		_Softening ("Softening", Range(0,1)) = 0.5
+        _xOffset ("xOffset", Range(-1,1)) = 0.0
+        _yOffset ("yOffset", Range(-1,1)) = 0.0
 	}
 	SubShader {
 		Tags { "RenderType"="Transparent" }
@@ -86,6 +88,8 @@
 		float4 _BorderColor;
 		float _Softening;
 		float _PXHeightScale;
+        float _xOffset;
+        float _yOffset;
 
         #ifdef SHADER_API_D3D11
 				StructuredBuffer<int> hexProps;
@@ -154,17 +158,41 @@
             float2 offset = ParallaxOcclusionMapping(viewDirNormalized, uvn, _PXHeightScale, _ParallaxMap);
             //uvn = clamp(uvn,0.0,1.0);
 
-            if(offset.x > 1.0 || offset.y > 1.0 || offset.x < 0.0 || offset.y < 0.0)
-                discard;
+            float PI = 3.14159265f;
+            float distanceToSide = 1.0/4.0 * sqrt(3.0);
 
+            float offsetCorrectY = offset.y - 0.5f;
+            float offsetCorrectX = offset.x - 0.5f;
+
+            float rotateY60 = offsetCorrectY * sin(1.0 / 6.0 * PI) + offsetCorrectX * cos(1.0 / 6.0 * PI);
+            float rotateY120 = offsetCorrectY * sin(5.0 / 6.0 * PI) + offsetCorrectX * cos(5.0 / 6.0 * PI);
+
+            if(offset.y < 0.5 - distanceToSide)
+                offset.y = 0.5 + distanceToSide - (0.5 - distanceToSide - offset.y);        
+            
+            if(offset.y > 0.5 + distanceToSide)
+                offset.y = 0.5 - distanceToSide + (offset.y - 0.5 - distanceToSide);
+            
+            if(rotateY60 > distanceToSide)
+                c.rgba = float4(0,0,1,1);
+            if(rotateY60 < - distanceToSide)
+                c.rgba = float4(1,1,0,1);
+            
+            if(rotateY120 > distanceToSide)
+                c.rgba = float4(1,0,1,1);
+            if(rotateY120 < - distanceToSide)
+                c.rgba = float4(1,1,1,1);
+
+
+
+
+            offset += float2(_xOffset,_yOffset);
 
             float4 grass = tex2D (_MainTex, offset );
             float4 water = tex2D (_MainTex2, offset );
 
              o.Normal = UnpackNormal(tex2D(_NormalMap, offset));
              o.Normal = 1.0 - o.Normal;
-
-
 
 			if(x < 0 || x >= _ArraySize || z < 0 || z >= _ArraySize)
 			{
@@ -191,8 +219,6 @@
                 }
             }
 
-            float PI = 3.14159265f;
-
             float rotate60 = diffy * sin(1.0 / 6.0 * PI) + diffx * cos(1.0 / 6.0 * PI);
             float rotate120 = diffy * sin(-1.0 / 6.0 * PI) + diffx * cos(-1.0 / 6.0 * PI);
 
@@ -200,9 +226,40 @@
 
             if(abs(highestVal) > BorderSize)
             {
-                c.rgba += _BorderColor * (remap(highestVal - BorderSize, 0.0, _BorderSize, 0, 1) * (1.0 - _Softening));
+                c.rgba = _BorderColor * (remap(highestVal - BorderSize, 0.0, _BorderSize, 0, 1) * (1.0 - _Softening));
                 //o.Normal = float3(0,1,0);
             }
+
+            if(x == 0 && z == 0)
+                c.rgba = float4(1,1,1,1);
+
+            
+            //float rotateY60 = offsetCorrectY * sin(1.0 / 6.0 * PI) + offsetCorrectX * cos(1.0 / 6.0 * PI);
+            //float rotateY120 = offsetCorrectY * sin(5.0 / 6.0 * PI) + offsetCorrectX * cos(5.0 / 6.0 * PI);
+            
+            /*
+            if(offset.y < 0.5 - distanceToSide + 0.05)
+                c.rgba = float4(1,0,0,1);
+            
+            if(offset.y > 0.5 + distanceToSide - 0.05)
+                c.rgba = float4(0,1,0,1);
+            
+            if(rotateY60 > distanceToSide - 0.05f)
+                c.rgba = float4(0,0,1,1);
+            if(rotateY60 < - distanceToSide + 0.05f)
+                c.rgba = float4(1,1,0,1);
+            
+            if(rotateY120 > distanceToSide - 0.05f)
+                c.rgba = float4(1,0,1,1);
+            if(rotateY120 < - distanceToSide + 0.05f)
+                c.rgba = float4(1,1,1,1);
+            */
+
+
+
+
+            
+
             #endif
 
 			o.Albedo = c.rgb + float3(1,1,1) * (normalize(IN.viewDir.x) * 0.0001);
@@ -210,6 +267,10 @@
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
 			o.Alpha = c.a;
+
+
+
+
 		}
 		ENDCG
 	}
