@@ -67,6 +67,27 @@
             return finalTexCoords;
         }
 
+        float yPosSide(float x)
+        {
+            return sqrt(3) * x;
+        }
+
+        float yNegSide(float x)
+        {
+            return yPosSide(x) * -1;
+        }
+
+        float xPosSide(float y)
+        {
+            return y / sqrt(3);
+        }
+
+        float xNegSide(float y)
+        {
+            return xPosSide(y) * -1;
+        }
+
+
 		// Use shader model 3.0 target, to get nicer looking lighting
 		#pragma target 3.0
 
@@ -167,14 +188,24 @@
             float rotateY60 = offsetCorrectY * sin(1.0 / 6.0 * PI) + offsetCorrectX * cos(1.0 / 6.0 * PI);
             float rotateY120 = offsetCorrectY * sin(5.0 / 6.0 * PI) + offsetCorrectX * cos(5.0 / 6.0 * PI);
 
-            if(offset.y < 0.5 - distanceToSide)
+            //offsetCorrectX < xPosSide(offsetCorrectY) && offsetCorrectX > xNegSide(offsetCorrectY)
+
+            if(offset.y < 0.5 - distanceToSide && offsetCorrectX < xNegSide(offsetCorrectY) && offsetCorrectX > xPosSide(offsetCorrectY))
                 offset.y = 0.5 + distanceToSide - (0.5 - distanceToSide - offset.y);        
             
-            if(offset.y > 0.5 + distanceToSide)
+            if(offset.y > 0.5 + distanceToSide && offsetCorrectX < xPosSide(offsetCorrectY) && offsetCorrectX > xNegSide(offsetCorrectY))
                 offset.y = 0.5 - distanceToSide + (offset.y - 0.5 - distanceToSide);
             
+
+            
             if(rotateY60 > distanceToSide)
-                c.rgba = float4(0,0,1,1);
+            {
+                //offset.x -= 1 + 2 * (0.5 - distanceToSide);
+                //offset.y -= 1 + 2 * (0.5 - distanceToSide);
+
+            }
+
+            /*
             if(rotateY60 < - distanceToSide)
                 c.rgba = float4(1,1,0,1);
             
@@ -183,7 +214,7 @@
             if(rotateY120 < - distanceToSide)
                 c.rgba = float4(1,1,1,1);
 
-
+            */
 
 
             offset += float2(_xOffset,_yOffset);
@@ -232,32 +263,26 @@
 
             if(x == 0 && z == 0)
                 c.rgba = float4(1,1,1,1);
-
             
-            //float rotateY60 = offsetCorrectY * sin(1.0 / 6.0 * PI) + offsetCorrectX * cos(1.0 / 6.0 * PI);
-            //float rotateY120 = offsetCorrectY * sin(5.0 / 6.0 * PI) + offsetCorrectX * cos(5.0 / 6.0 * PI);
-            
-            /*
-            if(offset.y < 0.5 - distanceToSide + 0.05)
+            if(offset.y < 0.5 - distanceToSide && offsetCorrectX < xNegSide(offsetCorrectY) && offsetCorrectX > xPosSide(offsetCorrectY))
                 c.rgba = float4(1,0,0,1);
             
-            if(offset.y > 0.5 + distanceToSide - 0.05)
+            if(offset.y > 0.5 + distanceToSide && offsetCorrectX < xPosSide(offsetCorrectY) && offsetCorrectX > xNegSide(offsetCorrectY))
                 c.rgba = float4(0,1,0,1);
             
-            if(rotateY60 > distanceToSide - 0.05f)
+
+            if(rotateY60 > distanceToSide && offsetCorrectY < yPosSide(offsetCorrectX) && offsetCorrectY > 0)
                 c.rgba = float4(0,0,1,1);
-            if(rotateY60 < - distanceToSide + 0.05f)
+
+
+            if(rotateY60 < - distanceToSide && offsetCorrectY > yPosSide(offsetCorrectX) && offsetCorrectY < 0)
                 c.rgba = float4(1,1,0,1);
             
-            if(rotateY120 > distanceToSide - 0.05f)
+            if(rotateY120 > distanceToSide && offsetCorrectX < xNegSide(offsetCorrectY) && offsetCorrectY > 0)
                 c.rgba = float4(1,0,1,1);
-            if(rotateY120 < - distanceToSide + 0.05f)
-                c.rgba = float4(1,1,1,1);
-            */
-
-
-
-
+            
+            if(rotateY120 < - distanceToSide && offsetCorrectX > xNegSide(offsetCorrectY) && offsetCorrectY < 0)
+                c.rgba = float4(1,1,1,1);         
             
 
             #endif
