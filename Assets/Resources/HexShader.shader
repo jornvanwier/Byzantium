@@ -5,14 +5,12 @@
 		_MainTex2 ("Water (RGBA)", 2D) = "white" {}
 		_ParallaxMap ("Height (A)",2D) = "black" {}
 		_NormalMap ("Normal map (RGB)", 2D) = "white" {}
-		_PXHeightScale ("height maintex px", Range(-1,1)) = 0.05
+		_PXHeightScale ("height maintex px", Range(-0.2,0)) = -0.05
 		_Glossiness ("Smoothness", Range(0,1)) = 0.5
 		_Metallic ("Metallic", Range(0,1)) = 0.0
 		_BorderSize ("BorderSize", Range(0.0,0.5)) = 0.05
 		_BorderColor ("BorderColor", Color) = (1,1,1,1)
 		_Softening ("Softening", Range(0,1)) = 0.5
-        _xOffset ("xOffset", Range(-1,1)) = 0.0
-        _yOffset ("yOffset", Range(-1,1)) = 0.0
 	}
 	SubShader {
 		Tags { "RenderType"="Transparent" }
@@ -109,16 +107,12 @@
 		float4 _BorderColor;
 		float _Softening;
 		float _PXHeightScale;
-        float _xOffset;
-        float _yOffset;
 
         #ifdef SHADER_API_D3D11
 				StructuredBuffer<int> hexProps;
 		#endif
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
-
-
 
 			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
             float BorderSize = 0.5 - _BorderSize;
@@ -177,7 +171,6 @@
 
 
             float2 offset = ParallaxOcclusionMapping(viewDirNormalized, uvn, _PXHeightScale, _ParallaxMap);
-            //uvn = clamp(uvn,0.0,1.0);
 
             float PI = 3.14159265f;
             float distanceToSide = 1.0/4.0 * sqrt(3.0);
@@ -188,8 +181,6 @@
             float rotateY60 = offsetCorrectY * sin(1.0 / 6.0 * PI) + offsetCorrectX * cos(1.0 / 6.0 * PI);
             float rotateY120 = offsetCorrectY * sin(5.0 / 6.0 * PI) + offsetCorrectX * cos(5.0 / 6.0 * PI);
 
-            //offsetCorrectX < xPosSide(offsetCorrectY) && offsetCorrectX > xNegSide(offsetCorrectY)
-
             if(offset.y < 0.5 - distanceToSide && offsetCorrectX < xNegSide(offsetCorrectY) && offsetCorrectX > xPosSide(offsetCorrectY))
                 offset.y = 0.5 + distanceToSide - (0.5 - distanceToSide - offset.y);        
             
@@ -197,27 +188,29 @@
                 offset.y = 0.5 - distanceToSide + (offset.y - 0.5 - distanceToSide);
             
 
-            
-            if(rotateY60 > distanceToSide)
+            if(rotateY60 > distanceToSide && offsetCorrectY < yPosSide(offsetCorrectX) && offsetCorrectY > 0)
             {
-                //offset.x -= 1 + 2 * (0.5 - distanceToSide);
-                //offset.y -= 1 + 2 * (0.5 - distanceToSide);
-
+                offset.x -= 0.75;
+                offset.y -= distanceToSide;
             }
 
-            /*
-            if(rotateY60 < - distanceToSide)
-                c.rgba = float4(1,1,0,1);
+            if(rotateY60 < - distanceToSide && offsetCorrectY > yPosSide(offsetCorrectX) && offsetCorrectY < 0)
+            {
+                offset.x += 0.75;
+                offset.y += distanceToSide;
+            }
             
-            if(rotateY120 > distanceToSide)
-                c.rgba = float4(1,0,1,1);
-            if(rotateY120 < - distanceToSide)
-                c.rgba = float4(1,1,1,1);
-
-            */
-
-
-            offset += float2(_xOffset,_yOffset);
+            if(rotateY120 > distanceToSide && offsetCorrectX < xNegSide(offsetCorrectY) && offsetCorrectY > 0)
+            {
+                offset.x += 0.75;
+                offset.y -= distanceToSide;
+            }
+            
+            if(rotateY120 < - distanceToSide && offsetCorrectX > xNegSide(offsetCorrectY) && offsetCorrectY < 0)
+            {
+                offset.x -= 0.75;
+                offset.y += distanceToSide;
+            }
 
             float4 grass = tex2D (_MainTex, offset );
             float4 water = tex2D (_MainTex2, offset );
@@ -258,23 +251,23 @@
             if(abs(highestVal) > BorderSize)
             {
                 c.rgba = _BorderColor * (remap(highestVal - BorderSize, 0.0, _BorderSize, 0, 1) * (1.0 - _Softening));
-                //o.Normal = float3(0,1,0);
             }
 
             if(x == 0 && z == 0)
                 c.rgba = float4(1,1,1,1);
             
+
+            /*
             if(offset.y < 0.5 - distanceToSide && offsetCorrectX < xNegSide(offsetCorrectY) && offsetCorrectX > xPosSide(offsetCorrectY))
                 c.rgba = float4(1,0,0,1);
             
             if(offset.y > 0.5 + distanceToSide && offsetCorrectX < xPosSide(offsetCorrectY) && offsetCorrectX > xNegSide(offsetCorrectY))
                 c.rgba = float4(0,1,0,1);
             
-
             if(rotateY60 > distanceToSide && offsetCorrectY < yPosSide(offsetCorrectX) && offsetCorrectY > 0)
                 c.rgba = float4(0,0,1,1);
-
-
+            
+            
             if(rotateY60 < - distanceToSide && offsetCorrectY > yPosSide(offsetCorrectX) && offsetCorrectY < 0)
                 c.rgba = float4(1,1,0,1);
             
@@ -282,7 +275,8 @@
                 c.rgba = float4(1,0,1,1);
             
             if(rotateY120 < - distanceToSide && offsetCorrectX > xNegSide(offsetCorrectY) && offsetCorrectY < 0)
-                c.rgba = float4(1,1,1,1);         
+                c.rgba = float4(1,1,1,1);
+            */     
             
 
             #endif
