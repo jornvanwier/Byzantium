@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
 using JetBrains.Annotations;
-using Map.Generation;
 using UnityEngine;
+using Assets.Map.Generation;
 
 namespace Map
 {

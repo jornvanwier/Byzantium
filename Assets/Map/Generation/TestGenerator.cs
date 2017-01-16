@@ -1,5 +1,4 @@
-﻿using System;
-using Map;
+﻿using Map;
 using Map.Generation;
 using UnityEngine;
 using Random = System.Random;
