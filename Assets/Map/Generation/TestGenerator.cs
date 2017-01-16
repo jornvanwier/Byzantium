@@ -10,13 +10,15 @@ namespace Assets.Map.Generation
         public byte[,] Generate(int size, float borderPercentage)
         {
             //variables
-            float scale = 100;//Hoger is meer zoom in
+            float scale = 100; //Hoger is meer zoom in
             int octaves = 4;
             float persistance = 0.5f;
             float lacunarity = 2f;
-            float landChance = 1f;
+            float landChance = 1.1f;
+            float beachSize = 0.05f;
             Vector2 position = new Vector2(0, 0);
-            int seed = 5020;
+            int seed = new Random().Next(0, 1000);
+            Debug.Log(seed);
 
             //clean input
             scale = Mathf.Clamp(scale, 0.000001f, float.PositiveInfinity);
@@ -55,7 +57,7 @@ namespace Assets.Map.Generation
                         frequency *= lacunarity;
                     }
 
-                    map[x, y] = (byte)(noiseHeight > landChance ? TileType.Grass : TileType.Water);
+                    map[x, y] = (byte)(noiseHeight > landChance ? TileType.Grass : !(noiseHeight > landChance - beachSize) ? TileType.Water : TileType.Path);
                 }
             }
 

@@ -2,6 +2,7 @@
 using JetBrains.Annotations;
 using UnityEngine;
 using Assets.Map.Generation;
+using Map.Generation;
 
 namespace Map
 {
@@ -18,7 +19,7 @@ namespace Map
         [UsedImplicitly]
         private void Start()
         {
-            hexBoard = new HexBoard(MapSize) {Generator = new PerlinGenerator()};
+            hexBoard = new HexBoard(MapSize) {Generator = new TestGenerator()};
             hexBoard.GenerateMap();
 
             CubicalCoordinate start = hexBoard.RandomValidTile();
