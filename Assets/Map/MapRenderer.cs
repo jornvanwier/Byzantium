@@ -61,7 +61,10 @@ namespace Map
 
             MaterialPropertyBlock block = new MaterialPropertyBlock();
             block.SetFloat(Shader.PropertyToID("_ArraySize"), MapSize);
-            block.SetBuffer(Shader.PropertyToID("hexProps"), computeBuffer);
+            block.SetBuffer(Shader.PropertyToID("_HexagonBuffer"), computeBuffer);
+
+            
+
 
             MeshFilter filter = gameObject.AddComponent<MeshFilter>();
             MeshRenderer mrenderer = gameObject.AddComponent<MeshRenderer>();

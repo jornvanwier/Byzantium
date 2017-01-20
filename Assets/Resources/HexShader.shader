@@ -1,121 +1,69 @@
 ﻿﻿Shader "HexagonmapShader" {
-	Properties {
-		_Color ("Color", Color) = (1,1,1,1)
-		_MainTex ("Grass (RGBA)", 2D) = "white" {}
-		_MainTex2 ("Water (RGBA)", 2D) = "white" {}
-		_ParallaxMap ("Height (A)",2D) = "black" {}
-		_NormalMap ("Normal map (RGB)", 2D) = "white" {}
-		_PXHeightScale ("height maintex px", Range(-0.2,0)) = -0.05
-		_Glossiness ("Smoothness", Range(0,1)) = 0.5
-		_Metallic ("Metallic", Range(0,1)) = 0.0
-		_BorderSize ("BorderSize", Range(0.0,0.5)) = 0.05
-		_BorderColor ("BorderColor", Color) = (1,1,1,1)
-		_Softening ("Softening", Range(0,1)) = 0.5
-	}
-	SubShader {
-		Tags { "RenderType"="Transparent" }
-		LOD 200
+    Properties {
+        _Color ("Color", Color) = (1,1,1,1)
+        _POMHeightScale ("POM hieght scale", Range(-0.2,0)) = -0.05
+        _DefaultGlossiness ("Smoothness", Range(0,1)) = 0.5
+        _DefaultMetallic ("Metallic", Range(0,1)) = 0.0
+        
+        _MainTex          ("Default Albedo Map (RGB)", 2D) = "white" {}
+        _DefaultHeightMap ("Default Height map (A)",2D) = "black" {}
+        _DefaultNormalMap ("Default Normal map (RGB)", 2D) = "white" {}
+        _DefaultAmbOccMap ("Default Ambient Occlusion map", 2D) = "white" {}
 
-		CGPROGRAM
+    }
+    SubShader {
+        Tags { "RenderType"="Transparent" }
+        LOD 200
 
-		// Physically based Standard lighting model, and enable shadows on all light types
-		#pragma surface surf Standard fullforwardshadows
+        CGPROGRAM
 
-        float remap (float value, float from1, float to1, float from2, float to2) {
-            return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
-        }
+        #include "ShaderTypes.cginc"
+        #include "ShaderFunctions.cginc"
 
-        float2 ParallaxMapping(float3 viewDir, float sampledHeight, float heightScale)
-        {
-            return viewDir.xz / viewDir.y * (sampledHeight * heightScale * heightScale);
-        }
+        #pragma surface surf Standard fullforwardshadows
 
-        float2 ParallaxOcclusionMapping(float3 viewDir, float2 texCoords, float heightScale, sampler2D parallaxMap)
-        {
-            static const float minLayers = 10;
-            static const float maxLayers = 20;
-            float numLayers = lerp(maxLayers, minLayers, abs(dot(float3(0.0, 0.0, 1.0), viewDir)));
+        #pragma target 5.0
 
-            float layerDepth = 1.0 / numLayers;
-            static float currentLayerDepth = 0.0;
-
-            float2 P = viewDir.xz / viewDir.y * heightScale;
-            float2 deltaTexCoords = P / numLayers;
-
-            float2  currentTexCoords     = texCoords;
-            float currentDepthMapValue = tex2D(parallaxMap, currentTexCoords).r;
-
-             while(currentLayerDepth < currentDepthMapValue)
-             {
-                 currentTexCoords -= deltaTexCoords;
-
-                 currentDepthMapValue = tex2Dlod(parallaxMap, float4(currentTexCoords,0,0)).r;
-
-                 currentLayerDepth += layerDepth;
-             }
-
-            float2 prevTexCoords = currentTexCoords + deltaTexCoords;
-
-            float afterDepth  = currentDepthMapValue - currentLayerDepth;
-            float beforeDepth = tex2D(parallaxMap, prevTexCoords).r - currentLayerDepth + layerDepth;
-
-            float weight = afterDepth / (afterDepth - beforeDepth);
-            float2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
-
-            return finalTexCoords;
-        }
-
-        float yPosSide(float x)
-        {
-            return sqrt(3) * x;
-        }
-
-        float yNegSide(float x)
-        {
-            return yPosSide(x) * -1;
-        }
-
-        float xPosSide(float y)
-        {
-            return y / sqrt(3);
-        }
-
-        float xNegSide(float y)
-        {
-            return xPosSide(y) * -1;
-        }
+        sampler2D _MainTex;
+        sampler2D _DefaultNormalMap;
+        sampler2D _DefaultHeightMap;
+        sampler2D _DefaultAmbOccMap;
 
 
-		// Use shader model 3.0 target, to get nicer looking lighting
-		#pragma target 3.0
+        struct Input {
+            float2 uv_MainTex;
+            float3 viewDir;
+        };
 
-		sampler2D _MainTex;
-		sampler2D _MainTex2;
-        sampler2D _ParallaxMap;
-        sampler2D _NormalMap;
-
-		struct Input {
-			float2 uv_MainTex;
-			float3 viewDir;
-		};
-
-		float _ArraySize;
-		half _Glossiness;
-		half _Metallic;
-		fixed4 _Color;
-		float _BorderSize;
-		float4 _BorderColor;
-		float _Softening;
-		float _PXHeightScale;
+        float   _ArraySize;
+        half    _DefaultGlossiness;
+        half    _DefaultMetallic;
+        fixed4  _Color;
+        float   _BorderSize;
+        float4  _BorderColor;
+        float   _Softening;
+        float   _POMHeightScale;
 
         #ifdef SHADER_API_D3D11
-				StructuredBuffer<int> hexProps;
-		#endif
+            SamplerState LinearRepeatSampler;
 
-		void surf (Input IN, inout SurfaceOutputStandard o) {
+            StructuredBuffer<int> _HexagonBuffer;
+            Texture2DArray _TileSets[32];
+            
+            Texture2DArray sampleTileSet(int x, int y)
+            {
+                int pixelVal = _HexagonBuffer[y * _ArraySize + x];
+                return _TileSets[pixelVal];
+            }
 
-			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
-            float BorderSize = 0.5 - _BorderSize;
+        #endif
+
+
+
+
+        void surf (Input IN, inout SurfaceOutputStandard o) {
+
+            fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
 
             #ifdef SHADER_API_D3D11
 
@@ -123,57 +71,30 @@
             float3 viewDirNormalized = normalize(mul(IN.viewDir, TBN_matrix));
 
 
-			float3 Grass = float3(0,1,0);
-			float3 Water = float3(0,0,1);
-			float3 Desert = float3(1,0,0);
-			float3 Path = float3(1,1,1);
+            float3 Grass = float3(0,1,0);
+            float3 Water = float3(0,0,1);
+            float3 Desert = float3(1,0,0);
+            float3 Path = float3(1,1,1);
 
-			float posX = IN.uv_MainTex.x * (_ArraySize) - 0.075 * _ArraySize;
-			float posY = IN.uv_MainTex.y * (_ArraySize);
-
+            float PI = 3.14159265f;
+            float distanceToSide = 1.0/4.0 * sqrt(3.0);
             float hexSize = sqrt(3)/3;
 
-			float cubeX = posX * 2/3 / hexSize;
-			float cubeZ = (-posX / 3 + sqrt(3)/3 * posY) / hexSize;
-			float cubeY = -cubeX-cubeZ;
+            HexagonData data = CalculateMapCoords(IN.uv_MainTex, _ArraySize, hexSize);
 
-            int rX = round(cubeX);
-            int rZ = round(cubeZ);
-            int rY = round(cubeY);
+            float midpointx = hexSize * 3 / 2 * data.hexagonPositionOffset.y;
+            float midpointy = hexSize * sqrt(3) * (data.hexagonPositionOffset.x + 0.5 * (data.hexagonPositionOffset.y&1));
 
-            float xDiff = abs(cubeX - rX);
-            float zDiff = abs(cubeZ - rZ);
-            float yDiff = abs(cubeY - rY);
-
-            if (xDiff > yDiff && xDiff > zDiff)
-            {
-                rX = -rY-rZ;
-            }
-            else if (yDiff > zDiff)
-            {
-                rY = -rX-rZ;
-            }
-            else
-            {
-                rZ = -rX-rY;
-            }
-
-            int x = rZ + (rX - (rX & 1)) / 2.0f,
-                z = rX;
-
-            float midpointx = hexSize * 3 / 2 * z;
-            float midpointy = hexSize * sqrt(3) * (x + 0.5 * (z&1));
-
-            float diffx = posX - midpointx;
-            float diffy = posY - midpointy;
+            float diffx = data.hexagonPositionFloat.x - midpointx;
+            float diffy = data.hexagonPositionFloat.y - midpointy;
 
             float2 uvn = float2(remap(diffx, -sqrt(3)/3, sqrt(3)/3,0,1), remap(diffy, -sqrt(3)/3, sqrt(3)/3,0,1));
 
 
-            float2 offset = ParallaxOcclusionMapping(viewDirNormalized, uvn, _PXHeightScale, _ParallaxMap);
 
-            float PI = 3.14159265f;
-            float distanceToSide = 1.0/4.0 * sqrt(3.0);
+            float2 offset = ParallaxOcclusionMapping(viewDirNormalized, uvn, _POMHeightScale, _DefaultHeightMap);
+
+
 
             float offsetCorrectY = offset.y - 0.5f;
             float offsetCorrectX = offset.x - 0.5f;
@@ -182,10 +103,14 @@
             float rotateY120 = offsetCorrectY * sin(5.0 / 6.0 * PI) + offsetCorrectX * cos(5.0 / 6.0 * PI);
 
             if(offset.y < 0.5 - distanceToSide && offsetCorrectX < xNegSide(offsetCorrectY) && offsetCorrectX > xPosSide(offsetCorrectY))
-                offset.y = 0.5 + distanceToSide - (0.5 - distanceToSide - offset.y);        
+            {
+                offset.y = 0.5 + distanceToSide - (0.5 - distanceToSide - offset.y);
+            }      
             
             if(offset.y > 0.5 + distanceToSide && offsetCorrectX < xPosSide(offsetCorrectY) && offsetCorrectX > xNegSide(offsetCorrectY))
+            {
                 offset.y = 0.5 - distanceToSide + (offset.y - 0.5 - distanceToSide);
+            }
             
 
             if(rotateY60 > distanceToSide && offsetCorrectY < yPosSide(offsetCorrectX) && offsetCorrectY > 0)
@@ -212,26 +137,31 @@
                 offset.y += distanceToSide;
             }
 
-            float4 grass = tex2D (_MainTex, offset );
-            float4 water = tex2D (_MainTex2, offset );
 
-             o.Normal = UnpackNormal(tex2D(_NormalMap, offset));
+
+
+
+            float4 grass = tex2D (_MainTex, offset );
+
+             o.Normal = UnpackNormal(tex2D(_DefaultNormalMap, offset));
              o.Normal = 1.0 - o.Normal;
 
-			if(x < 0 || x >= _ArraySize || z < 0 || z >= _ArraySize)
-			{
-			    c.rgb = water;
-			}
-			else
-			{
-                int pixelVal = hexProps[ z * _ArraySize + x ];
+            
+
+            if(data.hexagonPositionOffset.x < 0 || data.hexagonPositionOffset.x >= _ArraySize || data.hexagonPositionOffset.y < 0 || data.hexagonPositionOffset.y >= _ArraySize)
+            {
+                c.rgb = Water;
+            }
+            else
+            {
+                int pixelVal = _HexagonBuffer[ data.hexagonPositionOffset.y * _ArraySize + data.hexagonPositionOffset.x ];
                 if (pixelVal == 0)
                 {
                     c.rgb = grass;
                 }
                 else if (pixelVal == 1)
                 {
-                    c.rgb = water;
+                    c.rgb = Water;
                 }
                 else if (pixelVal == 2)
                 {
@@ -243,55 +173,18 @@
                 }
             }
 
-            float rotate60 = diffy * sin(1.0 / 6.0 * PI) + diffx * cos(1.0 / 6.0 * PI);
-            float rotate120 = diffy * sin(-1.0 / 6.0 * PI) + diffx * cos(-1.0 / 6.0 * PI);
 
-            float highestVal = max(max(abs(diffy),abs(rotate60)),abs(rotate120));
-
-            if(abs(highestVal) > BorderSize)
-            {
-                c.rgba = _BorderColor * (remap(highestVal - BorderSize, 0.0, _BorderSize, 0, 1) * (1.0 - _Softening));
-            }
-
-            if(x == 0 && z == 0)
-                c.rgba = float4(1,1,1,1);
-            
-
-            /*
-            if(offset.y < 0.5 - distanceToSide && offsetCorrectX < xNegSide(offsetCorrectY) && offsetCorrectX > xPosSide(offsetCorrectY))
-                c.rgba = float4(1,0,0,1);
-            
-            if(offset.y > 0.5 + distanceToSide && offsetCorrectX < xPosSide(offsetCorrectY) && offsetCorrectX > xNegSide(offsetCorrectY))
-                c.rgba = float4(0,1,0,1);
-            
-            if(rotateY60 > distanceToSide && offsetCorrectY < yPosSide(offsetCorrectX) && offsetCorrectY > 0)
-                c.rgba = float4(0,0,1,1);
-            
-            
-            if(rotateY60 < - distanceToSide && offsetCorrectY > yPosSide(offsetCorrectX) && offsetCorrectY < 0)
-                c.rgba = float4(1,1,0,1);
-            
-            if(rotateY120 > distanceToSide && offsetCorrectX < xNegSide(offsetCorrectY) && offsetCorrectY > 0)
-                c.rgba = float4(1,0,1,1);
-            
-            if(rotateY120 < - distanceToSide && offsetCorrectX > xNegSide(offsetCorrectY) && offsetCorrectY < 0)
-                c.rgba = float4(1,1,1,1);
-            */     
-            
+            c.rgb *= tex2D(_DefaultAmbOccMap, offset);
 
             #endif
 
-			o.Albedo = c.rgb + float3(1,1,1) * (normalize(IN.viewDir.x) * 0.0001);
+            o.Albedo = c.rgb + float3(1,1,1) * (normalize(IN.viewDir.x) * 0.0001);
 
-			o.Metallic = _Metallic;
-			o.Smoothness = _Glossiness;
-			o.Alpha = c.a;
-
-
-
-
-		}
-		ENDCG
-	}
-	FallBack "Diffuse"
+            o.Metallic = _DefaultMetallic;
+            o.Smoothness = _DefaultGlossiness;
+            o.Alpha = c.a;
+        }
+        ENDCG
+    }
+    FallBack "Diffuse"
 }
