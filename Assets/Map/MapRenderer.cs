@@ -53,8 +53,11 @@ namespace Assets.Map
 
             _textureSets = new List<TextureSet>();
 
-            for (var i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
+            var types = Enum.GetNames(typeof(TileType));
+            for (var i = 0; i < types.Length; ++i)
+            {
                 _textureSets.Add(_defaultTextureSet);
+            }
 
             _albedoMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.RGBA32, true);
             _heightMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.RGBA32, true);

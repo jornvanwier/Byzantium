@@ -18,7 +18,7 @@ namespace Assets.Map.Generation
             return FloatToByteMap(map);
         }
 
-        public byte[,] FloatToByteMap(float[,] floatMap)
+        private byte[,] FloatToByteMap(float[,] floatMap)
         {
             int size = floatMap.GetLength(0);
             byte[,] map = new byte[size, size];
@@ -52,7 +52,7 @@ namespace Assets.Map.Generation
             return map;
         }
 
-        public float[,] GenerateFloatMap(int size, float scale, float borderSize, bool squareBorder, int octaves,
+        private float[,] GenerateFloatMap(int size, float scale, float borderSize, bool squareBorder, int octaves,
             float persistance, float lacunarity, Vector2 position, int seed)
         {
             scale *= (float)size / 2; //adjust scale so size is irrelavant
