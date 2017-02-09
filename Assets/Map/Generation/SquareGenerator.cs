@@ -15,7 +15,7 @@ namespace Map.Generation
                     if (x <= borderPercentage * size || x >= size - borderPercentage * size ||
                         y <= borderPercentage * size || y >= size - borderPercentage * size)
                     {
-                        result[x, y] = (byte) TileType.Water;
+                        result[x, y] = (byte) TileType.WaterShallow;
                     }
                     else
                     {

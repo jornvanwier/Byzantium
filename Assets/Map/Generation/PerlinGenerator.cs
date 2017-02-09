@@ -25,7 +25,7 @@ namespace Map.Generation
                     if (distanceToCenter > 1 - borderPercentage)
                     {
                         //if point is too far from center: water
-                        map[x, y] = (byte)TileType.Water;
+                        map[x, y] = (byte)TileType.WaterShallow;
                     }
                     else
                     {
@@ -47,7 +47,7 @@ namespace Map.Generation
                         }
                         else
                         {
-                            map[x, y] = (byte)TileType.Water;
+                            map[x, y] = (byte)TileType.WaterShallow;
                         }
                     }
                 }
