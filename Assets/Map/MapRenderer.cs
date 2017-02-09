@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using Assets.Map.Generation;
 using Map;
+using Map.Generation;
 
 namespace Assets.Map
 {
@@ -15,6 +16,7 @@ namespace Assets.Map
         public Mesh Mesh;
 
         public Material HexMaterial;
+
 
         public Texture2D DefaultAlbedoMap;
         public Texture2D DefaultHeightMap;
@@ -29,7 +31,7 @@ namespace Assets.Map
         [UsedImplicitly]
         private void Start()
         {
-            hexBoard = new HexBoard(MapSize) {Generator = new PerlinGenerator()};
+            hexBoard = new HexBoard(MapSize) {Generator = new TestGenerator()};
             hexBoard.GenerateMap();
 
             CubicalCoordinate start = hexBoard.RandomValidTile();
@@ -72,9 +74,6 @@ namespace Assets.Map
             MaterialPropertyBlock block = new MaterialPropertyBlock();
             block.SetFloat(Shader.PropertyToID("_ArraySize"), MapSize);
             block.SetBuffer(Shader.PropertyToID("_HexagonBuffer"), computeBuffer);
-
-            
-
 
             MeshFilter filter = gameObject.AddComponent<MeshFilter>();
             MeshRenderer mrenderer = gameObject.AddComponent<MeshRenderer>();

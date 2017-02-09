@@ -1,18 +1,18 @@
 fileFormatVersion: 2
 guid: 38c26222325c7be4d9d6ea17b0eace7e
-timeCreated: 1486649664
+timeCreated: 1486651016
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
-  - Mesh: {instanceID: 0}
+  - Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   - HexMaterial: {fileID: 2100000, guid: fe0831c8b5f572041ace39327b77a4d2, type: 2}
-  - DefaultAlbedoMap: {fileID: 2800000, guid: 4c255bf4f3cafbc4a89b0a9b6c257659, type: 3}
-  - DefaultHeightMap: {fileID: 2800000, guid: cbf60bded678b3c4daadb14f3e438bf3, type: 3}
-  - DefaultNormalMap: {fileID: 2800000, guid: cd808afdd10ff9040bf65b4557d04a40, type: 3}
-  - DefaultAmbOccMap: {fileID: 2800000, guid: eee42df1eaef76640b60fd560cd4a1f4, type: 3}
-  - DefaultGlossyMap: {instanceID: 0}
-  - DefaultMetallMap: {instanceID: 0}
+  - DefaultAlbedoMap: {fileID: 2800000, guid: f904b8ca9dec7e445bc88825f294b7fd, type: 3}
+  - DefaultHeightMap: {fileID: 2800000, guid: ca3bd76b764d28d43a47304168faa878, type: 3}
+  - DefaultNormalMap: {fileID: 2800000, guid: 143b056ee1cfe2346aa38f52eb2422d7, type: 3}
+  - DefaultAmbOccMap: {fileID: 2800000, guid: c3e7dd9b34c570540aa04ede50e44326, type: 3}
+  - DefaultGlossyMap: {fileID: 2800000, guid: a76af0cf038726f45992b8aa7ec2ad55, type: 3}
+  - DefaultMetallMap: {fileID: 2800000, guid: b43fe40c8a42e3c498d13b13d228b977, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
