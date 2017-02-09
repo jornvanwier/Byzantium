@@ -35,6 +35,7 @@ namespace Assets.Map
         public Texture2D DefaultGlossyMap;
         public Texture2D DefaultMetallMap;
 
+        public Texture2D TestMap;
 
         private TextureSet _defaultTextureSet;
 
@@ -54,34 +55,28 @@ namespace Assets.Map
             _textureSets = new List<TextureSet>();
 
             for (var i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
-                _textureSets.Add(_defaultTextureSet);
-
-            _albedoMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.RGBA32, true);
-            _heightMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.RGBA32, true);
-            _normalMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.RGBA32, true);
-            _amboccMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.RGBA32, true);
-            _glossyMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.RGBA32, true);
-            _metallMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.RGBA32, true);
+                _textureSets.Add((TextureSet)_defaultTextureSet.Clone());
 
 
-            Debug.Log("Mip levels: " + Convert.ToInt32(Mathf.Log(TextureSize,2)));
+            _albedoMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
+            _heightMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
+            _normalMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
+            _amboccMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
+            _glossyMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
+            _metallMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
+
             for (var i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
             {
-                    _albedoMaps.SetPixels(_textureSets[i].AlbedoMap.GetPixels(0), i , 0);
-                    _heightMaps.SetPixels(_textureSets[i].HeightMap.GetPixels(0), i , 0);
-                    _normalMaps.SetPixels(_textureSets[i].NormalMap.GetPixels(0), i , 0);
-                    _amboccMaps.SetPixels(_textureSets[i].AmbOccMap.GetPixels(0), i , 0);
-                    _glossyMaps.SetPixels(_textureSets[i].GlossyMap.GetPixels(0), i , 0);
-                    _metallMaps.SetPixels(_textureSets[i].MetallMap.GetPixels(0), i , 0);
+                for (int j = 0; j < Convert.ToInt32(Mathf.Log(TextureSize, 2) + 1); ++j)
+                {
+                    Graphics.CopyTexture(_textureSets[i].AlbedoMap, 0, j, _albedoMaps, i, j);
+                    Graphics.CopyTexture(_textureSets[i].AmbOccMap, 0, j, _amboccMaps, i, j);
+                    Graphics.CopyTexture(_textureSets[i].GlossyMap, 0, j, _glossyMaps, i, j);
+                    Graphics.CopyTexture(_textureSets[i].HeightMap, 0, j, _heightMaps, i, j);
+                    Graphics.CopyTexture(_textureSets[i].MetallMap, 0, j, _metallMaps, i, j);
+                    Graphics.CopyTexture(_textureSets[i].NormalMap, 0, j, _normalMaps, i, j);
+                }
             }
-
-            _albedoMaps.Apply();
-            _amboccMaps.Apply();
-            _glossyMaps.Apply();
-            _heightMaps.Apply();
-            _metallMaps.Apply();
-            _normalMaps.Apply();
-
 
             hexBoard = new HexBoard(MapSize) {Generator = new TestGenerator()};
             hexBoard.GenerateMap();

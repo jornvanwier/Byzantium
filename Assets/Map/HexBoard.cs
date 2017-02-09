@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 namespace Map
 {
-    internal enum TileType
+    public enum TileType
     {
         WaterDeep,
         WaterShallow,
