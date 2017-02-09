@@ -22,7 +22,7 @@ namespace Map
 
     public class HexBoard
     {
-        private const float BorderPercentage = 0.3f;
+        private const float BorderPercentage = 0.2f;
 
         private readonly int size;
 
