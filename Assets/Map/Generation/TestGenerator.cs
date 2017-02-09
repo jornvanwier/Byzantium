@@ -14,7 +14,7 @@ namespace Assets.Map.Generation
             int seed = new Random().Next(0, 1000);
             Debug.Log(seed);
 
-            float[,] map = GenerateFloatMap(size, 150, borderSize, false, 6, 0.55f, 2, new Vector2(), seed);
+            float[,] map = GenerateFloatMap(size, 1, borderSize, false, 6, 0.55f, 2, new Vector2(), seed);
             return FloatToByteMap(map);
         }
 
@@ -55,6 +55,8 @@ namespace Assets.Map.Generation
         public float[,] GenerateFloatMap(int size, float scale, float borderSize, bool squareBorder, int octaves,
             float persistance, float lacunarity, Vector2 position, int seed)
         {
+            scale *= (float)size / 2; //adjust scale so size is irrelavant
+
             //clean input
             scale = Mathf.Clamp(scale, 0.000001f, float.PositiveInfinity);
             octaves = Mathf.Clamp(octaves, 0, 10);
@@ -128,7 +130,7 @@ namespace Assets.Map.Generation
                     }
                 }
             }
-            
+
             float multiplier = highestAllowedValue / (highest - lowest);
             for (int y = 0; y < size; y++)
             {
