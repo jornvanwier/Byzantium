@@ -2,9 +2,10 @@
 using JetBrains.Annotations;
 using UnityEngine;
 using Assets.Map.Generation;
+using Map;
 using Map.Generation;
 
-namespace Map
+namespace Assets.Map
 {
     public class MapRenderer : MonoBehaviour
     {
@@ -15,6 +16,17 @@ namespace Map
         public Mesh Mesh;
 
         public Material HexMaterial;
+
+
+        public Texture2D DefaultAlbedoMap;
+        public Texture2D DefaultHeightMap;
+        public Texture2D DefaultNormalMap;
+        public Texture2D DefaultAmbOccMap;
+        public Texture2D DefaultGlossyMap;
+        public Texture2D DefaultMetallMap;
+
+
+
 
         [UsedImplicitly]
         private void Start()
@@ -62,9 +74,6 @@ namespace Map
             MaterialPropertyBlock block = new MaterialPropertyBlock();
             block.SetFloat(Shader.PropertyToID("_ArraySize"), MapSize);
             block.SetBuffer(Shader.PropertyToID("_HexagonBuffer"), computeBuffer);
-
-            
-
 
             MeshFilter filter = gameObject.AddComponent<MeshFilter>();
             MeshRenderer mrenderer = gameObject.AddComponent<MeshRenderer>();
