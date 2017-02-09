@@ -53,7 +53,7 @@ namespace Assets.Map
 
             _textureSets = new List<TextureSet>();
 
-            var types = Enum.GetNames(typeof(TileType));
+            var types = Enum.GetValues(typeof(TileType));
             for (var i = 0; i < types.Length; ++i)
             {
                 _textureSets.Add(_defaultTextureSet);
