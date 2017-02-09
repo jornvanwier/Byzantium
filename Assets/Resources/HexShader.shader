@@ -2,6 +2,7 @@
     Properties {
         _Color ("Color", Color) = (1,1,1,1)
         _POMHeightScale ("POM hieght scale", Range(-0.2,0)) = -0.05
+
         _DefaultGlossiness ("Smoothness", Range(0,1)) = 0.5
         _DefaultMetallic ("Metallic", Range(0,1)) = 0.0
         
@@ -29,6 +30,12 @@
         sampler2D _DefaultHeightMap;
         sampler2D _DefaultAmbOccMap;
 
+        UNITY_DECLARE_TEX2DARRAY(_AlbedoMaps);
+        UNITY_DECLARE_TEX2DARRAY(_HeightMaps);
+        UNITY_DECLARE_TEX2DARRAY(_NormalMaps);
+        UNITY_DECLARE_TEX2DARRAY(_AmbOccMaps);
+        UNITY_DECLARE_TEX2DARRAY(_GlossyMaps);
+        UNITY_DECLARE_TEX2DARRAY(_MetallMaps);
 
         struct Input {
             float2 uv_MainTex;

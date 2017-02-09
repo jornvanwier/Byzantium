@@ -2,9 +2,9 @@
 using JetBrains.Annotations;
 using UnityEngine;
 using Assets.Map.Generation;
-using Map.Generation;
+using Map;
 
-namespace Map
+namespace Assets.Map
 {
     public class MapRenderer : MonoBehaviour
     {
@@ -15,6 +15,16 @@ namespace Map
         public Mesh Mesh;
 
         public Material HexMaterial;
+
+        public Texture2D DefaultAlbedoMap;
+        public Texture2D DefaultHeightMap;
+        public Texture2D DefaultNormalMap;
+        public Texture2D DefaultAmbOccMap;
+        public Texture2D DefaultGlossyMap;
+        public Texture2D DefaultMetallMap;
+
+
+
 
         [UsedImplicitly]
         private void Start()
