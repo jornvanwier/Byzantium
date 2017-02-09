@@ -8,15 +8,21 @@ namespace Map
 {
     internal enum TileType
     {
+        WaterDeep,
+        WaterShallow,
         Grass,
-        Water,
+        Forest,
+        MountainLow,
+        MountainHigh,
+        MountainTop,
+        Beach,
         Desert,
         Path
     }
 
     public class HexBoard
     {
-        private const float BorderPercentage = 0.03f;
+        private const float BorderPercentage = 0.3f;
 
         private readonly int size;
 
@@ -70,7 +76,7 @@ namespace Map
             do
             {
                 cc = new OddRCoordinate(Random.Range(0, size), Random.Range(0, size)).ToCubical();
-            } while (this[cc] == (byte) TileType.Water);
+            } while (this[cc] == (byte) TileType.WaterShallow);
 
             return cc;
         }
@@ -110,7 +116,7 @@ namespace Map
 //            };
 
             SimplePriorityQueue<CubicalCoordinate> queue = new SimplePriorityQueue<CubicalCoordinate>();
-            queue.Enqueue(start,  0);
+            queue.Enqueue(start, 0);
 
             while (queue.Count > 0)
             {
@@ -151,7 +157,8 @@ namespace Map
                     // Neighbour is new
                     if (!queue.Contains(tuple.Item1))
                     {
-                        queue.Enqueue(tuple.Item1, tentativeGScore + CubicalCoordinate.DistanceBetween(tuple.Item1, goal));
+                        queue.Enqueue(tuple.Item1,
+                            tentativeGScore + CubicalCoordinate.DistanceBetween(tuple.Item1, goal));
                     }
                     // This path is not better
                     else if (tentativeGScore >= gScore[tuple.Item1])
@@ -176,7 +183,7 @@ namespace Map
             {
                 case TileType.Grass:
                     return 1;
-                case TileType.Water:
+                case TileType.WaterShallow:
                     return float.MaxValue;
                 case TileType.Desert:
                     return 2;

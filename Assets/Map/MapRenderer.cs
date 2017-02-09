@@ -34,23 +34,23 @@ namespace Assets.Map
             hexBoard = new HexBoard(MapSize) {Generator = new TestGenerator()};
             hexBoard.GenerateMap();
 
-            CubicalCoordinate start = hexBoard.RandomValidTile();
-
-            CubicalCoordinate goal = hexBoard.RandomValidTile();
-
-            List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
-
-            if (path != null)
-            {
-                foreach (CubicalCoordinate hex in path)
-                {
-                    hexBoard[hex] = (byte) TileType.Path;
-                }
-            }
-
-
-            hexBoard[start] = (byte) TileType.Path;
-            hexBoard[goal] = (byte) TileType.Path;
+//            CubicalCoordinate start = hexBoard.RandomValidTile();
+//
+//            CubicalCoordinate goal = hexBoard.RandomValidTile();
+//
+//            List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
+//
+//            if (path != null)
+//            {
+//                foreach (CubicalCoordinate hex in path)
+//                {
+//                    hexBoard[hex] = (byte) TileType.Path;
+//                }
+//            }
+//
+//
+//            hexBoard[start] = (byte) TileType.Path;
+//            hexBoard[goal] = (byte) TileType.Path;
 
             SetupShader();
         }
