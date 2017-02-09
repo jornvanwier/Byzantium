@@ -19,7 +19,7 @@ namespace Map
         [UsedImplicitly]
         private void Start()
         {
-            hexBoard = new HexBoard(MapSize) {Generator = new TestGenerator()};
+            hexBoard = new HexBoard(MapSize) {Generator = new PerlinGenerator()};
             hexBoard.GenerateMap();
 
             CubicalCoordinate start = hexBoard.RandomValidTile();
