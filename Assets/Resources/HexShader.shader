@@ -1,15 +1,9 @@
 ﻿﻿Shader "HexagonmapShader" {
     Properties {
-        _Color ("Color", Color) = (1,1,1,1)
         _POMHeightScale ("POM hieght scale", Range(-0.2,0)) = -0.05
-
-        _DefaultGlossiness ("Smoothness", Range(0,1)) = 0.5
-        _DefaultMetallic ("Metallic", Range(0,1)) = 0.0
         
-        _MainTex          ("Default Albedo Map (RGB)", 2D) = "white" {}
+        _MainTex          ("1024x1024 Texture for UV's", 2D) = "white" {}
         _DefaultHeightMap ("Default Height map (A)",2D) = "black" {}
-        _DefaultNormalMap ("Default Normal map (RGB)", 2D) = "white" {}
-        _DefaultAmbOccMap ("Default Ambient Occlusion map", 2D) = "white" {}
 
     }
     SubShader {
@@ -26,9 +20,7 @@
         #pragma target 5.0
 
         sampler2D _MainTex;
-        sampler2D _DefaultNormalMap;
         sampler2D _DefaultHeightMap;
-        sampler2D _DefaultAmbOccMap;
 
         UNITY_DECLARE_TEX2DARRAY(_AlbedoMaps);
         UNITY_DECLARE_TEX2DARRAY(_HeightMaps);
@@ -43,26 +35,11 @@
         };
 
         float   _ArraySize;
-        half    _DefaultGlossiness;
-        half    _DefaultMetallic;
         fixed4  _Color;
-        float   _BorderSize;
-        float4  _BorderColor;
-        float   _Softening;
         float   _POMHeightScale;
 
         #ifdef SHADER_API_D3D11
-            SamplerState LinearRepeatSampler;
-
-            StructuredBuffer<int> _HexagonBuffer;
-            Texture2DArray _TileSets[32];
-            
-            Texture2DArray sampleTileSet(int x, int y)
-            {
-                int pixelVal = _HexagonBuffer[y * _ArraySize + x];
-                return _TileSets[pixelVal];
-            }
-
+            StructuredBuffer<int> _HexagonBuffer;    
         #endif
 
 
@@ -70,7 +47,7 @@
 
         void surf (Input IN, inout SurfaceOutputStandard o) {
 
-            fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
+            fixed4 c = tex2D (_MainTex, IN.uv_MainTex);
 
             #ifdef SHADER_API_D3D11
 
@@ -146,49 +123,32 @@
 
 
 
+            int pixelVal = _HexagonBuffer[ data.hexagonPositionOffset.y * _ArraySize + data.hexagonPositionOffset.x ];
 
 
-            float4 grass = tex2D (_MainTex, offset );
 
-             o.Normal = UnpackNormal(tex2D(_DefaultNormalMap, offset));
+             o.Normal = UnpackNormal(UNITY_SAMPLE_TEX2DARRAY(_NormalMaps, float3(offset, pixelVal)));
              o.Normal = 1.0 - o.Normal;
 
             
-
             if(data.hexagonPositionOffset.x < 0 || data.hexagonPositionOffset.x >= _ArraySize || data.hexagonPositionOffset.y < 0 || data.hexagonPositionOffset.y >= _ArraySize)
             {
                 c.rgb = Water;
             }
             else
             {
-                int pixelVal = _HexagonBuffer[ data.hexagonPositionOffset.y * _ArraySize + data.hexagonPositionOffset.x ];
-                if (pixelVal == 0)
-                {
-                    c.rgb = grass;
-                }
-                else if (pixelVal == 1)
-                {
-                    c.rgb = Water;
-                }
-                else if (pixelVal == 2)
-                {
-                    c.rgb = Desert;
-                }
-                else if (pixelVal == 3)
-                {
-                    c.rgb = Path;
-                }
+                c.rgb = UNITY_SAMPLE_TEX2DARRAY(_AlbedoMaps, float3(offset, pixelVal));                
             }
 
 
-            c.rgb *= tex2D(_DefaultAmbOccMap, offset);
+            c.rgb *= UNITY_SAMPLE_TEX2DARRAY(_AmbOccMaps, float3(offset, pixelVal));
+
+            o.Metallic = UNITY_SAMPLE_TEX2DARRAY(_MetallMaps, float3(offset, pixelVal));
+            o.Smoothness = UNITY_SAMPLE_TEX2DARRAY(_GlossyMaps, float3(offset, pixelVal));
 
             #endif
 
             o.Albedo = c.rgb + float3(1,1,1) * (normalize(IN.viewDir.x) * 0.0001);
-
-            o.Metallic = _DefaultMetallic;
-            o.Smoothness = _DefaultGlossiness;
             o.Alpha = c.a;
         }
         ENDCG

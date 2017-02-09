@@ -43,12 +43,12 @@ namespace Assets.Map
         {
             _defaultTextureSet = new TextureSet
             {
-                DefaultAlbedoMap = DefaultAlbedoMap,
-                DefaultHeightMap = DefaultHeightMap,
-                DefaultAmbOccMap = DefaultAmbOccMap,
-                DefaultGlossyMap = DefaultGlossyMap,
-                DefaultMetallMap = DefaultMetallMap,
-                DefaultNormalMap = DefaultNormalMap
+                AlbedoMap = DefaultAlbedoMap,
+                HeightMap = DefaultHeightMap,
+                AmbOccMap = DefaultAmbOccMap,
+                GlossyMap = DefaultGlossyMap,
+                MetallMap = DefaultMetallMap,
+                NormalMap = DefaultNormalMap
             };
 
             _textureSets = new List<TextureSet>();
@@ -57,25 +57,22 @@ namespace Assets.Map
                 _textureSets.Add(_defaultTextureSet);
 
             _albedoMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.RGBA32, true);
-            _heightMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.Alpha8, true);
+            _heightMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.RGBA32, true);
             _normalMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.RGBA32, true);
-            _amboccMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.Alpha8, true);
-            _glossyMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.Alpha8, true);
-            _metallMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.Alpha8, true);
+            _amboccMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.RGBA32, true);
+            _glossyMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.RGBA32, true);
+            _metallMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.RGBA32, true);
 
-            Debug.Log(Convert.ToInt32(Mathf.Log(1024,2)));
 
+            Debug.Log("Mip levels: " + Convert.ToInt32(Mathf.Log(TextureSize,2)));
             for (var i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
             {
-                for (var j = 0; j < Convert.ToInt32(Mathf.Log(2,1024)); ++j)
-                {
-                    _albedoMaps.SetPixels(_textureSets[i].DefaultAlbedoMap.GetPixels(j), i , j);
-                    _heightMaps.SetPixels(_textureSets[i].DefaultHeightMap.GetPixels(j), i , j);
-                    _normalMaps.SetPixels(_textureSets[i].DefaultNormalMap.GetPixels(j), i , j);
-                    _amboccMaps.SetPixels(_textureSets[i].DefaultAmbOccMap.GetPixels(j), i , j);
-                    _glossyMaps.SetPixels(_textureSets[i].DefaultGlossyMap.GetPixels(j), i , j);
-                    _metallMaps.SetPixels(_textureSets[i].DefaultMetallMap.GetPixels(j), i , j);
-                }
+                    _albedoMaps.SetPixels(_textureSets[i].AlbedoMap.GetPixels(0), i , 0);
+                    _heightMaps.SetPixels(_textureSets[i].HeightMap.GetPixels(0), i , 0);
+                    _normalMaps.SetPixels(_textureSets[i].NormalMap.GetPixels(0), i , 0);
+                    _amboccMaps.SetPixels(_textureSets[i].AmbOccMap.GetPixels(0), i , 0);
+                    _glossyMaps.SetPixels(_textureSets[i].GlossyMap.GetPixels(0), i , 0);
+                    _metallMaps.SetPixels(_textureSets[i].MetallMap.GetPixels(0), i , 0);
             }
 
             _albedoMaps.Apply();
@@ -136,7 +133,7 @@ namespace Assets.Map
             block.SetTexture("_HeightMaps", _heightMaps);
             block.SetTexture("_AmbOccMaps", _amboccMaps);
             block.SetTexture("_GlossyMaps", _glossyMaps);
-            block.SetTexture("_MetalMaps", _metallMaps);
+            block.SetTexture("_MetallMaps", _metallMaps);
 
 
             MeshFilter filter = gameObject.AddComponent<MeshFilter>();

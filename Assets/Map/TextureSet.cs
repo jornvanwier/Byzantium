@@ -4,11 +4,11 @@ namespace Assets.Map
 {
     public class TextureSet
     {
-        public Texture2D DefaultAlbedoMap { get; set; }
-        public Texture2D DefaultHeightMap { get; set; }
-        public Texture2D DefaultNormalMap { get; set; }
-        public Texture2D DefaultAmbOccMap { get; set; }
-        public Texture2D DefaultGlossyMap { get; set; }
-        public Texture2D DefaultMetallMap { get; set; }
+        public Texture2D AlbedoMap { get; set; }
+        public Texture2D HeightMap { get; set; }
+        public Texture2D NormalMap { get; set; }
+        public Texture2D AmbOccMap { get; set; }
+        public Texture2D GlossyMap { get; set; }
+        public Texture2D MetallMap { get; set; }
     }
 }
