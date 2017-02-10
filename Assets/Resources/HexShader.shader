@@ -92,15 +92,13 @@
             {
                 offset.y = 0.5 + distanceToSide - (0.5 - distanceToSide - offset.y);
                 
-                if(_HexagonBuffer[ data.hexagonPositionOffset.y * _ArraySize + data.hexagonPositionOffset.x ] != _HexagonBuffer[ data.hexagonPositionOffset.y * _ArraySize + data.hexagonPositionOffset.x - 1 ])
-                    data.hexagonPositionOffset.x -= 1;
+                data.hexagonPositionOffset.x -= 1;
             }      
             
             if(offset.y > 0.5 + distanceToSide && offsetCorrectX < xPosSide(offsetCorrectY) && offsetCorrectX > xNegSide(offsetCorrectY))
             {
                 offset.y = 0.5 - distanceToSide + (offset.y - 0.5 - distanceToSide);
                 
-                if(_HexagonBuffer[ data.hexagonPositionOffset.y * _ArraySize + data.hexagonPositionOffset.x ] != _HexagonBuffer[ data.hexagonPositionOffset.y * _ArraySize + data.hexagonPositionOffset.x + 1 ])
                 data.hexagonPositionOffset.x += 1;
             }
             

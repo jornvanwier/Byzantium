@@ -66,7 +66,7 @@ HexagonData CalculateMapCoords(float2 uv, int array_size, float hexSize)
 
 float2 ParallaxOcclusionMapping(float3 viewDir, float2 texCoords, float heightScale, sampler2D parallaxMap)
 {
-    static const float minLayers = 10;
+    static const float minLayers = 1;
     static const float maxLayers = 20;
     float numLayers = lerp(maxLayers, minLayers, abs(dot(float3(0.0, 0.0, 1.0), viewDir)));
 
