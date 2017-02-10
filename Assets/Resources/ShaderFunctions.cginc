@@ -2,13 +2,6 @@ float remap (float value, float from1, float to1, float from2, float to2) {
     return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
 }
 
-float2 ParallaxMapping(float3 viewDir, float sampledHeight, float heightScale)
-{
-    return viewDir.xz / viewDir.y * (sampledHeight * heightScale * heightScale);
-}
-
-
-
 float yPosSide(float x)
 {
     return sqrt(3) * x;

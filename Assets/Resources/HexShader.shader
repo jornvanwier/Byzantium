@@ -1,6 +1,6 @@
 ﻿﻿Shader "HexagonmapShader" {
     Properties {
-        _POMHeightScale ("POM hieght scale", Range(-0.2,0)) = -0.05
+        _POMHeightScale ("POM hieght scale", Range(-0.2,0.2)) = -0.05
         
         _MainTex          ("1024x1024 Texture for UV's", 2D) = "white" {}
         _DefaultHeightMap ("Default Height map (A)",2D) = "black" {}
@@ -12,6 +12,8 @@
 
         CGPROGRAM
 
+
+        #pragma enable_d3d11_debug_symbols
         #include "ShaderTypes.cginc"
         #include "ShaderFunctions.cginc"
 
@@ -89,11 +91,17 @@
             if(offset.y < 0.5 - distanceToSide && offsetCorrectX < xNegSide(offsetCorrectY) && offsetCorrectX > xPosSide(offsetCorrectY))
             {
                 offset.y = 0.5 + distanceToSide - (0.5 - distanceToSide - offset.y);
+                
+                if(_HexagonBuffer[ data.hexagonPositionOffset.y * _ArraySize + data.hexagonPositionOffset.x ] != _HexagonBuffer[ data.hexagonPositionOffset.y * _ArraySize + data.hexagonPositionOffset.x - 1 ])
+                    data.hexagonPositionOffset.x -= 1;
             }      
             
             if(offset.y > 0.5 + distanceToSide && offsetCorrectX < xPosSide(offsetCorrectY) && offsetCorrectX > xNegSide(offsetCorrectY))
             {
                 offset.y = 0.5 - distanceToSide + (offset.y - 0.5 - distanceToSide);
+                
+                if(_HexagonBuffer[ data.hexagonPositionOffset.y * _ArraySize + data.hexagonPositionOffset.x ] != _HexagonBuffer[ data.hexagonPositionOffset.y * _ArraySize + data.hexagonPositionOffset.x + 1 ])
+                data.hexagonPositionOffset.x += 1;
             }
             
 
@@ -101,24 +109,68 @@
             {
                 offset.x -= 0.75;
                 offset.y -= distanceToSide;
+
+                if(data.hexagonPositionOffset.y % 2 == 1)
+                {
+                    data.hexagonPositionOffset.x += 1;
+                    data.hexagonPositionOffset.y += 1;
+                }
+                else
+                {
+                    data.hexagonPositionOffset.y += 1;
+                }
+
             }
 
             if(rotateY60 < - distanceToSide && offsetCorrectY > yPosSide(offsetCorrectX) && offsetCorrectY < 0)
             {
                 offset.x += 0.75;
                 offset.y += distanceToSide;
+
+                if(data.hexagonPositionOffset.y % 2 == 0)
+                {
+                    data.hexagonPositionOffset.x -= 1;
+                    data.hexagonPositionOffset.y -= 1;
+                }
+                else
+                {
+                    data.hexagonPositionOffset.y -= 1;
+                }
+
             }
             
             if(rotateY120 > distanceToSide && offsetCorrectX < xNegSide(offsetCorrectY) && offsetCorrectY > 0)
             {
                 offset.x += 0.75;
                 offset.y -= distanceToSide;
+
+                if(data.hexagonPositionOffset.y % 2 == 0)
+                {
+                    data.hexagonPositionOffset.y -= 1;
+                }
+                else
+                {
+                    data.hexagonPositionOffset.y -= 1;
+                    data.hexagonPositionOffset.x += 1;
+                }
+
             }
             
             if(rotateY120 < - distanceToSide && offsetCorrectX > xNegSide(offsetCorrectY) && offsetCorrectY < 0)
             {
                 offset.x -= 0.75;
                 offset.y += distanceToSide;
+
+                if(data.hexagonPositionOffset.y % 2 == 1)
+                {
+                    data.hexagonPositionOffset.y += 1;
+                }
+                else
+                {
+                    data.hexagonPositionOffset.y += 1;
+                    data.hexagonPositionOffset.x -= 1;
+                }
+
             }
 
 
