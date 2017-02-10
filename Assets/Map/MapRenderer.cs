@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using Assets.Map.Generation;
@@ -35,7 +36,16 @@ namespace Assets.Map
         public Texture2D DefaultGlossyMap;
         public Texture2D DefaultMetallMap;
 
-        public Texture2D TestMap;
+        public Texture2D WaterDeepAlbedo;
+        public Texture2D WaterShallowAlbedo;
+        public Texture2D GrassAlbedo;
+        public Texture2D ForestAlbedo;
+        public Texture2D MountainLowAlbedo;
+        public Texture2D MountainHightAlbedo;
+        public Texture2D MountainTopAlbedo;
+        public Texture2D BeachAlbedo;
+        public Texture2D DesertAlbedo;
+        public Texture2D PathAlbedo;
 
         private TextureSet _defaultTextureSet;
 
@@ -54,11 +64,42 @@ namespace Assets.Map
 
             _textureSets = new List<TextureSet>();
 
-            var types = Enum.GetValues(typeof(TileType));
-            for (var i = 0; i < types.Length; ++i)
-            {
-                _textureSets.Add(_defaultTextureSet);
-            }
+            TextureSet.SetDefaultTextures(_defaultTextureSet);
+
+            _textureSets.Add(new TextureSet());
+            _textureSets.Last().AlbedoMap = WaterDeepAlbedo;
+
+            _textureSets.Add(new TextureSet());
+            _textureSets.Last().AlbedoMap = WaterShallowAlbedo;
+
+            _textureSets.Add(new TextureSet());
+            _textureSets.Last().AlbedoMap = GrassAlbedo;
+
+            _textureSets.Add(new TextureSet());
+            _textureSets.Last().AlbedoMap = ForestAlbedo;
+
+            _textureSets.Add(new TextureSet());
+            _textureSets.Last().AlbedoMap = MountainLowAlbedo;
+
+            _textureSets.Add(new TextureSet());
+            _textureSets.Last().AlbedoMap = MountainHightAlbedo;
+
+            _textureSets.Add(new TextureSet());
+            _textureSets.Last().AlbedoMap = MountainTopAlbedo;
+
+            _textureSets.Add(new TextureSet());
+            _textureSets.Last().AlbedoMap = BeachAlbedo;
+
+            _textureSets.Add(new TextureSet());
+            _textureSets.Last().AlbedoMap = DesertAlbedo;
+
+            _textureSets.Add(new TextureSet());
+            _textureSets.Last().AlbedoMap = PathAlbedo;
+
+
+
+
+
 
 
             _albedoMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);

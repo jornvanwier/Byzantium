@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Map;
+using UnityEngine;
 
 namespace Map.Generation
 {

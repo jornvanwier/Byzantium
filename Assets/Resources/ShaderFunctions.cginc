@@ -32,7 +32,7 @@ float xNegSide(float y)
 HexagonData CalculateMapCoords(float2 uv, int array_size, float hexSize)
 {
     float posX = uv.x * (array_size) - 0.075 * array_size;
-    float posY = uv.y * (array_size);
+    float posY = uv.y * (array_size) - 0.005 * array_size;
 
     float cubeX = posX * 2/3 / hexSize;
     float cubeZ = (-posX / 3 + sqrt(3)/3 * posY) / hexSize;

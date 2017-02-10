@@ -1,25 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Map;
 using Map.Generation;
 using Priority_Queue;
 using Random = UnityEngine.Random;
 
 namespace Map
 {
-    public enum TileType
-    {
-        WaterDeep,
-        WaterShallow,
-        Grass,
-        Forest,
-        MountainLow,
-        MountainHigh,
-        MountainTop,
-        Beach,
-        Desert,
-        Path
-    }
-
     public class HexBoard
     {
         private const float BorderPercentage = 0.2f;
