@@ -93,10 +93,10 @@ namespace Assets.Map.Generation
 
             for (int i = 0; i < numThreads; i++)
             {
-                int threadNum = i;
+                int partNum = i;
                 Thread t = new Thread(() =>
                 {
-                    GenerateMapPart(ref map, 0, size / numThreads * i, size, size / numThreads * (threadNum + 1),
+                    GenerateMapPart(ref map, 0, size / numThreads * i, size, size / numThreads * (partNum + 1),
                         squareBorder,
                         size, borderSize,
                         center,
