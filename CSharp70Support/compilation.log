@@ -1,5 +1,5 @@
 ********************************************************************************
-*                    Friday, February 10, 2017 10:16:22 PM                     *
+*                    Friday, February 10, 2017 10:21:57 PM                     *
 ********************************************************************************
 CSharpCompilerWrapper.exe version: 2.0.3.30
 Platform: Windows
@@ -12,9 +12,9 @@ Compiler: Microsoft C# 7.0
 - Compilation -----------------------------------------------
 
 Process: C:\Users\ruurd\Documents\Byzantium\CSharp70Support\Roslyn\csc.exe
-Arguments: -nostdlib+ -noconfig -nologo -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\mscorlib.dll" -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.dll" -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.Core.dll" -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.Xml.dll" @Temp/UnityTempFile-e91416c8cd7ac544884532ed8a363b95 
+Arguments: -nostdlib+ -noconfig -nologo -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\mscorlib.dll" -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.dll" -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.Core.dll" -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.Xml.dll" @Temp/UnityTempFile-0c91716ceb398ce449b4d6c874b7481e 
 Exit code: 0
-Elapsed time: 4.06 sec
+Elapsed time: 4.18 sec
 
 - Compiler output (0 lines):
 
@@ -29,7 +29,7 @@ Elapsed time: 0.17 sec
 
 - pdb2mdb.exe output (0 lines):
 ********************************************************************************
-*                    Friday, February 10, 2017 10:16:27 PM                     *
+*                    Friday, February 10, 2017 10:22:03 PM                     *
 ********************************************************************************
 CSharpCompilerWrapper.exe version: 2.0.3.30
 Platform: Windows
@@ -42,9 +42,9 @@ Compiler: Microsoft C# 7.0
 - Compilation -----------------------------------------------
 
 Process: C:\Users\ruurd\Documents\Byzantium\CSharp70Support\Roslyn\csc.exe
-Arguments: -nostdlib+ -noconfig -nologo -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\mscorlib.dll" -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.dll" -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.Core.dll" -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.Xml.dll" @Temp/UnityTempFile-f84d16e5423637543a6682413f2ef7e6 
+Arguments: -nostdlib+ -noconfig -nologo -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\mscorlib.dll" -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.dll" -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.Core.dll" -r:"C:\Program Files\Unity 5.6.0b7\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\System.Xml.dll" @Temp/UnityTempFile-1ece57a14153a4347924cbc68c3e9cbe 
 Exit code: 0
-Elapsed time: 3.17 sec
+Elapsed time: 3.07 sec
 
 - Compiler output (0 lines):
 
@@ -55,6 +55,6 @@ Elapsed time: 3.17 sec
 Process: C:\Users\ruurd\Documents\Byzantium\CSharp70Support\Roslyn\pdb2mdb.exe
 Arguments: Temp\Assembly-CSharp-Editor.dll
 Exit code: 0
-Elapsed time: 0.15 sec
+Elapsed time: 0.14 sec
 
 - pdb2mdb.exe output (0 lines):

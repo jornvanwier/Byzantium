@@ -96,7 +96,7 @@ namespace Assets.Map.Generation
                 int partNum = i;
                 Thread t = new Thread(() =>
                 {
-                    GenerateMapPart(ref map, 0, size / numThreads * i, size, size / numThreads * (partNum + 1),
+                    GenerateMapPart(ref map, 0, size / numThreads * partNum, size, size / numThreads * (partNum + 1),
                         squareBorder,
                         size, borderSize,
                         center,
