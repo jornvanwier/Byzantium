@@ -18,7 +18,7 @@ namespace Assets.Map.Generation
             Debug.Log(seed);
 
             float startTime = Time.realtimeSinceStartup;
-            float[] map = GenerateFloatMap(size, 1, borderSize, false, 6, 0.55f, 2, new Vector2(), seed);
+            float[,] map = GenerateFloatMap(size, 0.7f, borderSize, false, 6, 0.55f, 2, new Vector2(), seed);
             float perlinTime = Time.realtimeSinceStartup;
             Debug.Log("Perlin Time: " + (perlinTime - startTime));
             byte[,] byteMap = FloatToByteMap(map);
@@ -29,7 +29,7 @@ namespace Assets.Map.Generation
             return byteMap;
         }
 
-        private byte[,] FloatToByteMap(float[] floatMap)
+        private byte[,] FloatToByteMap(float[,] floatMap)
         {
             int size = (int) Mathf.Sqrt(floatMap.Length);
             byte[,] map = new byte[size, size];
@@ -41,7 +41,7 @@ namespace Assets.Map.Generation
                 new TerrainType(TileType.Beach, 0.45f),
                 new TerrainType(TileType.Grass, 0.55f),
                 new TerrainType(TileType.Forest, 0.6f),
-                new TerrainType(TileType.MountainLow, 0.7f),
+                new TerrainType(TileType.MountainLow, 0.8f),
                 new TerrainType(TileType.MountainHigh, 0.9f),
                 new TerrainType(TileType.MountainTop, 1f),
             };
@@ -50,7 +50,7 @@ namespace Assets.Map.Generation
             {
                 for (int x = 0; x < size; x++)
                 {
-                    float currentHeight = floatMap[y * size + x];
+                    float currentHeight = floatMap[x, y];
                     foreach (var region in regions)
                     {
                         if (!(currentHeight <= region.Height)) continue;
@@ -63,10 +63,10 @@ namespace Assets.Map.Generation
             return map;
         }
 
-        private float[] GenerateFloatMap(int size, float scale, float borderSize, bool squareBorder, int octaves,
+        private float[,] GenerateFloatMap(int size, float scale, float borderSize, bool squareBorder, int octaves,
             float persistance, float lacunarity, Vector2 position, int seed)
         {
-            scale *= (float) size / 2; //adjust scale so size is irrelavant
+            scale *= (float) size / 4; //adjust scale so size is irrelavant
 
             //clean input
             scale = Mathf.Clamp(scale, 0.000001f, float.PositiveInfinity);
@@ -75,7 +75,7 @@ namespace Assets.Map.Generation
             lacunarity = Mathf.Clamp(lacunarity, 0, 2);
 
             //fill map
-            float[] map = new float[size * size];
+            float[,] map = new float[size, size];
             Random random = new Random(seed);
             Vector2[] octaveOffsets = new Vector2[octaves];
             for (int i = 0; i < octaves; i++)
@@ -88,20 +88,21 @@ namespace Assets.Map.Generation
             Vector2 center = new Vector2(size / 2f, size / 2f);
             float halfSize = size / 2f;
 
-            List<float[]> mapParts = new List<float[]>();
             int numThreads = Environment.ProcessorCount;
             List<Thread> threads = new List<Thread>();
 
             for (int i = 0; i < numThreads; i++)
             {
+                var partNum = i;
                 Thread t = new Thread(() =>
                 {
-                    mapParts.Add(GenerateMapPart(0, size / numThreads * i, size, size / numThreads * i + 1, squareBorder,
+                    GenerateMapPart(ref map, 0, size / numThreads * partNum, size, size / numThreads * (partNum + 1),
+                        squareBorder,
                         size, borderSize,
                         center,
                         halfSize,
                         persistance,
-                        lacunarity, octaves, scale, octaveOffsets, position));
+                        lacunarity, octaves, scale, octaveOffsets, position);
                 });
                 threads.Add(t);
                 t.Start();
@@ -112,26 +113,20 @@ namespace Assets.Map.Generation
                 thread.Join();
             }
 
-            int index = 0;
-            foreach (float[] mapPart in mapParts)
-            {
-                mapPart?.CopyTo(map, index += mapPart.Length);
-            }
-
             float lowest = float.PositiveInfinity,
-                highest = float.NegativeInfinity,
-                highestAllowedValue = 1;
+                highest = float.NegativeInfinity;
+            const float highestAllowedValue = 1;
             for (int y = 0; y < size; y++)
             {
                 for (int x = 0; x < size; x++)
                 {
-                    if (map[y * size + x] < lowest)
+                    if (map[x, y] < lowest)
                     {
-                        lowest = map[y * size + x];
+                        lowest = map[x, y];
                     }
-                    if (map[y * size + x] > highest)
+                    if (map[x, y] > highest)
                     {
-                        highest = map[y * size + x];
+                        highest = map[x, y];
                     }
                 }
             }
@@ -141,22 +136,20 @@ namespace Assets.Map.Generation
             {
                 for (int x = 0; x < size; x++)
                 {
-                    map[y * size + x] -= lowest;
-                    map[y * size + x] *= multiplier;
+                    map[x, y] -= lowest;
+                    map[x, y] *= multiplier;
                 }
             }
 
             return map;
         }
 
-        public float[] GenerateMapPart(int x1, int y1, int x2, int y2, bool squareBorder, float size,
+        public void GenerateMapPart(ref float[,] map, int x1, int y1, int x2, int y2, bool squareBorder, float size,
             float borderSize,
             Vector2 center, float halfSize, float persistance, float lacunarity, int octaves, float scale,
             Vector2[] octaveOffsets, Vector2 position)
         {
-            int width = x2 - x1;
-            int height = y2 - y1;
-            float[] mapPart = new float[width * height];
+            Debug.Log("Van: " + y1 + " tot: " + y2);
             for (int y = y1; y < y2; y++)
             {
                 for (int x = x1; x < x2; x++)
@@ -190,11 +183,9 @@ namespace Assets.Map.Generation
                     }
 
 
-                    mapPart[(y - y1) * width + x] = noiseHeight;
+                    map[x, y] = noiseHeight;
                 }
             }
-
-            return mapPart;
         }
     }
 }
