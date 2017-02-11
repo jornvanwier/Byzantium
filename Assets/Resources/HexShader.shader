@@ -1,13 +1,10 @@
 ﻿﻿Shader "HexagonmapShader" {
     Properties {
-        _POMHeightScale ("POM height scale", Range (-1.0,0.0)) = -0.05
+        _POMHeightScale ("POM height scale", Range (0.0,1.0)) = 0.1
         _AODistance ("AO Falloff", Range (0.0,1.0)) = 0.0
-        
         _AODistanceDelta ("AO Delta after falloff", Range(0.0, 1.0)) = 0.0
-
         _MainTex          ("1024x1024 Texture for UV's", 2D) = "white" {}
         _DefaultHeightMap ("Default Height map (A)",2D) = "black" {}
-
     }
     SubShader {
         Tags { "RenderType"="Transparent" }
@@ -15,11 +12,10 @@
 
         CGPROGRAM
 
-        //For using RenderDoc's shader debug.
+        //For using RenderDoc's shader debuging.
         #pragma enable_d3d11_debug_symbols
-        
-        #include "ShaderTypes.cginc"
-        #include "ShaderFunctions.cginc"
+
+
 
         #pragma surface surf Standard fullforwardshadows
 
@@ -29,7 +25,6 @@
         sampler2D _DefaultHeightMap;
 
         UNITY_DECLARE_TEX2DARRAY(_AlbedoMaps);
-        UNITY_DECLARE_TEX2DARRAY(_HeightMaps);
         UNITY_DECLARE_TEX2DARRAY(_NormalMaps);
         UNITY_DECLARE_TEX2DARRAY(_AmbOccMaps);
         UNITY_DECLARE_TEX2DARRAY(_GlossyMaps);
@@ -51,7 +46,8 @@
         #endif
 
 
-
+        #include "ShaderTypes.cginc"
+        #include "ShaderFunctions.cginc"
 
         void surf (Input IN, inout SurfaceOutputStandard o) {
 
@@ -83,7 +79,7 @@
             float2 uvn = float2(remap(diffx, -sqrt(3)/3, sqrt(3)/3,0,1), remap(diffy, -sqrt(3)/3, sqrt(3)/3,0,1));
 
             //Parallax mapping
-            float2 offset = ParallaxOcclusionMapping(viewDirNormalized, uvn, _POMHeightScale, _DefaultHeightMap);
+            float2 offset = ParallaxOcclusionMapping(viewDirNormalized, uvn, -_POMHeightScale, _DefaultHeightMap);
 
             //Offset correction
             float offsetCorrectY = offset.y - 0.5f;

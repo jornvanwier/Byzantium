@@ -8,7 +8,6 @@ namespace Assets.Map
         private static TextureSet _default;
 
         public Texture2D AlbedoMap { get; set; } = _default?.AlbedoMap;
-        public Texture2D HeightMap { get; set; } = _default?.HeightMap;
         public Texture2D NormalMap { get; set; } = _default?.NormalMap;
         public Texture2D AmbOccMap { get; set; } = _default?.AmbOccMap;
         public Texture2D GlossyMap { get; set; } = _default?.GlossyMap;
@@ -22,7 +21,6 @@ namespace Assets.Map
                 AlbedoMap = AlbedoMap,
                 AmbOccMap = AmbOccMap,
                 GlossyMap = GlossyMap,
-                HeightMap = HeightMap,
                 MetallMap = MetallMap,
                 NormalMap = NormalMap
             };
