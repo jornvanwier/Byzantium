@@ -20,9 +20,12 @@ namespace Assets.Map.Generation
             float startTime = Time.realtimeSinceStartup;
             float[,] map = GenerateFloatMap(size, 0.7f, borderSize, false, 6, 0.55f, 2, new Vector2(), seed);
             float perlinTime = Time.realtimeSinceStartup;
+
             Debug.Log("Perlin Time: " + (perlinTime - startTime));
+
             byte[,] byteMap = FloatToByteMap(map);
             float endTime = Time.realtimeSinceStartup;
+
             Debug.Log("Byte Time: " + (endTime - perlinTime));
             Debug.Log("Total Time: " + (endTime - startTime));
 
@@ -40,9 +43,9 @@ namespace Assets.Map.Generation
                 new TerrainType(TileType.WaterShallow, 0.4f),
                 new TerrainType(TileType.Beach, 0.45f),
                 new TerrainType(TileType.Grass, 0.55f),
-                new TerrainType(TileType.Forest, 0.6f),
-                new TerrainType(TileType.MountainLow, 0.8f),
-                new TerrainType(TileType.MountainHigh, 0.9f),
+                new TerrainType(TileType.Forest, 0.65f),
+                new TerrainType(TileType.MountainLow, 0.75f),
+                new TerrainType(TileType.MountainHigh, 0.87f),
                 new TerrainType(TileType.MountainTop, 1f),
             };
 
@@ -149,7 +152,6 @@ namespace Assets.Map.Generation
             Vector2 center, float halfSize, float persistance, float lacunarity, int octaves, float scale,
             Vector2[] octaveOffsets, Vector2 position)
         {
-            Debug.Log("Van: " + y1 + " tot: " + y2);
             for (int y = y1; y < y2; y++)
             {
                 for (int x = x1; x < x2; x++)
