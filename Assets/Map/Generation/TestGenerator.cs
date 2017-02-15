@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading;
 using Map;
 using Map.Generation;
@@ -18,7 +19,8 @@ namespace Assets.Map.Generation
             new TerrainType(TileType.WaterShallow, 0.4f),
             new TerrainType(TileType.Beach, 0.45f),
             new TerrainType(TileType.Grass, 0.55f),
-            new TerrainType(TileType.Forest, 0.65f),
+            new TerrainType(TileType.Forest, 0.6f),
+            new TerrainType(TileType.Grass, 0.7f),
             new TerrainType(TileType.MountainLow, 0.75f),
             new TerrainType(TileType.MountainHigh, 0.87f),
             new TerrainType(TileType.MountainTop, 1f),
@@ -37,7 +39,7 @@ namespace Assets.Map.Generation
             Debug.Log("Perlin Time: " + (perlinTime - startTime));
 
             byte[,] tileMap = FloatToByteMap(heightMap);
-            AddRivers(ref tileMap, heightMap, 3);
+//            AddRivers(ref tileMap, heightMap, 3);
             float endTime = Time.realtimeSinceStartup;
 
             Debug.Log("Byte Time: " + (endTime - perlinTime));
@@ -51,16 +53,61 @@ namespace Assets.Map.Generation
             int size = tileMap.GetLength(0);
             for (int i = 0; i < numRivers; ++i)
             {
-                Vector2 startPos = GetRiverStartPosition(size);
-                int[,] neighbours = GetNeighbours(size, size, (int) startPos.x, (int) startPos.y);
-                for (int j = 0; j < neighbours.GetLength(0); ++j)
+                Int2 startPos = GetRiverStartPosition(size);
+                List<Int2> river = GetRiver(size, startPos, heightMap);
+                foreach (Int2 riverTile in river)
                 {
-//                    neighbours[]
+                    tileMap[riverTile.x, riverTile.y] = (byte) TileType.Desert;
                 }
             }
         }
 
-        private static int[,] GetNeighbours(int width, int height, int x, int y)
+        private List<Int2> GetRiver(int mapSize, Int2 startPos, float[,] heightMap)
+        {
+            float stopHeight = Regions[0].Height;
+            //rivier stroomt door tot hij diep water vindt
+
+            List<Int2> river = new List<Int2> {startPos};
+            Int2[] neighbours = GetNeighbours(mapSize, mapSize, startPos.x, startPos.y);
+            float lowestNeighbour = heightMap[neighbours[0].x, neighbours[0].y];
+            float prevHeight = -1;
+
+            while (lowestNeighbour >= stopHeight)
+            {
+                lowestNeighbour = heightMap[neighbours[0].x, neighbours[0].y];
+                Int2 lowestNeighbourIndex = neighbours[0];
+                foreach (Int2 neighbour in neighbours)
+                {
+                    float neighbourHeight = heightMap[neighbour.x, neighbour.y];
+                    if (neighbourHeight < lowestNeighbour)
+                    {
+                        lowestNeighbour = neighbourHeight;
+                        lowestNeighbourIndex = neighbour;
+                    }
+                }
+
+                if (lowestNeighbour > prevHeight ||
+                    lowestNeighbourIndex.x == startPos.x && lowestNeighbourIndex.y == startPos.y)
+                {
+                    lowestNeighbourIndex = neighbours[new Random().Next(neighbours.Length)];
+                }
+
+                neighbours = GetNeighbours(mapSize, mapSize, lowestNeighbourIndex.x, lowestNeighbourIndex.y);
+
+                if (river.Count > 100)
+                    Debug.Log("Large river");
+
+                if(!river.Contains(lowestNeighbourIndex))
+                    river.Add(lowestNeighbourIndex);
+
+                prevHeight = lowestNeighbour;
+                startPos = lowestNeighbourIndex;
+            }
+
+            return river;
+        }
+
+        private static Int2[] GetNeighbours(int width, int height, int x, int y)
         {
             if (x >= width || y >= height || x < 0 || y < 0)
                 throw new ArgumentException("Requested position is out of bounds");
@@ -69,57 +116,43 @@ namespace Assets.Map.Generation
             {
                 if (y + 1 == height) //bottom boundary
                 {
-                    return new[,] {{x, y - 1}, {x - 1, y}};
+                    return new[] {new Int2(x, y - 1), new Int2(x - 1, y)};
                 }
                 if (y == 0) //top boundary
                 {
-                    return new[,] {{x, y + 1}, {x - 1, y}};
+                    return new[] {new Int2(x, y + 1), new Int2(x - 1, y)};
                 }
-                return new[,] {{x, y + 1}, {x - 1, y}, {x, y - 1}};
+                return new[] {new Int2(x, y + 1), new Int2(x - 1, y), new Int2(x, y - 1)};
             }
             if (x == 0) //left boundary
             {
                 if (y + 1 == height) //bottom boundary
                 {
-                    return new[,] {{x, y - 1}, {x + 1, y}};
+                    return new[] {new Int2(x, y - 1), new Int2(x + 1, y)};
                 }
                 if (y == 0) //top boundary
                 {
-                    return new[,] {{x, y + 1}, {x + 1, y}};
+                    return new[] {new Int2(x, y + 1), new Int2(x + 1, y)};
                 }
-                return new[,] {{x, y + 1}, {x + 1, y}, {x, y - 1}};
+                return new[] {new Int2(x, y + 1), new Int2(x + 1, y), new Int2(x, y - 1)};
             }
-            return new[,] {{x, y + 1}, {x + 1, y}, {x, y - 1}, {x - 1, y}};
+            if (y + 1 == height) //bottom boundary
+            {
+                return new[] {new Int2(x + 1, y), new Int2(x, y - 1), new Int2(x - 1, y)};
+            }
+            if (y == 0) //top boundary
+            {
+                return new[] {new Int2(x, y + 1), new Int2(x + 1, y), new Int2(x - 1, y)};
+            }
+            return new[] {new Int2(x, y + 1), new Int2(x + 1, y), new Int2(x, y - 1), new Int2(x - 1, y)};
         }
 
-        private Vector2 GetRiverStartPosition(int size)
+        private Int2 GetRiverStartPosition(int size)
         {
             Random random = new Random();
-            int distance = random.Next(size);
-            int side = random.Next(4);
-            Vector2 outRiver = new Vector2();
 
-            switch (side)
-            {
-                case 0: //top
-                    outRiver.x = distance;
-                    outRiver.y = 0;
-                    break;
-                case 1: //right
-                    outRiver.x = size - 1;
-                    outRiver.y = distance;
-                    break;
-                case 2: //bottom
-                    outRiver.x = distance;
-                    outRiver.y = size - 1;
-                    break;
-                case 3: //left
-                    outRiver.x = 0;
-                    outRiver.y = distance;
-                    break;
-            }
-
-            return outRiver;
+            return new Int2(random.Next(size / 4, size - size / 4), random.Next(size / 4, size - size / 4));
+            ;
         }
 
         private byte[,] FloatToByteMap(float[,] floatMap)
