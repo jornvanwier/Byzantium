@@ -10,11 +10,10 @@ namespace Assets.Map
 {
     public class MapRenderer : MonoBehaviour
     {
-        private ComputeBuffer computeBuffer;
-        private HexBoard hexBoard;
+        private ComputeBuffer _computeBuffer;
+        private HexBoard _hexBoard;
 
         private Texture2DArray _albedoMaps;
-        private Texture2DArray _heightMaps;
         private Texture2DArray _normalMaps;
         private Texture2DArray _amboccMaps;
         private Texture2DArray _glossyMaps;
@@ -55,7 +54,6 @@ namespace Assets.Map
             _defaultTextureSet = new TextureSet
             {
                 AlbedoMap = DefaultAlbedoMap,
-                HeightMap = DefaultHeightMap,
                 AmbOccMap = DefaultAmbOccMap,
                 GlossyMap = DefaultGlossyMap,
                 MetallMap = DefaultMetallMap,
@@ -96,14 +94,7 @@ namespace Assets.Map
             _textureSets.Add(new TextureSet());
             _textureSets.Last().AlbedoMap = PathAlbedo;
 
-
-
-
-
-
-
             _albedoMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
-            _heightMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
             _normalMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
             _amboccMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
             _glossyMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
@@ -116,14 +107,13 @@ namespace Assets.Map
                     Graphics.CopyTexture(_textureSets[i].AlbedoMap, 0, j, _albedoMaps, i, j);
                     Graphics.CopyTexture(_textureSets[i].AmbOccMap, 0, j, _amboccMaps, i, j);
                     Graphics.CopyTexture(_textureSets[i].GlossyMap, 0, j, _glossyMaps, i, j);
-                    Graphics.CopyTexture(_textureSets[i].HeightMap, 0, j, _heightMaps, i, j);
                     Graphics.CopyTexture(_textureSets[i].MetallMap, 0, j, _metallMaps, i, j);
                     Graphics.CopyTexture(_textureSets[i].NormalMap, 0, j, _normalMaps, i, j);
                 }
             }
 
-            hexBoard = new HexBoard(MapSize) {Generator = new TestGenerator()};
-            hexBoard.GenerateMap();
+            _hexBoard = new HexBoard(MapSize) {Generator = new TestGenerator()};
+            _hexBoard.GenerateMap();
 
             /*
             CubicalCoordinate start = hexBoard.RandomValidTile();
@@ -149,7 +139,7 @@ namespace Assets.Map
 
         private void SetupShader()
         {
-            computeBuffer = new ComputeBuffer(MapSize * MapSize, sizeof(int), ComputeBufferType.GPUMemory);
+            _computeBuffer = new ComputeBuffer(MapSize * MapSize, sizeof(int), ComputeBufferType.GPUMemory);
 
             int[,] data = new int[MapSize, MapSize];
 
@@ -157,19 +147,18 @@ namespace Assets.Map
             {
                 for (int y = 0; y < MapSize; ++y)
                 {
-                    data[x, y] = hexBoard.Storage[x, y];
+                    data[x, y] = _hexBoard.Storage[x, y];
                 }
             }
 
-            computeBuffer.SetData(data);
+            _computeBuffer.SetData(data);
 
             MaterialPropertyBlock block = new MaterialPropertyBlock();
             block.SetFloat(Shader.PropertyToID("_ArraySize"), MapSize);
-            block.SetBuffer(Shader.PropertyToID("_HexagonBuffer"), computeBuffer);
+            block.SetBuffer(Shader.PropertyToID("_HexagonBuffer"), _computeBuffer);
 
             block.SetTexture("_AlbedoMaps", _albedoMaps);
             block.SetTexture("_NormalMaps", _normalMaps);
-            block.SetTexture("_HeightMaps", _heightMaps);
             block.SetTexture("_AmbOccMaps", _amboccMaps);
             block.SetTexture("_GlossyMaps", _glossyMaps);
             block.SetTexture("_MetallMaps", _metallMaps);
@@ -192,7 +181,7 @@ namespace Assets.Map
         [UsedImplicitly]
         private void OnDisable()
         {
-            computeBuffer?.Dispose();
+            _computeBuffer?.Dispose();
         }
     }
 }

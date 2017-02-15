@@ -2,13 +2,6 @@ float remap (float value, float from1, float to1, float from2, float to2) {
     return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
 }
 
-float2 ParallaxMapping(float3 viewDir, float sampledHeight, float heightScale)
-{
-    return viewDir.xz / viewDir.y * (sampledHeight * heightScale * heightScale);
-}
-
-
-
 float yPosSide(float x)
 {
     return sqrt(3) * x;
@@ -73,7 +66,7 @@ HexagonData CalculateMapCoords(float2 uv, int array_size, float hexSize)
 
 float2 ParallaxOcclusionMapping(float3 viewDir, float2 texCoords, float heightScale, sampler2D parallaxMap)
 {
-    static const float minLayers = 10;
+    static const float minLayers = 1;
     static const float maxLayers = 20;
     float numLayers = lerp(maxLayers, minLayers, abs(dot(float3(0.0, 0.0, 1.0), viewDir)));
 
