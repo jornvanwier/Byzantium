@@ -27,6 +27,8 @@ namespace Assets.Map
         public Mesh Mesh;
 
         public Material HexMaterial;
+        private MaterialPropertyBlock _block;
+        private MeshRenderer _mrenderer;
 
         public Texture2D DefaultAlbedoMap;
         public Texture2D DefaultHeightMap;
@@ -45,6 +47,9 @@ namespace Assets.Map
         public Texture2D BeachAlbedo;
         public Texture2D DesertAlbedo;
         public Texture2D PathAlbedo;
+
+        public GameObject Test;
+
 
         private TextureSet _defaultTextureSet;
 
@@ -135,6 +140,7 @@ namespace Assets.Map
             hexBoard[goal] = (byte) TileType.Path;
             */
             SetupShader();
+            gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
         }
 
         private void SetupShader()
@@ -153,29 +159,39 @@ namespace Assets.Map
 
             _computeBuffer.SetData(data);
 
-            MaterialPropertyBlock block = new MaterialPropertyBlock();
-            block.SetFloat(Shader.PropertyToID("_ArraySize"), MapSize);
-            block.SetBuffer(Shader.PropertyToID("_HexagonBuffer"), _computeBuffer);
+            _block = new MaterialPropertyBlock();
 
-            block.SetTexture("_AlbedoMaps", _albedoMaps);
-            block.SetTexture("_NormalMaps", _normalMaps);
-            block.SetTexture("_AmbOccMaps", _amboccMaps);
-            block.SetTexture("_GlossyMaps", _glossyMaps);
-            block.SetTexture("_MetallMaps", _metallMaps);
+            _block.SetFloat(Shader.PropertyToID("_ArraySize"), MapSize);
+            _block.SetBuffer(Shader.PropertyToID("_HexagonBuffer"), _computeBuffer);
+
+            _block.SetTexture("_AlbedoMaps", _albedoMaps);
+            _block.SetTexture("_NormalMaps", _normalMaps);
+            _block.SetTexture("_AmbOccMaps", _amboccMaps);
+            _block.SetTexture("_GlossyMaps", _glossyMaps);
+            _block.SetTexture("_MetallMaps", _metallMaps);
 
 
             MeshFilter filter = gameObject.AddComponent<MeshFilter>();
-            MeshRenderer mrenderer = gameObject.AddComponent<MeshRenderer>();
+            _mrenderer = gameObject.AddComponent<MeshRenderer>();
             filter.sharedMesh = Mesh;
-            mrenderer.material = HexMaterial;
+            _mrenderer.material = HexMaterial;
 
-            mrenderer.SetPropertyBlock(block);
+            _mrenderer.SetPropertyBlock(_block);
 
         }
 
         [UsedImplicitly]
         private void Update()
         {
+            if (Test != null)
+            {
+
+                Vector3 normalized = WorldToNormalizedWorldPosition(Test.transform.position);
+                HexagonData d = NormalizedWorldToHexagonPosition(normalized);
+                _block.SetVector(Shader.PropertyToID("_HighlightPosition"), new Vector4(d.hexagonPositionOffset.x, d.hexagonPositionOffset.y, 0, 0));
+                _mrenderer.SetPropertyBlock(_block);
+            }
+
         }
 
         [UsedImplicitly]
@@ -183,5 +199,68 @@ namespace Assets.Map
         {
             _computeBuffer?.Dispose();
         }
+
+        private float remap (float value, float from1, float to1, float from2, float to2) {
+            return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+        }
+
+
+        public Vector2 WorldToNormalizedWorldPosition(Vector3 worldPosition)
+        {
+            Vector2 position = new Vector2(worldPosition.x, worldPosition.z);
+
+            //scale to 0 - 1
+            float x = remap(position.x, -(gameObject.transform.localScale.x / 2), gameObject.transform.localScale.x / 2, 0, 1);
+            float y = remap(position.y, -(gameObject.transform.localScale.y / 2), gameObject.transform.localScale.y / 2, 0, 1);
+
+            return new Vector2(x,y);
+        }
+
+        public HexagonData NormalizedWorldToHexagonPosition(Vector2 worldPosition)
+        {
+            float hexSize = Mathf.Sqrt(3)/3;
+
+            float posX = worldPosition.x * MapSize - 0.075f * MapSize;
+            float posY = worldPosition.y * MapSize - 0.005f * MapSize;
+
+            float cubeX = posX * 2/3 / hexSize;
+            float cubeZ = (-posX / 3 + Mathf.Sqrt(3)/3 * posY) / hexSize;
+            float cubeY = -cubeX-cubeZ;
+
+            int rX = Mathf.RoundToInt(cubeX);
+            int rZ = Mathf.RoundToInt(cubeZ);
+            int rY = Mathf.RoundToInt(cubeY);
+
+            float xDiff = Mathf.Abs(cubeX - rX);
+            float zDiff = Mathf.Abs(cubeZ - rZ);
+            float yDiff = Mathf.Abs(cubeY - rY);
+
+            if (xDiff > yDiff && xDiff > zDiff)
+            {
+                rX = -rY-rZ;
+            }
+            else if (yDiff > zDiff)
+            {
+                rY = -rX-rZ;
+            }
+            else
+            {
+                rZ = -rX-rY;
+            }
+
+            int x = (int)(rZ + (rX - (rX & 1)) / 2.0f),
+                z = rX;
+
+            HexagonData data;
+
+            data.hexagonPositionOffset = new Int2(x,z);
+            data.hexagonPositionCubical = new Int3(rX,rZ,rY);
+            data.hexagonPositionFloat = new Float2(posX, posY);
+
+            return data;
+        }
+
+
+
     }
 }

@@ -5,6 +5,7 @@
         _AODistanceDelta ("AO Delta after falloff", Range(0.0, 1.0)) = 0.0
         _MainTex          ("1024x1024 Texture for UV's", 2D) = "white" {}
         _DefaultHeightMap ("Default Height map (A)",2D) = "black" {}
+        _HighlightPosition ("Highlight position", Vector) = (-1,-1, -1, -1)
     }
     SubShader {
         Tags { "RenderType"="Transparent" }
@@ -39,7 +40,8 @@
         fixed4  _Color;
         float   _POMHeightScale;
         float   _AODistance;
-        float _AODistanceDelta;
+        float   _AODistanceDelta;
+        float4  _HighlightPosition;
 
         #ifdef SHADER_API_D3D11
             StructuredBuffer<int> _HexagonBuffer;    
@@ -208,6 +210,13 @@
             //Smoothness (Inverted Roughness)
             o.Smoothness = UNITY_SAMPLE_TEX2DARRAY(_GlossyMaps, float3(offset, pixelVal));
 
+            float3 coral = float3(1.0,0.49804,0.31373);
+            //Highlight, HIGHTLIGHT CORAL!
+            if((int)(_HighlightPosition.x) == (int)(data.hexagonPositionOffset.x) && (int)(_HighlightPosition.y) == (int)(data.hexagonPositionOffset.y))
+            {                
+                c.rgb *= coral;
+            }
+            
             #endif
 
             //Need to include the viewDir because of the stupid shader compilation system,
