@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using Assets.Map.Generation;
 using Map;
+using UnityEngine.WSA;
 
 namespace Assets.Map
 {
@@ -20,6 +21,11 @@ namespace Assets.Map
         private Texture2DArray _metallMaps;
 
         private const int TextureSize = 1024;
+        private int[,] _data;
+
+        private readonly List<Int2> _selectedSet = new List<Int2>();
+
+
 
         public int MapSize;
         private List<TextureSet> _textureSets;
@@ -145,19 +151,21 @@ namespace Assets.Map
 
         private void SetupShader()
         {
-            _computeBuffer = new ComputeBuffer(MapSize * MapSize, sizeof(int), ComputeBufferType.GPUMemory);
+            _computeBuffer = new ComputeBuffer(MapSize * MapSize, sizeof(int), ComputeBufferType.Raw);
 
-            int[,] data = new int[MapSize, MapSize];
+            _data = new int[MapSize, MapSize];
 
             for (int x = 0; x < MapSize; ++x)
             {
                 for (int y = 0; y < MapSize; ++y)
                 {
-                    data[x, y] = _hexBoard.Storage[x, y];
+                    TileData t = new TileData((TileType)_hexBoard.Storage[x, y], false);
+                    int k = t.GetAsInt();
+                    _data[x, y] = k;
                 }
             }
 
-            _computeBuffer.SetData(data);
+            _computeBuffer.SetData(_data);
 
             _block = new MaterialPropertyBlock();
 
@@ -185,13 +193,25 @@ namespace Assets.Map
         {
             if (Test != null)
             {
-
                 Vector3 normalized = WorldToNormalizedWorldPosition(Test.transform.position);
                 HexagonData d = NormalizedWorldToHexagonPosition(normalized);
-                _block.SetVector(Shader.PropertyToID("_HighlightPosition"), new Vector4(d.hexagonPositionOffset.x, d.hexagonPositionOffset.y, 0, 0));
-                _mrenderer.SetPropertyBlock(_block);
-            }
 
+                if (d.hexagonPositionOffset.x > 0 && d.hexagonPositionOffset.x < MapSize - 1 &&
+                    d.hexagonPositionOffset.y > 0 && d.hexagonPositionOffset.y < MapSize)
+                {
+                    MarkTileSelectedForNextFrame(d.hexagonPositionOffset.x, d.hexagonPositionOffset.y);
+                    for (int i = -1; i <= 1; ++i)
+                    {
+                        for (int j = -1; j <= 1; ++j)
+                        {
+                            if (i == 0 && j == 0)
+                                continue;
+                            MarkTileSelectedForNextFrame(d.hexagonPositionOffset.x + i, d.hexagonPositionOffset.y + j);
+                        }
+                    }
+                }
+            }
+            UpdateSelectedSet();
         }
 
         [UsedImplicitly]
@@ -260,7 +280,32 @@ namespace Assets.Map
             return data;
         }
 
+        private void UpdateSelectedSet()
+        {
+            foreach(Int2 tile in _selectedSet)
+            {
+                int data = _data[tile.y, tile.x];
+                TileData src = new TileData(data);
+                src.SetSelected(true);
+                _data[tile.y, tile.x] = src.GetAsInt();
+            }
 
+            _computeBuffer.SetData(_data);
+
+            foreach(Int2 tile in _selectedSet)
+            {
+                int data = _data[tile.y, tile.x];
+                TileData src = new TileData(data);
+                src.SetSelected(false);
+                _data[tile.y, tile.x] = src.GetAsInt();
+            }
+            _selectedSet.Clear();
+        }
+
+        public void MarkTileSelectedForNextFrame(int offsetX, int offsetY)
+        {
+            _selectedSet.Add(new Int2(offsetX, offsetY));
+        }
 
     }
 }
