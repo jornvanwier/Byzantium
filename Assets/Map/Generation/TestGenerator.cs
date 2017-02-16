@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Map;
@@ -18,7 +19,7 @@ namespace Assets.Map.Generation
             new TerrainType(TileType.WaterDeep, 0.3f),
             new TerrainType(TileType.WaterShallow, 0.4f),
             new TerrainType(TileType.Beach, 0.45f),
-            new TerrainType(TileType.Grass, 0.55f),
+            new TerrainType(TileType.Grass, 0.5f),
             new TerrainType(TileType.Forest, 0.6f),
             new TerrainType(TileType.Grass, 0.7f),
             new TerrainType(TileType.MountainLow, 0.75f),
@@ -28,87 +29,136 @@ namespace Assets.Map.Generation
 
         public byte[,] Generate(int size, float borderPercentage)
         {
+            float startTime = Time.realtimeSinceStartup;
+
             float borderSize = borderPercentage * size;
             int seed = new Random().Next(0, 1000);
             Debug.Log(seed);
-
-            float startTime = Time.realtimeSinceStartup;
             float[,] heightMap = GenerateFloatMap(size, 0.7f, borderSize, false, 6, 0.55f, 2, new Vector2(), seed);
-            float perlinTime = Time.realtimeSinceStartup;
 
+            float perlinTime = Time.realtimeSinceStartup;
             Debug.Log("Perlin Time: " + (perlinTime - startTime));
 
             byte[,] tileMap = FloatToByteMap(heightMap);
-//            AddRivers(ref tileMap, heightMap, 3);
-            float endTime = Time.realtimeSinceStartup;
 
-            Debug.Log("Byte Time: " + (endTime - perlinTime));
-            Debug.Log("Total Time: " + (endTime - startTime));
+            float byteTime = Time.realtimeSinceStartup;
+            Debug.Log("Byte Time: " + (byteTime - perlinTime));
+
+//            AddRivers(tileMap, heightMap, 3);
+
+            List<Int2> beachWaterTiles = GetBeachWaterTiles(tileMap);
+
+            float riverTime = Time.realtimeSinceStartup;
+            Debug.Log("River Time: " + (riverTime - byteTime));
+            Debug.Log("Total Time: " + (riverTime - startTime));
 
             return tileMap;
         }
 
-        private void AddRivers(ref byte[,] tileMap, float[,] heightMap, int numRivers, int initialRiverWidth = 5)
+        private List<Int2> GetBeachWaterTiles(byte[,] map)
         {
-            int size = tileMap.GetLength(0);
-            for (int i = 0; i < numRivers; ++i)
+            int size = map.GetLength(0);
+            List<Int2> beachWaterTiles = new List<Int2>();
+            for (int y = 0; y < size; ++y)
             {
-                Int2 startPos = GetRiverStartPosition(size);
-                List<Int2> river = GetRiver(size, startPos, heightMap);
-                foreach (Int2 riverTile in river)
+                for (int x = 0; x < size; ++x)
                 {
-                    tileMap[riverTile.x, riverTile.y] = (byte) TileType.Desert;
+                    if (map[x, y] == (byte) TileType.WaterShallow)
+                    {
+                        Int2 currentTile = new Int2(x, y);
+                        Int2[] neighbours = GetNeighbours(size, currentTile);
+                        foreach (Int2 neighbour in neighbours)
+                        {
+                            TileType neighbourTile = (TileType)map[neighbour.x, neighbour.y];
+                            if (neighbourTile == TileType.WaterDeep && neighbourTile == TileType.WaterShallow) continue;
+                            beachWaterTiles.Add(currentTile);
+                            break;
+                        }
+                    }
                 }
             }
+            return beachWaterTiles;
+        }
+
+        private void AddRivers(byte[,] tileMap, float[,] heightMap, int numRivers, int initialRiverWidth = 5)
+        {
+            int size = tileMap.GetLength(0);
+            int failedRivers = 0;
+            List<Thread> threads = new List<Thread>();
+            for (int i = 0; i < numRivers; ++i)
+            {
+                Thread t = new Thread(() =>
+                {
+                    Int2 startPos;
+                    do
+                    {
+                        startPos = GetRiverStartPosition(size);
+                    } while (tileMap[startPos.x, startPos.y] != (byte) TileType.WaterShallow);
+
+                    List<Int2> river = GetRiver(size, startPos, heightMap);
+                    if (river.Count == 0)
+                        failedRivers++;
+
+                    foreach (Int2 riverTile in river)
+                    {
+                        tileMap[riverTile.x, riverTile.y] = (byte) TileType.WaterDeep;
+                    }
+                });
+                threads.Add(t);
+                t.Start();
+            }
+
+            foreach (Thread thread in threads)
+            {
+                thread.Join();
+            }
+
+            if (failedRivers > 0)
+                Debug.LogWarning("Failed creating " + failedRivers + " out of " + numRivers + " rivers");
         }
 
         private List<Int2> GetRiver(int mapSize, Int2 startPos, float[,] heightMap)
         {
-            float stopHeight = Regions[0].Height;
-            //rivier stroomt door tot hij diep water vindt
-
             List<Int2> river = new List<Int2> {startPos};
-            Int2[] neighbours = GetNeighbours(mapSize, mapSize, startPos.x, startPos.y);
-            float lowestNeighbour = heightMap[neighbours[0].x, neighbours[0].y];
-            float prevHeight = -1;
 
-            while (lowestNeighbour >= stopHeight)
-            {
-                lowestNeighbour = heightMap[neighbours[0].x, neighbours[0].y];
-                Int2 lowestNeighbourIndex = neighbours[0];
-                foreach (Int2 neighbour in neighbours)
-                {
-                    float neighbourHeight = heightMap[neighbour.x, neighbour.y];
-                    if (neighbourHeight < lowestNeighbour)
-                    {
-                        lowestNeighbour = neighbourHeight;
-                        lowestNeighbourIndex = neighbour;
-                    }
-                }
+            if (AddRiverTile(mapSize, river, heightMap)) return river;
 
-                if (lowestNeighbour > prevHeight ||
-                    lowestNeighbourIndex.x == startPos.x && lowestNeighbourIndex.y == startPos.y)
-                {
-                    lowestNeighbourIndex = neighbours[new Random().Next(neighbours.Length)];
-                }
-
-                neighbours = GetNeighbours(mapSize, mapSize, lowestNeighbourIndex.x, lowestNeighbourIndex.y);
-
-                if (river.Count > 100)
-                    Debug.Log("Large river");
-
-                if(!river.Contains(lowestNeighbourIndex))
-                    river.Add(lowestNeighbourIndex);
-
-                prevHeight = lowestNeighbour;
-                startPos = lowestNeighbourIndex;
-            }
-
+            river.RemoveAt(0);
             return river;
         }
 
-        private static Int2[] GetNeighbours(int width, int height, int x, int y)
+        private bool AddRiverTile(int mapSize, List<Int2> river, float[,] heightMap)
         {
+            Int2 currentTile = river.Last();
+            float currentHeight = heightMap[currentTile.x, currentTile.y];
+
+            if (currentHeight > Regions[Regions.Length - 2].Height)
+                return true;
+
+            IOrderedEnumerable<Int2> neighbours =
+                GetNeighbours(mapSize, currentTile)
+                    .Where(n => heightMap[n.x, n.y] >= currentHeight && !river.Contains(n))
+                    //remove neighbours that are lower than current tile
+                    .OrderBy(n => heightMap[n.x, n.y]); //Sort by tile height 
+
+            foreach (Int2 neighbour in neighbours)
+            {
+                river.Add(neighbour);
+                if (AddRiverTile(mapSize, river, heightMap))
+                {
+                    return true;
+                }
+                river.RemoveAt(river.Count - 1);
+            }
+
+            return false;
+        }
+
+        private static Int2[] GetNeighbours(int size, Int2 position)
+        {
+            int x = position.x;
+            int y = position.y;
+            int width = size, height = size;
             if (x >= width || y >= height || x < 0 || y < 0)
                 throw new ArgumentException("Requested position is out of bounds");
 
@@ -150,9 +200,9 @@ namespace Assets.Map.Generation
         private Int2 GetRiverStartPosition(int size)
         {
             Random random = new Random();
-
-            return new Int2(random.Next(size / 4, size - size / 4), random.Next(size / 4, size - size / 4));
-            ;
+            int x = random.Next(0, size);
+            int y = random.Next(0, size);
+            return new Int2(x, y);
         }
 
         private byte[,] FloatToByteMap(float[,] floatMap)
