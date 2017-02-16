@@ -1,4 +1,6 @@
-﻿namespace Assets.Map
+﻿using System;
+
+namespace Assets.Map
 {
     public struct Int2
     {
@@ -9,6 +11,36 @@
         {
             this.x = x;
             this.y = y;
+        }
+
+        public float Distance(Int2 coordinate)
+        {
+            return (float) Math.Sqrt(Math.Pow(x - coordinate.x, 2) + Math.Pow(y - coordinate.y, 2));
+        }
+
+        public static Int2 operator +(Int2 i1, Int2 i2)
+        {
+            return new Int2(i1.x + i2.x, i1.y + i2.y);
+        }
+
+        public static Int2 operator -(Int2 i1, Int2 i2)
+        {
+            return new Int2(i1.x - i2.x, i1.y - i2.y);
+        }
+
+        public static Int2 operator *(Int2 i1, Int2 i2)
+        {
+            return new Int2(i1.x * i2.x, i1.y * i2.y);
+        }
+
+        public static Int2 operator *(Int2 i1, float scalar)
+        {
+            return new Int2((int)(i1.x * scalar), (int)(i1.y * scalar));
+        }
+
+        public static Int2 operator *(Int2 i1, int scalar)
+        {
+            return new Int2(i1.x * scalar, i1.y * scalar);
         }
     }
 
@@ -51,5 +83,4 @@
             this.z = z;
         }
     }
-
 }

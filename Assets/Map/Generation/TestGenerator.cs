@@ -33,35 +33,135 @@ namespace Assets.Map.Generation
 
             float borderSize = borderPercentage * size;
             int seed = new Random().Next(0, 1000);
+            seed = 767;
             Debug.Log(seed);
             float[,] heightMap = GenerateFloatMap(size, 0.7f, borderSize, false, 6, 0.55f, 2, new Vector2(), seed);
 
             float perlinTime = Time.realtimeSinceStartup;
             Debug.Log("Perlin Time: " + (perlinTime - startTime));
 
-            byte[,] tileMap = FloatToByteMap(heightMap);
+            byte[,] tileMap = GetTileMap(heightMap);
 
             float byteTime = Time.realtimeSinceStartup;
             Debug.Log("Byte Time: " + (byteTime - perlinTime));
 
-//            AddRivers(tileMap, heightMap, 3);
-
-            List<Int2> beachWaterTiles = GetBeachWaterTiles(tileMap);
+            //            AddRivers(tileMap, heightMap, 3);
 
             float riverTime = Time.realtimeSinceStartup;
             Debug.Log("River Time: " + (riverTime - byteTime));
+
+            int moistureResolution = 4;//moet factor van size zijn
+            float[,] moistureMap = GetMoistureMap(tileMap, moistureResolution);
+//            tileMap = GetTileMap(moistureMap); //uncomment to visualize moisturemap
+
+            float moistTime = Time.realtimeSinceStartup;
+            Debug.Log("Moist Time: " + (moistTime - riverTime));
             Debug.Log("Total Time: " + (riverTime - startTime));
 
             return tileMap;
         }
 
-        private List<Int2> GetBeachWaterTiles(byte[,] map)
+        private static T[,] ResizeMap<T>(T[,] map, int factor)
+        {
+            int width = map.GetLength(0);
+            int height = map.GetLength(1);
+            T[,] bigMap = new T[width * factor, height * factor];
+
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    T value = map[x, y];
+                    for (int i = 0; i < factor; i++)
+                    {
+                        for (int j = 0; j < factor; j++)
+                        {
+                            bigMap[x * factor + i, y * factor + j] = value;
+                        }
+                    }
+                }
+            }
+
+            return bigMap;
+        }
+
+        private float[,] GetMoistureMap(byte[,] tileMap, int moistureResolution = 3, int waterResolution = 32)
+        {
+            int tileMapSize = tileMap.GetLength(0);
+            List<Int2> beachWaterTiles = GetBeachWaterTiles(tileMap, tileMapSize / waterResolution);
+            int moistureMapSize = tileMapSize / moistureResolution;
+            float[,] moistureMap = new float[moistureMapSize, moistureMapSize];
+
+            int numThreads = Environment.ProcessorCount;
+            List<Thread> threads = new List<Thread>();
+
+            long count = 0;
+
+            for (int i = 0; i < numThreads; i++)
+            {
+                int partNum = i;
+                Thread t = new Thread(() =>
+                {
+                    count += GenerateMoistureMapPart(ref moistureMap, 0, moistureMapSize / numThreads * partNum,
+                        moistureMapSize,
+                        moistureMapSize / numThreads * (partNum + 1),
+                        tileMap, beachWaterTiles, moistureResolution
+                    );
+                });
+                threads.Add(t);
+                t.Start();
+            }
+
+            foreach (Thread thread in threads)
+            {
+                thread.Join();
+            }
+
+            Debug.Log("Checked distance " + count + " times");
+
+            NormalizeMap(ref moistureMap);
+            moistureMap = ResizeMap(moistureMap, moistureResolution);
+
+            return moistureMap;
+        }
+
+        private long GenerateMoistureMapPart(ref float[,] moistureMap, int x1, int y1, int x2, int y2, byte[,] tileMap,
+            List<Int2> beachWaterTiles, int moistureResolution)
+        {
+            long count = 0;
+            for (int y = y1; y < y2; y++)
+            {
+                for (int x = x1; x < x2; x++)
+                {
+                    Int2 currentPositionOnTileMap = new Int2(x, y) * moistureResolution;
+                    TileType currentTile = (TileType)tileMap[currentPositionOnTileMap.x, currentPositionOnTileMap.y];
+                    float moisture = 0;
+                    if (currentTile != TileType.WaterDeep && currentTile != TileType.WaterShallow)
+                    {
+                        float closestWaterTile = float.PositiveInfinity;
+                        foreach (Int2 waterTile in beachWaterTiles)
+                        {
+                            float distance = waterTile.Distance(currentPositionOnTileMap);
+                            count++;
+                            if (distance < closestWaterTile)
+                                closestWaterTile = distance;
+                        }
+                        moisture = closestWaterTile;
+                    }
+                    moistureMap[x, y] = moisture;
+                }
+            }
+            return count;
+        }
+
+        private List<Int2> GetBeachWaterTiles(byte[,] map, int resolution)
         {
             int size = map.GetLength(0);
             List<Int2> beachWaterTiles = new List<Int2>();
-            for (int y = 0; y < size; ++y)
+            for (int y = 0; y < size; y += resolution)
             {
-                for (int x = 0; x < size; ++x)
+                for (int x = 0; x < size; x += resolution)
                 {
                     if (map[x, y] == (byte) TileType.WaterShallow)
                     {
@@ -69,7 +169,7 @@ namespace Assets.Map.Generation
                         Int2[] neighbours = GetNeighbours(size, currentTile);
                         foreach (Int2 neighbour in neighbours)
                         {
-                            TileType neighbourTile = (TileType)map[neighbour.x, neighbour.y];
+                            TileType neighbourTile = (TileType) map[neighbour.x, neighbour.y];
                             if (neighbourTile == TileType.WaterDeep && neighbourTile == TileType.WaterShallow) continue;
                             beachWaterTiles.Add(currentTile);
                             break;
@@ -205,7 +305,7 @@ namespace Assets.Map.Generation
             return new Int2(x, y);
         }
 
-        private byte[,] FloatToByteMap(float[,] floatMap)
+        private byte[,] GetTileMap(float[,] floatMap)
         {
             int size = (int) Mathf.Sqrt(floatMap.Length);
             byte[,] map = new byte[size, size];
@@ -277,9 +377,17 @@ namespace Assets.Map.Generation
                 thread.Join();
             }
 
+            NormalizeMap(ref map);
+
+            return map;
+        }
+
+        private void NormalizeMap(ref float[,] map, float highestAllowedValue = 1)
+        {
+            int size = map.GetLength(0);
+
             float lowest = float.PositiveInfinity,
                 highest = float.NegativeInfinity;
-            const float highestAllowedValue = 1;
             for (int y = 0; y < size; y++)
             {
                 for (int x = 0; x < size; x++)
@@ -304,8 +412,6 @@ namespace Assets.Map.Generation
                     map[x, y] *= multiplier;
                 }
             }
-
-            return map;
         }
 
         public void GenerateMapPart(ref float[,] map, int x1, int y1, int x2, int y2, bool squareBorder, float size,
