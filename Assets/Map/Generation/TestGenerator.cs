@@ -46,11 +46,38 @@ namespace Assets.Map.Generation
 
 //            AddRivers(tileMap, heightMap, 3);
 
+            List<Int2> beachWaterTiles = GetBeachWaterTiles(tileMap);
+
             float riverTime = Time.realtimeSinceStartup;
             Debug.Log("River Time: " + (riverTime - byteTime));
             Debug.Log("Total Time: " + (riverTime - startTime));
 
             return tileMap;
+        }
+
+        private List<Int2> GetBeachWaterTiles(byte[,] map)
+        {
+            int size = map.GetLength(0);
+            List<Int2> beachWaterTiles = new List<Int2>();
+            for (int y = 0; y < size; ++y)
+            {
+                for (int x = 0; x < size; ++x)
+                {
+                    if (map[x, y] == (byte) TileType.WaterShallow)
+                    {
+                        Int2 currentTile = new Int2(x, y);
+                        Int2[] neighbours = GetNeighbours(size, currentTile);
+                        foreach (Int2 neighbour in neighbours)
+                        {
+                            TileType neighbourTile = (TileType)map[neighbour.x, neighbour.y];
+                            if (neighbourTile == TileType.WaterDeep && neighbourTile == TileType.WaterShallow) continue;
+                            beachWaterTiles.Add(currentTile);
+                            break;
+                        }
+                    }
+                }
+            }
+            return beachWaterTiles;
         }
 
         private void AddRivers(byte[,] tileMap, float[,] heightMap, int numRivers, int initialRiverWidth = 5)
