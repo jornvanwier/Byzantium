@@ -19,7 +19,7 @@ namespace Assets.Map.Generation
             new TerrainType(TileType.WaterDeep, 0.3f),
             new TerrainType(TileType.WaterShallow, 0.4f),
             new TerrainType(TileType.Beach, 0.45f),
-            new TerrainType(TileType.Grass, 0.55f),
+            new TerrainType(TileType.Grass, 0.5f),
             new TerrainType(TileType.Forest, 0.6f),
             new TerrainType(TileType.Grass, 0.7f),
             new TerrainType(TileType.MountainLow, 0.75f),
@@ -44,7 +44,7 @@ namespace Assets.Map.Generation
             float byteTime = Time.realtimeSinceStartup;
             Debug.Log("Byte Time: " + (byteTime - perlinTime));
 
-            AddRivers(tileMap, heightMap, 3);
+//            AddRivers(tileMap, heightMap, 3);
 
             float riverTime = Time.realtimeSinceStartup;
             Debug.Log("River Time: " + (riverTime - byteTime));
@@ -94,13 +94,13 @@ namespace Assets.Map.Generation
         {
             List<Int2> river = new List<Int2> {startPos};
 
-            if (AddRiverTile(mapSize, ref river, heightMap)) return river;
+            if (AddRiverTile(mapSize, river, heightMap)) return river;
 
             river.RemoveAt(0);
             return river;
         }
 
-        private bool AddRiverTile(int mapSize, ref List<Int2> river, float[,] heightMap)
+        private bool AddRiverTile(int mapSize, List<Int2> river, float[,] heightMap)
         {
             Int2 currentTile = river.Last();
             float currentHeight = heightMap[currentTile.x, currentTile.y];
@@ -110,14 +110,14 @@ namespace Assets.Map.Generation
 
             IOrderedEnumerable<Int2> neighbours =
                 GetNeighbours(mapSize, currentTile)
-                    .Where(n => heightMap[n.x, n.y] >= currentHeight)
+                    .Where(n => heightMap[n.x, n.y] >= currentHeight && !river.Contains(n))
                     //remove neighbours that are lower than current tile
                     .OrderBy(n => heightMap[n.x, n.y]); //Sort by tile height 
 
             foreach (Int2 neighbour in neighbours)
             {
                 river.Add(neighbour);
-                if (AddRiverTile(mapSize, ref river, heightMap))
+                if (AddRiverTile(mapSize, river, heightMap))
                 {
                     return true;
                 }
