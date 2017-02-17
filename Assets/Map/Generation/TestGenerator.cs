@@ -14,51 +14,86 @@ namespace Assets.Map.Generation
 {
     public class TestGenerator : IMapGenerator
     {
-        private static readonly TerrainType[] Regions =
+        private const float WaterHeight = 0.4f;
+        private const float RiverStartHeight = 0.8f;
+
+        private static readonly ElevationLevel[] ElevationLevels =
         {
-            new TerrainType(TileType.WaterDeep, 0.3f),
-            new TerrainType(TileType.WaterShallow, 0.4f),
-            new TerrainType(TileType.Beach, 0.45f),
-            new TerrainType(TileType.Grass, 0.5f),
-            new TerrainType(TileType.Forest, 0.6f),
-            new TerrainType(TileType.Grass, 0.7f),
-            new TerrainType(TileType.MountainLow, 0.75f),
-            new TerrainType(TileType.MountainHigh, 0.87f),
-            new TerrainType(TileType.MountainTop, 1f),
+            new ElevationLevel(0.3f,
+                new Biome(TileType.WaterDeep, 1f)),
+            new ElevationLevel(0.4f,
+                new Biome(TileType.WaterShallow, 1f)),
+            new ElevationLevel(0.45f,
+                new Biome(TileType.Beach, 1f)),
+            new ElevationLevel(0.625f,
+                new Biome(TileType.SubTropicalDesert, 0.25f),
+                new Biome(TileType.GrassLand, 0.4f),
+                new Biome(TileType.TropicalSeasonalForest, 0.7f),
+                new Biome(TileType.TropicalRainForest, 1f)),
+            new ElevationLevel(0.8f,
+                new Biome(TileType.TemperateDesert, 0.25f),
+                new Biome(TileType.GrassLand, 0.6f),
+                new Biome(TileType.TemperateDeciduousForest, 0.85f),
+                new Biome(TileType.TemperateRainForest, 1f)),
+            new ElevationLevel(0.9f,
+                new Biome(TileType.TemperateDesert, 0.425f),
+                new Biome(TileType.Shrubland, 0.7f),
+                new Biome(TileType.Taiga, 1f)),
+            new ElevationLevel(0.1f,
+                new Biome(TileType.Scorched, 0.25f),
+                new Biome(TileType.Bare, 0.425f),
+                new Biome(TileType.Tundra, 0.6f),
+                new Biome(TileType.Snow, 1f))
         };
 
         public byte[,] Generate(int size, float borderPercentage)
         {
-            float startTime = Time.realtimeSinceStartup;
-
-            float borderSize = borderPercentage * size;
             int seed = new Random().Next(0, 1000);
-            seed = 767;
             Debug.Log(seed);
-            float[,] heightMap = GenerateFloatMap(size, 0.7f, borderSize, false, 6, 0.55f, 2, new Vector2(), seed);
+            float borderSize = borderPercentage * size;
+            int moistureResolution = size / 1024; //moet factor van size zijn
+            if (moistureResolution == 0) moistureResolution = 1;
 
-            float perlinTime = Time.realtimeSinceStartup;
-            Debug.Log("Perlin Time: " + (perlinTime - startTime));
+            float[,] heightMap = LogTime("Heightmap",
+                () => GenerateFloatMap(size, 0.7f, borderSize, false, 6, 0.55f, 2, new Vector2(), seed));
 
-            byte[,] tileMap = GetTileMap(heightMap);
+            bool[,] waterMap = LogTime("Watermap", () => GetWaterMap(heightMap));
 
-            float byteTime = Time.realtimeSinceStartup;
-            Debug.Log("Byte Time: " + (byteTime - perlinTime));
+//            LogTime("Rivers", () => AddRivers(waterMap, heightMap, 3));
 
-            //            AddRivers(tileMap, heightMap, 3);
+            float[,] moistureMap = LogTime("Moisturemap", () => GetMoistureMap(waterMap, moistureResolution));
 
-            float riverTime = Time.realtimeSinceStartup;
-            Debug.Log("River Time: " + (riverTime - byteTime));
-
-            int moistureResolution = 4;//moet factor van size zijn
-            float[,] moistureMap = GetMoistureMap(tileMap, moistureResolution);
-//            tileMap = GetTileMap(moistureMap); //uncomment to visualize moisturemap
-
-            float moistTime = Time.realtimeSinceStartup;
-            Debug.Log("Moist Time: " + (moistTime - riverTime));
-            Debug.Log("Total Time: " + (riverTime - startTime));
+            byte[,] tileMap = LogTime("Tilemap", () => GetTileMap(heightMap, moistureMap));
 
             return tileMap;
+        }
+
+        private byte[,] GetTileMap(float[,] heightMap, float[,] moistureMap)
+        {
+            int width = heightMap.GetLength(0);
+            int height = heightMap.GetLength(1);
+            byte[,] map = new byte[width, height];
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    float currentHeight = heightMap[x, y];
+                    float currentMoisture = moistureMap[x, y];
+                    foreach (ElevationLevel elevation in ElevationLevels)
+                    {
+                        if (!(currentHeight <= elevation.Height)) continue;
+                        foreach (Biome biome in elevation.Biomes)
+                        {
+                            if (!(currentMoisture <= biome.Moisture)) continue;
+                            map[x, y] = (byte) biome.Type;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return map;
         }
 
         private static T[,] ResizeMap<T>(T[,] map, int factor)
@@ -86,10 +121,10 @@ namespace Assets.Map.Generation
             return bigMap;
         }
 
-        private float[,] GetMoistureMap(byte[,] tileMap, int moistureResolution = 3, int waterResolution = 32)
+        private float[,] GetMoistureMap(bool[,] watermap, int moistureResolution = 1, int waterResolution = 32)
         {
-            int tileMapSize = tileMap.GetLength(0);
-            List<Int2> beachWaterTiles = GetBeachWaterTiles(tileMap, tileMapSize / waterResolution);
+            int tileMapSize = watermap.GetLength(0);
+            List<Int2> beachWaterTiles = GetBeachWaterTiles(watermap, tileMapSize / waterResolution);
             int moistureMapSize = tileMapSize / moistureResolution;
             float[,] moistureMap = new float[moistureMapSize, moistureMapSize];
 
@@ -106,7 +141,7 @@ namespace Assets.Map.Generation
                     count += GenerateMoistureMapPart(ref moistureMap, 0, moistureMapSize / numThreads * partNum,
                         moistureMapSize,
                         moistureMapSize / numThreads * (partNum + 1),
-                        tileMap, beachWaterTiles, moistureResolution
+                        watermap, beachWaterTiles, moistureResolution
                     );
                 });
                 threads.Add(t);
@@ -126,7 +161,7 @@ namespace Assets.Map.Generation
             return moistureMap;
         }
 
-        private long GenerateMoistureMapPart(ref float[,] moistureMap, int x1, int y1, int x2, int y2, byte[,] tileMap,
+        private long GenerateMoistureMapPart(ref float[,] moistureMap, int x1, int y1, int x2, int y2, bool[,] waterMap,
             List<Int2> beachWaterTiles, int moistureResolution)
         {
             long count = 0;
@@ -135,9 +170,9 @@ namespace Assets.Map.Generation
                 for (int x = x1; x < x2; x++)
                 {
                     Int2 currentPositionOnTileMap = new Int2(x, y) * moistureResolution;
-                    TileType currentTile = (TileType)tileMap[currentPositionOnTileMap.x, currentPositionOnTileMap.y];
+                    bool isWater = waterMap[currentPositionOnTileMap.x, currentPositionOnTileMap.y];
                     float moisture = 0;
-                    if (currentTile != TileType.WaterDeep && currentTile != TileType.WaterShallow)
+                    if (!isWater)
                     {
                         float closestWaterTile = float.PositiveInfinity;
                         foreach (Int2 waterTile in beachWaterTiles)
@@ -155,22 +190,22 @@ namespace Assets.Map.Generation
             return count;
         }
 
-        private List<Int2> GetBeachWaterTiles(byte[,] map, int resolution)
+        private List<Int2> GetBeachWaterTiles(bool[,] waterMap, int resolution)
         {
-            int size = map.GetLength(0);
+            int size = waterMap.GetLength(0);
             List<Int2> beachWaterTiles = new List<Int2>();
             for (int y = 0; y < size; y += resolution)
             {
                 for (int x = 0; x < size; x += resolution)
                 {
-                    if (map[x, y] == (byte) TileType.WaterShallow)
+                    if (waterMap[x, y])
                     {
                         Int2 currentTile = new Int2(x, y);
                         Int2[] neighbours = GetNeighbours(size, currentTile);
                         foreach (Int2 neighbour in neighbours)
                         {
-                            TileType neighbourTile = (TileType) map[neighbour.x, neighbour.y];
-                            if (neighbourTile == TileType.WaterDeep && neighbourTile == TileType.WaterShallow) continue;
+                            bool neighbourIsWater = waterMap[neighbour.x, neighbour.y];
+                            if (neighbourIsWater) continue;
                             beachWaterTiles.Add(currentTile);
                             break;
                         }
@@ -232,7 +267,7 @@ namespace Assets.Map.Generation
             Int2 currentTile = river.Last();
             float currentHeight = heightMap[currentTile.x, currentTile.y];
 
-            if (currentHeight > Regions[Regions.Length - 2].Height)
+            if (currentHeight > RiverStartHeight)
                 return true;
 
             IOrderedEnumerable<Int2> neighbours =
@@ -305,22 +340,17 @@ namespace Assets.Map.Generation
             return new Int2(x, y);
         }
 
-        private byte[,] GetTileMap(float[,] floatMap)
+        private bool[,] GetWaterMap(float[,] floatMap)
         {
             int size = (int) Mathf.Sqrt(floatMap.Length);
-            byte[,] map = new byte[size, size];
+            bool[,] map = new bool[size, size];
 
             for (int y = 0; y < size; y++)
             {
                 for (int x = 0; x < size; x++)
                 {
-                    float currentHeight = floatMap[x, y];
-                    foreach (var region in Regions)
-                    {
-                        if (!(currentHeight <= region.Height)) continue;
-                        map[x, y] = (byte) region.Type;
-                        break;
-                    }
+                    bool isWater = floatMap[x, y] <= WaterHeight;
+                    map[x, y] = isWater;
                 }
             }
 
@@ -338,7 +368,7 @@ namespace Assets.Map.Generation
             persistance = Mathf.Clamp(persistance, 0, 1);
             lacunarity = Mathf.Clamp(lacunarity, 0, 2);
 
-            //fill map
+            //fill moistureMap
             float[,] map = new float[size, size];
             Random random = new Random(seed);
             Vector2[] octaveOffsets = new Vector2[octaves];
@@ -455,6 +485,18 @@ namespace Assets.Map.Generation
                     map[x, y] = noiseHeight;
                 }
             }
+        }
+
+        private T LogTime<T>(string name, Func<T> action)
+        {
+            float startTime = Time.realtimeSinceStartup;
+
+            T value = action();
+
+            float endTime = Time.realtimeSinceStartup;
+            Debug.Log(name + " time: " + (startTime - endTime));
+
+            return value;
         }
     }
 }
