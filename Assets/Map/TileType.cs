@@ -4,13 +4,20 @@
     {
         WaterDeep,
         WaterShallow,
-        Grass,
-        Forest,
-        MountainLow,
-        MountainHigh,
-        MountainTop,
+        Path,
         Beach,
-        Desert,
-        Path
+        Snow,
+        Tundra,
+        Bare,
+        Scorched,
+        Taiga,
+        Shrubland,
+        TemperateDesert,
+        TemperateRainForest,
+        TemperateDeciduousForest,
+        GrassLand,
+        TropicalRainForest,
+        TropicalSeasonalForest,
+        SubTropicalDesert
     }
 }

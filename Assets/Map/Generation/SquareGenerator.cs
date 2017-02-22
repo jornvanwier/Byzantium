@@ -20,7 +20,7 @@ namespace Map.Generation
                     }
                     else
                     {
-                        result[x, y] = (byte) TileType.Grass;
+                        result[x, y] = (byte) TileType.GrassLand;
                     }
                 }
             }

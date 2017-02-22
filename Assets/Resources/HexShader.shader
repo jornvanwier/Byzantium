@@ -3,8 +3,9 @@
         _POMHeightScale ("POM height scale", Range (0.0,1.0)) = 0.1
         _AODistance ("AO Falloff", Range (0.0,1.0)) = 0.0
         _AODistanceDelta ("AO Delta after falloff", Range(0.0, 1.0)) = 0.0
-        _MainTex          ("1024x1024 Texture for UV's", 2D) = "white" {}
+        _MainTex          ("Selected tile texture", 2D) = "white" {}
         _DefaultHeightMap ("Default Height map (A)",2D) = "black" {}
+        _HighlightColor ("Select color ", Color) = (0.5, 0.5, 0.5, 0.5)
     }
     SubShader {
         Tags { "RenderType"="Transparent" }
@@ -14,8 +15,6 @@
 
         //For using RenderDoc's shader debuging.
         #pragma enable_d3d11_debug_symbols
-
-
 
         #pragma surface surf Standard fullforwardshadows
 
@@ -39,10 +38,11 @@
         fixed4  _Color;
         float   _POMHeightScale;
         float   _AODistance;
-        float _AODistanceDelta;
+        float   _AODistanceDelta;
+        float4  _HighlightColor;
 
         #ifdef SHADER_API_D3D11
-            StructuredBuffer<int> _HexagonBuffer;    
+            StructuredBuffer<uint> _HexagonBuffer;
         #endif
 
 
@@ -176,8 +176,14 @@
 
 
             //Getting the right hexagon.
-            int pixelVal = _HexagonBuffer[ data.hexagonPositionOffset.y * _ArraySize + data.hexagonPositionOffset.x ];
+            
+            uint originalPixelVal = _HexagonBuffer[ data.hexagonPositionOffset.y * _ArraySize + data.hexagonPositionOffset.x ];
+            uint pixelVal = originalPixelVal << 24;
+            pixelVal = pixelVal >> 24;
 
+            uint selected = originalPixelVal << 23;
+            selected = selected >> 31;
+            
 
             //Normal
              o.Normal = UnpackNormal(UNITY_SAMPLE_TEX2DARRAY(_NormalMaps, float3(offset, pixelVal)));
@@ -189,6 +195,8 @@
             //Ambient Occlusion
             float AOAngle = 1.0 - abs(dot(float3(0.0, 1.0, 0.0), viewDirNormalized));
             float AOSample = (UNITY_SAMPLE_TEX2DARRAY(_AmbOccMaps, float3(offset, pixelVal)));
+
+            float HighlightMP = 1.0f;
 
 
             if(AOAngle < _AODistance)
@@ -208,6 +216,15 @@
             //Smoothness (Inverted Roughness)
             o.Smoothness = UNITY_SAMPLE_TEX2DARRAY(_GlossyMaps, float3(offset, pixelVal));
 
+            //Highlight
+            if(selected == 1)
+            {      
+                int multiplied = round(tex2D (_MainTex, offset).a); 
+                if(multiplied > 0)         
+                    c.rgb = _HighlightColor;
+            }
+
+            
             #endif
 
             //Need to include the viewDir because of the stupid shader compilation system,

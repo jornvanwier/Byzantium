@@ -180,22 +180,14 @@ namespace Map
         {
             switch ((TileType) this[cc])
             {
-                case TileType.Grass:
+                case TileType.GrassLand:
                     return 1;
                 case TileType.WaterShallow:
                     return 10;
-                case TileType.Desert:
-                    return 4;
                 case TileType.WaterDeep:
                     return float.MaxValue;
-                case TileType.Forest:
+                case TileType.TemperateDesert:
                     return 2;
-                case TileType.MountainLow:
-                    return 4;
-                case TileType.MountainHigh:
-                    return 5;
-                case TileType.MountainTop:
-                    return 6;
                 case TileType.Beach:
                     return 4;
                 case TileType.Path:
