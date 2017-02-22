@@ -105,6 +105,16 @@ namespace Assets.Map
             _textureSets.Add(new TextureSet());
             _textureSets.Last().AlbedoMap = PathAlbedo;
 
+            /*Temp fix*/
+
+            for (int i = 0; i < (Enum.GetNames(typeof(TileType)).Length - 10); ++i)
+            {
+                _textureSets.Add(_defaultTextureSet);
+            }
+            /*end fix*/
+
+
+
             _albedoMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
             _normalMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
             _amboccMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
