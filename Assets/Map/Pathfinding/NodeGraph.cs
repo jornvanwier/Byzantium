@@ -11,6 +11,7 @@ namespace Assets.Map.Pathfinding
         public NodeGraph(int size)
         {
             this.size = size;
+            CreateNodes();
         }
 
         public void CreateNodes()
