@@ -74,50 +74,26 @@ namespace Assets.Map
             textureSets = new List<TextureSet>();
 
             TextureSet.SetDefaultTextures(defaultTextureSet);
+            for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
+            {
+                textureSets.Add(defaultTextureSet);
+            }
 
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = WaterDeepAlbedo;
 
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = WaterShallowAlbedo;
 
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = GrassAlbedo;
 
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = ForestAlbedo;
 
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = MountainLowAlbedo;
 
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = MountainHightAlbedo;
 
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = MountainTopAlbedo;
 
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = BeachAlbedo;
 
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = DesertAlbedo;
 
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = PathAlbedo;
 
             albedoMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
             normalMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
             amboccMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
             glossyMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
             metallMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
-
-            /*Temp fix*/
-
-            for (int i = 0; i < (Enum.GetNames(typeof(TileType)).Length - 10); ++i)
-            {
-                textureSets.Add(defaultTextureSet);
-            }
-            /*end fix*/
 
             for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
             {

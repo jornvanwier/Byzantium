@@ -34,13 +34,13 @@ namespace Map
         public void GenerateMap()
         {
             Storage = Generator.Generate(size, BorderPercentage);
-            NavMesh = new NavMesh(this);
+            //NavMesh = new NavMesh(this);
 
             // mark navmesh
-            foreach (CubicalCoordinate cc in NavMesh.Nodes.Keys)
-            {
+            //foreach (CubicalCoordinate cc in NavMesh.Nodes.Keys)
+            //{
 //                this[cc] = (byte) TileType.WaterDeep;
-            }
+            //}
         }
 
         public byte this[CubicalCoordinate cc]
