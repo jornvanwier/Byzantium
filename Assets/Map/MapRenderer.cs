@@ -3,38 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
-using Assets.Map.Generation;
 using Map;
+using Map.Generation;
 using UnityEngine.WSA;
 
 namespace Assets.Map
 {
     public class MapRenderer : MonoBehaviour
     {
-        private ComputeBuffer _computeBuffer;
-        private HexBoard _hexBoard;
+        private ComputeBuffer computeBuffer;
+        private HexBoard hexBoard;
 
-        private Texture2DArray _albedoMaps;
-        private Texture2DArray _normalMaps;
-        private Texture2DArray _amboccMaps;
-        private Texture2DArray _glossyMaps;
-        private Texture2DArray _metallMaps;
+        private Texture2DArray albedoMaps;
+        private Texture2DArray normalMaps;
+        private Texture2DArray amboccMaps;
+        private Texture2DArray glossyMaps;
+        private Texture2DArray metallMaps;
 
         private const int TextureSize = 1024;
-        private int[,] _data;
+        private int[,] data;
 
-        private readonly List<Int2> _selectedSet = new List<Int2>();
+        private readonly List<Int2> selectedSet = new List<Int2>();
 
 
 
         public int MapSize;
-        private List<TextureSet> _textureSets;
+        private List<TextureSet> textureSets;
 
         public Mesh Mesh;
 
         public Material HexMaterial;
-        private MaterialPropertyBlock _block;
-        private MeshRenderer _mrenderer;
+        private MaterialPropertyBlock block;
+        private MeshRenderer meshRenderer;
 
         public Texture2D DefaultAlbedoMap;
         public Texture2D DefaultHeightMap;
@@ -57,12 +57,12 @@ namespace Assets.Map
         public GameObject Test;
 
 
-        private TextureSet _defaultTextureSet;
+        private TextureSet defaultTextureSet;
 
         [UsedImplicitly]
         private void Start()
         {
-            _defaultTextureSet = new TextureSet
+            defaultTextureSet = new TextureSet
             {
                 AlbedoMap = DefaultAlbedoMap,
                 AmbOccMap = DefaultAmbOccMap,
@@ -71,130 +71,135 @@ namespace Assets.Map
                 NormalMap = DefaultNormalMap
             };
 
-            _textureSets = new List<TextureSet>();
+            textureSets = new List<TextureSet>();
 
-            TextureSet.SetDefaultTextures(_defaultTextureSet);
+            TextureSet.SetDefaultTextures(defaultTextureSet);
 
-            _textureSets.Add(new TextureSet());
-            _textureSets.Last().AlbedoMap = WaterDeepAlbedo;
+            textureSets.Add(new TextureSet());
+            textureSets.Last().AlbedoMap = WaterDeepAlbedo;
 
-            _textureSets.Add(new TextureSet());
-            _textureSets.Last().AlbedoMap = WaterShallowAlbedo;
+            textureSets.Add(new TextureSet());
+            textureSets.Last().AlbedoMap = WaterShallowAlbedo;
 
-            _textureSets.Add(new TextureSet());
-            _textureSets.Last().AlbedoMap = GrassAlbedo;
+            textureSets.Add(new TextureSet());
+            textureSets.Last().AlbedoMap = GrassAlbedo;
 
-            _textureSets.Add(new TextureSet());
-            _textureSets.Last().AlbedoMap = ForestAlbedo;
+            textureSets.Add(new TextureSet());
+            textureSets.Last().AlbedoMap = ForestAlbedo;
 
-            _textureSets.Add(new TextureSet());
-            _textureSets.Last().AlbedoMap = MountainLowAlbedo;
+            textureSets.Add(new TextureSet());
+            textureSets.Last().AlbedoMap = MountainLowAlbedo;
 
-            _textureSets.Add(new TextureSet());
-            _textureSets.Last().AlbedoMap = MountainHightAlbedo;
+            textureSets.Add(new TextureSet());
+            textureSets.Last().AlbedoMap = MountainHightAlbedo;
 
-            _textureSets.Add(new TextureSet());
-            _textureSets.Last().AlbedoMap = MountainTopAlbedo;
+            textureSets.Add(new TextureSet());
+            textureSets.Last().AlbedoMap = MountainTopAlbedo;
 
-            _textureSets.Add(new TextureSet());
-            _textureSets.Last().AlbedoMap = BeachAlbedo;
+            textureSets.Add(new TextureSet());
+            textureSets.Last().AlbedoMap = BeachAlbedo;
 
-            _textureSets.Add(new TextureSet());
-            _textureSets.Last().AlbedoMap = DesertAlbedo;
+            textureSets.Add(new TextureSet());
+            textureSets.Last().AlbedoMap = DesertAlbedo;
 
-            _textureSets.Add(new TextureSet());
-            _textureSets.Last().AlbedoMap = PathAlbedo;
+            textureSets.Add(new TextureSet());
+            textureSets.Last().AlbedoMap = PathAlbedo;
+
+            albedoMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
+            normalMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
+            amboccMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
+            glossyMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
+            metallMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
 
             /*Temp fix*/
 
             for (int i = 0; i < (Enum.GetNames(typeof(TileType)).Length - 10); ++i)
             {
-                _textureSets.Add(_defaultTextureSet);
+                textureSets.Add(defaultTextureSet);
             }
             /*end fix*/
 
-
-
-            _albedoMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
-            _normalMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
-            _amboccMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
-            _glossyMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
-            _metallMaps = new Texture2DArray(TextureSize, TextureSize, _textureSets.Count, TextureFormat.DXT5, true);
-
-            for (var i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
+            for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
             {
                 for (int j = 0; j < Convert.ToInt32(Mathf.Log(TextureSize, 2) + 1); ++j)
                 {
-                    Graphics.CopyTexture(_textureSets[i].AlbedoMap, 0, j, _albedoMaps, i, j);
-                    Graphics.CopyTexture(_textureSets[i].AmbOccMap, 0, j, _amboccMaps, i, j);
-                    Graphics.CopyTexture(_textureSets[i].GlossyMap, 0, j, _glossyMaps, i, j);
-                    Graphics.CopyTexture(_textureSets[i].MetallMap, 0, j, _metallMaps, i, j);
-                    Graphics.CopyTexture(_textureSets[i].NormalMap, 0, j, _normalMaps, i, j);
+                    Graphics.CopyTexture(textureSets[i].AlbedoMap, 0, j, albedoMaps, i, j);
+                    Graphics.CopyTexture(textureSets[i].AmbOccMap, 0, j, amboccMaps, i, j);
+                    Graphics.CopyTexture(textureSets[i].GlossyMap, 0, j, glossyMaps, i, j);
+                    Graphics.CopyTexture(textureSets[i].MetallMap, 0, j, metallMaps, i, j);
+                    Graphics.CopyTexture(textureSets[i].NormalMap, 0, j, normalMaps, i, j);
                 }
             }
 
-            _hexBoard = new HexBoard(MapSize) {Generator = new TestGenerator()};
-            _hexBoard.GenerateMap();
+            hexBoard = new HexBoard(MapSize) {Generator = new TestGenerator()};
+            hexBoard.GenerateMap();
 
-            /*
+
             CubicalCoordinate start = hexBoard.RandomValidTile();
 
             CubicalCoordinate goal = hexBoard.RandomValidTile();
 
-            List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
+//            float tStart = Time.realtimeSinceStartup;
+//            List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
+//            Debug.Log($"Ran pathfinding in {Time.realtimeSinceStartup - tStart} seconds");
+//
+//            if (path != null)
+//            {
+//                foreach (CubicalCoordinate hex in path)
+//                {
+//                    hexBoard[hex] = (byte) TileType.WaterDeep;
+//                }
+//            }
+//            else
+//            {
+//                Debug.LogWarning($"No path found between {start} and {goal}");
+//            }
+//
+//
+//            hexBoard[start] = (byte) TileType.WaterDeep;
+//            hexBoard[goal] = (byte) TileType.WaterDeep;
 
-            if (path != null)
-            {
-                foreach (CubicalCoordinate hex in path)
-                {
-                    hexBoard[hex] = (byte) TileType.Path;
-                }
-            }
-
-
-            hexBoard[start] = (byte) TileType.Path;
-            hexBoard[goal] = (byte) TileType.Path;
-            */
             SetupShader();
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
         }
 
         private void SetupShader()
         {
-            _computeBuffer = new ComputeBuffer(MapSize * MapSize, sizeof(int), ComputeBufferType.Raw);
+            computeBuffer = new ComputeBuffer(MapSize * MapSize, sizeof(int), ComputeBufferType.Raw);
 
-            _data = new int[MapSize, MapSize];
+            data = new int[MapSize, MapSize];
 
             for (int x = 0; x < MapSize; ++x)
             {
                 for (int y = 0; y < MapSize; ++y)
                 {
-                    TileData t = new TileData((TileType)_hexBoard.Storage[x, y], false);
+                    data[x, y] = hexBoard.Storage[x, y];
+                    var t = new TileData((TileType)hexBoard.Storage[x, y], false);
                     int k = t.GetAsInt();
-                    _data[x, y] = k;
+                    data[x, y] = k;
                 }
             }
 
-            _computeBuffer.SetData(_data);
+            computeBuffer.SetData(data);
 
-            _block = new MaterialPropertyBlock();
+            block = new MaterialPropertyBlock();
 
-            _block.SetFloat(Shader.PropertyToID("_ArraySize"), MapSize);
-            _block.SetBuffer(Shader.PropertyToID("_HexagonBuffer"), _computeBuffer);
+            block.SetFloat(Shader.PropertyToID("_ArraySize"), MapSize);
+            block.SetBuffer(Shader.PropertyToID("_HexagonBuffer"), computeBuffer);
 
-            _block.SetTexture("_AlbedoMaps", _albedoMaps);
-            _block.SetTexture("_NormalMaps", _normalMaps);
-            _block.SetTexture("_AmbOccMaps", _amboccMaps);
-            _block.SetTexture("_GlossyMaps", _glossyMaps);
-            _block.SetTexture("_MetallMaps", _metallMaps);
+            block.SetTexture("_AlbedoMaps", albedoMaps);
+            block.SetTexture("_NormalMaps", normalMaps);
+            block.SetTexture("_AmbOccMaps", amboccMaps);
+            block.SetTexture("_GlossyMaps", glossyMaps);
+            block.SetTexture("_MetallMaps", metallMaps);
 
 
-            MeshFilter filter = gameObject.AddComponent<MeshFilter>();
-            _mrenderer = gameObject.AddComponent<MeshRenderer>();
+            var filter = gameObject.AddComponent<MeshFilter>();
+            meshRenderer = gameObject.AddComponent<MeshRenderer>();
             filter.sharedMesh = Mesh;
-            _mrenderer.material = HexMaterial;
+            meshRenderer.material = HexMaterial;
 
-            _mrenderer.SetPropertyBlock(_block);
+            meshRenderer.SetPropertyBlock(block);
 
         }
 
@@ -206,17 +211,17 @@ namespace Assets.Map
                 Vector3 normalized = WorldToNormalizedWorldPosition(Test.transform.position);
                 HexagonData d = NormalizedWorldToHexagonPosition(normalized);
 
-                if (d.hexagonPositionOffset.x > 0 && d.hexagonPositionOffset.x < MapSize - 1 &&
-                    d.hexagonPositionOffset.y > 0 && d.hexagonPositionOffset.y < MapSize)
+                if (d.hexagonPositionOffset.X > 0 && d.hexagonPositionOffset.X < MapSize - 1 &&
+                    d.hexagonPositionOffset.Y > 0 && d.hexagonPositionOffset.Y < MapSize)
                 {
-                    MarkTileSelectedForNextFrame(d.hexagonPositionOffset.x, d.hexagonPositionOffset.y);
+                    MarkTileSelectedForNextFrame(d.hexagonPositionOffset.X, d.hexagonPositionOffset.Y);
                     for (int i = -1; i <= 1; ++i)
                     {
                         for (int j = -1; j <= 1; ++j)
                         {
                             if (i == 0 && j == 0)
                                 continue;
-                            MarkTileSelectedForNextFrame(d.hexagonPositionOffset.x + i, d.hexagonPositionOffset.y + j);
+                            MarkTileSelectedForNextFrame(d.hexagonPositionOffset.X + i, d.hexagonPositionOffset.Y + j);
                         }
                     }
                 }
@@ -227,17 +232,17 @@ namespace Assets.Map
         [UsedImplicitly]
         private void OnDisable()
         {
-            _computeBuffer?.Dispose();
+            computeBuffer?.Dispose();
         }
 
-        private float Remap (float value, float from1, float to1, float from2, float to2) {
+        private static float Remap (float value, float from1, float to1, float from2, float to2) {
             return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
         }
 
 
         public Vector2 WorldToNormalizedWorldPosition(Vector3 worldPosition)
         {
-            Vector2 position = new Vector2(worldPosition.x, worldPosition.z);
+            var position = new Vector2(worldPosition.x, worldPosition.z);
 
             //scale to 0 - 1
             float x = Remap(position.x, -(gameObject.transform.localScale.x / 2), gameObject.transform.localScale.x / 2, 0, 1);
@@ -281,40 +286,40 @@ namespace Assets.Map
             int x = (int)(rZ + (rX - (rX & 1)) / 2.0f),
                 z = rX;
 
-            HexagonData data;
+            HexagonData hexagonData;
 
-            data.hexagonPositionOffset = new Int2(x,z);
-            data.hexagonPositionCubical = new Int3(rX,rZ,rY);
-            data.hexagonPositionFloat = new Float2(posX, posY);
+            hexagonData.hexagonPositionOffset = new Int2(x,z);
+            hexagonData.hexagonPositionCubical = new Int3(rX,rZ,rY);
+            hexagonData.hexagonPositionFloat = new Float2(posX, posY);
 
-            return data;
+            return hexagonData;
         }
 
         private void UpdateSelectedSet()
         {
-            foreach(Int2 tile in _selectedSet)
+            foreach(Int2 tile in selectedSet)
             {
-                int data = _data[tile.y, tile.x];
-                TileData src = new TileData(data);
+                int tileData = this.data[tile.Y, tile.X];
+                var src = new TileData(tileData);
                 src.SetSelected(true);
-                _data[tile.y, tile.x] = src.GetAsInt();
+                this.data[tile.Y, tile.X] = src.GetAsInt();
             }
 
-            _computeBuffer.SetData(_data);
+            computeBuffer.SetData(data);
 
-            foreach(Int2 tile in _selectedSet)
+            foreach(Int2 tile in selectedSet)
             {
-                int data = _data[tile.y, tile.x];
-                TileData src = new TileData(data);
+                int tileData = this.data[tile.Y, tile.X];
+                var src = new TileData(tileData);
                 src.SetSelected(false);
-                _data[tile.y, tile.x] = src.GetAsInt();
+                this.data[tile.Y, tile.X] = src.GetAsInt();
             }
-            _selectedSet.Clear();
+            selectedSet.Clear();
         }
 
         public void MarkTileSelectedForNextFrame(int offsetX, int offsetY)
         {
-            _selectedSet.Add(new Int2(offsetX, offsetY));
+            selectedSet.Add(new Int2(offsetX, offsetY));
         }
 
     }

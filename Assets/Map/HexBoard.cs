@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using Assets.Map;
 using Map.Generation;
+using Map.Pathfinding;
 using Priority_Queue;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Map
@@ -21,6 +23,7 @@ namespace Map
 
         public IMapGenerator Generator { get; set; }
         public byte[,] Storage { get; private set; }
+        public NavMesh NavMesh { get; private set; }
 
 
         public HexBoard(int size)
@@ -31,6 +34,13 @@ namespace Map
         public void GenerateMap()
         {
             Storage = Generator.Generate(size, BorderPercentage);
+            NavMesh = new NavMesh(this);
+
+            // mark navmesh
+            foreach (CubicalCoordinate cc in NavMesh.Nodes.Keys)
+            {
+//                this[cc] = (byte) TileType.WaterDeep;
+            }
         }
 
         public byte this[CubicalCoordinate cc]
@@ -38,6 +48,7 @@ namespace Map
             get
             {
                 OddRCoordinate oc = cc.ToOddR();
+//                Debug.Log("OUT " + oc);
                 return Storage[oc.R, oc.Q];
             }
             set
@@ -49,7 +60,7 @@ namespace Map
 
         public bool CheckCoordinate(OddRCoordinate oc)
         {
-            return oc.Q >= 0 && oc.Q <= size && oc.R >= 0 && oc.R <= size;
+            return oc.Q >= 0 && oc.Q < size && oc.R >= 0 && oc.R < size;
         }
 
         public bool CheckCoordinate(CubicalCoordinate cc)
@@ -63,7 +74,7 @@ namespace Map
             do
             {
                 cc = new OddRCoordinate(Random.Range(0, size), Random.Range(0, size)).ToCubical();
-            } while (this[cc] == (byte) TileType.WaterShallow);
+            } while (this[cc] == (byte) TileType.WaterDeep);
 
             return cc;
         }
@@ -87,34 +98,34 @@ namespace Map
         // TODO Replace start with unit or legion
         public List<CubicalCoordinate> FindPath(CubicalCoordinate start, CubicalCoordinate goal)
         {
-            List<CubicalCoordinate> closedSet = new List<CubicalCoordinate>();
+            var closedSet = new List<NavMeshNode>();
 
-            Dictionary<CubicalCoordinate, CubicalCoordinate> cameFrom =
-                new Dictionary<CubicalCoordinate, CubicalCoordinate>();
+            var cameFrom = new Dictionary<NavMeshNode, NavMeshNode>();
 
-            Dictionary<CubicalCoordinate, float> gScore = new Dictionary<CubicalCoordinate, float>
+            NavMeshNode startNode = NavMesh.ClosestNodeTo(start);
+            NavMeshNode goalNode = NavMesh.ClosestNodeTo(goal);
+
+            Debug.Log($"Pathfinding from {startNode.Position} to {goalNode.Position}");
+
+            var gScore = new Dictionary<NavMeshNode, float>
             {
-                [start] = 0
+                [startNode] = 0
             };
-//
-//            Dictionary<CubicalCoordinate, float> fScore = new Dictionary<CubicalCoordinate, float>
-//            {
-//                [start] = CubicalCoordinate.DistanceBetween(start, goal)
-//            };
 
-            SimplePriorityQueue<CubicalCoordinate> queue = new SimplePriorityQueue<CubicalCoordinate>();
-            queue.Enqueue(start, 0);
+            var queue = new FastPriorityQueue<NavMeshNode>(size * size);
+            queue.Enqueue(startNode, 0);
 
             while (queue.Count > 0)
             {
-                CubicalCoordinate current = queue.Dequeue();
-                if (current == goal)
+                NavMeshNode current = queue.Dequeue();
+                // Backtrack path
+                if (current == goalNode)
                 {
-                    List<CubicalCoordinate> totalPath = new List<CubicalCoordinate>() {current};
-                    while (current != start)
+                    var totalPath = new List<CubicalCoordinate>() {goal};
+                    while (current != startNode)
                     {
                         current = cameFrom[current];
-                        totalPath.Add(current);
+                        totalPath.Add(current.Position);
                     }
                     totalPath.Add(start);
                     return totalPath;
@@ -122,15 +133,15 @@ namespace Map
 
                 closedSet.Add(current);
 
-                foreach (Tuple<CubicalCoordinate, byte> tuple in GetNeighbours(current))
+                foreach (NavMeshNode neighbour in current.Connections)
                 {
                     // Have already processed neighbour
-                    if (closedSet.Contains(tuple.Item1))
+                    if (closedSet.Contains(neighbour))
                     {
                         continue;
                     }
 
-                    float traverseCost = CalculateGScore(tuple.Item1);
+                    float traverseCost = CalculateGScore(neighbour.Position);
 
                     // If tile is not traversible skip
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
@@ -142,24 +153,25 @@ namespace Map
                     float tentativeGScore = gScore[current] + traverseCost;
 
                     // Neighbour is new
-                    if (!queue.Contains(tuple.Item1))
+                    if (!queue.Contains(neighbour))
                     {
-                        queue.Enqueue(tuple.Item1,
-                            tentativeGScore + CubicalCoordinate.DistanceBetween(tuple.Item1, goal));
+                        queue.Enqueue(neighbour,
+                            tentativeGScore + CubicalCoordinate.DistanceBetween(neighbour.Position, goalNode.Position));
                     }
                     // This path is not better
-                    else if (tentativeGScore >= gScore[tuple.Item1])
+                    else if (tentativeGScore >= gScore[neighbour])
                     {
                         continue;
                     }
 
                     // This path is the best we've found so far
 
-                    cameFrom[tuple.Item1] = current;
-                    gScore[tuple.Item1] = tentativeGScore;
+                    cameFrom[neighbour] = current;
+                    gScore[neighbour] = tentativeGScore;
                 }
             }
 
+            Debug.Log($"Pathfinding failed after checking {closedSet.Count}");
             return null;
         }
 
@@ -171,9 +183,15 @@ namespace Map
                 case TileType.GrassLand:
                     return 1;
                 case TileType.WaterShallow:
+                    return 10;
+                case TileType.WaterDeep:
                     return float.MaxValue;
                 case TileType.TemperateDesert:
                     return 2;
+                case TileType.Beach:
+                    return 4;
+                case TileType.Path:
+                    return 0;
                 default:
                     return float.MaxValue;
             }

@@ -4,83 +4,83 @@ namespace Assets.Map
 {
     public struct Int2
     {
-        public int x;
-        public int y;
+        public int X;
+        public int Y;
 
         public Int2(int x, int y)
         {
-            this.x = x;
-            this.y = y;
+            this.X = x;
+            this.Y = y;
         }
 
         public float Distance(Int2 coordinate)
         {
-            return (float) Math.Sqrt(Math.Pow(x - coordinate.x, 2) + Math.Pow(y - coordinate.y, 2));
+            return (float) Math.Sqrt(Math.Pow(X - coordinate.X, 2) + Math.Pow(Y - coordinate.Y, 2));
         }
 
         public static Int2 operator +(Int2 i1, Int2 i2)
         {
-            return new Int2(i1.x + i2.x, i1.y + i2.y);
+            return new Int2(i1.X + i2.X, i1.Y + i2.Y);
         }
 
         public static Int2 operator -(Int2 i1, Int2 i2)
         {
-            return new Int2(i1.x - i2.x, i1.y - i2.y);
+            return new Int2(i1.X - i2.X, i1.Y - i2.Y);
         }
 
         public static Int2 operator *(Int2 i1, Int2 i2)
         {
-            return new Int2(i1.x * i2.x, i1.y * i2.y);
+            return new Int2(i1.X * i2.X, i1.Y * i2.Y);
         }
 
         public static Int2 operator *(Int2 i1, float scalar)
         {
-            return new Int2((int)(i1.x * scalar), (int)(i1.y * scalar));
+            return new Int2((int)(i1.X * scalar), (int)(i1.Y * scalar));
         }
 
         public static Int2 operator *(Int2 i1, int scalar)
         {
-            return new Int2(i1.x * scalar, i1.y * scalar);
+            return new Int2(i1.X * scalar, i1.Y * scalar);
         }
     }
 
     public struct Int3
     {
-        public int x;
-        public int y;
-        public int z;
+        public int X;
+        public int Y;
+        public int Z;
 
         public Int3(int x, int y, int z)
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
         }
     }
 
     public struct Float2
     {
-        public float x;
-        public float y;
+        public float X;
+        public float Y;
 
         public Float2(float x, float y)
         {
-            this.x = x;
-            this.y = y;
+            this.X = x;
+            this.Y = y;
         }
     }
 
     public struct Float3
     {
-        public float x;
-        public float y;
-        public float z;
+        public float X;
+        public float Y;
+        public float Z;
 
         public Float3(float x, float y, float z)
         {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
         }
     }
 }

@@ -19,5 +19,10 @@
             );
 
         }
+
+        public override string ToString()
+        {
+            return $"Q: {Q} R: {R}";
+        }
     }
 }

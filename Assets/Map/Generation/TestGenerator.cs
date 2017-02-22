@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Assets.Map;
+using Assets.Map.Generation;
 using Map;
 using Map.Generation;
 using NUnit.Framework;
@@ -10,7 +12,7 @@ using NUnit.Framework.Internal;
 using UnityEngine;
 using Random = System.Random;
 
-namespace Assets.Map.Generation
+namespace Map.Generation
 {
     public class TestGenerator : IMapGenerator
     {
@@ -49,6 +51,7 @@ namespace Assets.Map.Generation
         public byte[,] Generate(int size, float borderPercentage)
         {
             int seed = new Random().Next(0, 1000);
+//            int seed = 1;
             Debug.Log(seed);
             float borderSize = borderPercentage * size;
             int moistureResolution = size / 1024; //moet factor van size zijn
@@ -171,7 +174,7 @@ namespace Assets.Map.Generation
                 for (int x = x1; x < x2; x++)
                 {
                     Int2 currentPositionOnTileMap = new Int2(x, y) * moistureResolution;
-                    bool isWater = waterMap[currentPositionOnTileMap.x, currentPositionOnTileMap.y];
+                    bool isWater = waterMap[currentPositionOnTileMap.X, currentPositionOnTileMap.Y];
                     float moisture = 0;
                     if (!isWater)
                     {
@@ -205,7 +208,7 @@ namespace Assets.Map.Generation
                         Int2[] neighbours = GetNeighbours(size, currentTile);
                         foreach (Int2 neighbour in neighbours)
                         {
-                            bool neighbourIsWater = waterMap[neighbour.x, neighbour.y];
+                            bool neighbourIsWater = waterMap[neighbour.X, neighbour.Y];
                             if (neighbourIsWater) continue;
                             beachWaterTiles.Add(currentTile);
                             break;
@@ -229,7 +232,7 @@ namespace Assets.Map.Generation
                     do
                     {
                         startPos = GetRiverStartPosition(size);
-                    } while (tileMap[startPos.x, startPos.y] != (byte) TileType.WaterShallow);
+                    } while (tileMap[startPos.X, startPos.Y] != (byte) TileType.WaterShallow);
 
                     List<Int2> river = GetRiver(size, startPos, heightMap);
                     if (river.Count == 0)
@@ -237,7 +240,7 @@ namespace Assets.Map.Generation
 
                     foreach (Int2 riverTile in river)
                     {
-                        tileMap[riverTile.x, riverTile.y] = (byte) TileType.WaterDeep;
+                        tileMap[riverTile.X, riverTile.Y] = (byte) TileType.WaterDeep;
                     }
                 });
                 threads.Add(t);
@@ -266,16 +269,16 @@ namespace Assets.Map.Generation
         private bool AddRiverTile(int mapSize, List<Int2> river, float[,] heightMap)
         {
             Int2 currentTile = river.Last();
-            float currentHeight = heightMap[currentTile.x, currentTile.y];
+            float currentHeight = heightMap[currentTile.X, currentTile.Y];
 
             if (currentHeight > RiverStartHeight)
                 return true;
 
             IOrderedEnumerable<Int2> neighbours =
                 GetNeighbours(mapSize, currentTile)
-                    .Where(n => heightMap[n.x, n.y] >= currentHeight && !river.Contains(n))
+                    .Where(n => heightMap[n.X, n.Y] >= currentHeight && !river.Contains(n))
                     //remove neighbours that are lower than current tile
-                    .OrderBy(n => heightMap[n.x, n.y]); //Sort by tile height 
+                    .OrderBy(n => heightMap[n.X, n.Y]); //Sort by tile height
 
             foreach (Int2 neighbour in neighbours)
             {
@@ -292,8 +295,8 @@ namespace Assets.Map.Generation
 
         private static Int2[] GetNeighbours(int size, Int2 position)
         {
-            int x = position.x;
-            int y = position.y;
+            int x = position.X;
+            int y = position.Y;
             int width = size, height = size;
             if (x >= width || y >= height || x < 0 || y < 0)
                 throw new ArgumentException("Requested position is out of bounds");
