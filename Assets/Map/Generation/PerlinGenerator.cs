@@ -47,7 +47,7 @@ namespace Assets.Map.Generation
             int seed = new Random().Next(0, 1000);
             Debug.Log(seed);
             float borderSize = borderPercentage * size;
-            int moistureResolution = size / 1024; //moet factor van size zijn
+            int moistureResolution = size / 1024; //moet factor van size zijn, hoger is preciezer en trager
             if (moistureResolution == 0) moistureResolution = 1;
 
             byte[,] tileMap = null;
@@ -160,6 +160,7 @@ namespace Assets.Map.Generation
             }
 
             NormalizeMap(ref moistureMap);
+            InvertMap(ref moistureMap);
             moistureMap = ResizeMap(moistureMap, moistureResolution);
 
             return moistureMap;
@@ -444,6 +445,18 @@ namespace Assets.Map.Generation
                 {
                     map[x, y] -= lowest;
                     map[x, y] *= multiplier;
+                }
+            }
+        }
+
+        private void InvertMap(ref float[,] map, float max = 1)
+        {
+            int size = map.GetLength(0);
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    map[x, y] = max - map[x, y];
                 }
             }
         }
