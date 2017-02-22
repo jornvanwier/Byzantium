@@ -6,7 +6,7 @@ namespace Assets.Map.Pathfinding
     public class NodeGraph
     {
         private readonly int size;
-        private AStarNode[,] NodeStorage { get; set; }
+        public AStarNode[,] NodeStorage { get; set; }
 
         public NodeGraph(int size)
         {
@@ -22,7 +22,7 @@ namespace Assets.Map.Pathfinding
                 for (int r = 0; r < size; ++r)
                 {
                     CubicalCoordinate coord = new OddRCoordinate(q, r).ToCubical();
-                    NodeStorage[q,r] = new AStarNode(coord);
+                    NodeStorage[q, r] = new AStarNode(coord);
                 }
             }
         }
