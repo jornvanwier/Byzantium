@@ -35,16 +35,16 @@ namespace Map.Generation
                             if (distanceToCenter > 1 - borderPercentage - beachSize)
                             {
                                 //if on border of circle, and it would normally be grass: beach
-                                map[x, y] = (byte)TileType.Desert;
+                                map[x, y] = (byte)TileType.Beach;
                             }
                             else
                             {
-                                map[x, y] = (byte)TileType.Grass;
+                                map[x, y] = (byte)TileType.GrassLand;
                             }
                         }
                         else if (height < landChance + beachSize)
                         {
-                            map[x, y] = (byte)TileType.Desert;
+                            map[x, y] = (byte)TileType.Beach;
                         }
                         else
                         {

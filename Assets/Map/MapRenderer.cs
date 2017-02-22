@@ -220,7 +220,7 @@ namespace Assets.Map
             _computeBuffer?.Dispose();
         }
 
-        private float remap (float value, float from1, float to1, float from2, float to2) {
+        private float Remap (float value, float from1, float to1, float from2, float to2) {
             return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
         }
 
@@ -230,8 +230,8 @@ namespace Assets.Map
             Vector2 position = new Vector2(worldPosition.x, worldPosition.z);
 
             //scale to 0 - 1
-            float x = remap(position.x, -(gameObject.transform.localScale.x / 2), gameObject.transform.localScale.x / 2, 0, 1);
-            float y = remap(position.y, -(gameObject.transform.localScale.y / 2), gameObject.transform.localScale.y / 2, 0, 1);
+            float x = Remap(position.x, -(gameObject.transform.localScale.x / 2), gameObject.transform.localScale.x / 2, 0, 1);
+            float y = Remap(position.y, -(gameObject.transform.localScale.y / 2), gameObject.transform.localScale.y / 2, 0, 1);
 
             return new Vector2(x,y);
         }

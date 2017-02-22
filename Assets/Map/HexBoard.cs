@@ -168,11 +168,11 @@ namespace Map
         {
             switch ((TileType) this[cc])
             {
-                case TileType.Grass:
+                case TileType.GrassLand:
                     return 1;
                 case TileType.WaterShallow:
                     return float.MaxValue;
-                case TileType.Desert:
+                case TileType.TemperateDesert:
                     return 2;
                 default:
                     return float.MaxValue;
