@@ -46,6 +46,8 @@ namespace Assets.Map
         public Texture2D[] AlbedoMaps;
 
         public GameObject Test;
+        public GameObject Test2;
+        public GameObject Test3;
 
 
         private TextureSet defaultTextureSet;
@@ -96,6 +98,7 @@ namespace Assets.Map
             hexBoard.GenerateMap();
 
 
+            /*
             CubicalCoordinate start = hexBoard.RandomValidTile();
 
             CubicalCoordinate goal = hexBoard.RandomValidTile();
@@ -113,7 +116,7 @@ namespace Assets.Map
 
                 hexBoard[start] = (byte) TileType.WaterDeep;
                 hexBoard[goal] = (byte) TileType.WaterDeep;
-            });
+            }); */
 
             SetupShader();
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
@@ -182,6 +185,18 @@ namespace Assets.Map
                     }
                 }
             }
+
+            if (Test2 != null && Test3 != null)
+            {
+                HexagonData a = NormalizedWorldToHexagonPosition(WorldToNormalizedWorldPosition(Test2.transform.position));
+                HexagonData b = NormalizedWorldToHexagonPosition(WorldToNormalizedWorldPosition(Test3.transform.position));
+
+
+
+
+
+            }
+
             UpdateSelectedSet();
         }
 
