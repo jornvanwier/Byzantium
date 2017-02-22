@@ -43,16 +43,7 @@ namespace Assets.Map
         public Texture2D DefaultGlossyMap;
         public Texture2D DefaultMetallMap;
 
-        public Texture2D WaterDeepAlbedo;
-        public Texture2D WaterShallowAlbedo;
-        public Texture2D GrassAlbedo;
-        public Texture2D ForestAlbedo;
-        public Texture2D MountainLowAlbedo;
-        public Texture2D MountainHightAlbedo;
-        public Texture2D MountainTopAlbedo;
-        public Texture2D BeachAlbedo;
-        public Texture2D DesertAlbedo;
-        public Texture2D PathAlbedo;
+        public Texture2D[] AlbedoMaps;
 
         public GameObject Test;
 
@@ -74,50 +65,20 @@ namespace Assets.Map
             textureSets = new List<TextureSet>();
 
             TextureSet.SetDefaultTextures(defaultTextureSet);
-
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = WaterDeepAlbedo;
-
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = WaterShallowAlbedo;
-
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = GrassAlbedo;
-
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = ForestAlbedo;
-
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = MountainLowAlbedo;
-
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = MountainHightAlbedo;
-
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = MountainTopAlbedo;
-
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = BeachAlbedo;
-
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = DesertAlbedo;
-
-            textureSets.Add(new TextureSet());
-            textureSets.Last().AlbedoMap = PathAlbedo;
+            for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
+            {
+                textureSets.Add((TextureSet)defaultTextureSet.Clone());
+            }
+            for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
+            {
+                textureSets[i].AlbedoMap = AlbedoMaps[i];
+            }
 
             albedoMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
             normalMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
             amboccMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
             glossyMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
             metallMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
-
-            /*Temp fix*/
-
-            for (int i = 0; i < (Enum.GetNames(typeof(TileType)).Length - 10); ++i)
-            {
-                textureSets.Add(defaultTextureSet);
-            }
-            /*end fix*/
 
             for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
             {

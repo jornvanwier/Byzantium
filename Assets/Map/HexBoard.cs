@@ -43,6 +43,7 @@ namespace Assets.Map
             get
             {
                 OddRCoordinate oc = cc.ToOddR();
+//                Debug.Log("OUT " + oc);
                 return Storage[oc.R, oc.Q];
             }
             set

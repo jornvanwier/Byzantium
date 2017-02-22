@@ -5,7 +5,6 @@
         WaterDeep,
         WaterShallow,
         Path,
-
         Beach,
         Snow,
         Tundra,
