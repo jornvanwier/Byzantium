@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Map.Generation;
 using JetBrains.Annotations;
 using UnityEngine;
 using Map;
@@ -130,7 +131,7 @@ namespace Assets.Map
                 }
             }
 
-            hexBoard = new HexBoard(MapSize) {Generator = new TestGenerator()};
+            hexBoard = new HexBoard(MapSize) {Generator = new PerlinGenerator()};
             hexBoard.GenerateMap();
 
 
