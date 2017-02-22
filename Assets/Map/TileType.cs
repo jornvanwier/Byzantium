@@ -5,12 +5,13 @@
         WaterDeep,
         WaterShallow,
         Path,
+
         Beach,
         Snow,
         Tundra,
         Bare,
         Scorched,
-        Taiga,
+        Taiga,//skip
         Shrubland,
         TemperateDesert,
         TemperateRainForest,

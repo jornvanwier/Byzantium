@@ -495,7 +495,7 @@ namespace Assets.Map.Generation
             T value = action();
 
             float endTime = Time.realtimeSinceStartup;
-            Debug.Log(name + " time: " + (startTime - endTime));
+            Debug.Log(name + " time: " + (endTime - startTime));
 
             return value;
         }
