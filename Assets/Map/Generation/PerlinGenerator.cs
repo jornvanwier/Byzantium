@@ -12,6 +12,11 @@ namespace Assets.Map.Generation
     {
         private const float WaterHeight = 0.4f;
         private const float RiverStartHeight = 0.8f;
+        private const float Scale = 0.7f;
+        private const int Octaves = 6;
+        private const float Persistance = 0.55f;
+        private const float Lacunarity = 2f;
+        private const bool SquareBorder = false;
 
         private static readonly ElevationLevel[] ElevationLevels =
         {
@@ -54,7 +59,9 @@ namespace Assets.Map.Generation
             Utils.LogOperationTime("Total map generation", () =>
             {
                 float[,] heightMap = Utils.LogOperationTime("Heightmap",
-                    () => GenerateFloatMap(size, 0.7f, borderSize, false, 6, 0.55f, 2, new Vector2(), seed));
+                    () =>
+                        GenerateFloatMap(size, Scale, borderSize, SquareBorder, Octaves, Persistance, Lacunarity,
+                            new Vector2(), seed));
 
                 bool[,] waterMap = Utils.LogOperationTime("Watermap", () => GetWaterMap(heightMap));
 
@@ -159,6 +166,7 @@ namespace Assets.Map.Generation
                 thread.Join();
             }
 
+            PerlinizeMap(ref moistureMap);
             NormalizeMap(ref moistureMap);
             InvertMap(ref moistureMap);
             moistureMap = ResizeMap(moistureMap, moistureResolution);
@@ -415,6 +423,23 @@ namespace Assets.Map.Generation
             NormalizeMap(ref map);
 
             return map;
+        }
+
+        private void PerlinizeMap(ref float[,] map, float perlinFactor = 0.1f)
+        {
+            int size = map.GetLength(0);
+            float scale = Scale * size / 4;
+
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    float mapX = x / scale;
+                    float mapY = y / scale;
+                    float value = Mathf.PerlinNoise(mapX, mapY) * (1 + perlinFactor);
+                    map[x, y] *= value;
+                }
+            }
         }
 
         private void NormalizeMap(ref float[,] map, float highestAllowedValue = 1)
