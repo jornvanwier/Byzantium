@@ -110,10 +110,6 @@ namespace Assets.Map
                         hexBoard[hex] = (byte) TileType.WaterDeep;
                     }
                 }
-                else
-                {
-                    Debug.LogWarning($"No path found between {start} and {goal}");
-                }
 
                 hexBoard[start] = (byte) TileType.WaterDeep;
                 hexBoard[goal] = (byte) TileType.WaterDeep;

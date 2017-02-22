@@ -180,8 +180,7 @@ namespace Assets.Map
                     gScore[neighbour] = tentativeGScore;
                 }
             }
-
-            Debug.Log($"Pathfinding failed after checking {closedSet.Count}");
+            Debug.LogWarning($"No path found between {start} and {goal} after checking {closedSet.Count}");
             return null;
         }
 
