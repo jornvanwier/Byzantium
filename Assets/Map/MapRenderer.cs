@@ -43,16 +43,7 @@ namespace Assets.Map
         public Texture2D DefaultGlossyMap;
         public Texture2D DefaultMetallMap;
 
-        public Texture2D WaterDeepAlbedo;
-        public Texture2D WaterShallowAlbedo;
-        public Texture2D GrassAlbedo;
-        public Texture2D ForestAlbedo;
-        public Texture2D MountainLowAlbedo;
-        public Texture2D MountainHightAlbedo;
-        public Texture2D MountainTopAlbedo;
-        public Texture2D BeachAlbedo;
-        public Texture2D DesertAlbedo;
-        public Texture2D PathAlbedo;
+        public Texture2D[] AlbedoMaps;
 
         public GameObject Test;
 
@@ -76,18 +67,12 @@ namespace Assets.Map
             TextureSet.SetDefaultTextures(defaultTextureSet);
             for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
             {
-                textureSets.Add(defaultTextureSet);
+                textureSets.Add((TextureSet)defaultTextureSet.Clone());
             }
-
-
-
-
-
-
-
-
-
-
+            for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
+            {
+                textureSets[i].AlbedoMap = AlbedoMaps[i];
+            }
 
             albedoMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
             normalMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
