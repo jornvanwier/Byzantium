@@ -22,7 +22,7 @@ namespace Assets.Map.Pathfinding
                 for (int r = 0; r < size; ++r)
                 {
                     CubicalCoordinate coord = new OddRCoordinate(q, r).ToCubical();
-                    NodeStorage[q, r] = new AStarNode(coord);
+                    NodeStorage[r, q] = new AStarNode(coord);
                 }
             }
         }
