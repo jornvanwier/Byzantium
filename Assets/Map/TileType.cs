@@ -10,7 +10,7 @@
         Tundra,
         Bare,
         Scorched,
-        Taiga,//skip
+        Taiga,
         Shrubland,
         TemperateDesert,
         TemperateRainForest,

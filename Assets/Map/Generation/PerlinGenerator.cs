@@ -35,7 +35,7 @@ namespace Assets.Map.Generation
                 new Biome(TileType.TemperateDesert, 0.425f),
                 new Biome(TileType.Shrubland, 0.7f),
                 new Biome(TileType.Taiga, 1f)),
-            new ElevationLevel(0.1f,
+            new ElevationLevel(1f,
                 new Biome(TileType.Scorched, 0.25f),
                 new Biome(TileType.Bare, 0.425f),
                 new Biome(TileType.Tundra, 0.6f),
@@ -66,7 +66,6 @@ namespace Assets.Map.Generation
                 tileMap = Utils.LogOperationTime("Tilemap", () => GetTileMap(heightMap, moistureMap));
             });
 
-
             return tileMap;
         }
 
@@ -84,11 +83,16 @@ namespace Assets.Map.Generation
                     float currentMoisture = moistureMap[x, y];
                     foreach (ElevationLevel elevation in ElevationLevels)
                     {
-                        if (!(currentHeight <= elevation.Height)) continue;
-                        foreach (Biome biome in elevation.Biomes)
+                        if (currentHeight <= elevation.Height)
                         {
-                            if (!(currentMoisture <= biome.Moisture)) continue;
-                            map[x, y] = (byte) biome.Type;
+                            foreach (Biome biome in elevation.Biomes)
+                            {
+                                if (currentMoisture <= biome.Moisture)
+                                {
+                                    map[x, y] = (byte) biome.Type;
+                                    break;
+                                }
+                            }
                             break;
                         }
                     }
@@ -154,8 +158,6 @@ namespace Assets.Map.Generation
             {
                 thread.Join();
             }
-
-            Debug.Log("Checked distance " + count + " times");
 
             NormalizeMap(ref moistureMap);
             moistureMap = ResizeMap(moistureMap, moistureResolution);
