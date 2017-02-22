@@ -54,16 +54,17 @@ namespace Assets.Map.Generation
             int moistureResolution = size / 1024; //moet factor van size zijn
             if (moistureResolution == 0) moistureResolution = 1;
 
+            byte[,] tileMap = null;
             float[,] heightMap = LogTime("Heightmap",
                 () => GenerateFloatMap(size, 0.7f, borderSize, false, 6, 0.55f, 2, new Vector2(), seed));
 
             bool[,] waterMap = LogTime("Watermap", () => GetWaterMap(heightMap));
 
-//            LogTime("Rivers", () => AddRivers(waterMap, heightMap, 3));
+            //            LogTime("Rivers", () => AddRivers(waterMap, heightMap, 3));
 
             float[,] moistureMap = LogTime("Moisturemap", () => GetMoistureMap(waterMap, moistureResolution));
 
-            byte[,] tileMap = LogTime("Tilemap", () => GetTileMap(heightMap, moistureMap));
+            tileMap = LogTime("Tilemap", () => GetTileMap(heightMap, moistureMap));
 
             return tileMap;
         }
