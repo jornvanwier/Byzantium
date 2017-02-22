@@ -51,16 +51,21 @@ namespace Assets.Map.Generation
             if (moistureResolution == 0) moistureResolution = 1;
 
             byte[,] tileMap = null;
-            float[,] heightMap = LogTime("Heightmap",
-                () => GenerateFloatMap(size, 0.7f, borderSize, false, 6, 0.55f, 2, new Vector2(), seed));
+            Utils.LogOperationTime("Total map generation", () =>
+            {
+                float[,] heightMap = Utils.LogOperationTime("Heightmap",
+                    () => GenerateFloatMap(size, 0.7f, borderSize, false, 6, 0.55f, 2, new Vector2(), seed));
 
-            bool[,] waterMap = LogTime("Watermap", () => GetWaterMap(heightMap));
+                bool[,] waterMap = Utils.LogOperationTime("Watermap", () => GetWaterMap(heightMap));
 
-            //            LogTime("Rivers", () => AddRivers(waterMap, heightMap, 3));
+                //             Utils.LogOperationTime("Rivers", () => AddRivers(waterMap, heightMap, 3));
 
-            float[,] moistureMap = LogTime("Moisturemap", () => GetMoistureMap(waterMap, moistureResolution));
+                float[,] moistureMap = Utils.LogOperationTime("Moisturemap",
+                    () => GetMoistureMap(waterMap, moistureResolution));
 
-            tileMap = LogTime("Tilemap", () => GetTileMap(heightMap, moistureMap));
+                tileMap = Utils.LogOperationTime("Tilemap", () => GetTileMap(heightMap, moistureMap));
+            });
+
 
             return tileMap;
         }
@@ -482,18 +487,6 @@ namespace Assets.Map.Generation
                     map[x, y] = noiseHeight;
                 }
             }
-        }
-
-        private T LogTime<T>(string name, Func<T> action)
-        {
-            float startTime = Time.realtimeSinceStartup;
-
-            T value = action();
-
-            float endTime = Time.realtimeSinceStartup;
-            Debug.Log(name + " time: " + (endTime - startTime));
-
-            return value;
         }
     }
 }
