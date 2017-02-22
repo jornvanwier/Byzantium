@@ -64,5 +64,5 @@ public class UnityScheduler : MonoBehaviour
 
 	private void LateUpdate() => LateUpdateScheduler.Activate();
 
-	private void FixedUpdate() => FixedUpdateScheduler.Activate();
+	private void FixedUpdate() => FixedUpdateScheduler?.Activate();
 }

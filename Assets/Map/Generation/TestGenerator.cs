@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Map;
-using Map.Generation;
-using NUnit.Framework;
+using Assets.Map;
 using UnityEngine;
 using Random = System.Random;
 
-namespace Assets.Map.Generation
+namespace Map.Generation
 {
     public class TestGenerator : IMapGenerator
     {
@@ -15,6 +13,7 @@ namespace Assets.Map.Generation
         {
             float borderSize = borderPercentage * size;
             int seed = new Random().Next(0, 1000);
+//            int seed = 1;
             Debug.Log(seed);
 
             float startTime = Time.realtimeSinceStartup;

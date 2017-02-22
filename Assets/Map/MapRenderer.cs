@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
-using Assets.Map.Generation;
 using Map;
+using Map.Generation;
 
 namespace Assets.Map
 {
     public class MapRenderer : MonoBehaviour
     {
         private ComputeBuffer _computeBuffer;
-        private HexBoard _hexBoard;
+        private HexBoard hexBoard;
 
         private Texture2DArray _albedoMaps;
         private Texture2DArray _normalMaps;
@@ -112,28 +112,34 @@ namespace Assets.Map
                 }
             }
 
-            _hexBoard = new HexBoard(MapSize) {Generator = new TestGenerator()};
-            _hexBoard.GenerateMap();
+            hexBoard = new HexBoard(MapSize) {Generator = new TestGenerator()};
+            hexBoard.GenerateMap();
 
-            /*
+
             CubicalCoordinate start = hexBoard.RandomValidTile();
 
             CubicalCoordinate goal = hexBoard.RandomValidTile();
 
-            List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
+//            float tStart = Time.realtimeSinceStartup;
+//            List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
+//            Debug.Log($"Ran pathfinding in {Time.realtimeSinceStartup - tStart} seconds");
+//
+//            if (path != null)
+//            {
+//                foreach (CubicalCoordinate hex in path)
+//                {
+//                    hexBoard[hex] = (byte) TileType.WaterDeep;
+//                }
+//            }
+//            else
+//            {
+//                Debug.LogWarning($"No path found between {start} and {goal}");
+//            }
+//
+//
+//            hexBoard[start] = (byte) TileType.WaterDeep;
+//            hexBoard[goal] = (byte) TileType.WaterDeep;
 
-            if (path != null)
-            {
-                foreach (CubicalCoordinate hex in path)
-                {
-                    hexBoard[hex] = (byte) TileType.Path;
-                }
-            }
-
-
-            hexBoard[start] = (byte) TileType.Path;
-            hexBoard[goal] = (byte) TileType.Path;
-            */
             SetupShader();
         }
 
@@ -147,7 +153,7 @@ namespace Assets.Map
             {
                 for (int y = 0; y < MapSize; ++y)
                 {
-                    data[x, y] = _hexBoard.Storage[x, y];
+                    data[x, y] = hexBoard.Storage[x, y];
                 }
             }
 

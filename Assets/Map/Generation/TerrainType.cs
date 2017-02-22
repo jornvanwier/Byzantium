@@ -1,6 +1,6 @@
-﻿using Map;
+﻿using Assets.Map;
 
-namespace Assets.Map.Generation
+namespace Map.Generation
 {
     internal class TerrainType
     {
