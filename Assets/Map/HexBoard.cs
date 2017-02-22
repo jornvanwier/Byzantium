@@ -108,7 +108,7 @@ namespace Assets.Map
         // TODO Replace start with unit or legion
         public List<CubicalCoordinate> FindPath(CubicalCoordinate start, CubicalCoordinate goal)
         {
-            var closedSet = new List<AStarNode>();
+            var closedSet = new HashSet<AStarNode>();
 
             var cameFrom = new Dictionary<AStarNode, AStarNode>();
 
