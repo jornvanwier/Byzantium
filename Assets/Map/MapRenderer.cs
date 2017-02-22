@@ -167,7 +167,7 @@ namespace Assets.Map
         {
             if (Test != null)
             {
-                Vector3 normalized = WorldToNormalizedWorldPosition(Test.transform.position);
+                Vector2 normalized = WorldToNormalizedWorldPosition(Test.transform.position);
                 HexagonData d = NormalizedWorldToHexagonPosition(normalized);
 
                 if (d.hexagonPositionOffset.X > 0 && d.hexagonPositionOffset.X < MapSize - 1 &&
@@ -180,22 +180,43 @@ namespace Assets.Map
                         {
                             if (i == 0 && j == 0)
                                 continue;
-                            MarkTileSelectedForNextFrame(d.hexagonPositionOffset.X + i, d.hexagonPositionOffset.Y + j);
+                            if(d.hexagonPositionCubical.X == 0 && d.hexagonPositionCubical.Y == 0 && d.hexagonPositionCubical.Z == 0)
+                                MarkTileSelectedForNextFrame(d.hexagonPositionOffset.X + i, d.hexagonPositionOffset.Y + j);
                         }
                     }
                 }
             }
-
+            /*
             if (Test2 != null && Test3 != null)
             {
                 HexagonData a = NormalizedWorldToHexagonPosition(WorldToNormalizedWorldPosition(Test2.transform.position));
                 HexagonData b = NormalizedWorldToHexagonPosition(WorldToNormalizedWorldPosition(Test3.transform.position));
 
+                CubicalCoordinate start = new CubicalCoordinate(a.hexagonPositionCubical.Z, a.hexagonPositionCubical.X);
+                CubicalCoordinate goal = new CubicalCoordinate(b.hexagonPositionCubical.Z, b.hexagonPositionCubical.X);
+
+                Debug.Log(start);
+                Debug.Log(goal);
+
+                Utils.LogOperationTime("find path", () =>
+                {
+                    List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
+                    if (path != null)
+                    {
+                        foreach (CubicalCoordinate hex in path)
+                        {
+                            hexBoard[hex] = (byte) TileType.WaterDeep;
+                            OddRCoordinate offset = hex.ToOddR();
+                            MarkTileSelectedForNextFrame(offset.Q, offset.R);
+                        }
+                    }
+
+                    hexBoard[start] = (byte) TileType.WaterDeep;
+                    hexBoard[goal] = (byte) TileType.WaterDeep;
+                });
 
 
-
-
-            }
+            }*/
 
             UpdateSelectedSet();
         }
