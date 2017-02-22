@@ -99,7 +99,12 @@ namespace Assets.Map
                 CubicalCoordinate neighbour = cc + direction;
                 if (!CheckCoordinate(neighbour)) continue;
 
-                nodes.Add(NodeGraph[cc]);
+                nodes.Add(NodeGraph[neighbour]);
+            }
+
+            if (nodes.Count != 6)
+            {
+                Debug.Log(nodes.Count);
             }
 
             return nodes;
@@ -191,18 +196,41 @@ namespace Assets.Map
             switch ((TileType) this[cc])
             {
                 case TileType.GrassLand:
-                    return 1;
+                    return 2;
                 case TileType.WaterShallow:
-                    return 10;
+                    return 20;
                 case TileType.WaterDeep:
                     return float.MaxValue;
                 case TileType.TemperateDesert:
-                    return 2;
+                    return 11;
                 case TileType.Beach:
                     return 4;
                 case TileType.Path:
                     return 0;
+                case TileType.Snow:
+                    return 15;
+                case TileType.Tundra:
+                    return 10;
+                case TileType.Bare:
+                    return 11;
+                case TileType.Scorched:
+                    return 13;
+                case TileType.Taiga:
+                    return 8;
+                case TileType.Shrubland:
+                    return 5;
+                case TileType.TemperateRainForest:
+                    return 12;
+                case TileType.TemperateDeciduousForest:
+                    return 7;
+                case TileType.TropicalRainForest:
+                    return 9;
+                case TileType.TropicalSeasonalForest:
+                    return 6;
+                case TileType.SubTropicalDesert:
+                    return 14;
                 default:
+                    Debug.Log("tile not exist");
                     return float.MaxValue;
             }
         }
