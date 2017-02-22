@@ -111,6 +111,14 @@ namespace Assets.Map
             glossyMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
             metallMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
 
+            /*Temp fix*/
+
+            for (int i = 0; i < (Enum.GetNames(typeof(TileType)).Length - 10); ++i)
+            {
+                textureSets.Add(defaultTextureSet);
+            }
+            /*end fix*/
+
             for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
             {
                 for (int j = 0; j < Convert.ToInt32(Mathf.Log(TextureSize, 2) + 1); ++j)
