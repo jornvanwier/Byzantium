@@ -26,7 +26,6 @@ namespace Assets.Map
         private readonly List<Int2> selectedSet = new List<Int2>();
 
 
-
         public int MapSize;
         private List<TextureSet> textureSets;
 
@@ -139,25 +138,24 @@ namespace Assets.Map
 
             CubicalCoordinate goal = hexBoard.RandomValidTile();
 
-//            float tStart = Time.realtimeSinceStartup;
-//            List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
-//            Debug.Log($"Ran pathfinding in {Time.realtimeSinceStartup - tStart} seconds");
-//
-//            if (path != null)
-//            {
-//                foreach (CubicalCoordinate hex in path)
-//                {
-//                    hexBoard[hex] = (byte) TileType.WaterDeep;
-//                }
-//            }
-//            else
-//            {
-//                Debug.LogWarning($"No path found between {start} and {goal}");
-//            }
-//
-//
-//            hexBoard[start] = (byte) TileType.WaterDeep;
-//            hexBoard[goal] = (byte) TileType.WaterDeep;
+            Utils.LogOperationTime("find path", () =>
+            {
+                List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
+                if (path != null)
+                {
+                    foreach (CubicalCoordinate hex in path)
+                    {
+                        hexBoard[hex] = (byte) TileType.WaterDeep;
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"No path found between {start} and {goal}");
+                }
+
+                hexBoard[start] = (byte) TileType.WaterDeep;
+                hexBoard[goal] = (byte) TileType.WaterDeep;
+            });
 
             SetupShader();
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
@@ -174,7 +172,7 @@ namespace Assets.Map
                 for (int y = 0; y < MapSize; ++y)
                 {
                     data[x, y] = hexBoard.Storage[x, y];
-                    var t = new TileData((TileType)hexBoard.Storage[x, y], false);
+                    var t = new TileData((TileType) hexBoard.Storage[x, y], false);
                     int k = t.GetAsInt();
                     data[x, y] = k;
                 }
@@ -200,7 +198,6 @@ namespace Assets.Map
             meshRenderer.material = HexMaterial;
 
             meshRenderer.SetPropertyBlock(block);
-
         }
 
         [UsedImplicitly]
@@ -235,7 +232,8 @@ namespace Assets.Map
             computeBuffer?.Dispose();
         }
 
-        private static float Remap (float value, float from1, float to1, float from2, float to2) {
+        private static float Remap(float value, float from1, float to1, float from2, float to2)
+        {
             return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
         }
 
@@ -245,22 +243,24 @@ namespace Assets.Map
             var position = new Vector2(worldPosition.x, worldPosition.z);
 
             //scale to 0 - 1
-            float x = Remap(position.x, -(gameObject.transform.localScale.x / 2), gameObject.transform.localScale.x / 2, 0, 1);
-            float y = Remap(position.y, -(gameObject.transform.localScale.y / 2), gameObject.transform.localScale.y / 2, 0, 1);
+            float x = Remap(position.x, -(gameObject.transform.localScale.x / 2), gameObject.transform.localScale.x / 2,
+                0, 1);
+            float y = Remap(position.y, -(gameObject.transform.localScale.y / 2), gameObject.transform.localScale.y / 2,
+                0, 1);
 
-            return new Vector2(x,y);
+            return new Vector2(x, y);
         }
 
         public HexagonData NormalizedWorldToHexagonPosition(Vector2 worldPosition)
         {
-            float hexSize = Mathf.Sqrt(3)/3;
+            float hexSize = Mathf.Sqrt(3) / 3;
 
             float posX = worldPosition.x * MapSize - 0.075f * MapSize;
             float posY = worldPosition.y * MapSize - 0.005f * MapSize;
 
-            float cubeX = posX * 2/3 / hexSize;
-            float cubeZ = (-posX / 3 + Mathf.Sqrt(3)/3 * posY) / hexSize;
-            float cubeY = -cubeX-cubeZ;
+            float cubeX = posX * 2 / 3 / hexSize;
+            float cubeZ = (-posX / 3 + Mathf.Sqrt(3) / 3 * posY) / hexSize;
+            float cubeY = -cubeX - cubeZ;
 
             int rX = Mathf.RoundToInt(cubeX);
             int rZ = Mathf.RoundToInt(cubeZ);
@@ -272,24 +272,24 @@ namespace Assets.Map
 
             if (xDiff > yDiff && xDiff > zDiff)
             {
-                rX = -rY-rZ;
+                rX = -rY - rZ;
             }
             else if (yDiff > zDiff)
             {
-                rY = -rX-rZ;
+                rY = -rX - rZ;
             }
             else
             {
-                rZ = -rX-rY;
+                rZ = -rX - rY;
             }
 
-            int x = (int)(rZ + (rX - (rX & 1)) / 2.0f),
+            int x = (int) (rZ + (rX - (rX & 1)) / 2.0f),
                 z = rX;
 
             HexagonData hexagonData;
 
-            hexagonData.hexagonPositionOffset = new Int2(x,z);
-            hexagonData.hexagonPositionCubical = new Int3(rX,rZ,rY);
+            hexagonData.hexagonPositionOffset = new Int2(x, z);
+            hexagonData.hexagonPositionCubical = new Int3(rX, rZ, rY);
             hexagonData.hexagonPositionFloat = new Float2(posX, posY);
 
             return hexagonData;
@@ -297,7 +297,7 @@ namespace Assets.Map
 
         private void UpdateSelectedSet()
         {
-            foreach(Int2 tile in selectedSet)
+            foreach (Int2 tile in selectedSet)
             {
                 int tileData = this.data[tile.Y, tile.X];
                 var src = new TileData(tileData);
@@ -307,7 +307,7 @@ namespace Assets.Map
 
             computeBuffer.SetData(data);
 
-            foreach(Int2 tile in selectedSet)
+            foreach (Int2 tile in selectedSet)
             {
                 int tileData = this.data[tile.Y, tile.X];
                 var src = new TileData(tileData);
@@ -321,6 +321,5 @@ namespace Assets.Map
         {
             selectedSet.Add(new Int2(offsetX, offsetY));
         }
-
     }
 }

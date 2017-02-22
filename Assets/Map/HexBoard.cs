@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Map;
+using Assets.Map.Pathfinding;
+using Map;
 using Map.Generation;
 using Map.Pathfinding;
 using Priority_Queue;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Map
+namespace Assets.Map
 {
     public class HexBoard
     {
@@ -23,7 +24,7 @@ namespace Map
 
         public IMapGenerator Generator { get; set; }
         public byte[,] Storage { get; private set; }
-        public NavMesh NavMesh { get; private set; }
+        private NodeGraph NodeGraph { get; set; }
 
 
         public HexBoard(int size)
@@ -34,13 +35,7 @@ namespace Map
         public void GenerateMap()
         {
             Storage = Generator.Generate(size, BorderPercentage);
-            NavMesh = new NavMesh(this);
-
-            // mark navmesh
-            foreach (CubicalCoordinate cc in NavMesh.Nodes.Keys)
-            {
-//                this[cc] = (byte) TileType.WaterDeep;
-            }
+            NodeGraph = new NodeGraph(size);
         }
 
         public byte this[CubicalCoordinate cc]
@@ -48,7 +43,6 @@ namespace Map
             get
             {
                 OddRCoordinate oc = cc.ToOddR();
-//                Debug.Log("OUT " + oc);
                 return Storage[oc.R, oc.Q];
             }
             set
@@ -81,7 +75,7 @@ namespace Map
 
         public List<Tuple<CubicalCoordinate, byte>> GetNeighbours(CubicalCoordinate cc)
         {
-            List<Tuple<CubicalCoordinate, byte>> neighbours = new List<Tuple<CubicalCoordinate, byte>>();
+            var neighbours = new List<Tuple<CubicalCoordinate, byte>>();
 
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (CubicalCoordinate direction in Directions)
@@ -89,35 +83,50 @@ namespace Map
                 CubicalCoordinate neighbour = cc + direction;
                 if (!CheckCoordinate(neighbour)) continue;
 
-                Tuple<CubicalCoordinate, byte> tuple = new Tuple<CubicalCoordinate, byte>(neighbour, this[neighbour]);
+                var tuple = new Tuple<CubicalCoordinate, byte>(neighbour, this[neighbour]);
                 neighbours.Add(tuple);
             }
             return neighbours;
         }
 
+        public List<AStarNode> GetNeighbouringNodes(CubicalCoordinate cc)
+        {
+            var nodes = new List<AStarNode>();
+
+            foreach (CubicalCoordinate direction in Directions)
+            {
+                CubicalCoordinate neighbour = cc + direction;
+                if (!CheckCoordinate(neighbour)) continue;
+
+                nodes.Add(NodeGraph[cc]);
+            }
+
+            return nodes;
+        }
+
         // TODO Replace start with unit or legion
         public List<CubicalCoordinate> FindPath(CubicalCoordinate start, CubicalCoordinate goal)
         {
-            var closedSet = new List<NavMeshNode>();
+            var closedSet = new List<AStarNode>();
 
-            var cameFrom = new Dictionary<NavMeshNode, NavMeshNode>();
+            var cameFrom = new Dictionary<AStarNode, AStarNode>();
 
-            NavMeshNode startNode = NavMesh.ClosestNodeTo(start);
-            NavMeshNode goalNode = NavMesh.ClosestNodeTo(goal);
+            AStarNode startNode = NodeGraph[start];
+            AStarNode goalNode = NodeGraph[goal];
 
             Debug.Log($"Pathfinding from {startNode.Position} to {goalNode.Position}");
 
-            var gScore = new Dictionary<NavMeshNode, float>
+            var gScore = new Dictionary<AStarNode, float>
             {
                 [startNode] = 0
             };
 
-            var queue = new FastPriorityQueue<NavMeshNode>(size * size);
+            var queue = new FastPriorityQueue<AStarNode>(size * size);
             queue.Enqueue(startNode, 0);
 
             while (queue.Count > 0)
             {
-                NavMeshNode current = queue.Dequeue();
+                AStarNode current = queue.Dequeue();
                 // Backtrack path
                 if (current == goalNode)
                 {
@@ -133,7 +142,7 @@ namespace Map
 
                 closedSet.Add(current);
 
-                foreach (NavMeshNode neighbour in current.Connections)
+                foreach (AStarNode neighbour in GetNeighbouringNodes(current.Position))
                 {
                     // Have already processed neighbour
                     if (closedSet.Contains(neighbour))
