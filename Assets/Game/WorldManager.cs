@@ -8,25 +8,22 @@ public class WorldManager : MonoBehaviour
     public GameObject mapRenderer;
 
     private GameObject cameraObject;
-    private Vector2    _aimPoint;
+    private Vector2 _aimPoint;
 
 
+    void Start()
+    {
+        mapRenderer = Instantiate(mapRenderer);
+        cameraObject = new GameObject("CAMERA");
+        cameraObject.AddComponent<Camera>();
+        cameraObject.transform.position = new Vector3(0, 10, 0);
+    }
 
-
-
-	void Start ()
-	{
-	    mapRenderer = Instantiate(mapRenderer);
-	    cameraObject = new GameObject("CAMERA");
-	    cameraObject.AddComponent<Camera>();
-	    cameraObject.transform.position = new Vector3(0,10,0);
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	    UpdateCamera();
-	}
+    // Update is called once per frame
+    void Update()
+    {
+        UpdateCamera();
+    }
 
     void UpdateCamera()
     {
@@ -40,7 +37,6 @@ public class WorldManager : MonoBehaviour
         Vector3 objectForward = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.forward;
         Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
         Vector3 objectUp = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.up;
-
 
 
         float moveSpeed = 16.0f;
@@ -80,7 +76,5 @@ public class WorldManager : MonoBehaviour
         {
             cameraObject.transform.Rotate(worldRight, -rotateSpeed);
         }
-
     }
-
 }
