@@ -1,86 +1,71 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Assets.Map;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 
-public class WorldManager : MonoBehaviour
+namespace Assets.Game
 {
-    public GameObject mapRenderer;
-
-    private GameObject cameraObject;
-    private Vector2    _aimPoint;
-
-
-
-
-
-	void Start ()
-	{
-	    mapRenderer = Instantiate(mapRenderer);
-	    cameraObject = new GameObject("CAMERA");
-	    cameraObject.AddComponent<Camera>();
-	    cameraObject.transform.position = new Vector3(0,10,0);
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	    UpdateCamera();
-	}
-
-    void UpdateCamera()
+    public class WorldManager : MonoBehaviour
     {
-        Vector3 worldPosition = cameraObject.transform.position;
-        Vector3 localPosition = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.position;
+        public GameObject mapRenderer;
 
-        Vector3 worldForward = cameraObject.transform.forward;
-        Vector3 worldRight = cameraObject.transform.right;
-        Vector3 worldUp = cameraObject.transform.up;
-
-        Vector3 objectForward = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.forward;
-        Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
-        Vector3 objectUp = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.up;
+        private GameObject cameraObject;
+        private Vector2 aimPoint;
 
 
-
-        float moveSpeed = 16.0f;
-        float rotateSpeed = 1.0f;
-
-        if (Input.GetKey(KeyCode.W))
+        [UsedImplicitly]
+        void Start()
         {
-            cameraObject.transform.Translate(objectForward * moveSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            cameraObject.transform.Translate(-objectForward * moveSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            cameraObject.transform.Translate(-objectRight * moveSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            cameraObject.transform.Translate(objectRight * moveSpeed * Time.deltaTime);
+            mapRenderer = Instantiate(mapRenderer);
+            cameraObject = new GameObject("CAMERA");
+            cameraObject.AddComponent<Camera>();
+            cameraObject.transform.position = new Vector3(0, 10, 0);
         }
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        // Update is called once per frame
+        [UsedImplicitly]
+        void Update()
         {
-            cameraObject.transform.Rotate(worldUp, rotateSpeed);
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            cameraObject.transform.Rotate(worldUp, -rotateSpeed);
+            UpdateCamera();
         }
 
-        if (Input.GetKey(KeyCode.UpArrow))
+        private void UpdateCamera()
         {
-            cameraObject.transform.Rotate(worldRight, rotateSpeed);
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            cameraObject.transform.Rotate(worldRight, -rotateSpeed);
-        }
+            Vector3 worldPosition = cameraObject.transform.position;
+            Vector3 localPosition = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.position;
 
+            Vector3 worldForward = cameraObject.transform.forward;
+            Vector3 worldRight = cameraObject.transform.right;
+            Vector3 worldUp = cameraObject.transform.up;
+
+            Vector3 objectForward = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.forward;
+            Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
+            Vector3 objectUp = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.up;
+
+
+            const float moveSpeed = 16.0f;
+            const float rotateSpeed = 1.0f;
+
+            if (Input.GetKey(KeyCode.Space))
+                cameraObject.transform.Translate(objectUp * moveSpeed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.LeftShift))
+                cameraObject.transform.Translate(objectUp * moveSpeed * Time.deltaTime);
+
+            if (Input.GetKey(KeyCode.W))
+                cameraObject.transform.Translate(objectForward * moveSpeed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.A))
+                cameraObject.transform.Translate(-objectRight * moveSpeed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.S))
+                cameraObject.transform.Translate(-objectForward * moveSpeed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.D))
+                cameraObject.transform.Translate(objectRight * moveSpeed * Time.deltaTime);
+
+            if (Input.GetKey(KeyCode.UpArrow))
+                cameraObject.transform.Rotate(worldRight, rotateSpeed);
+            if (Input.GetKey(KeyCode.DownArrow))
+                cameraObject.transform.Rotate(worldRight, -rotateSpeed);
+            if (Input.GetKey(KeyCode.RightArrow))
+                cameraObject.transform.Rotate(worldUp, rotateSpeed);
+            if (Input.GetKey(KeyCode.LeftArrow))
+                cameraObject.transform.Rotate(worldUp, -rotateSpeed);
+        }
     }
-
 }
