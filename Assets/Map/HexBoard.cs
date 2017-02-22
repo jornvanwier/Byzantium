@@ -102,11 +102,6 @@ namespace Assets.Map
                 nodes.Add(NodeGraph[neighbour]);
             }
 
-            if (nodes.Count != 6)
-            {
-                Debug.Log(nodes.Count);
-            }
-
             return nodes;
         }
 
