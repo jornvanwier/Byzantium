@@ -44,40 +44,28 @@ namespace Assets.Game
             const float moveSpeed = 16.0f;
             const float rotateSpeed = 1.0f;
 
-            if (Input.GetKey(KeyCode.W))
-            {
-                cameraObject.transform.Translate(objectForward * moveSpeed * Time.deltaTime);
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                cameraObject.transform.Translate(-objectForward * moveSpeed * Time.deltaTime);
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                cameraObject.transform.Translate(-objectRight * moveSpeed * Time.deltaTime);
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                cameraObject.transform.Translate(objectRight * moveSpeed * Time.deltaTime);
-            }
+            if (Input.GetKey(KeyCode.Space))
+                cameraObject.transform.Translate(objectUp * moveSpeed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.LeftShift))
+                cameraObject.transform.Translate(objectUp * moveSpeed * Time.deltaTime);
 
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                cameraObject.transform.Rotate(worldUp, rotateSpeed);
-            }
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                cameraObject.transform.Rotate(worldUp, -rotateSpeed);
-            }
+            if (Input.GetKey(KeyCode.W))
+                cameraObject.transform.Translate(objectForward * moveSpeed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.A))
+                cameraObject.transform.Translate(-objectRight * moveSpeed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.S))
+                cameraObject.transform.Translate(-objectForward * moveSpeed * Time.deltaTime);
+            if (Input.GetKey(KeyCode.D))
+                cameraObject.transform.Translate(objectRight * moveSpeed * Time.deltaTime);
 
             if (Input.GetKey(KeyCode.UpArrow))
-            {
                 cameraObject.transform.Rotate(worldRight, rotateSpeed);
-            }
             if (Input.GetKey(KeyCode.DownArrow))
-            {
                 cameraObject.transform.Rotate(worldRight, -rotateSpeed);
-            }
+            if (Input.GetKey(KeyCode.RightArrow))
+                cameraObject.transform.Rotate(worldUp, rotateSpeed);
+            if (Input.GetKey(KeyCode.LeftArrow))
+                cameraObject.transform.Rotate(worldUp, -rotateSpeed);
         }
     }
 }
