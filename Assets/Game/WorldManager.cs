@@ -59,13 +59,13 @@ namespace Assets.Game
                 cameraObject.transform.Translate(objectRight * moveSpeed * Time.deltaTime);
 
             if (Input.GetKey(KeyCode.UpArrow))
-                cameraObject.transform.Rotate(worldRight, -rotateSpeed);
+                cameraObject.transform.Rotate(objectRight, rotateSpeed);
             if (Input.GetKey(KeyCode.DownArrow))
-                cameraObject.transform.Rotate(worldRight, rotateSpeed);
+                cameraObject.transform.Rotate(objectRight, -rotateSpeed);
             if (Input.GetKey(KeyCode.RightArrow))
-                cameraObject.transform.Rotate(Vector3.up, rotateSpeed);
+                cameraObject.transform.Rotate(Vector3.up, rotateSpeed, Space.World);
             if (Input.GetKey(KeyCode.LeftArrow))
-                cameraObject.transform.Rotate(Vector3.up, -rotateSpeed);
+                cameraObject.transform.Rotate(Vector3.up, -rotateSpeed, Space.World);
         }
     }
 }
