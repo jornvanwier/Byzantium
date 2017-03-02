@@ -24,5 +24,28 @@
         {
             return $"Q: {Q} R: {R}";
         }
+
+        public static bool operator ==(OddRCoordinate a, OddRCoordinate b)
+        {
+            return a.Q == b.Q && a.R == b.R;
+        }
+
+        public static bool operator !=(OddRCoordinate a, OddRCoordinate b)
+        {
+            return !(a == b);
+        }
+
+        public bool Equals(OddRCoordinate other)
+        {
+            return Q == other.Q && R == other.R;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (Q * 397) ^ R;
+            }
+        }
     }
 }
