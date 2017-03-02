@@ -45,9 +45,8 @@ namespace Assets.Map
 
         public Texture2D[] AlbedoMaps;
 
-        public GameObject Test;
-        public GameObject Test2;
-        public GameObject Test3;
+        public GameObject StartPin;
+        public GameObject GoalPin;
 
 
         private TextureSet defaultTextureSet;
@@ -144,35 +143,11 @@ namespace Assets.Map
         [UsedImplicitly]
         private void Update()
         {
-//            if (Test != null)
-//            {
-//                Vector2 normalized = WorldToNormalizedWorldPosition(Test.transform.position);
-//                HexagonData d = NormalizedWorldToHexagonPosition(normalized);
-//
-//                if (d.hexagonPositionOffset.X > 0 && d.hexagonPositionOffset.X < MapSize - 1 &&
-//                    d.hexagonPositionOffset.Y > 0 && d.hexagonPositionOffset.Y < MapSize)
-//                {
-//                    var oc = new OddRCoordinate(d.hexagonPositionOffset.X, d.hexagonPositionOffset.Y);
-//                    MarkTileSelectedForNextFrame(oc);
-//                    for (int i = -1; i <= 1; ++i)
-//                    {
-//                        for (int j = -1; j <= 1; ++j)
-//                        {
-//                            if (i == 0 && j == 0)
-//                                continue;
-////                            if(d.hexagonPositionCubical.X == 0 && d.hexagonPositionCubical.Y == 0 && d.hexagonPositionCubical.Z == 0)
-////                                MarkTileSelectedForNextFrame(d.hexagonPositionOffset.X + i, d.hexagonPositionOffset.Y + j);
-//                        }
-//                    }
-//                }
-//            }
-
-
-            if (Test2 != null && Test3 != null)
+            if (StartPin != null && GoalPin != null)
             {
 
-                CubicalCoordinate start = WorldToCubicalCoordinate(Test2.transform.position);
-                CubicalCoordinate goal = WorldToCubicalCoordinate(Test3.transform.position);
+                CubicalCoordinate start = WorldToCubicalCoordinate(StartPin.transform.position);
+                CubicalCoordinate goal = WorldToCubicalCoordinate(GoalPin.transform.position);
 
                 Debug.Log(start.ToOddR());
                 Debug.Log(goal.ToOddR());

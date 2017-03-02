@@ -1,4 +1,4 @@
-﻿using Assets.Map;
+﻿﻿using Assets.Map;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +7,8 @@ namespace Assets.Game
 {
     public class WorldManager : MonoBehaviour
     {
+        public GameObject StartPin;
+        public GameObject GoalPin;
         public GameObject MapRenderer;
 
         private GameObject cameraObject;
@@ -20,7 +22,10 @@ namespace Assets.Game
         void Start()
         {
             MapRenderer = Instantiate(MapRenderer);
-            cameraObject = new GameObject("CAMERA");
+            MapRenderer.name = "Map";
+            MapRenderer.GetComponent<MapRenderer>().StartPin = StartPin;
+            MapRenderer.GetComponent<MapRenderer>().GoalPin = GoalPin;
+            cameraObject = new GameObject("MainCamera");
             cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = new Vector3(0, CameraHeight, 0);
         }
