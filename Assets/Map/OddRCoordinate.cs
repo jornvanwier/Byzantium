@@ -1,4 +1,6 @@
-﻿namespace Map
+﻿using Map;
+
+namespace Assets.Map
 {
     public struct OddRCoordinate
     {
@@ -38,6 +40,12 @@
         public bool Equals(OddRCoordinate other)
         {
             return Q == other.Q && R == other.R;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is OddRCoordinate && Equals((OddRCoordinate) obj);
         }
 
         public override int GetHashCode()
