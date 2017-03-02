@@ -84,6 +84,17 @@ namespace Assets.Game
 
             float zoom = Input.GetAxis("Mouse ScrollWheel");
             Zoom(worldForward, zoom);
+
+            
+            const int margin = 10;
+            if (Input.mousePosition.x < margin)
+                Pan(worldRight, -1f);
+            if (Input.mousePosition.y < margin)
+                Pan(worldForward, -1f);
+            if (Input.mousePosition.y > Screen.height - margin)
+                Pan(worldForward);
+            if (Input.mousePosition.x > Screen.width - margin)
+                Pan(worldRight);
         }
 
         private void Ascend()
