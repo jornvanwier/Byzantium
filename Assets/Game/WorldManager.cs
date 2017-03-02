@@ -1,4 +1,4 @@
-﻿using Assets.Map;
+﻿﻿using Assets.Map;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -21,10 +21,10 @@ namespace Assets.Game
         void Start()
         {
             MapRenderer = Instantiate(MapRenderer);
+            MapRenderer.name = "Map";
             MapRenderer.GetComponent<MapRenderer>().StartPin = StartPin;
             MapRenderer.GetComponent<MapRenderer>().GoalPin = GoalPin;
-            MapRenderer = Instantiate(MapRenderer);
-            cameraObject = new GameObject("CAMERA");
+            cameraObject = new GameObject("MainCamera");
             cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = new Vector3(0, CameraHeight, 0);
         }
