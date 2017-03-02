@@ -47,7 +47,7 @@ namespace Assets.Game
             if (Input.GetKey(KeyCode.Space))
                 cameraObject.transform.Translate(objectUp * moveSpeed * Time.deltaTime);
             if (Input.GetKey(KeyCode.LeftShift))
-                cameraObject.transform.Translate(objectUp * moveSpeed * Time.deltaTime);
+                cameraObject.transform.Translate(objectUp * moveSpeed * -Time.deltaTime);
 
             if (Input.GetKey(KeyCode.W))
                 cameraObject.transform.Translate(objectForward * moveSpeed * Time.deltaTime);
