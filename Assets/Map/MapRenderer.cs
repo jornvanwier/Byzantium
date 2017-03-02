@@ -149,24 +149,18 @@ namespace Assets.Map
                 CubicalCoordinate start = WorldToCubicalCoordinate(StartPin.transform.position);
                 CubicalCoordinate goal = WorldToCubicalCoordinate(GoalPin.transform.position);
 
-                Debug.Log(start.ToOddR());
-                Debug.Log(goal.ToOddR());
-
                 MarkTileSelectedForNextFrame(start);
                 MarkTileSelectedForNextFrame(goal);
 
-                Utils.LogOperationTime("find path", () =>
+                List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
+                if (path != null)
                 {
-                    List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
-                    if (path != null)
+                    foreach (CubicalCoordinate hex in path)
                     {
-                        foreach (CubicalCoordinate hex in path)
-                        {
-                            OddRCoordinate offset = hex.ToOddR();
-                            MarkTileSelectedForNextFrame(offset);
-                        }
+                        OddRCoordinate offset = hex.ToOddR();
+                        MarkTileSelectedForNextFrame(offset);
                     }
-                });
+                }
             }
 
 

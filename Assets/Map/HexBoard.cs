@@ -115,8 +115,6 @@ namespace Assets.Map
             AStarNode startNode = NodeGraph[start];
             AStarNode goalNode = NodeGraph[goal];
 
-            Debug.Log($"Pathfinding from {startNode.Position} to {goalNode.Position}");
-
             var gScore = new Dictionary<AStarNode, float>
             {
                 [startNode] = 0
