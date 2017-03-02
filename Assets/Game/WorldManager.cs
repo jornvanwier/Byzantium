@@ -77,6 +77,13 @@ namespace Assets.Game
                 cameraObject.transform.Rotate(Vector3.up, CameraRotateSpeed, Space.World);
             if (Input.GetKey(KeyCode.LeftArrow))
                 cameraObject.transform.Rotate(Vector3.up, -CameraRotateSpeed, Space.World);
+
+            if (Input.GetMouseButton(1))
+                Debug.Log(1);
+            if (Input.GetMouseButton(2))
+                Debug.Log(2);
+            if (Input.GetMouseButton(3))
+                Debug.Log(3);
         }
     }
 }
