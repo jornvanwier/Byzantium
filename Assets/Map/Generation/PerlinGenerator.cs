@@ -65,7 +65,7 @@ namespace Assets.Map.Generation
 
                 bool[,] waterMap = Utils.LogOperationTime("Watermap", () => GetWaterMap(heightMap));
 
-                //             Utils.LogOperationTime("Rivers", () => AddRivers(waterMap, heightMap, 3));
+//                Utils.LogOperationTime("Rivers", () => AddRivers(waterMap, heightMap, 3));
 
                 float[,] moistureMap = Utils.LogOperationTime("Moisturemap",
                     () => GetMoistureMap(waterMap, moistureResolution));
@@ -166,7 +166,7 @@ namespace Assets.Map.Generation
                 thread.Join();
             }
 
-            PerlinizeMap(ref moistureMap);
+            PerlinizeMap(ref moistureMap, 0.2f);
             NormalizeMap(ref moistureMap);
             InvertMap(ref moistureMap);
             moistureMap = ResizeMap(moistureMap, moistureResolution);

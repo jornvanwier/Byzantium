@@ -97,27 +97,6 @@ namespace Assets.Map
             hexBoard = new HexBoard(MapSize) {Generator = new PerlinGenerator()};
             hexBoard.GenerateMap();
 
-
-
-//            CubicalCoordinate start = hexBoard.RandomValidTile();
-//
-//            CubicalCoordinate goal = hexBoard.RandomValidTile();
-//
-//            Utils.LogOperationTime("find path", () =>
-//            {
-//                List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
-//                if (path != null)
-//                {
-//                    foreach (CubicalCoordinate hex in path)
-//                    {
-//                        hexBoard[hex] = (byte) TileType.WaterDeep;
-//                    }
-//                }
-//
-//                hexBoard[start] = (byte) TileType.WaterDeep;
-//                hexBoard[goal] = (byte) TileType.WaterDeep;
-//            });
-
             SetupShader();
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
             Debug.Log("Created map");
