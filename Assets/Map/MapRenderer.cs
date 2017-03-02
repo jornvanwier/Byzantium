@@ -98,7 +98,7 @@ namespace Assets.Map
             hexBoard.GenerateMap();
 
 
-            /*
+
             CubicalCoordinate start = hexBoard.RandomValidTile();
 
             CubicalCoordinate goal = hexBoard.RandomValidTile();
@@ -116,7 +116,7 @@ namespace Assets.Map
 
                 hexBoard[start] = (byte) TileType.WaterDeep;
                 hexBoard[goal] = (byte) TileType.WaterDeep;
-            }); */
+            });
 
             SetupShader();
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
