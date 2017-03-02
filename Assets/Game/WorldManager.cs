@@ -12,7 +12,6 @@ namespace Assets.Game
         public GameObject MapRenderer;
 
         private GameObject cameraObject;
-        private Vector2 aimPoint;
         private const float CameraRotateSpeed = 50;
 
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
@@ -40,12 +39,12 @@ namespace Assets.Game
             UpdateCamera();
         }
 
-        Vector3 MultiplyVector(Vector3 v1, Vector3 v2)
+        private static Vector3 MultiplyVector(Vector3 v1, Vector3 v2)
         {
             return new Vector3(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
         }
 
-        Vector3 NegateY(Vector3 vector)
+        private static Vector3 NegateY(Vector3 vector)
         {
             return MultiplyVector(vector, new Vector3(1, 0, 1));
         }
