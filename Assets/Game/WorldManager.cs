@@ -1,6 +1,7 @@
 ﻿using Assets.Map;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Game
 {
@@ -46,9 +47,9 @@ namespace Assets.Game
             Vector3 worldPosition = cameraObject.transform.position;
             Vector3 localPosition = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.position;
 
-            Vector3 worldForward = cameraObject.transform.forward;
             Vector3 worldRight = cameraObject.transform.right;
             Vector3 worldUp = cameraObject.transform.up;
+            Vector3 worldForward = cameraObject.transform.forward;
 
             Vector3 objectForward = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.forward;
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
@@ -56,34 +57,44 @@ namespace Assets.Game
 
 
             if (Input.GetKey(KeyCode.Space))
-                cameraObject.transform.Translate(objectUp * CameraMoveSpeed * Time.deltaTime, Space.World);
+                Pan(cameraObject, objectUp);
             if (Input.GetKey(KeyCode.LeftShift))
-                cameraObject.transform.Translate(objectUp * CameraMoveSpeed * -Time.deltaTime, Space.World);
+                Pan(cameraObject, -objectUp);
 
             if (Input.GetKey(KeyCode.W))
-                cameraObject.transform.Translate(NegateY(worldForward) * CameraMoveSpeed * Time.deltaTime, Space.World);
+                Pan(cameraObject, worldForward);
             if (Input.GetKey(KeyCode.A))
-                cameraObject.transform.Translate(NegateY(-worldRight) * CameraMoveSpeed * Time.deltaTime, Space.World);
+                Pan(cameraObject, -worldRight);
             if (Input.GetKey(KeyCode.S))
-                cameraObject.transform.Translate(NegateY(-worldForward) * CameraMoveSpeed * Time.deltaTime, Space.World);
+                Pan(cameraObject, -worldForward);
             if (Input.GetKey(KeyCode.D))
-                cameraObject.transform.Translate(NegateY(worldRight) * CameraMoveSpeed * Time.deltaTime, Space.World);
+                Pan(cameraObject, worldRight);
 
             if (Input.GetKey(KeyCode.UpArrow))
-                cameraObject.transform.Rotate(objectRight, CameraRotateSpeed);
+                Rotate(cameraObject, objectRight);
             if (Input.GetKey(KeyCode.DownArrow))
-                cameraObject.transform.Rotate(objectRight, -CameraRotateSpeed);
+                Rotate(cameraObject, -objectRight);
             if (Input.GetKey(KeyCode.RightArrow))
-                cameraObject.transform.Rotate(Vector3.up, CameraRotateSpeed, Space.World);
+                Rotate(cameraObject, Vector3.up);
             if (Input.GetKey(KeyCode.LeftArrow))
-                cameraObject.transform.Rotate(Vector3.up, -CameraRotateSpeed, Space.World);
+                Rotate(cameraObject, -Vector3.up);
 
-            if (Input.GetMouseButton(1))
-                Debug.Log(1);
-            if (Input.GetMouseButton(2))
-                Debug.Log(2);
-            if (Input.GetMouseButton(3))
-                Debug.Log(3);
+            float zoom = Input.GetAxis("Mouse ScrollWheel");
+            cameraObject.transform.Translate(worldForward * CameraMoveSpeed * zoom * 10 * Time.deltaTime, Space.World);
+        }
+
+        private void Pan(GameObject cameraObject, Vector3 direction)
+        {
+            cameraObject.transform.Translate(NegateY(direction) * CameraMoveSpeed * Time.deltaTime, Space.World);
+        }
+
+        private void Rotate(GameObject cameraObject, Vector3 around)
+        {
+            cameraObject.transform.Rotate(around, CameraRotateSpeed, Space.World);
+        }
+
+        private void Zoom(GameObject cameraObject)
+        {
         }
     }
 }
