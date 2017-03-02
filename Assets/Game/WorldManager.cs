@@ -90,7 +90,7 @@ namespace Assets.Game
             float zoom = Input.GetAxis("Mouse ScrollWheel");
             Zoom(worldForward, zoom);
 
-            //Middle mouse drag
+            //Middle mouse drag and right mouse rotate
             if (Input.GetMouseButtonDown(1))
             {
                 Vector3 position = Input.mousePosition;
@@ -127,14 +127,12 @@ namespace Assets.Game
                     if (middleMouseDown)
                     {
                         movement *= rayDistance / 10.5f;
-                        Vector3 direction = new Vector3(movement.x, 0, movement.y);
-                        cameraObject.transform.Translate(NegateY(direction) * Time.deltaTime,
-                            Space.World);
+
+                        cameraObject.transform.Translate(new Vector3(movement.x, 0, 0) * Time.deltaTime);
+                        cameraObject.transform.Translate(new Vector3(0, 0, movement.y) * Time.deltaTime, Space.World);
                     }
                     if (rightMouseDown)
-                    {
-                        cameraObject.transform.RotateAround(startIntersect, Vector3.up, movement.x);
-                    }
+                        cameraObject.transform.RotateAround(startIntersect, Vector3.up, -movement.x);
                 }
                 prevMousePos = position;
             }
@@ -186,6 +184,18 @@ namespace Assets.Game
         private void Zoom(Vector3 forward, float zoom)
         {
             cameraObject.transform.Translate(forward * ZoomSpeed * zoom * 10 * Time.deltaTime, Space.World);
+        }
+
+        public static Vector2 RotateVector(Vector2 v, float radians)
+        {
+            float sin = Mathf.Sin(radians);
+            float cos = Mathf.Cos(radians);
+
+            float tx = v.x;
+            float ty = v.y;
+            v.x = (cos * tx) - (sin * ty);
+            v.y = (sin * tx) + (cos * ty);
+            return v;
         }
     }
 }
