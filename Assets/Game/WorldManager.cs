@@ -1,4 +1,4 @@
-﻿﻿using Assets.Map;
+﻿using Assets.Map;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,7 +15,7 @@ namespace Assets.Game
         private Vector2 aimPoint;
         private const float CameraHeight = 10;
         private const float CameraMoveSpeed = 16;
-        private const float CameraRotateSpeed = 1;
+        private const float CameraRotateSpeed = 50;
 
 
         [UsedImplicitly]
@@ -58,48 +58,60 @@ namespace Assets.Game
 
             Vector3 objectForward = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.forward;
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
-            Vector3 objectUp = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.up;
-
-
+            
             if (Input.GetKey(KeyCode.Space))
-                Pan(cameraObject, objectUp);
+                Ascend();
             if (Input.GetKey(KeyCode.LeftShift))
-                Pan(cameraObject, -objectUp);
+                Descend();
 
             if (Input.GetKey(KeyCode.W))
-                Pan(cameraObject, worldForward);
+                Pan(worldForward);
             if (Input.GetKey(KeyCode.A))
-                Pan(cameraObject, -worldRight);
+                Pan(worldRight, -1f);
             if (Input.GetKey(KeyCode.S))
-                Pan(cameraObject, -worldForward);
+                Pan(worldForward, -1f);
             if (Input.GetKey(KeyCode.D))
-                Pan(cameraObject, worldRight);
+                Pan(worldRight);
 
             if (Input.GetKey(KeyCode.UpArrow))
-                Rotate(cameraObject, objectRight);
+                Rotate(objectRight, Space.Self);
             if (Input.GetKey(KeyCode.DownArrow))
-                Rotate(cameraObject, -objectRight);
+                Rotate(objectRight, Space.Self, -1f);
             if (Input.GetKey(KeyCode.RightArrow))
-                Rotate(cameraObject, Vector3.up);
+                Rotate(Vector3.up);
             if (Input.GetKey(KeyCode.LeftArrow))
-                Rotate(cameraObject, -Vector3.up);
+                Rotate(Vector3.up, Space.World, -1f);
 
             float zoom = Input.GetAxis("Mouse ScrollWheel");
-            cameraObject.transform.Translate(worldForward * CameraMoveSpeed * zoom * 10 * Time.deltaTime, Space.World);
+            Zoom(worldForward, zoom);
         }
 
-        private void Pan(GameObject cameraObject, Vector3 direction)
+        private void Ascend()
         {
-            cameraObject.transform.Translate(NegateY(direction) * CameraMoveSpeed * Time.deltaTime, Space.World);
+            Vector3 objectUp = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.up;
+            cameraObject.transform.Translate(objectUp * CameraMoveSpeed * Time.deltaTime, Space.World);
         }
 
-        private void Rotate(GameObject cameraObject, Vector3 around)
+        private void Descend()
         {
-            cameraObject.transform.Rotate(around, CameraRotateSpeed, Space.World);
+            Vector3 objectUp = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.up;
+            cameraObject.transform.Translate(objectUp * -CameraMoveSpeed * Time.deltaTime, Space.World);
         }
 
-        private void Zoom(GameObject cameraObject)
+        private void Pan(Vector3 direction, float multiplier = 1)
         {
+            cameraObject.transform.Translate(NegateY(direction) * CameraMoveSpeed * Time.deltaTime * multiplier,
+                Space.World);
+        }
+
+        private void Rotate(Vector3 around, Space space = Space.World, float multiplier = 1)
+        {
+            cameraObject.transform.Rotate(around, CameraRotateSpeed * multiplier * Time.deltaTime, space);
+        }
+
+        private void Zoom(Vector3 forward, float zoom)
+        {
+            cameraObject.transform.Translate(forward * CameraMoveSpeed * zoom * 10 * Time.deltaTime, Space.World);
         }
     }
 }
