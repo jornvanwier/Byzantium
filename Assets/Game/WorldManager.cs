@@ -49,6 +49,7 @@ namespace Assets.Game
             return MultiplyVector(vector, new Vector3(1, 0, 1));
         }
 
+
         private void UpdateCamera()
         {
             Vector3 worldPosition = cameraObject.transform.position;
@@ -61,6 +62,7 @@ namespace Assets.Game
             Vector3 objectForward = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.forward;
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
 
+            //Keyboard movement
             if (Input.GetKey(KeyCode.Space))
                 Ascend();
             if (Input.GetKey(KeyCode.LeftShift))
@@ -84,20 +86,48 @@ namespace Assets.Game
             if (Input.GetKey(KeyCode.LeftArrow))
                 Rotate(Vector3.up, Space.World, -1f);
 
+            //Mouse scroll zoom
             float zoom = Input.GetAxis("Mouse ScrollWheel");
             Zoom(worldForward, zoom);
 
+            //Middle mouse drag
+            if (Input.GetMouseButtonDown(2))
+                mouseDown = true;
+            if (mouseDown)
+            {
+                Vector2 position = Input.mousePosition;
+                if (prevMousePos != Vector2.zero)
+                {
+                    Vector2 movement = prevMousePos - position;
+                    movement /= 15;
+                    Pan(new Vector3(movement.x, 0, movement.y));
+                }
+                prevMousePos = position;
+            }
 
-            const int margin = 10;
-            if (Input.mousePosition.x < margin)
-                Pan(worldRight, -1f);
-            if (Input.mousePosition.y < margin)
-                Pan(worldForward, -1f);
-            if (Input.mousePosition.y > Screen.height - margin)
-                Pan(worldForward);
-            if (Input.mousePosition.x > Screen.width - margin)
-                Pan(worldRight);
+            if (Input.GetMouseButtonUp(2))
+            {
+                mouseDown = false;
+                prevMousePos = Vector2.zero;
+            }
+
+            //Border mouse move
+            if (!mouseDown)
+            {
+                const int margin = 10;
+                if (Input.mousePosition.x < margin)
+                    Pan(worldRight, -1f);
+                if (Input.mousePosition.y < margin)
+                    Pan(worldForward, -1f);
+                if (Input.mousePosition.y > Screen.height - margin)
+                    Pan(worldForward);
+                if (Input.mousePosition.x > Screen.width - margin)
+                    Pan(worldRight);
+            }
         }
+
+        private bool mouseDown;
+        private Vector2 prevMousePos = Vector2.zero;
 
         private void Ascend()
         {
