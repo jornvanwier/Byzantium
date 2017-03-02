@@ -13,9 +13,11 @@ namespace Assets.Game
 
         private GameObject cameraObject;
         private Vector2 aimPoint;
-        private const float CameraHeight = 10;
-        private const float CameraMoveSpeed = 16;
         private const float CameraRotateSpeed = 50;
+
+        private float CameraHeight => cameraObject?.transform.position.y ?? 10;
+        private float CameraMoveSpeed => 2 * CameraHeight;
+        private float ZoomSpeed => 2 * (CameraHeight - 1);
 
 
         [UsedImplicitly]
@@ -25,9 +27,10 @@ namespace Assets.Game
             MapRenderer.name = "Map";
             MapRenderer.GetComponent<MapRenderer>().StartPin = StartPin;
             MapRenderer.GetComponent<MapRenderer>().GoalPin = GoalPin;
+            float cHeight = CameraHeight;
             cameraObject = new GameObject("MainCamera");
             cameraObject.AddComponent<Camera>();
-            cameraObject.transform.position = new Vector3(0, CameraHeight, 0);
+            cameraObject.transform.position = new Vector3(0, cHeight, 0);
         }
 
         // Update is called once per frame
@@ -58,7 +61,7 @@ namespace Assets.Game
 
             Vector3 objectForward = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.forward;
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
-            
+
             if (Input.GetKey(KeyCode.Space))
                 Ascend();
             if (Input.GetKey(KeyCode.LeftShift))
@@ -85,7 +88,7 @@ namespace Assets.Game
             float zoom = Input.GetAxis("Mouse ScrollWheel");
             Zoom(worldForward, zoom);
 
-            
+
             const int margin = 10;
             if (Input.mousePosition.x < margin)
                 Pan(worldRight, -1f);
@@ -122,7 +125,7 @@ namespace Assets.Game
 
         private void Zoom(Vector3 forward, float zoom)
         {
-            cameraObject.transform.Translate(forward * CameraMoveSpeed * zoom * 10 * Time.deltaTime, Space.World);
+            cameraObject.transform.Translate(forward * ZoomSpeed * zoom * 10 * Time.deltaTime, Space.World);
         }
     }
 }
