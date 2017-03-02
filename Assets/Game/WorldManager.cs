@@ -91,28 +91,57 @@ namespace Assets.Game
             Zoom(worldForward, zoom);
 
             //Middle mouse drag
+            if (Input.GetMouseButtonDown(1))
+            {
+                Vector3 position = Input.mousePosition;
+                Plane plane = new Plane(Vector3.up, Vector3.zero);
+                Camera camera = cameraObject.GetComponent<Camera>();
+                Ray ray = camera.ScreenPointToRay(position);
+                if (plane.Raycast(ray, out float rayDistance))
+                    startIntersect = ray.GetPoint(rayDistance);
+                rightMouseDown = true;
+            }
+            if (Input.GetMouseButtonUp(1))
+            {
+                rightMouseDown = false;
+                prevMousePos = Vector2.zero;
+            }
             if (Input.GetMouseButtonDown(2))
-                mouseDown = true;
-            if (mouseDown)
+                middleMouseDown = true;
+            if (Input.GetMouseButtonUp(2))
+            {
+                middleMouseDown = false;
+                prevMousePos = Vector2.zero;
+            }
+            if (middleMouseDown || rightMouseDown)
             {
                 Vector2 position = Input.mousePosition;
+                Vector3 intersect = Vector3.zero;
+                Plane plane = new Plane(Vector3.up, Vector3.zero);
+                Camera camera = cameraObject.GetComponent<Camera>();
+                Ray ray = camera.ScreenPointToRay(position);
+                plane.Raycast(ray, out float rayDistance);
                 if (prevMousePos != Vector2.zero)
                 {
                     Vector2 movement = prevMousePos - position;
-                    movement /= 15;
-                    Pan(new Vector3(movement.x, 0, movement.y));
+                    if (middleMouseDown)
+                    {
+                        movement *= rayDistance / 10.5f;
+                        Vector3 direction = new Vector3(movement.x, 0, movement.y);
+                        cameraObject.transform.Translate(NegateY(direction) * Time.deltaTime,
+                            Space.World);
+                    }
+                    if (rightMouseDown)
+                    {
+                        cameraObject.transform.RotateAround(startIntersect, Vector3.up, movement.x);
+                    }
                 }
                 prevMousePos = position;
             }
 
-            if (Input.GetMouseButtonUp(2))
-            {
-                mouseDown = false;
-                prevMousePos = Vector2.zero;
-            }
 
             //Border mouse move
-            if (!mouseDown)
+            if (!middleMouseDown && !rightMouseDown)
             {
                 const int margin = 10;
                 if (Input.mousePosition.x < margin)
@@ -126,8 +155,10 @@ namespace Assets.Game
             }
         }
 
-        private bool mouseDown;
+        private bool middleMouseDown;
+        private bool rightMouseDown;
         private Vector2 prevMousePos = Vector2.zero;
+        private Vector3 startIntersect;
 
         private void Ascend()
         {
