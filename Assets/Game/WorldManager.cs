@@ -8,6 +8,7 @@ namespace Assets.Game
         public GameObject mapRenderer;
 
         private GameObject cameraObject;
+        private Camera cameraComponent;
         private Vector2 aimPoint;
 
 
@@ -16,7 +17,7 @@ namespace Assets.Game
         {
             mapRenderer = Instantiate(mapRenderer);
             cameraObject = new GameObject("CAMERA");
-            cameraObject.AddComponent<Camera>();
+            cameraComponent = cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = new Vector3(0, 10, 0);
         }
 
@@ -25,7 +26,24 @@ namespace Assets.Game
         void Update()
         {
             UpdateCamera();
+            UpdateMouse();
         }
+
+        private void UpdateMouse()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                RaycastHit hit;
+                Ray ray = cameraComponent.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit, 100.0f))
+                {
+                    if(hit.transform != null)
+                        Debug.Log(hit.transform.position);
+                }
+
+            }
+        }
+
 
         private void UpdateCamera()
         {
