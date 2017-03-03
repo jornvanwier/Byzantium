@@ -149,36 +149,39 @@ namespace Assets.Map
         [UsedImplicitly]
         private void Update()
         {
-            if (StartPin != null && GoalPin != null)
-            {
+//            if (StartPin != null && GoalPin != null)
+//            {
+//
+//                CubicalCoordinate start = WorldToCubicalCoordinate(StartPin.transform.position);
+//                CubicalCoordinate goal = WorldToCubicalCoordinate(GoalPin.transform.position);
+//
+//                MarkTileSelectedForNextFrame(start);
+//                MarkTileSelectedForNextFrame(goal);
+//
+//                if (pathfindingJobId == -1)
+//                {
+//                    pathfindingJobId = PathfindingJobManager.Instance.CreateJob(start, goal);
+//                }
+//                else
+//                {
+//                    if (PathfindingJobManager.Instance.IsFinished(pathfindingJobId))
+//                    {
+//                        PathfindingJobInfo info = PathfindingJobManager.Instance.GetInfo(pathfindingJobId);
+//                        if (info.State == JobState.Success)
+//                        {
+//                            foreach (CubicalCoordinate hex in info.Path)
+//                            {
+//                                OddRCoordinate offset = hex.ToOddR();
+//                                MarkTileSelectedForNextFrame(offset);
+//                            }
+//                        }
+//                        pathfindingJobId = -1;
+//                    }
+//                }
+//            }
 
-                CubicalCoordinate start = WorldToCubicalCoordinate(StartPin.transform.position);
-                CubicalCoordinate goal = WorldToCubicalCoordinate(GoalPin.transform.position);
-
-                MarkTileSelectedForNextFrame(start);
-                MarkTileSelectedForNextFrame(goal);
-
-                if (pathfindingJobId == -1)
-                {
-                    pathfindingJobId = PathfindingJobManager.Instance.CreateJob(start, goal);
-                }
-                else
-                {
-                    if (PathfindingJobManager.Instance.IsFinished(pathfindingJobId))
-                    {
-                        PathfindingJobInfo info = PathfindingJobManager.Instance.GetInfo(pathfindingJobId);
-                        if (info.State == JobState.Success)
-                        {
-                            foreach (CubicalCoordinate hex in info.Path)
-                            {
-                                OddRCoordinate offset = hex.ToOddR();
-                                MarkTileSelectedForNextFrame(offset);
-                            }
-                        }
-                        pathfindingJobId = -1;
-                    }
-                }
-            }
+            GoalPin.transform.position =
+                CubicalCoordinateToWorld(WorldToCubicalCoordinate(StartPin.transform.position));
 
             UpdateSelectedSet();
         }
@@ -192,6 +195,13 @@ namespace Assets.Map
         private static float Remap(float value, float from1, float to1, float from2, float to2)
         {
             return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+        }
+
+        public Vector3 CubicalCoordinateToWorld(CubicalCoordinate cc)
+        {
+            int x = (int) (gameObject.transform.localScale.x / MapSize * (3 / 2f) * cc.X);
+            int z = (int) (gameObject.transform.localScale.y / MapSize * Math.Sqrt(3) * (cc.Z + cc.X / 2));
+            return new Vector3(x, 0, z);
         }
 
         public CubicalCoordinate WorldToCubicalCoordinate(Vector3 worldPos)
