@@ -76,7 +76,7 @@ namespace Assets.Map.Generation
             return tileMap;
         }
 
-        private byte[,] GetTileMap(float[,] heightMap, float[,] moistureMap)
+        private static byte[,] GetTileMap(float[,] heightMap, float[,] moistureMap)
         {
             int width = heightMap.GetLength(0);
             int height = heightMap.GetLength(1);
@@ -134,7 +134,7 @@ namespace Assets.Map.Generation
             return bigMap;
         }
 
-        private float[,] GetMoistureMap(bool[,] watermap, int moistureResolution = 1, int waterResolution = 32)
+        private static float[,] GetMoistureMap(bool[,] watermap, int moistureResolution = 1, int waterResolution = 32)
         {
             int tileMapSize = watermap.GetLength(0);
             List<Int2> beachWaterTiles = GetBeachWaterTiles(watermap, tileMapSize / waterResolution);
@@ -174,7 +174,7 @@ namespace Assets.Map.Generation
             return moistureMap;
         }
 
-        private long GenerateMoistureMapPart(ref float[,] moistureMap, int x1, int y1, int x2, int y2, bool[,] waterMap,
+        private static long GenerateMoistureMapPart(ref float[,] moistureMap, int x1, int y1, int x2, int y2, bool[,] waterMap,
             List<Int2> beachWaterTiles, int moistureResolution)
         {
             long count = 0;
@@ -203,7 +203,7 @@ namespace Assets.Map.Generation
             return count;
         }
 
-        private List<Int2> GetBeachWaterTiles(bool[,] waterMap, int resolution)
+        private static List<Int2> GetBeachWaterTiles(bool[,] waterMap, int resolution)
         {
             int size = waterMap.GetLength(0);
             List<Int2> beachWaterTiles = new List<Int2>();
@@ -214,7 +214,7 @@ namespace Assets.Map.Generation
                     if (waterMap[x, y])
                     {
                         Int2 currentTile = new Int2(x, y);
-                        Int2[] neighbours = GetNeighbours(size, currentTile);
+                        IEnumerable<Int2> neighbours = GetNeighbours(size, currentTile);
                         foreach (Int2 neighbour in neighbours)
                         {
                             bool neighbourIsWater = waterMap[neighbour.X, neighbour.Y];
@@ -265,7 +265,7 @@ namespace Assets.Map.Generation
                 Debug.LogWarning("Failed creating " + failedRivers + " out of " + numRivers + " rivers");
         }
 
-        private List<Int2> GetRiver(int mapSize, Int2 startPos, float[,] heightMap)
+        private static List<Int2> GetRiver(int mapSize, Int2 startPos, float[,] heightMap)
         {
             List<Int2> river = new List<Int2> {startPos};
 
@@ -275,7 +275,7 @@ namespace Assets.Map.Generation
             return river;
         }
 
-        private bool AddRiverTile(int mapSize, List<Int2> river, float[,] heightMap)
+        private static bool AddRiverTile(int mapSize, List<Int2> river, float[,] heightMap)
         {
             Int2 currentTile = river.Last();
             float currentHeight = heightMap[currentTile.X, currentTile.Y];
@@ -302,7 +302,7 @@ namespace Assets.Map.Generation
             return false;
         }
 
-        private static Int2[] GetNeighbours(int size, Int2 position)
+        private static IEnumerable<Int2> GetNeighbours(int size, Int2 position)
         {
             int x = position.X;
             int y = position.Y;
@@ -345,7 +345,7 @@ namespace Assets.Map.Generation
             return new[] {new Int2(x, y + 1), new Int2(x + 1, y), new Int2(x, y - 1), new Int2(x - 1, y)};
         }
 
-        private Int2 GetRiverStartPosition(int size)
+        private static Int2 GetRiverStartPosition(int size)
         {
             Random random = new Random();
             int x = random.Next(0, size);
@@ -353,7 +353,7 @@ namespace Assets.Map.Generation
             return new Int2(x, y);
         }
 
-        private bool[,] GetWaterMap(float[,] floatMap)
+        private static bool[,] GetWaterMap(float[,] floatMap)
         {
             int size = (int) Mathf.Sqrt(floatMap.Length);
             bool[,] map = new bool[size, size];
@@ -425,7 +425,7 @@ namespace Assets.Map.Generation
             return map;
         }
 
-        private void PerlinizeMap(ref float[,] map, float perlinFactor = 0.1f)
+        private static void PerlinizeMap(ref float[,] map, float perlinFactor = 0.1f)
         {
             int size = map.GetLength(0);
             float scale = Scale * size / 4;
@@ -442,7 +442,7 @@ namespace Assets.Map.Generation
             }
         }
 
-        private void NormalizeMap(ref float[,] map, float highestAllowedValue = 1)
+        private static void NormalizeMap(ref float[,] map, float highestAllowedValue = 1)
         {
             int size = map.GetLength(0);
 
@@ -474,7 +474,7 @@ namespace Assets.Map.Generation
             }
         }
 
-        private void InvertMap(ref float[,] map, float max = 1)
+        private static void InvertMap(ref float[,] map, float max = 1)
         {
             int size = map.GetLength(0);
             for (int y = 0; y < size; y++)
