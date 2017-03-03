@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Map.Generation;
+using Assets.Map.Pathfinding;
+using Assets.Util;
 using JetBrains.Annotations;
 using UnityEngine;
 using Map;
@@ -96,6 +98,8 @@ namespace Assets.Map
             hexBoard = new HexBoard(MapSize) {Generator = new PerlinGenerator()};
             hexBoard.GenerateMap();
 
+            PathfindingJobManager.Instance.Map = hexBoard;
+
             SetupShader();
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
             Debug.Log("Created map");
@@ -140,6 +144,8 @@ namespace Assets.Map
             meshRenderer.SetPropertyBlock(block);
         }
 
+        private int pathfindingJobId = -1;
+
         [UsedImplicitly]
         private void Update()
         {
@@ -152,18 +158,27 @@ namespace Assets.Map
                 MarkTileSelectedForNextFrame(start);
                 MarkTileSelectedForNextFrame(goal);
 
-                List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
-                if (path != null)
+                if (pathfindingJobId == -1)
                 {
-                    foreach (CubicalCoordinate hex in path)
+                    pathfindingJobId = PathfindingJobManager.Instance.CreateJob(start, goal);
+                }
+                else
+                {
+                    if (PathfindingJobManager.Instance.IsFinished(pathfindingJobId))
                     {
-                        OddRCoordinate offset = hex.ToOddR();
-                        MarkTileSelectedForNextFrame(offset);
+                        PathfindingJobInfo info = PathfindingJobManager.Instance.GetInfo(pathfindingJobId);
+                        if (info.State == JobState.Success)
+                        {
+                            foreach (CubicalCoordinate hex in info.Path)
+                            {
+                                OddRCoordinate offset = hex.ToOddR();
+                                MarkTileSelectedForNextFrame(offset);
+                            }
+                        }
+                        pathfindingJobId = -1;
                     }
                 }
             }
-
-
 
             UpdateSelectedSet();
         }
