@@ -46,7 +46,8 @@ namespace Assets.Game
 
         private static Vector3 NegateY(Vector3 vector)
         {
-            return MultiplyVector(vector, new Vector3(1, 0, 1));
+            Vector3 result = MultiplyVector(vector, new Vector3(1, 0, 1));
+            return Vector3.Normalize(result);
         }
 
 
@@ -129,7 +130,7 @@ namespace Assets.Game
                         movement *= rayDistance / 10.5f;
 
                         cameraObject.transform.Translate(new Vector3(movement.x, 0, 0) * Time.deltaTime);
-                        cameraObject.transform.Translate(new Vector3(0, 0, movement.y) * Time.deltaTime, Space.World);
+                        cameraObject.transform.Translate(worldForward * Time.deltaTime, Space.World);
                     }
                     if (rightMouseDown)
                         cameraObject.transform.RotateAround(startIntersect, Vector3.up, -movement.x);
