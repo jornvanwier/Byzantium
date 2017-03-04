@@ -14,7 +14,7 @@ namespace Assets.Map
     {
         private const float BorderPercentage = 0.2f;
 
-        private readonly int size;
+        public int Size { get; set; }
 
         private IEnumerable<CubicalCoordinate> Directions { get; } = new[]
         {
@@ -29,13 +29,13 @@ namespace Assets.Map
 
         public HexBoard(int size)
         {
-            this.size = size;
+            Size = size;
         }
 
         public void GenerateMap()
         {
-            Storage = Generator.Generate(size, BorderPercentage);
-            NodeGraph = new NodeGraph(size);
+            Storage = Generator.Generate(Size, BorderPercentage);
+            NodeGraph = new NodeGraph(Size);
         }
 
         public byte this[CubicalCoordinate cc]
@@ -55,7 +55,7 @@ namespace Assets.Map
 
         public bool CheckCoordinate(OddRCoordinate oc)
         {
-            return oc.Q >= 0 && oc.Q < size && oc.R >= 0 && oc.R < size;
+            return oc.Q >= 0 && oc.Q < Size && oc.R >= 0 && oc.R < Size;
         }
 
         public bool CheckCoordinate(CubicalCoordinate cc)
@@ -68,7 +68,7 @@ namespace Assets.Map
             CubicalCoordinate cc;
             do
             {
-                cc = new OddRCoordinate(Random.Range(0, size), Random.Range(0, size)).ToCubical();
+                cc = new OddRCoordinate(Random.Range(0, Size), Random.Range(0, Size)).ToCubical();
             } while (this[cc] == (byte) TileType.WaterDeep);
 
             return cc;
@@ -120,7 +120,7 @@ namespace Assets.Map
                 [startNode] = 0
             };
 
-            var queue = new FastPriorityQueue<AStarNode>(size * size);
+            var queue = new FastPriorityQueue<AStarNode>(Size * Size);
             queue.Enqueue(startNode, 0);
 
             while (queue.Count > 0)
