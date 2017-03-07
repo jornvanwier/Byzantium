@@ -13,6 +13,7 @@ namespace Assets.Game
 
         private GameObject cameraObject;
         private const float CameraRotateSpeed = 50;
+        private const float InitialCameraAngle = 35;
 
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
         private float CameraMoveSpeed => 2 * CameraHeight;
@@ -30,6 +31,9 @@ namespace Assets.Game
             cameraObject = new GameObject("MainCamera");
             cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = new Vector3(0, cHeight, 0);
+
+            Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
+            Rotate(objectRight, Space.Self, InitialCameraAngle);
         }
 
         // Update is called once per frame
@@ -130,7 +134,8 @@ namespace Assets.Game
                         movement *= rayDistance / 10.5f;
 
                         cameraObject.transform.Translate(new Vector3(movement.x, 0, 0) * Time.deltaTime);
-                        cameraObject.transform.Translate(worldForward * Time.deltaTime, Space.World);
+                        cameraObject.transform.Translate(NegateY(worldForward) * movement.y * Time.deltaTime,
+                            Space.World);
                     }
                     if (rightMouseDown)
                         cameraObject.transform.RotateAround(startIntersect, Vector3.up, -movement.x);
