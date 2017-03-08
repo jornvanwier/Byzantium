@@ -14,6 +14,9 @@ namespace Assets.Map
 {
     public class MapRenderer : MonoBehaviour
     {
+        [Range(1, 360)]
+        public int HexToWorldRotation = 45;
+
         private ComputeBuffer computeBuffer;
         private HexBoard hexBoard;
 
@@ -199,9 +202,19 @@ namespace Assets.Map
 
         public Vector3 CubicalCoordinateToWorld(CubicalCoordinate cc)
         {
-            int x = (int) (gameObject.transform.localScale.x / MapSize * (3 / 2f) * cc.X);
-            int z = (int) (gameObject.transform.localScale.y / MapSize * Math.Sqrt(3) * (cc.Z + cc.X / 2));
-            return new Vector3(x, 0, z);
+            float hexSize = Mathf.Sqrt(3)/3;
+
+            float x = hexSize * (3 / 2f) * cc.Z;
+            float z = hexSize * Mathf.Sqrt(3) * (cc.X + cc.Z / 2);
+
+            float zOffset = cc.ToOddR().IsUneven()
+                ? (gameObject.transform.localScale.y - MapSize * 0.005f) / 2 / MapSize
+                : 0;
+
+            float tX = x - (gameObject.transform.localScale.x - MapSize * 0.075f * 2) / 2;
+            float tZ = z - (gameObject.transform.localScale.y - MapSize * 0.005f * 2) / 2 + zOffset;
+
+            return new Vector3(tX, 0, tZ);
         }
 
         public CubicalCoordinate WorldToCubicalCoordinate(Vector3 worldPos)
