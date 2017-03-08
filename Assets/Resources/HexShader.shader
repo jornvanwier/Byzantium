@@ -224,10 +224,6 @@
                     c.rgb = _HighlightColor;
             }
 
-            if(data.hexagonPositionOffset.y == 0 && data.hexagonPositionOffset.x == 0) {
-                c.rgb = float3(1,1,1);
-            }
-
             
             #endif
 
