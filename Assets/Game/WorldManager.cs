@@ -19,6 +19,13 @@ namespace Assets.Game
         private float CameraMoveSpeed => 2 * CameraHeight;
         private float ZoomSpeed => 2 * (CameraHeight - 1);
 
+        private bool applicationHasFocus;
+
+        [UsedImplicitly]
+        private void OnApplicationFocus( bool hasFocus )
+        {
+            applicationHasFocus = hasFocus;
+        }
 
         [UsedImplicitly]
         void Start()
@@ -145,7 +152,7 @@ namespace Assets.Game
 
 
             //Border mouse move
-            if (!middleMouseDown && !rightMouseDown)
+            if (!middleMouseDown && !rightMouseDown && applicationHasFocus)
             {
                 const int margin = 10;
                 if (Input.mousePosition.x < margin)
