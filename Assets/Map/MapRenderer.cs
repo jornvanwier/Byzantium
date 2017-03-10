@@ -14,9 +14,6 @@ namespace Assets.Map
 {
     public class MapRenderer : MonoBehaviour
     {
-        [Range(1, 360)]
-        public int HexToWorldRotation = 45;
-
         private ComputeBuffer computeBuffer;
         private HexBoard hexBoard;
 
@@ -171,6 +168,7 @@ namespace Assets.Map
                 {
                     if (PathfindingJobManager.Instance.IsFinished(pathfindingJobId))
                     {
+                        selectedSet.Clear();
                         PathfindingJobInfo info = PathfindingJobManager.Instance.GetInfo(pathfindingJobId);
                         if (info.State == JobState.Success)
                         {
@@ -295,7 +293,6 @@ namespace Assets.Map
                 src.SetSelected(false);
                 this.data[tile.Y, tile.X] = src.GetAsInt();
             }
-            selectedSet.Clear();
         }
 
         public void MarkTileSelectedForNextFrame(CubicalCoordinate cc)
