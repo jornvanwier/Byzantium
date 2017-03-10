@@ -12,17 +12,19 @@ namespace Assets.Game
         public GameObject MapRenderer;
 
         private GameObject cameraObject;
-        private const float CameraRotateSpeed = 50;
-        private const float InitialCameraAngle = 35;
+        public float CameraRotateSpeed = 50;
+        public float InitialCameraAngle = 35;
+        public float InitialZoomSpeed = 2;
+        public float InitialCameraMoveSpeed = 2;
 
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
-        private float CameraMoveSpeed => 2 * CameraHeight;
-        private float ZoomSpeed => 2 * (CameraHeight - 1);
+        private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
+        private float ZoomSpeed => InitialZoomSpeed * (CameraHeight - 1);
 
         private bool applicationHasFocus;
 
         [UsedImplicitly]
-        private void OnApplicationFocus( bool hasFocus )
+        private void OnApplicationFocus(bool hasFocus)
         {
             applicationHasFocus = hasFocus;
         }
