@@ -13,6 +13,7 @@ namespace Assets.Game
         public GameObject MapRenderer;
         public GameObject TestPrefab;
 
+        private MovableBoardMesh mbm;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
         public float InitialCameraAngle = 35;
@@ -43,8 +44,10 @@ namespace Assets.Game
             cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = new Vector3(0, cHeight, 0);
 
-            Instantiate(TestPrefab).GetComponent<BoardMesh>().Position = MapRenderer.GetComponent<MapRenderer>()
-                .WorldToCubicalCoordinate(GoalPin.transform.position);
+            mbm = Instantiate(TestPrefab).GetComponent<MovableBoardMesh>();
+
+            mbm.Position = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(StartPin.transform.position);
+            mbm.Goal = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
 
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
             Rotate(objectRight, Space.Self, InitialCameraAngle);
@@ -55,6 +58,7 @@ namespace Assets.Game
         void Update()
         {
             UpdateCamera();
+            mbm.Goal = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
         }
 
         private static Vector3 MultiplyVector(Vector3 v1, Vector3 v2)

@@ -151,37 +151,37 @@ namespace Assets.Map
         [UsedImplicitly]
         private void Update()
         {
-            if (StartPin != null && GoalPin != null)
-            {
-
-                CubicalCoordinate start = WorldToCubicalCoordinate(StartPin.transform.position);
-                CubicalCoordinate goal = WorldToCubicalCoordinate(GoalPin.transform.position);
-
-                MarkTileSelectedForNextFrame(start);
-                MarkTileSelectedForNextFrame(goal);
-
-                if (pathfindingJobId == -1)
-                {
-                    pathfindingJobId = PathfindingJobManager.Instance.CreateJob(start, goal);
-                }
-                else
-                {
-                    if (PathfindingJobManager.Instance.IsFinished(pathfindingJobId))
-                    {
-                        selectedSet.Clear();
-                        PathfindingJobInfo info = PathfindingJobManager.Instance.GetInfo(pathfindingJobId);
-                        if (info.State == JobState.Success)
-                        {
-                            foreach (CubicalCoordinate hex in info.Path)
-                            {
-                                OddRCoordinate offset = hex.ToOddR();
-                                MarkTileSelectedForNextFrame(offset);
-                            }
-                        }
-                        pathfindingJobId = -1;
-                    }
-                }
-            }
+//            if (StartPin != null && GoalPin != null)
+//            {
+//
+//                CubicalCoordinate start = WorldToCubicalCoordinate(StartPin.transform.position);
+//                CubicalCoordinate goal = WorldToCubicalCoordinate(GoalPin.transform.position);
+//
+//                MarkTileSelectedForNextFrame(start);
+//                MarkTileSelectedForNextFrame(goal);
+//
+//                if (pathfindingJobId == -1)
+//                {
+//                    pathfindingJobId = PathfindingJobManager.Instance.CreateJob(start, goal);
+//                }
+//                else
+//                {
+//                    if (PathfindingJobManager.Instance.IsFinished(pathfindingJobId))
+//                    {
+//                        selectedSet.Clear();
+//                        PathfindingJobInfo info = PathfindingJobManager.Instance.GetInfo(pathfindingJobId);
+//                        if (info.State == JobState.Success)
+//                        {
+//                            foreach (CubicalCoordinate hex in info.Path)
+//                            {
+//                                OddRCoordinate offset = hex.ToOddR();
+//                                MarkTileSelectedForNextFrame(offset);
+//                            }
+//                        }
+//                        pathfindingJobId = -1;
+//                    }
+//                }
+//            }
 
 //            CubicalCoordinate startPinPos = WorldToCubicalCoordinate(StartPin.transform.position);
 //

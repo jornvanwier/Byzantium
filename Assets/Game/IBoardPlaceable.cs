@@ -6,6 +6,6 @@ namespace Assets.Game
     public interface IBoardPlaceable
     {
         CubicalCoordinate Position { get; set; }
-        Vector2 DrawOffset { get; set; }
+        Vector3 DrawOffset { get; set; }
     }
 }

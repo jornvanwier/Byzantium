@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using UnityEngine;
 
 namespace Assets.Util
@@ -18,6 +19,13 @@ namespace Assets.Util
             T result = func.Invoke();
             Debug.Log($"Performed {description} in {Time.realtimeSinceStartup - tStart} seconds");
             return result;
+        }
+
+        public static Vector3 DeltaPointBetween(Vector3 a, Vector3 b, float percentage = 0.5f)
+        {
+            Vector3 delta = b - a;
+            delta *= percentage;
+            return delta;
         }
     }
 }

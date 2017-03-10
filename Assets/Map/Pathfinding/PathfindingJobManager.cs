@@ -65,6 +65,11 @@ namespace Assets.Map.Pathfinding
             return false;
         }
 
+        public void ClearJob(int id)
+        {
+            storage.Remove(id);
+        }
+
         public PathfindingJobInfo GetInfo(int id)
         {
             return storage[id];

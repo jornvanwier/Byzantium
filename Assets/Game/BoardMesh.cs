@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Assets.Map;
 using JetBrains.Annotations;
 using Map;
@@ -10,19 +11,42 @@ namespace Assets.Game
     {
         [SerializeField]
         public CubicalCoordinate Position { get; set; }
-        public Vector2 DrawOffset { get; set; }
-        private MapRenderer mapRenderer;
+
+        public Vector3 DrawOffset { get; set; }
+        protected MapRenderer MapRenderer;
 
         [UsedImplicitly]
-        private void Start()
+        protected virtual void Start()
         {
-            mapRenderer = GameObject.Find("Map").GetComponent<MapRenderer>();
+            MapRenderer = GameObject.Find("Map").GetComponent<MapRenderer>();
         }
 
         [UsedImplicitly]
-        private void Update()
+        protected virtual void Update()
         {
-            transform.position = mapRenderer.CubicalCoordinateToWorld(Position);
+            Vector3 currentDrawPos = MapRenderer.CubicalCoordinateToWorld(Position) + DrawOffset;
+
+            // Draw offset has pushed the mesh into another tile
+            if (MapRenderer.WorldToCubicalCoordinate(currentDrawPos) !=
+                Position)
+            {
+
+                Position = MapRenderer.WorldToCubicalCoordinate(currentDrawPos);
+                Debug.Log("DrawOffset flip " + Position);
+
+                Vector3 newWorldPosition = MapRenderer.CubicalCoordinateToWorld(Position);
+
+                DrawOffset = currentDrawPos - newWorldPosition;
+
+                currentDrawPos = newWorldPosition + DrawOffset;
+            }
+
+            SetWorldPos();
+        }
+
+        protected virtual void SetWorldPos()
+        {
+            transform.position = MapRenderer.CubicalCoordinateToWorld(Position) + DrawOffset;
         }
     }
 }

@@ -60,7 +60,7 @@ public class UnityScheduler : MonoBehaviour
 
 	public static void ProcessEditorUpdate() => EditorUpdateScheduler.Activate();
 
-	private void Update() => UpdateScheduler.Activate();
+	private void Update() => UpdateScheduler?.Activate();
 
 	private void LateUpdate() => LateUpdateScheduler.Activate();
 
