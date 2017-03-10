@@ -185,8 +185,11 @@ namespace Assets.Map
 //                }
 //            }
 
-            GoalPin.transform.position =
-                CubicalCoordinateToWorld(WorldToCubicalCoordinate(StartPin.transform.position));
+            CubicalCoordinate startPinPos = WorldToCubicalCoordinate(StartPin.transform.position);
+
+            MarkTileSelectedForNextFrame(startPinPos);
+
+            GoalPin.transform.position = CubicalCoordinateToWorld(startPinPos);
 
             UpdateSelectedSet();
         }
