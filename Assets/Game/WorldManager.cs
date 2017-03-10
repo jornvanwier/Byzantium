@@ -1,5 +1,6 @@
 ﻿using Assets.Map;
 using JetBrains.Annotations;
+using Map;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ namespace Assets.Game
         public GameObject StartPin;
         public GameObject GoalPin;
         public GameObject MapRenderer;
+        public GameObject TestPrefab;
 
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
@@ -30,7 +32,7 @@ namespace Assets.Game
         }
 
         [UsedImplicitly]
-        void Start()
+        private void Start()
         {
             MapRenderer = Instantiate(MapRenderer);
             MapRenderer.name = "Map";
@@ -40,6 +42,9 @@ namespace Assets.Game
             cameraObject = new GameObject("MainCamera");
             cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = new Vector3(0, cHeight, 0);
+
+            Instantiate(TestPrefab).GetComponent<BoardMesh>().Position = MapRenderer.GetComponent<MapRenderer>()
+                .WorldToCubicalCoordinate(GoalPin.transform.position);
 
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
             Rotate(objectRight, Space.Self, InitialCameraAngle);
