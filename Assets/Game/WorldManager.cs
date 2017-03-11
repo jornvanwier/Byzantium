@@ -1,24 +1,56 @@
-﻿using JetBrains.Annotations;
+﻿using Assets.Map;
+using JetBrains.Annotations;
+using Map;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Game
 {
     public class WorldManager : MonoBehaviour
     {
-        public GameObject mapRenderer;
+        public GameObject StartPin;
+        public GameObject GoalPin;
+        public GameObject MapRenderer;
+        public GameObject TestPrefab;
 
+        private MovableBoardMesh mbm;
         private GameObject cameraObject;
-        private Camera cameraComponent;
-        private Vector2 aimPoint;
+        public float CameraRotateSpeed = 50;
+        public float InitialCameraAngle = 35;
+        public float InitialZoomSpeed = 2;
+        public float InitialCameraMoveSpeed = 2;
 
+        private float CameraHeight => cameraObject?.transform.position.y ?? 10;
+        private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
+        private float ZoomSpeed => InitialZoomSpeed * (CameraHeight - 1);
+
+        private bool applicationHasFocus;
 
         [UsedImplicitly]
-        void Start()
+        private void OnApplicationFocus(bool hasFocus)
         {
-            mapRenderer = Instantiate(mapRenderer);
-            cameraObject = new GameObject("CAMERA");
-            cameraComponent = cameraObject.AddComponent<Camera>();
-            cameraObject.transform.position = new Vector3(0, 10, 0);
+            applicationHasFocus = hasFocus;
+        }
+
+        [UsedImplicitly]
+        private void Start()
+        {
+            MapRenderer = Instantiate(MapRenderer);
+            MapRenderer.name = "Map";
+            MapRenderer.GetComponent<MapRenderer>().StartPin = StartPin;
+            MapRenderer.GetComponent<MapRenderer>().GoalPin = GoalPin;
+            float cHeight = CameraHeight;
+            cameraObject = new GameObject("MainCamera");
+            cameraObject.AddComponent<Camera>();
+            cameraObject.transform.position = new Vector3(0, cHeight, 0);
+
+            mbm = Instantiate(TestPrefab).GetComponent<MovableBoardMesh>();
+
+            mbm.Position = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(StartPin.transform.position);
+            mbm.Goal = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
+
+            Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
+            Rotate(objectRight, Space.Self, InitialCameraAngle);
         }
 
         // Update is called once per frame
@@ -26,22 +58,18 @@ namespace Assets.Game
         void Update()
         {
             UpdateCamera();
-            UpdateMouse();
+            mbm.Goal = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
         }
 
-        private void UpdateMouse()
+        private static Vector3 MultiplyVector(Vector3 v1, Vector3 v2)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                RaycastHit hit;
-                Ray ray = cameraComponent.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit, 100.0f))
-                {
-                    if(hit.transform != null)
-                        Debug.Log(hit.transform.position);
-                }
+            return new Vector3(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
+        }
 
-            }
+        private static Vector3 NegateY(Vector3 vector)
+        {
+            Vector3 result = MultiplyVector(vector, new Vector3(1, 0, 1));
+            return Vector3.Normalize(result);
         }
 
 
@@ -50,40 +78,148 @@ namespace Assets.Game
             Vector3 worldPosition = cameraObject.transform.position;
             Vector3 localPosition = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.position;
 
-            Vector3 worldForward = cameraObject.transform.forward;
             Vector3 worldRight = cameraObject.transform.right;
             Vector3 worldUp = cameraObject.transform.up;
+            Vector3 worldForward = cameraObject.transform.forward;
 
             Vector3 objectForward = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.forward;
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
-            Vector3 objectUp = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.up;
 
-
-            const float moveSpeed = 16.0f;
-            const float rotateSpeed = 1.0f;
-
+            //Keyboard movement
             if (Input.GetKey(KeyCode.Space))
-                cameraObject.transform.Translate(objectUp * moveSpeed * Time.deltaTime);
+                Ascend();
             if (Input.GetKey(KeyCode.LeftShift))
-                cameraObject.transform.Translate(objectUp * moveSpeed * -Time.deltaTime);
+                Descend();
 
             if (Input.GetKey(KeyCode.W))
-                cameraObject.transform.Translate(objectForward * moveSpeed * Time.deltaTime);
+                Pan(worldForward);
             if (Input.GetKey(KeyCode.A))
-                cameraObject.transform.Translate(-objectRight * moveSpeed * Time.deltaTime);
+                Pan(worldRight, -1f);
             if (Input.GetKey(KeyCode.S))
-                cameraObject.transform.Translate(-objectForward * moveSpeed * Time.deltaTime);
+                Pan(worldForward, -1f);
             if (Input.GetKey(KeyCode.D))
-                cameraObject.transform.Translate(objectRight * moveSpeed * Time.deltaTime);
+                Pan(worldRight);
 
             if (Input.GetKey(KeyCode.UpArrow))
-                cameraObject.transform.Rotate(objectRight, rotateSpeed);
+                Rotate(objectRight, Space.Self);
             if (Input.GetKey(KeyCode.DownArrow))
-                cameraObject.transform.Rotate(objectRight, -rotateSpeed);
+                Rotate(objectRight, Space.Self, -1f);
             if (Input.GetKey(KeyCode.RightArrow))
-                cameraObject.transform.Rotate(Vector3.up, rotateSpeed, Space.World);
+                Rotate(Vector3.up);
             if (Input.GetKey(KeyCode.LeftArrow))
-                cameraObject.transform.Rotate(Vector3.up, -rotateSpeed, Space.World);
+                Rotate(Vector3.up, Space.World, -1f);
+
+            //Mouse scroll zoom
+            float zoom = Input.GetAxis("Mouse ScrollWheel");
+            Zoom(worldForward, zoom);
+
+            //Middle mouse drag and right mouse rotate
+            if (Input.GetMouseButtonDown(1))
+            {
+                Vector3 position = Input.mousePosition;
+                Plane plane = new Plane(Vector3.up, Vector3.zero);
+                Camera camera = cameraObject.GetComponent<Camera>();
+                Ray ray = camera.ScreenPointToRay(position);
+                if (plane.Raycast(ray, out float rayDistance))
+                    startIntersect = ray.GetPoint(rayDistance);
+                rightMouseDown = true;
+            }
+            if (Input.GetMouseButtonUp(1))
+            {
+                rightMouseDown = false;
+                prevMousePos = Vector2.zero;
+            }
+            if (Input.GetMouseButtonDown(2))
+                middleMouseDown = true;
+            if (Input.GetMouseButtonUp(2))
+            {
+                middleMouseDown = false;
+                prevMousePos = Vector2.zero;
+            }
+            if (middleMouseDown || rightMouseDown)
+            {
+                Vector2 position = Input.mousePosition;
+                Vector3 intersect = Vector3.zero;
+                Plane plane = new Plane(Vector3.up, Vector3.zero);
+                Camera camera = cameraObject.GetComponent<Camera>();
+                Ray ray = camera.ScreenPointToRay(position);
+                plane.Raycast(ray, out float rayDistance);
+                if (prevMousePos != Vector2.zero)
+                {
+                    Vector2 movement = prevMousePos - position;
+                    if (middleMouseDown)
+                    {
+                        movement *= rayDistance / 10.5f;
+
+                        cameraObject.transform.Translate(new Vector3(movement.x, 0, 0) * Time.deltaTime);
+                        cameraObject.transform.Translate(NegateY(worldForward) * movement.y * Time.deltaTime,
+                            Space.World);
+                    }
+                    if (rightMouseDown)
+                        cameraObject.transform.RotateAround(startIntersect, Vector3.up, -movement.x);
+                }
+                prevMousePos = position;
+            }
+
+
+            //Border mouse move
+            if (!middleMouseDown && !rightMouseDown && applicationHasFocus)
+            {
+                const int margin = 10;
+                if (Input.mousePosition.x < margin)
+                    Pan(worldRight, -1f);
+                if (Input.mousePosition.y < margin)
+                    Pan(worldForward, -1f);
+                if (Input.mousePosition.y > Screen.height - margin)
+                    Pan(worldForward);
+                if (Input.mousePosition.x > Screen.width - margin)
+                    Pan(worldRight);
+            }
+        }
+
+        private bool middleMouseDown;
+        private bool rightMouseDown;
+        private Vector2 prevMousePos = Vector2.zero;
+        private Vector3 startIntersect;
+
+        private void Ascend()
+        {
+            Vector3 objectUp = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.up;
+            cameraObject.transform.Translate(objectUp * CameraMoveSpeed * Time.deltaTime, Space.World);
+        }
+
+        private void Descend()
+        {
+            Vector3 objectUp = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.up;
+            cameraObject.transform.Translate(objectUp * -CameraMoveSpeed * Time.deltaTime, Space.World);
+        }
+
+        private void Pan(Vector3 direction, float multiplier = 1)
+        {
+            cameraObject.transform.Translate(NegateY(direction) * CameraMoveSpeed * Time.deltaTime * multiplier,
+                Space.World);
+        }
+
+        private void Rotate(Vector3 around, Space space = Space.World, float multiplier = 1)
+        {
+            cameraObject.transform.Rotate(around, CameraRotateSpeed * multiplier * Time.deltaTime, space);
+        }
+
+        private void Zoom(Vector3 forward, float zoom)
+        {
+            cameraObject.transform.Translate(forward * ZoomSpeed * zoom * 10 * Time.deltaTime, Space.World);
+        }
+
+        public static Vector2 RotateVector(Vector2 v, float radians)
+        {
+            float sin = Mathf.Sin(radians);
+            float cos = Mathf.Cos(radians);
+
+            float tx = v.x;
+            float ty = v.y;
+            v.x = (cos * tx) - (sin * ty);
+            v.y = (sin * tx) + (cos * ty);
+            return v;
         }
     }
 }

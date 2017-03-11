@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Map.Generation;
+using Assets.Map.Pathfinding;
+using Assets.Util;
 using JetBrains.Annotations;
 using UnityEngine;
 using Map;
@@ -45,9 +47,8 @@ namespace Assets.Map
 
         public Texture2D[] AlbedoMaps;
 
-        public GameObject Test;
-        public GameObject Test2;
-        public GameObject Test3;
+        public GameObject StartPin;
+        public GameObject GoalPin;
 
 
         private TextureSet defaultTextureSet;
@@ -97,30 +98,13 @@ namespace Assets.Map
             hexBoard = new HexBoard(MapSize) {Generator = new PerlinGenerator()};
             hexBoard.GenerateMap();
 
-
-
-            CubicalCoordinate start = hexBoard.RandomValidTile();
-
-            CubicalCoordinate goal = hexBoard.RandomValidTile();
-
-            Utils.LogOperationTime("find path", () =>
-            {
-                List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
-                if (path != null)
-                {
-                    foreach (CubicalCoordinate hex in path)
-                    {
-                        hexBoard[hex] = (byte) TileType.WaterDeep;
-                    }
-                }
-
-                hexBoard[start] = (byte) TileType.WaterDeep;
-                hexBoard[goal] = (byte) TileType.WaterDeep;
-            });
+            PathfindingJobManager.Instance.Map = hexBoard;
 
             SetupShader();
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
             Debug.Log("Created map");
+
+
         }
 
         private void SetupShader()
@@ -162,61 +146,48 @@ namespace Assets.Map
             meshRenderer.SetPropertyBlock(block);
         }
 
+        private int pathfindingJobId = -1;
+
         [UsedImplicitly]
         private void Update()
         {
-            if (Test != null)
-            {
-                Vector2 normalized = WorldToNormalizedWorldPosition(Test.transform.position);
-                HexagonData d = NormalizedWorldToHexagonPosition(normalized);
+//            if (StartPin != null && GoalPin != null)
+//            {
+//
+//                CubicalCoordinate start = WorldToCubicalCoordinate(StartPin.transform.position);
+//                CubicalCoordinate goal = WorldToCubicalCoordinate(GoalPin.transform.position);
+//
+//                MarkTileSelectedForNextFrame(start);
+//                MarkTileSelectedForNextFrame(goal);
+//
+//                if (pathfindingJobId == -1)
+//                {
+//                    pathfindingJobId = PathfindingJobManager.Instance.CreateJob(start, goal);
+//                }
+//                else
+//                {
+//                    if (PathfindingJobManager.Instance.IsFinished(pathfindingJobId))
+//                    {
+//                        selectedSet.Clear();
+//                        PathfindingJobInfo info = PathfindingJobManager.Instance.GetInfo(pathfindingJobId);
+//                        if (info.State == JobState.Success)
+//                        {
+//                            foreach (CubicalCoordinate hex in info.Path)
+//                            {
+//                                OddRCoordinate offset = hex.ToOddR();
+//                                MarkTileSelectedForNextFrame(offset);
+//                            }
+//                        }
+//                        pathfindingJobId = -1;
+//                    }
+//                }
+//            }
 
-                if (d.hexagonPositionOffset.X > 0 && d.hexagonPositionOffset.X < MapSize - 1 &&
-                    d.hexagonPositionOffset.Y > 0 && d.hexagonPositionOffset.Y < MapSize)
-                {
-                    MarkTileSelectedForNextFrame(d.hexagonPositionOffset.X, d.hexagonPositionOffset.Y);
-                    for (int i = -1; i <= 1; ++i)
-                    {
-                        for (int j = -1; j <= 1; ++j)
-                        {
-                            if (i == 0 && j == 0)
-                                continue;
-                            if(d.hexagonPositionCubical.X == 0 && d.hexagonPositionCubical.Y == 0 && d.hexagonPositionCubical.Z == 0)
-                                MarkTileSelectedForNextFrame(d.hexagonPositionOffset.X + i, d.hexagonPositionOffset.Y + j);
-                        }
-                    }
-                }
-            }
-            /*
-            if (Test2 != null && Test3 != null)
-            {
-                HexagonData a = NormalizedWorldToHexagonPosition(WorldToNormalizedWorldPosition(Test2.transform.position));
-                HexagonData b = NormalizedWorldToHexagonPosition(WorldToNormalizedWorldPosition(Test3.transform.position));
-
-                CubicalCoordinate start = new CubicalCoordinate(a.hexagonPositionCubical.Z, a.hexagonPositionCubical.X);
-                CubicalCoordinate goal = new CubicalCoordinate(b.hexagonPositionCubical.Z, b.hexagonPositionCubical.X);
-
-                Debug.Log(start);
-                Debug.Log(goal);
-
-                Utils.LogOperationTime("find path", () =>
-                {
-                    List<CubicalCoordinate> path = hexBoard.FindPath(start, goal);
-                    if (path != null)
-                    {
-                        foreach (CubicalCoordinate hex in path)
-                        {
-                            hexBoard[hex] = (byte) TileType.WaterDeep;
-                            OddRCoordinate offset = hex.ToOddR();
-                            MarkTileSelectedForNextFrame(offset.Q, offset.R);
-                        }
-                    }
-
-                    hexBoard[start] = (byte) TileType.WaterDeep;
-                    hexBoard[goal] = (byte) TileType.WaterDeep;
-                });
-
-
-            }*/
+//            CubicalCoordinate startPinPos = WorldToCubicalCoordinate(StartPin.transform.position);
+//
+//            MarkTileSelectedForNextFrame(startPinPos);
+//
+//            GoalPin.transform.position = CubicalCoordinateToWorld(startPinPos);
 
             UpdateSelectedSet();
         }
@@ -232,8 +203,30 @@ namespace Assets.Map
             return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
         }
 
+        public Vector3 CubicalCoordinateToWorld(CubicalCoordinate cc)
+        {
+            float hexSize = Mathf.Sqrt(3)/3;
 
-        public Vector2 WorldToNormalizedWorldPosition(Vector3 worldPosition)
+            float x = hexSize * (3 / 2f) * cc.Z;
+            float z = hexSize * Mathf.Sqrt(3) * (cc.X + cc.Z / 2);
+
+            float zOffset = cc.ToOddR().IsUneven()
+                ? (gameObject.transform.localScale.y - MapSize * 0.005f) / 2 / MapSize
+                : 0;
+
+            float tX = x - (gameObject.transform.localScale.x - MapSize * 0.075f * 2) / 2;
+            float tZ = z - (gameObject.transform.localScale.y - MapSize * 0.005f * 2) / 2 + zOffset;
+
+            return new Vector3(tX, 0, tZ);
+        }
+
+        public CubicalCoordinate WorldToCubicalCoordinate(Vector3 worldPos)
+        {
+            return NormalizedWorldToHexagonPosition(WorldToNormalizedWorldPosition(worldPos));
+        }
+
+
+        private Vector2 WorldToNormalizedWorldPosition(Vector3 worldPosition)
         {
             var position = new Vector2(worldPosition.x, worldPosition.z);
 
@@ -246,7 +239,7 @@ namespace Assets.Map
             return new Vector2(x, y);
         }
 
-        public HexagonData NormalizedWorldToHexagonPosition(Vector2 worldPosition)
+        private CubicalCoordinate NormalizedWorldToHexagonPosition(Vector2 worldPosition)
         {
             float hexSize = Mathf.Sqrt(3) / 3;
 
@@ -278,16 +271,7 @@ namespace Assets.Map
                 rZ = -rX - rY;
             }
 
-            int x = (int) (rZ + (rX - (rX & 1)) / 2.0f),
-                z = rX;
-
-            HexagonData hexagonData;
-
-            hexagonData.hexagonPositionOffset = new Int2(x, z);
-            hexagonData.hexagonPositionCubical = new Int3(rX, rZ, rY);
-            hexagonData.hexagonPositionFloat = new Float2(posX, posY);
-
-            return hexagonData;
+            return new CubicalCoordinate(rZ, rX);
         }
 
         private void UpdateSelectedSet()
@@ -309,12 +293,16 @@ namespace Assets.Map
                 src.SetSelected(false);
                 this.data[tile.Y, tile.X] = src.GetAsInt();
             }
-            selectedSet.Clear();
         }
 
-        public void MarkTileSelectedForNextFrame(int offsetX, int offsetY)
+        public void MarkTileSelectedForNextFrame(CubicalCoordinate cc)
         {
-            selectedSet.Add(new Int2(offsetX, offsetY));
+            MarkTileSelectedForNextFrame(cc.ToOddR());
+        }
+
+        public void MarkTileSelectedForNextFrame(OddRCoordinate oc)
+        {
+            selectedSet.Add(new Int2(oc.Q, oc.R));
         }
     }
 }

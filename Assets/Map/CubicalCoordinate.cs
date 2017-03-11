@@ -1,12 +1,14 @@
 ﻿using System;
+using Assets.Map;
 
 namespace Map
 {
+    [Serializable]
     public struct CubicalCoordinate
     {
 
-        public int X { get; set; }
-        public int Z { get; set; }
+        public int X { get; }
+        public int Z { get; }
         public int Y => -X - Z;
 
         public CubicalCoordinate(int x, int z)

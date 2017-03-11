@@ -1,5 +1,6 @@
 ﻿using Map;
 using Map.Pathfinding;
+using UnityEngine;
 
 namespace Assets.Map.Pathfinding
 {
