@@ -108,14 +108,14 @@ namespace Assets.Map
         // TODO Replace start with unit or legion
         public List<CubicalCoordinate> FindPath(CubicalCoordinate start, CubicalCoordinate goal)
         {
-            var closedSet = new HashSet<AStarNode>();
+            var closedSet = new HashSet<AStarNode>(new AStarNode[Size * Size]);
 
-            var cameFrom = new Dictionary<AStarNode, AStarNode>();
+            var cameFrom = new Dictionary<AStarNode, AStarNode>(Size * Size);
 
             AStarNode startNode = NodeGraph[start];
             AStarNode goalNode = NodeGraph[goal];
 
-            var gScore = new Dictionary<AStarNode, float>
+            var gScore = new Dictionary<AStarNode, float>(Size * Size)
             {
                 [startNode] = 0
             };
