@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
+using System.Security.Cryptography.X509Certificates;
 using Assets.Map.Pathfinding;
 using Assets.Util;
 using Map;
@@ -15,8 +17,7 @@ namespace Assets.Game
         protected int NextPathId { get; set; } = -1;
         protected PathfindingJobInfo CurrentPathInfo { get; set; }
 
-        private float lastStepPercentage = 0;
-        private const float MovementPerSecond = 1f;
+        private const float MovementPerSecond = 1.5f;
 
         public CubicalCoordinate PreviousPosition { get; set; }
         public CubicalCoordinate Goal { get; set; }
@@ -30,6 +31,9 @@ namespace Assets.Game
 
         protected override void Update()
         {
+            base.Update();
+
+            Position = MapRenderer.WorldToCubicalCoordinate(CreateWorldPos());
 
             if (Position != Goal)
             {
@@ -59,49 +63,52 @@ namespace Assets.Game
                         {
                             CurrentPathInfo = PathfindingJobManager.Instance.GetInfo(NextPathId);
                             PathfindingJobManager.Instance.ClearJob(NextPathId);
+
+                            Debug.Log("Path: " + string.Join("-", Enumerable.Range(1, CurrentPathInfo.Path.Count - 1)
+                                          .Select(i => (CurrentPathInfo.Path[i].DistanceTo(CurrentPathInfo.Path[i - 1])).ToString())
+                                          .ToArray()));
+
+
                             NextPathId = -1;
                             AdvanceOnPath();
                         }
                     }
                 }
             }
-
-            base.Update();
         }
 
         protected void AdvanceOnPath()
         {
-            // Increase the percentage of distance we should be between our current
-            lastStepPercentage += Time.deltaTime * MovementPerSecond;
-            if (lastStepPercentage >= 1)
+            Vector3 currentPos = CreateWorldPos();
+
+            if (CurrentPathInfo.Path[0] == Position)
             {
-                lastStepPercentage = 1;
-            }
-
-            Vector3 deltaPoint = Utils.DeltaPointBetween(MapRenderer.CubicalCoordinateToWorld(PreviousPosition),
-                MapRenderer.CubicalCoordinateToWorld(CurrentPathInfo.Path.Last()), lastStepPercentage);
-
-            DrawOffset = deltaPoint;
-
-            Debug.Log($"{MapRenderer.CubicalCoordinateToWorld(PreviousPosition)},{MapRenderer.CubicalCoordinateToWorld(CurrentPathInfo.Path.Last())},{DrawOffset}");
-
-            Debug.Log(lastStepPercentage);
-
-            Debug.Log(CurrentPathInfo.Path.Last());
-            if (CurrentPathInfo.Path.Last() == Position || lastStepPercentage >= 1)
-            {
-                CurrentPathInfo.Path.RemoveAt(CurrentPathInfo.Path.Count - 1);
-                lastStepPercentage = 0;
+                CurrentPathInfo.Path.RemoveAt(0);
                 PreviousPosition = Position;
-                Debug.Log("reached pos");
+
+                // Previous position has changed (which is the point based on which we place the mesh in the world)
+                // A new draw offset needs to be calculated
+
+                DrawOffset = currentPos - MapRenderer.CubicalCoordinateToWorld(PreviousPosition);
             }
+
+            Vector3 nextPos = Vector3.MoveTowards(
+                currentPos,
+                MapRenderer.CubicalCoordinateToWorld(CurrentPathInfo.Path[0]),
+                MovementPerSecond * Time.deltaTime);
+
+            DrawOffset = nextPos - MapRenderer.CubicalCoordinateToWorld(PreviousPosition);
         }
 
         protected override void SetWorldPos()
         {
-            transform.position = MapRenderer.CubicalCoordinateToWorld(PreviousPosition) + DrawOffset;
-//            Position = MapRenderer.WorldToCubicalCoordinate(transform.position);
+            transform.position = CreateWorldPos();
             MapRenderer.MarkTileSelectedForNextFrame(Position);
+        }
+
+        private Vector3 CreateWorldPos()
+        {
+            return MapRenderer.CubicalCoordinateToWorld(PreviousPosition) + DrawOffset;
         }
 
         protected void RequestNewPath()

@@ -136,6 +136,7 @@ namespace Assets.Map
                         totalPath.Add(current.Position);
                     }
                     totalPath.Add(start);
+                    totalPath.Reverse();
                     return totalPath;
                 }
 

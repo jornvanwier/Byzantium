@@ -24,23 +24,6 @@ namespace Assets.Game
         [UsedImplicitly]
         protected virtual void Update()
         {
-            Vector3 currentDrawPos = MapRenderer.CubicalCoordinateToWorld(Position) + DrawOffset;
-
-            // Draw offset has pushed the mesh into another tile
-            if (MapRenderer.WorldToCubicalCoordinate(currentDrawPos) !=
-                Position)
-            {
-
-                Position = MapRenderer.WorldToCubicalCoordinate(currentDrawPos);
-                Debug.Log("DrawOffset flip " + Position);
-
-                Vector3 newWorldPosition = MapRenderer.CubicalCoordinateToWorld(Position);
-
-                DrawOffset = currentDrawPos - newWorldPosition;
-
-                currentDrawPos = newWorldPosition + DrawOffset;
-            }
-
             SetWorldPos();
         }
 
