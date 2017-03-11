@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters;
-using System.Security.Cryptography.X509Certificates;
-using Assets.Map.Pathfinding;
+﻿using Assets.Map.Pathfinding;
 using Assets.Util;
 using Map;
 using UnityEngine;
@@ -18,6 +11,7 @@ namespace Assets.Game
         protected PathfindingJobInfo CurrentPathInfo { get; set; }
 
         private const float MovementPerSecond = 1.5f;
+        private const float RotationSpeed = 3.5f;
 
         public CubicalCoordinate PreviousPosition { get; set; }
         public CubicalCoordinate Goal { get; set; }
@@ -31,7 +25,7 @@ namespace Assets.Game
 
         protected override void Update()
         {
-            base.Update();
+            SetWorldPos(CreateWorldPos());
 
             Position = MapRenderer.WorldToCubicalCoordinate(CreateWorldPos());
 
@@ -64,11 +58,6 @@ namespace Assets.Game
                             CurrentPathInfo = PathfindingJobManager.Instance.GetInfo(NextPathId);
                             PathfindingJobManager.Instance.ClearJob(NextPathId);
 
-                            Debug.Log("Path: " + string.Join("-", Enumerable.Range(1, CurrentPathInfo.Path.Count - 1)
-                                          .Select(i => (CurrentPathInfo.Path[i].DistanceTo(CurrentPathInfo.Path[i - 1])).ToString())
-                                          .ToArray()));
-
-
                             NextPathId = -1;
                             AdvanceOnPath();
                         }
@@ -98,12 +87,19 @@ namespace Assets.Game
                 MovementPerSecond * Time.deltaTime);
 
             DrawOffset = nextPos - MapRenderer.CubicalCoordinateToWorld(PreviousPosition);
+
+            SetWorldRotation(Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(nextPos - MapRenderer.CubicalCoordinateToWorld(CurrentPathInfo.Path[0])), Time.deltaTime * RotationSpeed));
         }
 
-        protected override void SetWorldPos()
+        protected override void SetWorldPos(Vector3 worldPos)
         {
-            transform.position = CreateWorldPos();
+            transform.position = worldPos;
             MapRenderer.MarkTileSelectedForNextFrame(Position);
+        }
+
+        protected override void SetWorldRotation(Quaternion rotation)
+        {
+            transform.rotation = rotation;
         }
 
         private Vector3 CreateWorldPos()

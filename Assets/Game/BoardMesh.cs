@@ -24,12 +24,17 @@ namespace Assets.Game
         [UsedImplicitly]
         protected virtual void Update()
         {
-            SetWorldPos();
+            SetWorldPos(MapRenderer.CubicalCoordinateToWorld(Position) + DrawOffset);
         }
 
-        protected virtual void SetWorldPos()
+        protected virtual void SetWorldPos(Vector3 worldPos)
         {
             transform.position = MapRenderer.CubicalCoordinateToWorld(Position) + DrawOffset;
+        }
+
+        protected virtual void SetWorldRotation(Quaternion rotation)
+        {
+
         }
     }
 }
