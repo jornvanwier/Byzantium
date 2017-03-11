@@ -17,7 +17,7 @@ namespace Assets.Game
         protected int NextPathId { get; set; } = -1;
         protected PathfindingJobInfo CurrentPathInfo { get; set; }
 
-        private const float MovementPerSecond = 1.5f;
+        private const float MovementPerSecond = 5.5f;
 
         public CubicalCoordinate PreviousPosition { get; set; }
         public CubicalCoordinate Goal { get; set; }

@@ -8,16 +8,16 @@ namespace Assets.Util
     {
         public static void LogOperationTime(string description, Action func)
         {
-            float tStart = Time.realtimeSinceStartup;
+            DateTime now = DateTime.Now;
             func.Invoke();
-            Debug.Log($"Performed {description} in {Time.realtimeSinceStartup - tStart} seconds");
+            Debug.Log($"Performed {description} in {(DateTime.Now - now).TotalMilliseconds} milliseconds");
         }
 
         public static T LogOperationTime<T>(string description, Func<T> func)
         {
-            float tStart = Time.realtimeSinceStartup;
+            DateTime now = DateTime.Now;
             T result = func.Invoke();
-            Debug.Log($"Performed {description} in {Time.realtimeSinceStartup - tStart} seconds");
+            Debug.Log($"Performed {description} in {(DateTime.Now - now).TotalMilliseconds} milliseconds");
             return result;
         }
 
