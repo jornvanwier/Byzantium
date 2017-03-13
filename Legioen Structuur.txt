@@ -1,0 +1,36 @@
+Imperial Legate commandeert 2 of meer Legioenen
+
+Legioen
+	6400 man
+		5120 soldaten
+		1280 slaven
+	Bestaat uit 10 cohorts en 1 cavalry
+	Gecommandeert door Legatus legionis
+
+1e Cohort
+	Speciale extra grote cohort, er is 1 per legioen
+	5 dubbel grote centrurys
+	1000 man
+		800 soldaten
+		200 slaven
+	Gecommandeert primus pilus (1 van de centurions)
+
+Cohort
+	600 man
+		480 soldaten
+		120 slaven
+	Bestaat uit 6 Centuries
+	Gecommandeert 1 een van de centurions
+
+Century
+	100 man
+		80 soldaten
+		20 slaven
+	Bestaat uit 10 contubernia
+	Gecommandeert door centurion
+
+Contubernium
+	10 man
+		8 soldaten
+		2 slaven
+	Gecommandeert door Decanus
