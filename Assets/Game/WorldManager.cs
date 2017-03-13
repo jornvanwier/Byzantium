@@ -98,7 +98,7 @@ namespace Assets.Game
             //Middle mouse drag and right mouse rotate
             if (Input.GetMouseButtonDown(1))
             {
-                Vector3 position = Input.mousePosition;
+                Vector3 position = new Vector2(Screen.width / 2, Screen.height / 2);
                 Plane plane = new Plane(Vector3.up, Vector3.zero);
                 Camera camera = cameraObject.GetComponent<Camera>();
                 Ray ray = camera.ScreenPointToRay(position);
