@@ -103,6 +103,8 @@ namespace Assets.Map
             SetupShader();
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
             Debug.Log("Created map");
+
+
         }
 
         private void SetupShader()
@@ -166,6 +168,7 @@ namespace Assets.Map
 //                {
 //                    if (PathfindingJobManager.Instance.IsFinished(pathfindingJobId))
 //                    {
+//                        selectedSet.Clear();
 //                        PathfindingJobInfo info = PathfindingJobManager.Instance.GetInfo(pathfindingJobId);
 //                        if (info.State == JobState.Success)
 //                        {
@@ -180,8 +183,11 @@ namespace Assets.Map
 //                }
 //            }
 
-            GoalPin.transform.position =
-                CubicalCoordinateToWorld(WorldToCubicalCoordinate(StartPin.transform.position));
+//            CubicalCoordinate startPinPos = WorldToCubicalCoordinate(StartPin.transform.position);
+//
+//            MarkTileSelectedForNextFrame(startPinPos);
+//
+//            GoalPin.transform.position = CubicalCoordinateToWorld(startPinPos);
 
             UpdateSelectedSet();
         }
@@ -199,9 +205,19 @@ namespace Assets.Map
 
         public Vector3 CubicalCoordinateToWorld(CubicalCoordinate cc)
         {
-            int x = (int) (gameObject.transform.localScale.x / MapSize * (3 / 2f) * cc.X);
-            int z = (int) (gameObject.transform.localScale.y / MapSize * Math.Sqrt(3) * (cc.Z + cc.X / 2));
-            return new Vector3(x, 0, z);
+            float hexSize = Mathf.Sqrt(3)/3;
+
+            float x = hexSize * (3 / 2f) * cc.Z;
+            float z = hexSize * Mathf.Sqrt(3) * (cc.X + cc.Z / 2);
+
+            float zOffset = cc.ToOddR().IsUneven()
+                ? (gameObject.transform.localScale.y - MapSize * 0.005f) / 2 / MapSize
+                : 0;
+
+            float tX = x - (gameObject.transform.localScale.x - MapSize * 0.075f * 2) / 2;
+            float tZ = z - (gameObject.transform.localScale.y - MapSize * 0.005f * 2) / 2 + zOffset;
+
+            return new Vector3(tX, 0, tZ);
         }
 
         public CubicalCoordinate WorldToCubicalCoordinate(Vector3 worldPos)
@@ -277,7 +293,6 @@ namespace Assets.Map
                 src.SetSelected(false);
                 this.data[tile.Y, tile.X] = src.GetAsInt();
             }
-            selectedSet.Clear();
         }
 
         public void MarkTileSelectedForNextFrame(CubicalCoordinate cc)

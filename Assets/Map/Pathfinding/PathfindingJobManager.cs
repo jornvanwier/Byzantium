@@ -65,6 +65,11 @@ namespace Assets.Map.Pathfinding
             return false;
         }
 
+        public void ClearJob(int id)
+        {
+            storage.Remove(id);
+        }
+
         public PathfindingJobInfo GetInfo(int id)
         {
             return storage[id];
@@ -72,9 +77,12 @@ namespace Assets.Map.Pathfinding
 
         public void PathfindBetween(object state)
         {
-            var info = (PathfindingJobInfo) state;
-            info.Path = Map.FindPath(info.StartPos, info.GoalPos);
-            info.State = info.Path == null ? JobState.Failure : JobState.Success;
+            Utils.LogOperationTime("pathfind", () =>
+            {
+                var info = (PathfindingJobInfo) state;
+                info.Path = Map.FindPath(info.StartPos, info.GoalPos);
+                info.State = info.Path == null ? JobState.Failure : JobState.Success;
+            });
         }
     }
 }

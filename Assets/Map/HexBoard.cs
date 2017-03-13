@@ -43,7 +43,7 @@ namespace Assets.Map
             get
             {
                 OddRCoordinate oc = cc.ToOddR();
-//                Debug.Log("OUT " + oc);
+            //  Debug.Log("OUT " + oc);
                 return Storage[oc.R, oc.Q];
             }
             set
@@ -108,14 +108,14 @@ namespace Assets.Map
         // TODO Replace start with unit or legion
         public List<CubicalCoordinate> FindPath(CubicalCoordinate start, CubicalCoordinate goal)
         {
-            var closedSet = new HashSet<AStarNode>();
+            var closedSet = new HashSet<AStarNode>(new AStarNode[Size * Size]);
 
-            var cameFrom = new Dictionary<AStarNode, AStarNode>();
+            var cameFrom = new Dictionary<AStarNode, AStarNode>(Size * Size);
 
             AStarNode startNode = NodeGraph[start];
             AStarNode goalNode = NodeGraph[goal];
 
-            var gScore = new Dictionary<AStarNode, float>
+            var gScore = new Dictionary<AStarNode, float>(Size * Size)
             {
                 [startNode] = 0
             };
@@ -136,6 +136,7 @@ namespace Assets.Map
                         totalPath.Add(current.Position);
                     }
                     totalPath.Add(start);
+                    totalPath.Reverse();
                     return totalPath;
                 }
 

@@ -1,5 +1,6 @@
 ﻿using Assets.Map;
 using JetBrains.Annotations;
+using Map;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,18 +11,29 @@ namespace Assets.Game
         public GameObject StartPin;
         public GameObject GoalPin;
         public GameObject MapRenderer;
+        public GameObject TestPrefab;
 
+        private MovableBoardMesh mbm;
         private GameObject cameraObject;
-        private const float CameraRotateSpeed = 50;
-        private const float InitialCameraAngle = 35;
+        public float CameraRotateSpeed = 50;
+        public float InitialCameraAngle = 35;
+        public float InitialZoomSpeed = 2;
+        public float InitialCameraMoveSpeed = 2;
 
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
-        private float CameraMoveSpeed => 2 * CameraHeight;
-        private float ZoomSpeed => 2 * (CameraHeight - 1);
+        private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
+        private float ZoomSpeed => InitialZoomSpeed * (CameraHeight - 1);
 
+        private bool applicationHasFocus;
 
         [UsedImplicitly]
-        void Start()
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            applicationHasFocus = hasFocus;
+        }
+
+        [UsedImplicitly]
+        private void Start()
         {
             MapRenderer = Instantiate(MapRenderer);
             MapRenderer.name = "Map";
@@ -32,6 +44,11 @@ namespace Assets.Game
             cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = new Vector3(0, cHeight, 0);
 
+            mbm = Instantiate(TestPrefab).GetComponent<MovableBoardMesh>();
+
+            mbm.Position = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(StartPin.transform.position);
+            mbm.Goal = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
+
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
             Rotate(objectRight, Space.Self, InitialCameraAngle);
         }
@@ -41,6 +58,7 @@ namespace Assets.Game
         void Update()
         {
             UpdateCamera();
+            mbm.Goal = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
         }
 
         private static Vector3 MultiplyVector(Vector3 v1, Vector3 v2)
@@ -145,7 +163,7 @@ namespace Assets.Game
 
 
             //Border mouse move
-            if (!middleMouseDown && !rightMouseDown)
+            if (!middleMouseDown && !rightMouseDown && applicationHasFocus)
             {
                 const int margin = 10;
                 if (Input.mousePosition.x < margin)

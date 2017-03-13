@@ -1,4 +1,5 @@
-﻿using Map;
+﻿using System;
+using Map;
 
 namespace Assets.Map
 {
@@ -19,7 +20,16 @@ namespace Assets.Map
                 Q - (R - (R & 1)) / 2,
                 R
             );
+        }
 
+        public bool IsEven()
+        {
+            return (R & 1) == 0;
+        }
+
+        public bool IsUneven()
+        {
+            return !IsEven();
         }
 
         public override string ToString()
