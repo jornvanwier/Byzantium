@@ -1,9 +1,8 @@
 ﻿namespace Assets.Game.Units.Groups
 {
-    public class Cohort : UnitGroup
+    public class Century : UnitGroup
     {
-
-        public void AddUnit(Century unit)
+        public void AddUnit(Contubernium unit)
         {
             AddUnitInternal(unit);
         }

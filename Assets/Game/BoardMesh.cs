@@ -29,7 +29,7 @@ namespace Assets.Game
 
         protected virtual void SetWorldPos(Vector3 worldPos)
         {
-            transform.position = MapRenderer.CubicalCoordinateToWorld(Position) + DrawOffset;
+            transform.position = worldPos;
         }
 
         protected virtual void SetWorldRotation(Quaternion rotation)

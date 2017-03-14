@@ -9,6 +9,7 @@ namespace Assets.Game
     {
         protected int NextPathId { get; set; } = -1;
         protected PathfindingJobInfo CurrentPathInfo { get; set; }
+        private Vector3 MovementDrawOffset { get; set; }
 
         private const float MovementPerSecond = 1.5f;
         private const float RotationSpeed = 3.5f;
@@ -78,7 +79,7 @@ namespace Assets.Game
                 // Previous position has changed (which is the point based on which we place the mesh in the world)
                 // A new draw offset needs to be calculated
 
-                DrawOffset = currentPos - MapRenderer.CubicalCoordinateToWorld(PreviousPosition);
+                MovementDrawOffset = currentPos - MapRenderer.CubicalCoordinateToWorld(PreviousPosition);
             }
 
             Vector3 nextPos = Vector3.MoveTowards(
@@ -86,7 +87,7 @@ namespace Assets.Game
                 MapRenderer.CubicalCoordinateToWorld(CurrentPathInfo.Path[0]),
                 MovementPerSecond * Time.deltaTime);
 
-            DrawOffset = nextPos - MapRenderer.CubicalCoordinateToWorld(PreviousPosition);
+            MovementDrawOffset = nextPos - MapRenderer.CubicalCoordinateToWorld(PreviousPosition);
 
             SetWorldRotation(Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(nextPos - MapRenderer.CubicalCoordinateToWorld(CurrentPathInfo.Path[0])), Time.deltaTime * RotationSpeed));
         }
@@ -104,7 +105,7 @@ namespace Assets.Game
 
         private Vector3 CreateWorldPos()
         {
-            return MapRenderer.CubicalCoordinateToWorld(PreviousPosition) + DrawOffset;
+            return MapRenderer.CubicalCoordinateToWorld(PreviousPosition) + MovementDrawOffset + DrawOffset;
         }
 
         protected void RequestNewPath()

@@ -14,7 +14,7 @@ namespace Assets.Game.Units.Groups
             AddUnitInternal(unit);
         }
 
-        public void AddUnit(Cavalery unit)
+        public void AddUnit(Cavalry unit)
         {
             AddUnitInternal(unit);
         }
