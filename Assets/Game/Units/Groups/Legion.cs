@@ -8,5 +8,15 @@ namespace Assets.Game.Units.Groups
         {
 
         }
+
+        public void AddUnit(Cohort unit)
+        {
+            AddUnitInternal(unit);
+        }
+
+        public void AddUnit(Cavalry unit)
+        {
+            AddUnitInternal(unit);
+        }
     }
 }

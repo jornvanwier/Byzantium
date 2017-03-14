@@ -22,5 +22,10 @@ namespace Assets.Game.Units.Groups
         {
             base.SetWorldRotation(rotation);
         }
+
+        protected virtual void AddUnitInternal(Unit unit)
+        {
+            Children.Add(unit);
+        }
     }
 }
