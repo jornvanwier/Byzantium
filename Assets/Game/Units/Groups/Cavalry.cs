@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 public class Cavalry : UnitBase, IMultipleUnits<DrawableUnit>
 {
+    List<DrawableUnit> units;
+
+
+
     public void AddUnit(DrawableUnit unit)
     {
         throw new NotImplementedException();
