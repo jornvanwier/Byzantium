@@ -1,25 +1,28 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Assets.Game.Units.Unit_Enums;
+using UnityEngine;
 
-public abstract class DrawableUnit : UnitBase
+namespace Assets.Game.Units
 {
-    private Mesh mesh;
-
-    Defense defenseType;
-    Weapon weaponType;
-    Movement movementType;
-
-    public DrawableUnit(Mesh mesh, Defense defense = Defense.Armor, Weapon weapon = Weapon.Sword, Movement movement = Movement.Foot)
+    public abstract class DrawableUnit : UnitBase
     {
-        this.mesh = mesh;
+        private Mesh mesh;
 
-        defenseType = defense;
-        weaponType = weapon;
-        movementType = movement;
-    }
+        public Defense DefenseType { get; }
+        public Weapon WeaponType { get; }
+        public Movement MovementType { get; }
+
+        protected DrawableUnit(Mesh mesh, Defense defense = Defense.Armor, Weapon weapon = Weapon.Sword, Movement movement = Movement.Foot)
+        {
+            this.mesh = mesh;
+
+            DefenseType = defense;
+            WeaponType = weapon;
+            MovementType = movement;
+        }
 
     
 
 
 
+    }
 }

@@ -1,27 +1,29 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
-using System;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
-public class Century : UnitBase, IMultipleUnits<Contubernium>
+namespace Assets.Game.Units.Groups
 {
-    public void AddUnit(Contubernium unit)
+    public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
-        throw new NotImplementedException();
-    }
+        public void AddUnit(Contubernium unit)
+        {
+            throw new NotImplementedException();
+        }
 
-    public IEnumerator<Contubernium> GetEnumerator()
-    {
-        throw new NotImplementedException();
-    }
+        public IEnumerator<Contubernium> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
 
-    public void RemoveUnit(Contubernium unit)
-    {
-        throw new NotImplementedException();
-    }
+        public void RemoveUnit(Contubernium unit)
+        {
+            throw new NotImplementedException();
+        }
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        throw new NotImplementedException();
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

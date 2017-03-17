@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public enum Weapon : byte
+﻿namespace Assets.Game.Units.Unit_Enums
 {
-    Sword,
-    Pike,
-    Longbow,
-    Shortbow
+    public enum Weapon : byte
+    {
+        Sword,
+        Pike,
+        Longbow,
+        Shortbow
+    }
 }
