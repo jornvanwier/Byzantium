@@ -30,38 +30,39 @@ namespace Assets.Game
 
             Position = MapRenderer.WorldToCubicalCoordinate(CreateWorldPos());
 
-            if (Position != Goal)
+            if (Position == Goal)
             {
-                if (IsPathValid())
+                return;
+            }
+            if (IsPathValid())
+            {
+                // Take step;
+                AdvanceOnPath();
+            }
+            else
+            {
+                // Get new path
+
+                // If we're not already searching
+                if (NextPathId == -1)
                 {
-                    // Take step;
-                    AdvanceOnPath();
+                    RequestNewPath();
                 }
                 else
                 {
-                    // Get new path
-
-                    // If we're not already searching
-                    if (NextPathId == -1)
+                    // Check on the state of the job
+                    if (PathfindingJobManager.Instance.GetInfo(NextPathId).State == JobState.Failure)
                     {
+                        // Pathing has failed for some reason, lets try again
                         RequestNewPath();
                     }
-                    else
+                    else if (PathfindingJobManager.Instance.IsFinished(NextPathId))
                     {
-                        // Check on the state of the job
-                        if (PathfindingJobManager.Instance.GetInfo(NextPathId).State == JobState.Failure)
-                        {
-                            // Pathing has failed for some reason, lets try again
-                            RequestNewPath();
-                        }
-                        else if (PathfindingJobManager.Instance.IsFinished(NextPathId))
-                        {
-                            CurrentPathInfo = PathfindingJobManager.Instance.GetInfo(NextPathId);
-                            PathfindingJobManager.Instance.ClearJob(NextPathId);
+                        CurrentPathInfo = PathfindingJobManager.Instance.GetInfo(NextPathId);
+                        PathfindingJobManager.Instance.ClearJob(NextPathId);
 
-                            NextPathId = -1;
-                            AdvanceOnPath();
-                        }
+                        NextPathId = -1;
+                        AdvanceOnPath();
                     }
                 }
             }
