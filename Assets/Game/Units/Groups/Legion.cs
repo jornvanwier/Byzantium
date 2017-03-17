@@ -5,38 +5,40 @@ using System.Collections.Generic;
 
 public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>
 {
+    public List<Cavalry> Cavalry { get; } = new List<Cavalry>();
+
+    public List<Cohort> Cohorts { get; } = new List<Cohort>();
+
+
     public void AddUnit(Cohort unit)
     {
-        throw new NotImplementedException();
+        Cohorts.Add(unit);
     }
 
     public void AddUnit(Cavalry unit)
     {
-        throw new NotImplementedException();
-    }
-
-    public IEnumerator<Cohort> GetEnumerator()
-    {
-        throw new NotImplementedException();
+        Cavalry.Add(unit);
     }
 
     public void RemoveUnit(Cohort unit)
     {
-        throw new NotImplementedException();
+        int index = Cohorts.IndexOf(unit);
+        Cohorts.RemoveAt(index);
     }
 
     public void RemoveUnit(Cavalry unit)
     {
-        throw new NotImplementedException();
+        int index = Cavalry.IndexOf(unit);
+        Cavalry.RemoveAt(index);
     }
 
-    IEnumerator IEnumerable.GetEnumerator()
+    IEnumerator<UnitBase> IEnumerable<UnitBase>.GetEnumerator()
     {
-        throw new NotImplementedException();
-    }
-
-    IEnumerator<Cavalry> IEnumerable<Cavalry>.GetEnumerator()
-    {
-        throw new NotImplementedException();
+        int position = 0;
+        while (position < Cavalry.Count + Cohorts.Count)
+        {
+            yield return position < Cavalry.Count ? (UnitBase) Cavalry[position] : Cohorts[position - Cavalry.Count];
+            position++;
+        }
     }
 }

@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Assets.Game.Units;
 using Assets.Map;
 using JetBrains.Annotations;
 using Map;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,6 +39,18 @@ namespace Assets.Game
         [UsedImplicitly]
         private void Start()
         {
+            Legion legion = new Legion();
+            legion.AddUnit(new Cavalry());
+            legion.AddUnit(new Cavalry());
+            legion.AddUnit(new Cavalry());
+            legion.AddUnit(new Cohort());
+            legion.AddUnit(new Cohort());
+            foreach(UnitBase unit in legion)
+            {
+                Debug.Log(unit);
+            }
+
+
             MapRenderer = Instantiate(MapRenderer);
             MapRenderer.name = "Map";
             MapRenderer.GetComponent<MapRenderer>().StartPin = StartPin;

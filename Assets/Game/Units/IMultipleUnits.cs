@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.Collections.Generic;
 
-public interface IMultipleUnits<T> : IEnumerable<T>
+public interface IMultipleUnits<in T>
 {
     void AddUnit    (T unit);
     void RemoveUnit (T unit);
