@@ -1,15 +1,14 @@
 ﻿using System;
 using Assets.Game.Units;
-using Assets.Game.Units.Groups;
 
 namespace Assets.Game
 {
     public class Commander
     {
-        private UnitGroup children;
+        private IMultipleUnits children;
         private string name;
 
-        public Commander(UnitGroup children, string name = null)
+        public Commander(IMultipleUnits children, string name = null)
         {
             this.children = children;
 
