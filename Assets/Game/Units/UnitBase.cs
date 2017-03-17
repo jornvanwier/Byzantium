@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
-using UnityEditor;
 
-public abstract class UnitBase
+namespace Assets.Game.Units
 {
-    public Vector3     Position { get; set; }
-    public Quaternion  Rotation { get; set; }   
+    public abstract class UnitBase
+    {
+        public Vector3     Position { get; set; }
+        public Quaternion  Rotation { get; set; }
+    }
 }

@@ -1,27 +1,33 @@
-﻿using UnityEngine;
-using System.Collections;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
-public class Cavalry : UnitBase, IMultipleUnits<DrawableUnit>
+namespace Assets.Game.Units.Groups
 {
-    public void AddUnit(DrawableUnit unit)
+    public class Cavalry : UnitBase, IMultipleUnits<DrawableUnit>
     {
-        throw new NotImplementedException();
-    }
+        private List<DrawableUnit> units;
 
-    public IEnumerator<DrawableUnit> GetEnumerator()
-    {
-        throw new NotImplementedException();
-    }
 
-    public void RemoveUnit(DrawableUnit unit)
-    {
-        throw new NotImplementedException();
-    }
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        throw new NotImplementedException();
+        public void AddUnit(DrawableUnit unit)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator<DrawableUnit> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveUnit(DrawableUnit unit)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
