@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.Game
 {
-    public class MovableBoardMesh : BoardMesh
+    public class MovableBoardObject : BoardObject
     {
         protected int NextPathId { get; set; } = -1;
         protected PathfindingJobInfo CurrentPathInfo { get; set; }

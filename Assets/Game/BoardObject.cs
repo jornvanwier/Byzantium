@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Game
 {
-    public class BoardMesh : MonoBehaviour, IBoardPlaceable
+    public class BoardObject : MonoBehaviour, IBoardPlaceable
     {
         [SerializeField]
         public CubicalCoordinate Position { get; set; }

@@ -2,7 +2,7 @@
 
 namespace Assets.Game.Units
 {
-    public abstract class Unit : MovableBoardMesh
+    public abstract class Unit : MovableBoardObject
     {
         protected Unit()
         {

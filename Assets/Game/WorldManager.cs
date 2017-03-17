@@ -15,7 +15,7 @@ namespace Assets.Game
         public GameObject MapRenderer;
         public GameObject TestPrefab;
 
-        private MovableBoardMesh mbm;
+        private MovableBoardObject mbm;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
         public float InitialCameraAngle = 35;
@@ -46,7 +46,7 @@ namespace Assets.Game
             cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = new Vector3(0, cHeight, 0);
 
-            mbm = Instantiate(TestPrefab).GetComponent<MovableBoardMesh>();
+            mbm = Instantiate(TestPrefab).GetComponent<MovableBoardObject>();
 
             mbm.Position = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(StartPin.transform.position);
             mbm.Goal = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
