@@ -1,35 +1,33 @@
-﻿using System;
-using System.Collections;
-using Assets.Game.Units;
+﻿using Assets.Game.Units;
 using Assets.Game.Units.Groups;
 using Assets.Map;
 using JetBrains.Annotations;
-using Map;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Game
 {
     public class WorldManager : MonoBehaviour
     {
-        public GameObject StartPin;
-        public GameObject GoalPin;
-        public GameObject MapRenderer;
-        public GameObject TestPrefab;
-
-        private MovableBoardObject mbm;
+        private bool applicationHasFocus;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
+        public GameObject GoalPin;
         public float InitialCameraAngle = 35;
-        public float InitialZoomSpeed = 2;
         public float InitialCameraMoveSpeed = 2;
+        public float InitialZoomSpeed = 2;
+        public GameObject MapRenderer;
+
+        private MovableBoardObject movableBoardObject;
+        private bool middleMouseDown;
+        private Vector2 prevMousePos = Vector2.zero;
+        private bool rightMouseDown;
+        private Vector3 startIntersect;
+        public GameObject StartPin;
+        public GameObject TestPrefab;
 
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
         private float ZoomSpeed => InitialZoomSpeed * (CameraHeight - 1);
-
-        private bool applicationHasFocus;
 
         [UsedImplicitly]
         private void OnApplicationFocus(bool hasFocus)
@@ -40,16 +38,14 @@ namespace Assets.Game
         [UsedImplicitly]
         private void Start()
         {
-            Legion legion = new Legion();
+            var legion = new Legion();
             legion.AddUnit(new Cavalry());
             legion.AddUnit(new Cavalry());
             legion.AddUnit(new Cavalry());
             legion.AddUnit(new Cohort());
             legion.AddUnit(new Cohort());
-            foreach(UnitBase unit in legion)
-            {
+            foreach (UnitBase unit in legion)
                 Debug.Log(unit);
-            }
 
 
             MapRenderer = Instantiate(MapRenderer);
@@ -61,10 +57,10 @@ namespace Assets.Game
             cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = new Vector3(0, cHeight, 0);
 
-            mbm = Instantiate(TestPrefab).GetComponent<MovableBoardObject>();
+            movableBoardObject = Instantiate(TestPrefab).GetComponent<MovableBoardObject>();
 
-            mbm.Position = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(StartPin.transform.position);
-            mbm.Goal = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
+            movableBoardObject.Position = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(StartPin.transform.position);
+            movableBoardObject.Goal = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
 
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
             Rotate(objectRight, Space.Self, InitialCameraAngle);
@@ -72,10 +68,10 @@ namespace Assets.Game
 
         // Update is called once per frame
         [UsedImplicitly]
-        void Update()
+        private void Update()
         {
             UpdateCamera();
-            mbm.Goal = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
+            movableBoardObject.Goal = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
         }
 
         private static Vector3 MultiplyVector(Vector3 v1, Vector3 v2)
@@ -104,27 +100,47 @@ namespace Assets.Game
 
             //Keyboard movement
             if (Input.GetKey(KeyCode.Space))
+            {
                 Ascend();
+            }
             if (Input.GetKey(KeyCode.LeftShift))
+            {
                 Descend();
+            }
 
             if (Input.GetKey(KeyCode.W))
+            {
                 Pan(worldForward);
+            }
             if (Input.GetKey(KeyCode.A))
+            {
                 Pan(worldRight, -1f);
+            }
             if (Input.GetKey(KeyCode.S))
+            {
                 Pan(worldForward, -1f);
+            }
             if (Input.GetKey(KeyCode.D))
+            {
                 Pan(worldRight);
+            }
 
             if (Input.GetKey(KeyCode.UpArrow))
+            {
                 Rotate(objectRight, Space.Self);
+            }
             if (Input.GetKey(KeyCode.DownArrow))
+            {
                 Rotate(objectRight, Space.Self, -1f);
+            }
             if (Input.GetKey(KeyCode.RightArrow))
+            {
                 Rotate(Vector3.up);
+            }
             if (Input.GetKey(KeyCode.LeftArrow))
+            {
                 Rotate(Vector3.up, Space.World, -1f);
+            }
 
             //Mouse scroll zoom
             float zoom = Input.GetAxis("Mouse ScrollWheel");
@@ -134,11 +150,13 @@ namespace Assets.Game
             if (Input.GetMouseButtonDown(1))
             {
                 Vector3 position = new Vector2(Screen.width / 2, Screen.height / 2);
-                Plane plane = new Plane(Vector3.up, Vector3.zero);
-                Camera camera = cameraObject.GetComponent<Camera>();
+                var plane = new Plane(Vector3.up, Vector3.zero);
+                var camera = cameraObject.GetComponent<Camera>();
                 Ray ray = camera.ScreenPointToRay(position);
                 if (plane.Raycast(ray, out float rayDistance))
+                {
                     startIntersect = ray.GetPoint(rayDistance);
+                }
                 rightMouseDown = true;
             }
             if (Input.GetMouseButtonUp(1))
@@ -147,7 +165,9 @@ namespace Assets.Game
                 prevMousePos = Vector2.zero;
             }
             if (Input.GetMouseButtonDown(2))
+            {
                 middleMouseDown = true;
+            }
             if (Input.GetMouseButtonUp(2))
             {
                 middleMouseDown = false;
@@ -157,8 +177,8 @@ namespace Assets.Game
             {
                 Vector2 position = Input.mousePosition;
                 Vector3 intersect = Vector3.zero;
-                Plane plane = new Plane(Vector3.up, Vector3.zero);
-                Camera camera = cameraObject.GetComponent<Camera>();
+                var plane = new Plane(Vector3.up, Vector3.zero);
+                var camera = cameraObject.GetComponent<Camera>();
                 Ray ray = camera.ScreenPointToRay(position);
                 plane.Raycast(ray, out float rayDistance);
                 if (prevMousePos != Vector2.zero)
@@ -173,7 +193,9 @@ namespace Assets.Game
                             Space.World);
                     }
                     if (rightMouseDown)
+                    {
                         cameraObject.transform.RotateAround(startIntersect, Vector3.up, -movement.x);
+                    }
                 }
                 prevMousePos = position;
             }
@@ -184,20 +206,23 @@ namespace Assets.Game
             {
                 const int margin = 10;
                 if (Input.mousePosition.x < margin)
+                {
                     Pan(worldRight, -1f);
+                }
                 if (Input.mousePosition.y < margin)
+                {
                     Pan(worldForward, -1f);
+                }
                 if (Input.mousePosition.y > Screen.height - margin)
+                {
                     Pan(worldForward);
+                }
                 if (Input.mousePosition.x > Screen.width - margin)
+                {
                     Pan(worldRight);
+                }
             }
         }
-
-        private bool middleMouseDown;
-        private bool rightMouseDown;
-        private Vector2 prevMousePos = Vector2.zero;
-        private Vector3 startIntersect;
 
         private void Ascend()
         {
@@ -234,8 +259,8 @@ namespace Assets.Game
 
             float tx = v.x;
             float ty = v.y;
-            v.x = (cos * tx) - (sin * ty);
-            v.y = (sin * tx) + (cos * ty);
+            v.x = cos * tx - sin * ty;
+            v.y = sin * tx + cos * ty;
             return v;
         }
     }

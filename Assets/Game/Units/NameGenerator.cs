@@ -356,8 +356,8 @@ namespace Assets.Game.Units
 
         public static string Generate(int nNames = 3)
         {
-            string result = "";
-            for (int i = 0; i < nNames; i++)
+            var result = "";
+            for (var i = 0; i < nNames; i++)
             {
                 string newName;
                 do

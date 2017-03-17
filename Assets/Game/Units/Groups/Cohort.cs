@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Assets.Game.Units.Groups
 {
     public class Cohort : UnitBase, IMultipleUnits<Century>
     {
         public List<Century> Centuries { get; } = new List<Century>();
+
         public void AddUnit(Century unit)
         {
             Centuries.Add(unit);

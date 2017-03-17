@@ -10,7 +10,9 @@
             this.children = children;
 
             if (name == null)
+            {
                 name = NameGenerator.Generate();
+            }
 
             this.name = name;
         }

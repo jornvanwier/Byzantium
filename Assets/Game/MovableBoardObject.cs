@@ -7,12 +7,11 @@ namespace Assets.Game
 {
     public class MovableBoardObject : BoardObject
     {
+        private const float MovementPerSecond = 1.5f;
+        private const float RotationSpeed = 3.5f;
         protected int NextPathId { get; set; } = -1;
         protected PathfindingJobInfo CurrentPathInfo { get; set; }
         private Vector3 MovementDrawOffset { get; set; }
-
-        private const float MovementPerSecond = 1.5f;
-        private const float RotationSpeed = 3.5f;
 
         public CubicalCoordinate PreviousPosition { get; set; }
         public CubicalCoordinate Goal { get; set; }
@@ -90,7 +89,9 @@ namespace Assets.Game
 
             MovementDrawOffset = nextPos - MapRenderer.CubicalCoordinateToWorld(PreviousPosition);
 
-            SetWorldRotation(Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(nextPos - MapRenderer.CubicalCoordinateToWorld(CurrentPathInfo.Path[0])), Time.deltaTime * RotationSpeed));
+            SetWorldRotation(Quaternion.Slerp(transform.rotation,
+                Quaternion.LookRotation(nextPos - MapRenderer.CubicalCoordinateToWorld(CurrentPathInfo.Path[0])),
+                Time.deltaTime * RotationSpeed));
         }
 
         protected override void SetWorldPos(Vector3 worldPos)

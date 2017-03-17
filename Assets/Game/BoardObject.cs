@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Assets.Map;
+﻿using Assets.Map;
 using JetBrains.Annotations;
 using Map;
 using UnityEngine;
@@ -9,11 +7,12 @@ namespace Assets.Game
 {
     public class BoardObject : MonoBehaviour, IBoardPlaceable
     {
+        protected MapRenderer MapRenderer;
+
         [SerializeField]
         public CubicalCoordinate Position { get; set; }
 
         public Vector3 DrawOffset { get; set; }
-        protected MapRenderer MapRenderer;
 
         [UsedImplicitly]
         protected virtual void Start()
@@ -34,7 +33,6 @@ namespace Assets.Game
 
         protected virtual void SetWorldRotation(Quaternion rotation)
         {
-
         }
     }
 }

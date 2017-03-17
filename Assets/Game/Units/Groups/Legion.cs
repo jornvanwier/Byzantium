@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Assets.Game.Units.Groups
 {
@@ -10,20 +8,20 @@ namespace Assets.Game.Units.Groups
         public List<Cavalry> Cavalry { get; } = new List<Cavalry>();
         public List<Cohort> Cohorts { get; } = new List<Cohort>();
 
-        public void AddUnit(Cohort unit)
+        public IEnumerator GetEnumerator()
         {
-            Cohorts.Add(unit);
+            var position = 0;
+            while (position < Cavalry.Count + Cohorts.Count)
+            {
+                yield return position < Cavalry.Count ? (UnitBase) Cavalry[position] : Cohorts[position - Cavalry.Count]
+                    ;
+                position++;
+            }
         }
 
         public void AddUnit(Cavalry unit)
         {
             Cavalry.Add(unit);
-        }
-
-        public void RemoveUnit(Cohort unit)
-        {
-            int index = Cohorts.IndexOf(unit);
-            Cohorts.RemoveAt(index);
         }
 
         public void RemoveUnit(Cavalry unit)
@@ -32,14 +30,15 @@ namespace Assets.Game.Units.Groups
             Cavalry.RemoveAt(index);
         }
 
-        public IEnumerator GetEnumerator()
+        public void AddUnit(Cohort unit)
         {
-            int position = 0;
-            while (position < Cavalry.Count + Cohorts.Count)
-            {
-                yield return position < Cavalry.Count ? (UnitBase) Cavalry[position] : Cohorts[position - Cavalry.Count];
-                position++;
-            }
+            Cohorts.Add(unit);
+        }
+
+        public void RemoveUnit(Cohort unit)
+        {
+            int index = Cohorts.IndexOf(unit);
+            Cohorts.RemoveAt(index);
         }
     }
 }

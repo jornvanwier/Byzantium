@@ -4,6 +4,6 @@
     {
         LargeShield,
         SmallShield,
-        Armor,
+        Armor
     }
 }

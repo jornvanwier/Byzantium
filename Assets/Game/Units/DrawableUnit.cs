@@ -7,11 +7,8 @@ namespace Assets.Game.Units
     {
         private Mesh mesh;
 
-        public Defense DefenseType { get; }
-        public Weapon WeaponType { get; }
-        public Movement MovementType { get; }
-
-        protected DrawableUnit(Mesh mesh, Defense defense = Defense.Armor, Weapon weapon = Weapon.Sword, Movement movement = Movement.Foot)
+        protected DrawableUnit(Mesh mesh, Defense defense = Defense.Armor, Weapon weapon = Weapon.Sword,
+            Movement movement = Movement.Foot)
         {
             this.mesh = mesh;
 
@@ -20,9 +17,8 @@ namespace Assets.Game.Units
             MovementType = movement;
         }
 
-    
-
-
-
+        public Defense DefenseType { get; }
+        public Weapon WeaponType { get; }
+        public Movement MovementType { get; }
     }
 }
