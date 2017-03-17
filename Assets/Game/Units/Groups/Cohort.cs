@@ -10,12 +10,12 @@ public class Cohort : UnitBase, IMultipleUnits<Century>
         throw new NotImplementedException();
     }
 
-    public IEnumerator<Century> GetEnumerator()
+    public void RemoveUnit(Century unit)
     {
         throw new NotImplementedException();
     }
 
-    public void RemoveUnit(Century unit)
+    public IEnumerator<Century> GetEnumerator()
     {
         throw new NotImplementedException();
     }

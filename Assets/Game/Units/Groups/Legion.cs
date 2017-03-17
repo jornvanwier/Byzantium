@@ -15,17 +15,17 @@ public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>
         throw new NotImplementedException();
     }
 
-    public IEnumerator<Cohort> GetEnumerator()
-    {
-        throw new NotImplementedException();
-    }
-
     public void RemoveUnit(Cohort unit)
     {
         throw new NotImplementedException();
     }
 
     public void RemoveUnit(Cavalry unit)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerator<Cohort> GetEnumerator()
     {
         throw new NotImplementedException();
     }

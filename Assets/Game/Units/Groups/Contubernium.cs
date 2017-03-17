@@ -10,12 +10,12 @@ public class Contubernium : UnitBase, IMultipleUnits<DrawableUnit>
         throw new NotImplementedException();
     }
 
-    public IEnumerator<DrawableUnit> GetEnumerator()
+    public void RemoveUnit(DrawableUnit unit)
     {
         throw new NotImplementedException();
     }
 
-    public void RemoveUnit(DrawableUnit unit)
+    public IEnumerator<DrawableUnit> GetEnumerator()
     {
         throw new NotImplementedException();
     }

@@ -10,12 +10,12 @@ public class Century : UnitBase, IMultipleUnits<Contubernium>
         throw new NotImplementedException();
     }
 
-    public IEnumerator<Contubernium> GetEnumerator()
+    public void RemoveUnit(Contubernium unit)
     {
         throw new NotImplementedException();
     }
 
-    public void RemoveUnit(Contubernium unit)
+    public IEnumerator<Contubernium> GetEnumerator()
     {
         throw new NotImplementedException();
     }
