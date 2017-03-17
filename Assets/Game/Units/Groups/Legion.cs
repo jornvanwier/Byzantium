@@ -5,32 +5,34 @@ using System.Linq;
 
 namespace Assets.Game.Units.Groups
 {
-    public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>, IEnumerable<UnitBase>
+    public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>, IEnumerable
     {
         public List<Cavalry> Cavalry { get; } = new List<Cavalry>();
         public List<Cohort> Cohorts { get; } = new List<Cohort>();
 
         public void AddUnit(Cohort unit)
         {
-            throw new NotImplementedException();
+            Cohorts.Add(unit);
         }
 
         public void AddUnit(Cavalry unit)
         {
-            throw new NotImplementedException();
+            Cavalry.Add(unit);
         }
 
         public void RemoveUnit(Cohort unit)
         {
-            throw new NotImplementedException();
+            int index = Cohorts.IndexOf(unit);
+            Cohorts.RemoveAt(index);
         }
 
         public void RemoveUnit(Cavalry unit)
         {
-            throw new NotImplementedException();
+            int index = Cavalry.IndexOf(unit);
+            Cavalry.RemoveAt(index);
         }
 
-        IEnumerator<UnitBase> IEnumerable<UnitBase>.GetEnumerator()
+        public IEnumerator GetEnumerator()
         {
             int position = 0;
             while (position < Cavalry.Count + Cohorts.Count)
@@ -39,11 +41,6 @@ namespace Assets.Game.Units.Groups
                     ;
                 position++;
             }
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            throw new NotImplementedException();
         }
     }
 }
