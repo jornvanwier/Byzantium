@@ -1,6 +1,6 @@
 ﻿namespace Assets.Game.Units
 {
-    public enum Defence
+    public enum Defense
     {
         FullShield,
         SmallShield,
