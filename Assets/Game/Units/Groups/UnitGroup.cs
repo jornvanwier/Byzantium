@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Game.Units.Groups.Formations;
 using UnityEngine;
 
 namespace Assets.Game.Units.Groups
@@ -23,9 +24,18 @@ namespace Assets.Game.Units.Groups
             base.SetWorldRotation(rotation);
         }
 
+        public override void Order()
+        {
+            foreach (Unit child in Children)
+            {
+                child.Order();
+            }
+        }
+
         protected virtual void AddUnitInternal(Unit unit)
         {
             Children.Add(unit);
+            unit.Parent = this;
         }
     }
 }

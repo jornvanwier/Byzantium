@@ -103,7 +103,7 @@ namespace Assets.Game
             transform.rotation = rotation;
         }
 
-        private Vector3 CreateWorldPos()
+        protected Vector3 CreateWorldPos()
         {
             return MapRenderer.CubicalCoordinateToWorld(PreviousPosition) + MovementDrawOffset + DrawOffset;
         }
