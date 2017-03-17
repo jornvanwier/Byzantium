@@ -37,8 +37,7 @@ namespace Assets.Game.Units.Groups
             int position = 0;
             while (position < Cavalry.Count + Cohorts.Count)
             {
-                yield return position < Cavalry.Count ? (UnitBase) Cavalry[position] : Cohorts[position - Cavalry.Count]
-                    ;
+                yield return position < Cavalry.Count ? (UnitBase) Cavalry[position] : Cohorts[position - Cavalry.Count];
                 position++;
             }
         }

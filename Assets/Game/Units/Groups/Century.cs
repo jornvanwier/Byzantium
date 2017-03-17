@@ -6,19 +6,17 @@ namespace Assets.Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
+        public List<Contubernium> Contubernia { get; } = new List<Contubernium>();
+
         public void AddUnit(Contubernium unit)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerator<Contubernium> GetEnumerator()
-        {
-            throw new NotImplementedException();
+            Contubernia.Add(unit);
         }
 
         public void RemoveUnit(Contubernium unit)
         {
-            throw new NotImplementedException();
+            int index = Contubernia.IndexOf(unit);
+            Contubernia.RemoveAt(index);
         }
     }
 }

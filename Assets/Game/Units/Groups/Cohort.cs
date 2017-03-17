@@ -6,19 +6,16 @@ namespace Assets.Game.Units.Groups
 {
     public class Cohort : UnitBase, IMultipleUnits<Century>
     {
+        public List<Century> Centuries { get; } = new List<Century>();
         public void AddUnit(Century unit)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerator<Century> GetEnumerator()
-        {
-            throw new NotImplementedException();
+            Centuries.Add(unit);
         }
 
         public void RemoveUnit(Century unit)
         {
-            throw new NotImplementedException();
+            int index = Centuries.IndexOf(unit);
+            Centuries.RemoveAt(index);
         }
     }
 }

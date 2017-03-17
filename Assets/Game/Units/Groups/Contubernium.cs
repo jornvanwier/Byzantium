@@ -6,19 +6,17 @@ namespace Assets.Game.Units.Groups
 {
     public class Contubernium : UnitBase, IMultipleUnits<DrawableUnit>
     {
+        public List<DrawableUnit> DrawableUnits { get; } = new List<DrawableUnit>();
+
         public void AddUnit(DrawableUnit unit)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerator<DrawableUnit> GetEnumerator()
-        {
-            throw new NotImplementedException();
+            DrawableUnits.Add(unit);
         }
 
         public void RemoveUnit(DrawableUnit unit)
         {
-            throw new NotImplementedException();
+            int index = DrawableUnits.IndexOf(unit);
+            DrawableUnits.RemoveAt(index);
         }
     }
 }
