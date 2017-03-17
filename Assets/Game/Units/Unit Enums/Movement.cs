@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using UnityEditor;
-
-public enum Movement : byte
+﻿namespace Assets.Game.Units.Unit_Enums
 {
-    Horse,
-    Foot
+    public enum Movement : byte
+    {
+        Horse,
+        Foot
+    }
 }

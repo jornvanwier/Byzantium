@@ -1,7 +1,4 @@
-﻿using System;
-using Assets.Game.Units;
-
-namespace Assets.Game
+﻿namespace Assets.Game.Units
 {
     public class Commander
     {

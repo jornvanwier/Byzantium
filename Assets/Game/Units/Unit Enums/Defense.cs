@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using UnityEditor;
-
-public enum Defense : byte
+﻿namespace Assets.Game.Units.Unit_Enums
 {
-    LargeShield,
-    SmallShield,
-    Armor,
+    public enum Defense : byte
+    {
+        LargeShield,
+        SmallShield,
+        Armor,
+    }
 }
