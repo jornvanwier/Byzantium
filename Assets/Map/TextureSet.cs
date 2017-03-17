@@ -30,6 +30,5 @@ namespace Assets.Map
         {
             _default = set;
         }
-
     }
 }

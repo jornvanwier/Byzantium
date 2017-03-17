@@ -9,8 +9,8 @@ namespace Assets.Map
 
         public Int2(int x, int y)
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
         }
 
         public float Distance(Int2 coordinate)
@@ -35,7 +35,7 @@ namespace Assets.Map
 
         public static Int2 operator *(Int2 i1, float scalar)
         {
-            return new Int2((int)(i1.X * scalar), (int)(i1.Y * scalar));
+            return new Int2((int) (i1.X * scalar), (int) (i1.Y * scalar));
         }
 
         public static Int2 operator *(Int2 i1, int scalar)
@@ -52,9 +52,9 @@ namespace Assets.Map
 
         public Int3(int x, int y, int z)
         {
-            this.X = x;
-            this.Y = y;
-            this.Z = z;
+            X = x;
+            Y = y;
+            Z = z;
         }
     }
 
@@ -65,8 +65,8 @@ namespace Assets.Map
 
         public Float2(float x, float y)
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
         }
     }
 
@@ -78,9 +78,9 @@ namespace Assets.Map
 
         public Float3(float x, float y, float z)
         {
-            this.X = x;
-            this.Y = y;
-            this.Z = z;
+            X = x;
+            Y = y;
+            Z = z;
         }
     }
 }

@@ -5,11 +5,6 @@ namespace Assets.Game.Units
 {
     public abstract class DrawableUnit : UnitBase
     {
-        public Mesh Mesh { get; }
-        public Defense DefenseType { get; }
-        public Weapon WeaponType { get; }
-        public Movement MovementType { get; }
-
         protected DrawableUnit(Mesh mesh, Defense defense = Defense.Armor, Weapon weapon = Weapon.Sword,
             Movement movement = Movement.Foot)
         {
@@ -18,5 +13,10 @@ namespace Assets.Game.Units
             WeaponType = weapon;
             MovementType = movement;
         }
+
+        public Mesh Mesh { get; }
+        public Defense DefenseType { get; }
+        public Weapon WeaponType { get; }
+        public Movement MovementType { get; }
     }
 }

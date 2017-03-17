@@ -1,6 +1,4 @@
-﻿using Map;
-
-namespace Assets.Map.Generation
+﻿namespace Assets.Map.Generation
 {
     public class Biome
     {

@@ -5,7 +5,6 @@ using System.Threading;
 using Assets.Util;
 using Map.Generation;
 using UnityEngine;
-using Random = System.Random;
 
 namespace Assets.Map.Generation
 {
@@ -50,11 +49,14 @@ namespace Assets.Map.Generation
 
         public byte[,] Generate(int size, float borderPercentage)
         {
-            int seed = new Random().Next(0, 1000);
+            int seed = new System.Random().Next(0, 1000);
             Debug.Log(seed);
             float borderSize = borderPercentage * size;
             int moistureResolution = size / 1024; //moet factor van size zijn, hoger is preciezer en trager
-            if (moistureResolution == 0) moistureResolution = 1;
+            if (moistureResolution == 0)
+            {
+                moistureResolution = 1;
+            }
 
             byte[,] tileMap = null;
             Utils.LogOperationTime("Total map generation", () =>
@@ -81,30 +83,24 @@ namespace Assets.Map.Generation
         {
             int width = heightMap.GetLength(0);
             int height = heightMap.GetLength(1);
-            byte[,] map = new byte[width, height];
+            var map = new byte[width, height];
 
-            for (int y = 0; y < height; y++)
+            for (var y = 0; y < height; y++)
+            for (var x = 0; x < width; x++)
             {
-                for (int x = 0; x < width; x++)
-                {
-                    float currentHeight = heightMap[x, y];
-                    float currentMoisture = moistureMap[x, y];
-                    foreach (ElevationLevel elevation in ElevationLevels)
+                float currentHeight = heightMap[x, y];
+                float currentMoisture = moistureMap[x, y];
+                foreach (ElevationLevel elevation in ElevationLevels)
+                    if (currentHeight <= elevation.Height)
                     {
-                        if (currentHeight <= elevation.Height)
-                        {
-                            foreach (Biome biome in elevation.Biomes)
+                        foreach (Biome biome in elevation.Biomes)
+                            if (currentMoisture <= biome.Moisture)
                             {
-                                if (currentMoisture <= biome.Moisture)
-                                {
-                                    map[x, y] = (byte) biome.Type;
-                                    break;
-                                }
+                                map[x, y] = (byte) biome.Type;
+                                break;
                             }
-                            break;
-                        }
+                        break;
                     }
-                }
             }
 
             return map;
@@ -114,22 +110,16 @@ namespace Assets.Map.Generation
         {
             int width = map.GetLength(0);
             int height = map.GetLength(1);
-            T[,] bigMap = new T[width * factor, height * factor];
+            var bigMap = new T[width * factor, height * factor];
 
 
-            for (int y = 0; y < height; y++)
+            for (var y = 0; y < height; y++)
+            for (var x = 0; x < width; x++)
             {
-                for (int x = 0; x < width; x++)
-                {
-                    T value = map[x, y];
-                    for (int i = 0; i < factor; i++)
-                    {
-                        for (int j = 0; j < factor; j++)
-                        {
-                            bigMap[x * factor + i, y * factor + j] = value;
-                        }
-                    }
-                }
+                T value = map[x, y];
+                for (var i = 0; i < factor; i++)
+                for (var j = 0; j < factor; j++)
+                    bigMap[x * factor + i, y * factor + j] = value;
             }
 
             return bigMap;
@@ -140,17 +130,17 @@ namespace Assets.Map.Generation
             int tileMapSize = watermap.GetLength(0);
             List<Int2> beachWaterTiles = GetBeachWaterTiles(watermap, tileMapSize / waterResolution);
             int moistureMapSize = tileMapSize / moistureResolution;
-            float[,] moistureMap = new float[moistureMapSize, moistureMapSize];
+            var moistureMap = new float[moistureMapSize, moistureMapSize];
 
             int numThreads = Environment.ProcessorCount;
-            List<Thread> threads = new List<Thread>();
+            var threads = new List<Thread>();
 
             long count = 0;
 
-            for (int i = 0; i < numThreads; i++)
+            for (var i = 0; i < numThreads; i++)
             {
                 int partNum = i;
-                Thread t = new Thread(() =>
+                var t = new Thread(() =>
                 {
                     count += GenerateMoistureMapPart(ref moistureMap, 0, moistureMapSize / numThreads * partNum,
                         moistureMapSize,
@@ -163,9 +153,7 @@ namespace Assets.Map.Generation
             }
 
             foreach (Thread thread in threads)
-            {
                 thread.Join();
-            }
 
             PerlinizeMap(ref moistureMap, 0.2f);
             NormalizeMap(ref moistureMap);
@@ -175,31 +163,32 @@ namespace Assets.Map.Generation
             return moistureMap;
         }
 
-        private static long GenerateMoistureMapPart(ref float[,] moistureMap, int x1, int y1, int x2, int y2, bool[,] waterMap,
+        private static long GenerateMoistureMapPart(ref float[,] moistureMap, int x1, int y1, int x2, int y2,
+            bool[,] waterMap,
             List<Int2> beachWaterTiles, int moistureResolution)
         {
             long count = 0;
             for (int y = y1; y < y2; y++)
+            for (int x = x1; x < x2; x++)
             {
-                for (int x = x1; x < x2; x++)
+                Int2 currentPositionOnTileMap = new Int2(x, y) * moistureResolution;
+                bool isWater = waterMap[currentPositionOnTileMap.X, currentPositionOnTileMap.Y];
+                float moisture = 0;
+                if (!isWater)
                 {
-                    Int2 currentPositionOnTileMap = new Int2(x, y) * moistureResolution;
-                    bool isWater = waterMap[currentPositionOnTileMap.X, currentPositionOnTileMap.Y];
-                    float moisture = 0;
-                    if (!isWater)
+                    float closestWaterTile = float.PositiveInfinity;
+                    foreach (Int2 waterTile in beachWaterTiles)
                     {
-                        float closestWaterTile = float.PositiveInfinity;
-                        foreach (Int2 waterTile in beachWaterTiles)
+                        float distance = waterTile.Distance(currentPositionOnTileMap);
+                        count++;
+                        if (distance < closestWaterTile)
                         {
-                            float distance = waterTile.Distance(currentPositionOnTileMap);
-                            count++;
-                            if (distance < closestWaterTile)
-                                closestWaterTile = distance;
+                            closestWaterTile = distance;
                         }
-                        moisture = closestWaterTile;
                     }
-                    moistureMap[x, y] = moisture;
+                    moisture = closestWaterTile;
                 }
+                moistureMap[x, y] = moisture;
             }
             return count;
         }
@@ -207,36 +196,35 @@ namespace Assets.Map.Generation
         private static List<Int2> GetBeachWaterTiles(bool[,] waterMap, int resolution)
         {
             int size = waterMap.GetLength(0);
-            List<Int2> beachWaterTiles = new List<Int2>();
-            for (int y = 0; y < size; y += resolution)
-            {
-                for (int x = 0; x < size; x += resolution)
+            var beachWaterTiles = new List<Int2>();
+            for (var y = 0; y < size; y += resolution)
+            for (var x = 0; x < size; x += resolution)
+                if (waterMap[x, y])
                 {
-                    if (waterMap[x, y])
+                    var currentTile = new Int2(x, y);
+                    IEnumerable<Int2> neighbours = GetNeighbours(size, currentTile);
+                    foreach (Int2 neighbour in neighbours)
                     {
-                        Int2 currentTile = new Int2(x, y);
-                        IEnumerable<Int2> neighbours = GetNeighbours(size, currentTile);
-                        foreach (Int2 neighbour in neighbours)
+                        bool neighbourIsWater = waterMap[neighbour.X, neighbour.Y];
+                        if (neighbourIsWater)
                         {
-                            bool neighbourIsWater = waterMap[neighbour.X, neighbour.Y];
-                            if (neighbourIsWater) continue;
-                            beachWaterTiles.Add(currentTile);
-                            break;
+                            continue;
                         }
+                        beachWaterTiles.Add(currentTile);
+                        break;
                     }
                 }
-            }
             return beachWaterTiles;
         }
 
         private void AddRivers(byte[,] tileMap, float[,] heightMap, int numRivers, int initialRiverWidth = 5)
         {
             int size = tileMap.GetLength(0);
-            int failedRivers = 0;
-            List<Thread> threads = new List<Thread>();
-            for (int i = 0; i < numRivers; ++i)
+            var failedRivers = 0;
+            var threads = new List<Thread>();
+            for (var i = 0; i < numRivers; ++i)
             {
-                Thread t = new Thread(() =>
+                var t = new Thread(() =>
                 {
                     Int2 startPos;
                     do
@@ -246,31 +234,34 @@ namespace Assets.Map.Generation
 
                     List<Int2> river = GetRiver(size, startPos, heightMap);
                     if (river.Count == 0)
+                    {
                         failedRivers++;
+                    }
 
                     foreach (Int2 riverTile in river)
-                    {
                         tileMap[riverTile.X, riverTile.Y] = (byte) TileType.WaterDeep;
-                    }
                 });
                 threads.Add(t);
                 t.Start();
             }
 
             foreach (Thread thread in threads)
-            {
                 thread.Join();
-            }
 
             if (failedRivers > 0)
+            {
                 Debug.LogWarning("Failed creating " + failedRivers + " out of " + numRivers + " rivers");
+            }
         }
 
         private static List<Int2> GetRiver(int mapSize, Int2 startPos, float[,] heightMap)
         {
-            List<Int2> river = new List<Int2> {startPos};
+            var river = new List<Int2> {startPos};
 
-            if (AddRiverTile(mapSize, river, heightMap)) return river;
+            if (AddRiverTile(mapSize, river, heightMap))
+            {
+                return river;
+            }
 
             river.RemoveAt(0);
             return river;
@@ -282,7 +273,9 @@ namespace Assets.Map.Generation
             float currentHeight = heightMap[currentTile.X, currentTile.Y];
 
             if (currentHeight > RiverStartHeight)
+            {
                 return true;
+            }
 
             IOrderedEnumerable<Int2> neighbours =
                 GetNeighbours(mapSize, currentTile)
@@ -309,7 +302,9 @@ namespace Assets.Map.Generation
             int y = position.Y;
             int width = size, height = size;
             if (x >= width || y >= height || x < 0 || y < 0)
+            {
                 throw new ArgumentException("Requested position is out of bounds");
+            }
 
             if (x + 1 == width) //right boundary
             {
@@ -348,7 +343,7 @@ namespace Assets.Map.Generation
 
         private static Int2 GetRiverStartPosition(int size)
         {
-            Random random = new Random();
+            var random = new System.Random();
             int x = random.Next(0, size);
             int y = random.Next(0, size);
             return new Int2(x, y);
@@ -356,16 +351,14 @@ namespace Assets.Map.Generation
 
         private static bool[,] GetWaterMap(float[,] floatMap)
         {
-            int size = (int) Mathf.Sqrt(floatMap.Length);
-            bool[,] map = new bool[size, size];
+            var size = (int) Mathf.Sqrt(floatMap.Length);
+            var map = new bool[size, size];
 
-            for (int y = 0; y < size; y++)
+            for (var y = 0; y < size; y++)
+            for (var x = 0; x < size; x++)
             {
-                for (int x = 0; x < size; x++)
-                {
-                    bool isWater = floatMap[x, y] <= WaterHeight;
-                    map[x, y] = isWater;
-                }
+                bool isWater = floatMap[x, y] <= WaterHeight;
+                map[x, y] = isWater;
             }
 
             return map;
@@ -383,26 +376,26 @@ namespace Assets.Map.Generation
             lacunarity = Mathf.Clamp(lacunarity, 0, 2);
 
             //fill moistureMap
-            float[,] map = new float[size, size];
-            Random random = new Random(seed);
-            Vector2[] octaveOffsets = new Vector2[octaves];
-            for (int i = 0; i < octaves; i++)
+            var map = new float[size, size];
+            var random = new System.Random(seed);
+            var octaveOffsets = new Vector2[octaves];
+            for (var i = 0; i < octaves; i++)
             {
                 float offsetX = random.Next(-10000, 10000);
                 float offsetY = random.Next(-10000, 10000);
                 octaveOffsets[i] = new Vector2(offsetX, offsetY);
             }
 
-            Vector2 center = new Vector2(size / 2f, size / 2f);
+            var center = new Vector2(size / 2f, size / 2f);
             float halfSize = size / 2f;
 
             int numThreads = Environment.ProcessorCount;
-            List<Thread> threads = new List<Thread>();
+            var threads = new List<Thread>();
 
-            for (int i = 0; i < numThreads; i++)
+            for (var i = 0; i < numThreads; i++)
             {
                 int partNum = i;
-                Thread t = new Thread(() =>
+                var t = new Thread(() =>
                 {
                     GenerateMapPart(ref map, 0, size / numThreads * partNum, size, size / numThreads * (partNum + 1),
                         squareBorder,
@@ -417,9 +410,7 @@ namespace Assets.Map.Generation
             }
 
             foreach (Thread thread in threads)
-            {
                 thread.Join();
-            }
 
             NormalizeMap(ref map);
 
@@ -431,15 +422,13 @@ namespace Assets.Map.Generation
             int size = map.GetLength(0);
             float scale = Scale * size / 4;
 
-            for (int y = 0; y < size; y++)
+            for (var y = 0; y < size; y++)
+            for (var x = 0; x < size; x++)
             {
-                for (int x = 0; x < size; x++)
-                {
-                    float mapX = x / scale;
-                    float mapY = y / scale;
-                    float value = Mathf.PerlinNoise(mapX, mapY) * (1 + perlinFactor);
-                    map[x, y] *= value;
-                }
+                float mapX = x / scale;
+                float mapY = y / scale;
+                float value = Mathf.PerlinNoise(mapX, mapY) * (1 + perlinFactor);
+                map[x, y] *= value;
             }
         }
 
@@ -449,42 +438,34 @@ namespace Assets.Map.Generation
 
             float lowest = float.PositiveInfinity,
                 highest = float.NegativeInfinity;
-            for (int y = 0; y < size; y++)
+            for (var y = 0; y < size; y++)
+            for (var x = 0; x < size; x++)
             {
-                for (int x = 0; x < size; x++)
+                if (map[x, y] < lowest)
                 {
-                    if (map[x, y] < lowest)
-                    {
-                        lowest = map[x, y];
-                    }
-                    if (map[x, y] > highest)
-                    {
-                        highest = map[x, y];
-                    }
+                    lowest = map[x, y];
+                }
+                if (map[x, y] > highest)
+                {
+                    highest = map[x, y];
                 }
             }
 
             float multiplier = highestAllowedValue / (highest - lowest);
-            for (int y = 0; y < size; y++)
+            for (var y = 0; y < size; y++)
+            for (var x = 0; x < size; x++)
             {
-                for (int x = 0; x < size; x++)
-                {
-                    map[x, y] -= lowest;
-                    map[x, y] *= multiplier;
-                }
+                map[x, y] -= lowest;
+                map[x, y] *= multiplier;
             }
         }
 
         private static void InvertMap(ref float[,] map, float max = 1)
         {
             int size = map.GetLength(0);
-            for (int y = 0; y < size; y++)
-            {
-                for (int x = 0; x < size; x++)
-                {
-                    map[x, y] = max - map[x, y];
-                }
-            }
+            for (var y = 0; y < size; y++)
+            for (var x = 0; x < size; x++)
+                map[x, y] = max - map[x, y];
         }
 
         public void GenerateMapPart(ref float[,] map, int x1, int y1, int x2, int y2, bool squareBorder, float size,
@@ -493,40 +474,38 @@ namespace Assets.Map.Generation
             Vector2[] octaveOffsets, Vector2 position)
         {
             for (int y = y1; y < y2; y++)
+            for (int x = x1; x < x2; x++)
             {
-                for (int x = x1; x < x2; x++)
+                float amplitude = 1;
+                float frequency = 1;
+                float noiseHeight = 0;
+                float heightModifier, amplitudeModifier;
+                if (squareBorder)
                 {
-                    float amplitude = 1;
-                    float frequency = 1;
-                    float noiseHeight = 0;
-                    float heightModifier, amplitudeModifier;
-                    if (squareBorder)
-                    {
-                        amplitudeModifier = Mathf.Min(x, y, size - x, size - y, borderSize) / borderSize;
-                        heightModifier = Mathf.Min(x, y, size - x, size - y, borderSize / 2) / (borderSize / 2);
-                    }
-                    else
-                    {
-                        float distanceToCenter = Vector2.Distance(center, new Vector2(x, y));
-                        float distanceToBorder = Mathf.Max(0, halfSize - distanceToCenter);
-                        heightModifier = Mathf.Min(distanceToBorder, borderSize) / borderSize;
-                        amplitudeModifier = Mathf.Min(distanceToBorder, borderSize / 2) / (borderSize / 2);
-                    }
-
-                    for (int i = 0; i < octaves; i++)
-                    {
-                        float mapX = (x - halfSize) / scale * frequency + octaveOffsets[i].x + position.x;
-                        float mapY = (y - halfSize) / scale * frequency + octaveOffsets[i].y + position.y;
-                        float value = Mathf.PerlinNoise(mapX, mapY);
-                        noiseHeight += value * amplitude * heightModifier;
-
-                        amplitude *= persistance * amplitudeModifier;
-                        frequency *= lacunarity;
-                    }
-
-
-                    map[x, y] = noiseHeight;
+                    amplitudeModifier = Mathf.Min(x, y, size - x, size - y, borderSize) / borderSize;
+                    heightModifier = Mathf.Min(x, y, size - x, size - y, borderSize / 2) / (borderSize / 2);
                 }
+                else
+                {
+                    float distanceToCenter = Vector2.Distance(center, new Vector2(x, y));
+                    float distanceToBorder = Mathf.Max(0, halfSize - distanceToCenter);
+                    heightModifier = Mathf.Min(distanceToBorder, borderSize) / borderSize;
+                    amplitudeModifier = Mathf.Min(distanceToBorder, borderSize / 2) / (borderSize / 2);
+                }
+
+                for (var i = 0; i < octaves; i++)
+                {
+                    float mapX = (x - halfSize) / scale * frequency + octaveOffsets[i].x + position.x;
+                    float mapY = (y - halfSize) / scale * frequency + octaveOffsets[i].y + position.y;
+                    float value = Mathf.PerlinNoise(mapX, mapY);
+                    noiseHeight += value * amplitude * heightModifier;
+
+                    amplitude *= persistance * amplitudeModifier;
+                    frequency *= lacunarity;
+                }
+
+
+                map[x, y] = noiseHeight;
             }
         }
     }

@@ -6,7 +6,6 @@ namespace Map
     [Serializable]
     public struct CubicalCoordinate
     {
-
         public int X { get; }
         public int Z { get; }
         public int Y => -X - Z;
@@ -63,7 +62,10 @@ namespace Map
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
             return obj is CubicalCoordinate && Equals((CubicalCoordinate) obj);
         }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using Assets.Map;
+﻿using Assets.Map;
 
 namespace Map.Generation
 {
@@ -7,23 +6,19 @@ namespace Map.Generation
     {
         public byte[,] Generate(int size, float borderPercentage)
         {
-            byte[,] result = new byte[size, size];
+            var result = new byte[size, size];
 
-            for (int x = 0; x < size; ++x)
-            {
-                for (int y = 0; y < size; ++y)
+            for (var x = 0; x < size; ++x)
+            for (var y = 0; y < size; ++y)
+                if (x <= borderPercentage * size || x >= size - borderPercentage * size ||
+                    y <= borderPercentage * size || y >= size - borderPercentage * size)
                 {
-                    if (x <= borderPercentage * size || x >= size - borderPercentage * size ||
-                        y <= borderPercentage * size || y >= size - borderPercentage * size)
-                    {
-                        result[x, y] = (byte) TileType.WaterShallow;
-                    }
-                    else
-                    {
-                        result[x, y] = (byte) TileType.GrassLand;
-                    }
+                    result[x, y] = (byte) TileType.WaterShallow;
                 }
-            }
+                else
+                {
+                    result[x, y] = (byte) TileType.GrassLand;
+                }
 
             return result;
         }

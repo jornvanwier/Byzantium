@@ -6,13 +6,18 @@ using Map.Generation;
 using Map.Pathfinding;
 using Priority_Queue;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Assets.Map
 {
     public class HexBoard
     {
         private const float BorderPercentage = 0.2f;
+
+
+        public HexBoard(int size)
+        {
+            Size = size;
+        }
 
         public int Size { get; set; }
 
@@ -26,24 +31,12 @@ namespace Assets.Map
         public byte[,] Storage { get; private set; }
         private NodeGraph NodeGraph { get; set; }
 
-
-        public HexBoard(int size)
-        {
-            Size = size;
-        }
-
-        public void GenerateMap()
-        {
-            Storage = Generator.Generate(Size, BorderPercentage);
-            NodeGraph = new NodeGraph(Size);
-        }
-
         public byte this[CubicalCoordinate cc]
         {
             get
             {
                 OddRCoordinate oc = cc.ToOddR();
-            //  Debug.Log("OUT " + oc);
+                //  Debug.Log("OUT " + oc);
                 return Storage[oc.R, oc.Q];
             }
             set
@@ -51,6 +44,12 @@ namespace Assets.Map
                 OddRCoordinate oc = cc.ToOddR();
                 Storage[oc.R, oc.Q] = value;
             }
+        }
+
+        public void GenerateMap()
+        {
+            Storage = Generator.Generate(Size, BorderPercentage);
+            NodeGraph = new NodeGraph(Size);
         }
 
         public bool CheckCoordinate(OddRCoordinate oc)
@@ -68,7 +67,8 @@ namespace Assets.Map
             CubicalCoordinate cc;
             do
             {
-                cc = new OddRCoordinate(Random.Range(0, Size), Random.Range(0, Size)).ToCubical();
+                cc =
+                    new OddRCoordinate(UnityEngine.Random.Range(0, Size), UnityEngine.Random.Range(0, Size)).ToCubical();
             } while (this[cc] == (byte) TileType.WaterDeep);
 
             return cc;
@@ -82,7 +82,10 @@ namespace Assets.Map
             foreach (CubicalCoordinate direction in Directions)
             {
                 CubicalCoordinate neighbour = cc + direction;
-                if (!CheckCoordinate(neighbour)) continue;
+                if (!CheckCoordinate(neighbour))
+                {
+                    continue;
+                }
 
                 var tuple = new Tuple<CubicalCoordinate, byte>(neighbour, this[neighbour]);
                 neighbours.Add(tuple);
@@ -97,7 +100,10 @@ namespace Assets.Map
             foreach (CubicalCoordinate direction in Directions)
             {
                 CubicalCoordinate neighbour = cc + direction;
-                if (!CheckCoordinate(neighbour)) continue;
+                if (!CheckCoordinate(neighbour))
+                {
+                    continue;
+                }
 
                 nodes.Add(NodeGraph[neighbour]);
             }
@@ -129,7 +135,7 @@ namespace Assets.Map
                 // Backtrack path
                 if (current == goalNode)
                 {
-                    var totalPath = new List<CubicalCoordinate>() {goal};
+                    var totalPath = new List<CubicalCoordinate> {goal};
                     while (current != startNode)
                     {
                         current = cameFrom[current];

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using Assets.Util;
 using Map;
-using UnityEngine;
 
 namespace Assets.Map.Pathfinding
 {
     public class PathfindingJobInfo
     {
-        private static int _lastId = 0;
+        private static int _lastId;
 
         private int id;
 
@@ -30,7 +27,6 @@ namespace Assets.Map.Pathfinding
 
     public class PathfindingJobManager : Singleton<PathfindingJobManager>
     {
-        public HexBoard Map { get; set; }
         private readonly Dictionary<int, PathfindingJobInfo> storage;
 
         public PathfindingJobManager()
@@ -38,9 +34,11 @@ namespace Assets.Map.Pathfinding
             storage = new Dictionary<int, PathfindingJobInfo>();
         }
 
+        public HexBoard Map { get; set; }
+
         public int CreateJob(CubicalCoordinate start, CubicalCoordinate goal)
         {
-            var jobInfo = new PathfindingJobInfo()
+            var jobInfo = new PathfindingJobInfo
             {
                 StartPos = start,
                 GoalPos = goal

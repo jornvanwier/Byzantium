@@ -1,13 +1,11 @@
 ﻿using Map;
 using Map.Pathfinding;
-using UnityEngine;
 
 namespace Assets.Map.Pathfinding
 {
     public class NodeGraph
     {
         private readonly int size;
-        public AStarNode[,] NodeStorage { get; set; }
 
         public NodeGraph(int size)
         {
@@ -15,18 +13,7 @@ namespace Assets.Map.Pathfinding
             CreateNodes();
         }
 
-        public void CreateNodes()
-        {
-            NodeStorage = new AStarNode[size,size];
-            for (int q = 0; q < size; ++q)
-            {
-                for (int r = 0; r < size; ++r)
-                {
-                    CubicalCoordinate coord = new OddRCoordinate(q, r).ToCubical();
-                    NodeStorage[r, q] = new AStarNode(coord);
-                }
-            }
-        }
+        public AStarNode[,] NodeStorage { get; set; }
 
         public AStarNode this[CubicalCoordinate cc]
         {
@@ -42,5 +29,15 @@ namespace Assets.Map.Pathfinding
             }
         }
 
+        public void CreateNodes()
+        {
+            NodeStorage = new AStarNode[size, size];
+            for (var q = 0; q < size; ++q)
+            for (var r = 0; r < size; ++r)
+            {
+                CubicalCoordinate coord = new OddRCoordinate(q, r).ToCubical();
+                NodeStorage[r, q] = new AStarNode(coord);
+            }
+        }
     }
 }

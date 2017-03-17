@@ -16,9 +16,9 @@ namespace Assets.Game
         public float InitialCameraMoveSpeed = 2;
         public float InitialZoomSpeed = 2;
         public GameObject MapRenderer;
+        private bool middleMouseDown;
 
         private MovableBoardObject movableBoardObject;
-        private bool middleMouseDown;
         private Vector2 prevMousePos = Vector2.zero;
         private bool rightMouseDown;
         private Vector3 startIntersect;
@@ -59,8 +59,10 @@ namespace Assets.Game
 
             movableBoardObject = Instantiate(TestPrefab).GetComponent<MovableBoardObject>();
 
-            movableBoardObject.Position = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(StartPin.transform.position);
-            movableBoardObject.Goal = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
+            movableBoardObject.Position =
+                MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(StartPin.transform.position);
+            movableBoardObject.Goal =
+                MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
 
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
             Rotate(objectRight, Space.Self, InitialCameraAngle);
@@ -71,7 +73,8 @@ namespace Assets.Game
         private void Update()
         {
             UpdateCamera();
-            movableBoardObject.Goal = MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
+            movableBoardObject.Goal =
+                MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
         }
 
         private static Vector3 MultiplyVector(Vector3 v1, Vector3 v2)

@@ -1,57 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Assets.Map.Generation;
 using Assets.Map.Pathfinding;
-using Assets.Util;
 using JetBrains.Annotations;
-using UnityEngine;
 using Map;
-using Map.Generation;
-using UnityEngine.WSA;
+using UnityEngine;
 
 namespace Assets.Map
 {
     public class MapRenderer : MonoBehaviour
     {
-        private ComputeBuffer computeBuffer;
-        private HexBoard hexBoard;
-
-        private Texture2DArray albedoMaps;
-        private Texture2DArray normalMaps;
-        private Texture2DArray amboccMaps;
-        private Texture2DArray glossyMaps;
-        private Texture2DArray metallMaps;
-
         private const int TextureSize = 1024;
-        private int[,] data;
 
         private readonly List<Int2> selectedSet = new List<Int2>();
 
-
-        public int MapSize;
-        private List<TextureSet> textureSets;
-
-        public Mesh Mesh;
-
-        public Material HexMaterial;
-        private MaterialPropertyBlock block;
-        private MeshRenderer meshRenderer;
-
-        public Texture2D DefaultAlbedoMap;
-        public Texture2D DefaultHeightMap;
-        public Texture2D DefaultNormalMap;
-        public Texture2D DefaultAmbOccMap;
-        public Texture2D DefaultGlossyMap;
-        public Texture2D DefaultMetallMap;
+        private Texture2DArray albedoMaps;
 
         public Texture2D[] AlbedoMaps;
+        private Texture2DArray amboccMaps;
+        private MaterialPropertyBlock block;
+        private ComputeBuffer computeBuffer;
+        private int[,] data;
 
-        public GameObject StartPin;
-        public GameObject GoalPin;
+        public Texture2D DefaultAlbedoMap;
+        public Texture2D DefaultAmbOccMap;
+        public Texture2D DefaultGlossyMap;
+        public Texture2D DefaultHeightMap;
+        public Texture2D DefaultMetallMap;
+        public Texture2D DefaultNormalMap;
 
 
         private TextureSet defaultTextureSet;
+        private Texture2DArray glossyMaps;
+        public GameObject GoalPin;
+        private HexBoard hexBoard;
+
+        public Material HexMaterial;
+
+
+        public int MapSize;
+
+        public Mesh Mesh;
+        private MeshRenderer meshRenderer;
+        private Texture2DArray metallMaps;
+        private Texture2DArray normalMaps;
+
+        private int pathfindingJobId = -1;
+
+        public GameObject StartPin;
+        private List<TextureSet> textureSets;
 
         [UsedImplicitly]
         private void Start()
@@ -68,14 +65,10 @@ namespace Assets.Map
             textureSets = new List<TextureSet>();
 
             TextureSet.SetDefaultTextures(defaultTextureSet);
-            for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
-            {
-                textureSets.Add((TextureSet)defaultTextureSet.Clone());
-            }
-            for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
-            {
+            for (var i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
+                textureSets.Add((TextureSet) defaultTextureSet.Clone());
+            for (var i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
                 textureSets[i].AlbedoMap = AlbedoMaps[i];
-            }
 
             albedoMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
             normalMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
@@ -83,16 +76,14 @@ namespace Assets.Map
             glossyMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
             metallMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
 
-            for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
+            for (var i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
+            for (var j = 0; j < Convert.ToInt32(Mathf.Log(TextureSize, 2) + 1); ++j)
             {
-                for (int j = 0; j < Convert.ToInt32(Mathf.Log(TextureSize, 2) + 1); ++j)
-                {
-                    Graphics.CopyTexture(textureSets[i].AlbedoMap, 0, j, albedoMaps, i, j);
-                    Graphics.CopyTexture(textureSets[i].AmbOccMap, 0, j, amboccMaps, i, j);
-                    Graphics.CopyTexture(textureSets[i].GlossyMap, 0, j, glossyMaps, i, j);
-                    Graphics.CopyTexture(textureSets[i].MetallMap, 0, j, metallMaps, i, j);
-                    Graphics.CopyTexture(textureSets[i].NormalMap, 0, j, normalMaps, i, j);
-                }
+                Graphics.CopyTexture(textureSets[i].AlbedoMap, 0, j, albedoMaps, i, j);
+                Graphics.CopyTexture(textureSets[i].AmbOccMap, 0, j, amboccMaps, i, j);
+                Graphics.CopyTexture(textureSets[i].GlossyMap, 0, j, glossyMaps, i, j);
+                Graphics.CopyTexture(textureSets[i].MetallMap, 0, j, metallMaps, i, j);
+                Graphics.CopyTexture(textureSets[i].NormalMap, 0, j, normalMaps, i, j);
             }
 
             hexBoard = new HexBoard(MapSize) {Generator = new PerlinGenerator()};
@@ -103,8 +94,6 @@ namespace Assets.Map
             SetupShader();
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
             Debug.Log("Created map");
-
-
         }
 
         private void SetupShader()
@@ -113,15 +102,13 @@ namespace Assets.Map
 
             data = new int[MapSize, MapSize];
 
-            for (int x = 0; x < MapSize; ++x)
+            for (var x = 0; x < MapSize; ++x)
+            for (var y = 0; y < MapSize; ++y)
             {
-                for (int y = 0; y < MapSize; ++y)
-                {
-                    data[x, y] = hexBoard.Storage[x, y];
-                    var t = new TileData((TileType) hexBoard.Storage[x, y], false);
-                    int k = t.GetAsInt();
-                    data[x, y] = k;
-                }
+                data[x, y] = hexBoard.Storage[x, y];
+                var t = new TileData((TileType) hexBoard.Storage[x, y], false);
+                int k = t.GetAsInt();
+                data[x, y] = k;
             }
 
             computeBuffer.SetData(data);
@@ -145,8 +132,6 @@ namespace Assets.Map
 
             meshRenderer.SetPropertyBlock(block);
         }
-
-        private int pathfindingJobId = -1;
 
         [UsedImplicitly]
         private void Update()
@@ -205,7 +190,7 @@ namespace Assets.Map
 
         public Vector3 CubicalCoordinateToWorld(CubicalCoordinate cc)
         {
-            float hexSize = Mathf.Sqrt(3)/3;
+            float hexSize = Mathf.Sqrt(3) / 3;
 
             float x = hexSize * (3 / 2f) * cc.Z;
             float z = hexSize * Mathf.Sqrt(3) * (cc.X + cc.Z / 2);
@@ -278,20 +263,20 @@ namespace Assets.Map
         {
             foreach (Int2 tile in selectedSet)
             {
-                int tileData = this.data[tile.Y, tile.X];
+                int tileData = data[tile.Y, tile.X];
                 var src = new TileData(tileData);
                 src.SetSelected(true);
-                this.data[tile.Y, tile.X] = src.GetAsInt();
+                data[tile.Y, tile.X] = src.GetAsInt();
             }
 
             computeBuffer.SetData(data);
 
             foreach (Int2 tile in selectedSet)
             {
-                int tileData = this.data[tile.Y, tile.X];
+                int tileData = data[tile.Y, tile.X];
                 var src = new TileData(tileData);
                 src.SetSelected(false);
-                this.data[tile.Y, tile.X] = src.GetAsInt();
+                data[tile.Y, tile.X] = src.GetAsInt();
             }
         }
 
