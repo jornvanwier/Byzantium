@@ -5,10 +5,10 @@ namespace Assets.Game
 {
     public class Commander
     {
-        private IMultipleUnits children;
+        private UnitBase children;
         private string name;
 
-        public Commander(IMultipleUnits children, string name = null)
+        public Commander(UnitBase children, string name = null)
         {
             this.children = children;
 
