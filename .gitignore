@@ -8,6 +8,7 @@
 .idea
 
 *.iml
+*.meta
 
 *.log
 
