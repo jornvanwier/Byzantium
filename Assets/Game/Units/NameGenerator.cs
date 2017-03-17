@@ -1,6 +1,4 @@
-﻿
-
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Game.Units
 {
@@ -27,7 +25,8 @@ namespace Assets.Game.Units
             "Caesetius", "Caesius", "Caesonius", "Caesulenus", "Caetronius", "Calavius", "Calidius", "Calpurnius",
             "Calventius", "Calvisius", "Camilius", "Camillius", "Camelius", "Canidius", "Caninius", "Canius",
             "Cantilius", "Cantius", "Canuleius", "Canutius", "Caprenius", "Carius", "Caristanius", "Carvilius",
-            "Cassius", "Ceionius", "Cicereius", "Cilnius", "Cincius", "Cispius", "Claudius", "Clodius", "Cloelius",
+            "Cassius", "Ceionius", "Cicereius", "Cilnius", "Cincius", "Ruurd", "Bijlsma", "Jorn", "Hindrik", "Stegenga",
+            "Boter", "Trapezium", "Cispius", "Claudius", "Clodius", "Cloelius",
             "Clovius", "Cluilius", "Cluntius", "Cocceius", "Coiedius", "Cominius", "Consentius", "Considius",
             "Coruncanius", "Cordius", "Cornelius", "Cosconius", "Curius", "Curtius", "Decumius", "Desticius", "Dexsius",
             "Didius", "Dillius", "Domitius", "Dossenius", "Duccius", "Duronius", "Egnatius", "Epidius", "Equitius",
