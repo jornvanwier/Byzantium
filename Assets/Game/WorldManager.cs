@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Assets.Game.Units;
+using Assets.Game.Units.Groups;
 using Assets.Map;
 using JetBrains.Annotations;
 using Map;

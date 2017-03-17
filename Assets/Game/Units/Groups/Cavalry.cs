@@ -24,10 +24,5 @@ namespace Assets.Game.Units.Groups
         {
             throw new NotImplementedException();
         }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
