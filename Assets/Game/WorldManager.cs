@@ -18,9 +18,13 @@ namespace Assets.Game
         public GameObject MapRenderer;
         private bool middleMouseDown;
 
+        public Mesh unitMesh;
+        
         private Vector2 prevMousePos = Vector2.zero;
         private bool rightMouseDown;
         private Vector3 startIntersect;
+
+        private Contubernium unit;
 
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
@@ -35,47 +39,11 @@ namespace Assets.Game
         [UsedImplicitly]
         private void Start()
         {
-            var legion = new Legion();
-            legion.AddUnit(new Cavalry());
-            legion.AddUnit(new Cavalry());
-            legion.AddUnit(new Cavalry());
-            legion.AddUnit(new Cohort());
-            legion.AddUnit(new Cohort());
-            legion.AddUnit(new Cohort());
+            unit = new Contubernium();
+            for(int i = 0; i < 8; ++i)
+                unit.AddUnit(new DrawableUnit(unitMesh));
 
-            //Levert allen alle units op:
-            Debug.Log("unitbase");
-            foreach (UnitBase unit in legion)
-            {
-                Debug.Log(unit);
-            }
-
-            Debug.Log("cohorts");
-            foreach (Cohort c in legion.Cohorts)
-            {
-                Debug.Log(c);
-            }
-
-            Debug.Log("cavalries");
-            foreach (Cavalry c in legion.Cavalries)
-            {
-                Debug.Log(c);
-            }
-
-            //Levert enkel cavalry op:
-            Debug.Log("cavalry with specifier");
-            foreach (Cavalry c in (IEnumerable<Cavalry>) legion)
-            {
-                Debug.Log(c);
-            }
-            //Levert enkel cohort op:
-            Debug.Log("cohort with specifier");
-            foreach (Cohort c in (IEnumerable<Cohort>) legion)
-            {
-                Debug.Log(c);
-            }
-
-
+            unit.Position = new Vector3(5,0,5);
 
             MapRenderer = Instantiate(MapRenderer);
             MapRenderer.name = "Map";
@@ -89,6 +57,16 @@ namespace Assets.Game
         [UsedImplicitly]
         private void Update()
         {
+            GameObject obj = GameObject.Find("tracker");
+            if (obj != null)
+            {
+                unit.Position = obj.transform.position;
+                unit.Rotation = obj.transform.rotation;
+            }
+
+            if (unit != null)
+                unit.Draw();
+
             UpdateCamera();
         }
 

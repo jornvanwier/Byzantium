@@ -3,20 +3,34 @@ using UnityEngine;
 
 namespace Assets.Game.Units
 {
-    public abstract class DrawableUnit : UnitBase
+    public class DrawableUnit : UnitBase
     {
-        protected DrawableUnit(Mesh mesh, Defense defense = Defense.Armor, Weapon weapon = Weapon.Sword,
+        public Mesh mesh { get; }
+        public Defense DefenseType { get; }
+        public Weapon WeaponType { get; }
+        public Movement MovementType { get; }
+        public static Material material = new Material(Shader.Find("Standard"));
+
+        public DrawableUnit(Mesh mesh, Defense defense = Defense.Armor, Weapon weapon = Weapon.Sword,
             Movement movement = Movement.Foot)
         {
-            Mesh = mesh;
+            this.mesh = mesh;
             DefenseType = defense;
             WeaponType = weapon;
             MovementType = movement;
         }
 
-        public Mesh Mesh { get; }
-        public Defense DefenseType { get; }
-        public Weapon WeaponType { get; }
-        public Movement MovementType { get; }
+
+
+        public virtual void Draw()
+        {
+            Graphics.DrawMesh(mesh, Matrix4x4.TRS(Position, Rotation, new Vector3(0.1f,0.1f,0.1f)), material, 0);
+        }
+
+
     }
+
+
+
+
 }
