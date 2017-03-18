@@ -17,13 +17,39 @@ public class VerticalLineFormation : IFormation
         int unitCount = unit.GetGroupSize();
         Vector3 position = unit.Position;
 
+        float maxDist = 0.0f;
+
         int i = 0;
         foreach (UnitBase u in unit)
         {
-            u.Position = new Vector3(position.x, position.y, position.z + ( i * unitSize) - (unitCount / 2 * unitSize));
-            u.Position = unit.Rotation * u.Position;
+            Vector3 newPosition = new Vector3(position.x, position.y, position.z + ( i * unitSize) - (unitCount / 2 * unitSize));
+            Vector3 localPosition = newPosition - position;
+            newPosition = unit.Rotation * localPosition;
+            Vector3 targetPosition = newPosition + position;
+            Vector3 oldPosition = u.Position;
+            u.Position = Vector3.MoveTowards(oldPosition, targetPosition, Time.deltaTime);
+
+            float dist = Vector3.Distance(oldPosition, u.Position);
+            maxDist = dist > maxDist ? dist : maxDist;
             ++i;
-        }      
+        }
+
+        float normalDistance = Contubernium.defaultSpeed * Time.deltaTime;
+        float speed = maxDist / Time.deltaTime;
+
+        if (speed < unit.WalkSpeed())
+        {
+            unit.WalkSpeed();
+        }
+        else
+        {
+            unit.WalkSpeed(Contubernium.defaultSpeed);
+        }
+
+
+
+
+
     }
 
     public void Order(Cavalry unit)

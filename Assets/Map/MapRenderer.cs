@@ -236,6 +236,7 @@ namespace Assets.Map
                 src.SetSelected(false);
                 data[tile.Y, tile.X] = src.GetAsInt();
             }
+            selectedSet.Clear();
         }
 
         public void MarkTileSelectedForNextFrame(CubicalCoordinate cc)

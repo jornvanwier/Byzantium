@@ -13,5 +13,7 @@ namespace Assets.Game.Units
         public virtual IFormation Formation { get { return formation; } set { formation = value;    } }
 
         public abstract void Draw();
+        public abstract float WalkSpeed();
+        public abstract void  WalkSpeed(float speed);
     }
 }

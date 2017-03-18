@@ -8,6 +8,8 @@ namespace Assets.Game.Units.Groups
     public class Contubernium : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
         private List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
+        public const float defaultSpeed = 1.5f;
+        private float currentSpeed = defaultSpeed;
 
         public int GetGroupSize()
         {
@@ -46,6 +48,14 @@ namespace Assets.Game.Units.Groups
             
         }
 
+        public override float WalkSpeed()
+        {
+            return currentSpeed;
+        }
 
+        public override void WalkSpeed(float speed)
+        {
+            currentSpeed = speed;
+        }
     }
 }

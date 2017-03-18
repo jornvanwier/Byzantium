@@ -8,6 +8,9 @@ namespace Assets.Game.Units.Groups
     {
         private List<Cavalry> cavalry = new List<Cavalry>();
         private List<Cohort> cohorts = new List<Cohort>();
+        public const float defaultSpeed = 1.5f;
+        private float currentSpeed = defaultSpeed;
+
 
         public IEnumerable<Cavalry> Cavalries { get { return cavalry;  } }
         public IEnumerable<Cohort> Cohorts { get { return cohorts;  } }
@@ -57,6 +60,16 @@ namespace Assets.Game.Units.Groups
         public override void Draw()
         {
             throw new NotImplementedException();
+        }
+
+        public override float WalkSpeed()
+        {
+            return currentSpeed;
+        }
+
+        public override void WalkSpeed(float speed)
+        {
+            currentSpeed = speed;
         }
     }
 }

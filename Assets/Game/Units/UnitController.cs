@@ -6,6 +6,7 @@ using Assets.Map;
 using Assets.Map.Pathfinding;
 using Map;
 using Assets.Util;
+using System.Collections.Generic;
 
 public class UnitController : MonoBehaviour
 {
@@ -15,12 +16,13 @@ public class UnitController : MonoBehaviour
     private const float MovementSpeed = 1.5f;
     private const float RotationSpeed = 3.5f;
 
-    private PathfindingJobInfo CurrentPathInfo;
-    private Vector3 MovementDrawOffset;
-    private CubicalCoordinate Position;
-    private CubicalCoordinate PreviousPosition;
-    private CubicalCoordinate Goal;
-    private int NextPathID = -1;
+    public CubicalCoordinate Position { get; set; }
+    public CubicalCoordinate Goal { get; set; }
+
+    private PathfindingJobInfo currentPathInfo;
+    private Vector3 movementDrawOffset;
+    private CubicalCoordinate previousPosition;
+    private int nextPathID = -1;
 
     public void AttachUnit(UnitBase unit)
     {
@@ -30,22 +32,24 @@ public class UnitController : MonoBehaviour
     {
         mapRenderer = maprenderer;
     }
-    public void SetGoal(CubicalCoordinate goal)
-    {
-        Goal = goal;
-    }
-
-
 
     public void Start()
     {
         Position = mapRenderer.WorldToCubicalCoordinate(transform.position);
-        PreviousPosition = Position;
+        previousPosition = Position;
     }
 
     public void Update()
     {
         attachedUnit.Draw();
+
+        if (currentPathInfo != null && currentPathInfo.Path != null)
+        {
+            foreach (CubicalCoordinate c in currentPathInfo.Path)
+            {
+                mapRenderer.MarkTileSelectedForNextFrame(c);
+            }
+        }
 
         SetWorldPosition(CreateWorldPos());
 
@@ -59,24 +63,24 @@ public class UnitController : MonoBehaviour
         }
         else
         {
-            if (NextPathID == -1)
+            if (nextPathID == -1)
             {
                 RequestNewPath();
             }
             else
             {
                 // Check on the state of the job
-                if (PathfindingJobManager.Instance.GetInfo(NextPathID).State == JobState.Failure)
+                if (PathfindingJobManager.Instance.GetInfo(nextPathID).State == JobState.Failure)
                 {
                     // Pathing has failed for some reason, lets try again
                     RequestNewPath();
                 }
-                else if (PathfindingJobManager.Instance.IsFinished(NextPathID))
+                else if (PathfindingJobManager.Instance.IsFinished(nextPathID))
                 {
-                    CurrentPathInfo = PathfindingJobManager.Instance.GetInfo(NextPathID);
-                    PathfindingJobManager.Instance.ClearJob(NextPathID);
+                    currentPathInfo = PathfindingJobManager.Instance.GetInfo(nextPathID);
+                    PathfindingJobManager.Instance.ClearJob(nextPathID);
 
-                    NextPathID = -1;
+                    nextPathID = -1;
                     AdvanceOnPath();
                 }
             }
@@ -91,18 +95,18 @@ public class UnitController : MonoBehaviour
     {
         Vector3 currentPos = CreateWorldPos();
 
-        if (CurrentPathInfo.Path[0] == Position)
+        if (currentPathInfo.Path[0] == Position)
         {
-            CurrentPathInfo.Path.RemoveAt(0);
-            PreviousPosition = Position;
-            MovementDrawOffset = currentPos - mapRenderer.CubicalCoordinateToWorld(PreviousPosition);
+            currentPathInfo.Path.RemoveAt(0);
+            previousPosition = Position;
+            movementDrawOffset = currentPos - mapRenderer.CubicalCoordinateToWorld(previousPosition);
         }
 
-        Vector3 nextPos = Vector3.MoveTowards(currentPos, mapRenderer.CubicalCoordinateToWorld(CurrentPathInfo.Path[0]), MovementSpeed * Time.deltaTime);
-        MovementDrawOffset = nextPos - mapRenderer.CubicalCoordinateToWorld(PreviousPosition);
+        Vector3 nextPos = Vector3.MoveTowards(currentPos, mapRenderer.CubicalCoordinateToWorld(currentPathInfo.Path[0]), attachedUnit.WalkSpeed() * Time.deltaTime);
+        movementDrawOffset = nextPos - mapRenderer.CubicalCoordinateToWorld(previousPosition);
 
         SetWorldRotation(Quaternion.Slerp(transform.rotation,
-            Quaternion.LookRotation(nextPos - mapRenderer.CubicalCoordinateToWorld(CurrentPathInfo.Path[0])),
+            Quaternion.LookRotation(nextPos - mapRenderer.CubicalCoordinateToWorld(currentPathInfo.Path[0])),
             Time.deltaTime * RotationSpeed)
         );
 
@@ -129,15 +133,15 @@ public class UnitController : MonoBehaviour
 
     protected Vector3 CreateWorldPos()
     {
-        return mapRenderer.CubicalCoordinateToWorld(PreviousPosition) + MovementDrawOffset;
+        return mapRenderer.CubicalCoordinateToWorld(previousPosition) + movementDrawOffset;
     }
     protected void RequestNewPath()
     {
-        NextPathID = PathfindingJobManager.Instance.CreateJob(Position, Goal);
+        nextPathID = PathfindingJobManager.Instance.CreateJob(Position, Goal);
     }
     protected bool IsPathValid()
     {
-        if (CurrentPathInfo?.GoalPos != Goal)
+        if (currentPathInfo?.GoalPos != Goal)
         {
             return false;
         }

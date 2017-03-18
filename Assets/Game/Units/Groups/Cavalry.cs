@@ -6,6 +6,8 @@ namespace Assets.Game.Units.Groups
 {
     public class Cavalry : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
+        private const float defaultSpeed = 1.5f;
+        public float currentSpeed = defaultSpeed;
         private List<MeshDrawableUnit> DrawableUnits = new List<MeshDrawableUnit>();
 
         public void AddUnit(MeshDrawableUnit unit)
@@ -27,6 +29,16 @@ namespace Assets.Game.Units.Groups
         public override void Draw()
         {
             throw new NotImplementedException();
+        }
+
+        public override float WalkSpeed()
+        {
+            return currentSpeed;
+        }
+
+        public override void WalkSpeed(float speed)
+        {
+            currentSpeed = speed;
         }
     }
 }

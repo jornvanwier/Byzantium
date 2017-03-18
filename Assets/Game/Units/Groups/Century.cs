@@ -6,6 +6,8 @@ namespace Assets.Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
+        private const float defaultSpeed = 1.5f;
+        public float currentSpeed = defaultSpeed;
         private List<Contubernium> contubernia = new List<Contubernium>();
 
         public void AddUnit(Contubernium unit)
@@ -27,6 +29,16 @@ namespace Assets.Game.Units.Groups
         public override void Draw()
         {
             throw new NotImplementedException();
+        }
+
+        public override float WalkSpeed()
+        {
+            return currentSpeed;
+        }
+
+        public override void WalkSpeed(float speed)
+        {
+            currentSpeed = speed;
         }
     }
 }

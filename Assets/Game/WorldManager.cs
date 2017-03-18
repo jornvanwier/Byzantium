@@ -63,7 +63,7 @@ namespace Assets.Game
             script = obj.AddComponent<UnitController>();
             script.AttachUnit(unit);
             script.AttachMapRenderer(mapRendererScript);
-            script.SetGoal(mapRendererScript.WorldToCubicalCoordinate(goal.transform.position));
+            script.Goal = mapRendererScript.WorldToCubicalCoordinate(goal.transform.position);
 
         }
 
@@ -71,7 +71,7 @@ namespace Assets.Game
         [UsedImplicitly]
         private void Update()
         {
-            script.SetGoal(mapRendererScript.WorldToCubicalCoordinate(goal.transform.position));
+            script.Goal = mapRendererScript.WorldToCubicalCoordinate(goal.transform.position);
             UpdateCamera();
         }
 

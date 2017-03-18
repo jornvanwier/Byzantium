@@ -1,4 +1,5 @@
-﻿using Assets.Game.Units.Unit_Enums;
+﻿using System;
+using Assets.Game.Units.Unit_Enums;
 using UnityEngine;
 
 namespace Assets.Game.Units
@@ -25,7 +26,15 @@ namespace Assets.Game.Units
             Graphics.DrawMesh(mesh, Matrix4x4.TRS(Position, Rotation, new Vector3(0.1f,0.1f,0.1f)), material, 0);
         }
 
+        public override float WalkSpeed()
+        {
+            throw new NotImplementedException();
+        }
 
+        public override void WalkSpeed(float speed)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
