@@ -1,20 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Assets.Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
-        public List<Contubernium> Contubernia { get; } = new List<Contubernium>();
+        private List<Contubernium> contubernia = new List<Contubernium>();
 
         public void AddUnit(Contubernium unit)
         {
-            Contubernia.Add(unit);
+            contubernia.Add(unit);
         }
 
         public void RemoveUnit(Contubernium unit)
         {
-            int index = Contubernia.IndexOf(unit);
-            Contubernia.RemoveAt(index);
+            int index = contubernia.IndexOf(unit);
+            contubernia.RemoveAt(index);
         }
+
+        public IEnumerator GetEnumerator()
+        {
+            return contubernia.GetEnumerator();
+        }
+
     }
 }

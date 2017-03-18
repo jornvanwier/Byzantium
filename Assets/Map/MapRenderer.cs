@@ -32,7 +32,6 @@ namespace Assets.Map
 
         private TextureSet defaultTextureSet;
         private Texture2DArray glossyMaps;
-        public GameObject GoalPin;
         private HexBoard hexBoard;
 
         public Material HexMaterial;
@@ -46,8 +45,6 @@ namespace Assets.Map
         private Texture2DArray normalMaps;
 
         private int pathfindingJobId = -1;
-
-        public GameObject StartPin;
         private List<TextureSet> textureSets;
 
         [UsedImplicitly]

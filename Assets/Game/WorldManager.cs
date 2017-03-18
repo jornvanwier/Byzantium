@@ -2,6 +2,7 @@
 using Assets.Game.Units.Groups;
 using Assets.Map;
 using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Game
@@ -11,19 +12,15 @@ namespace Assets.Game
         private bool applicationHasFocus;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
-        public GameObject GoalPin;
         public float InitialCameraAngle = 35;
         public float InitialCameraMoveSpeed = 2;
         public float InitialZoomSpeed = 2;
         public GameObject MapRenderer;
         private bool middleMouseDown;
 
-        private MovableBoardObject movableBoardObject;
         private Vector2 prevMousePos = Vector2.zero;
         private bool rightMouseDown;
         private Vector3 startIntersect;
-        public GameObject StartPin;
-        public GameObject TestPrefab;
 
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
@@ -44,28 +41,48 @@ namespace Assets.Game
             legion.AddUnit(new Cavalry());
             legion.AddUnit(new Cohort());
             legion.AddUnit(new Cohort());
+            legion.AddUnit(new Cohort());
+
+            //Levert allen alle units op:
+            Debug.Log("unitbase");
             foreach (UnitBase unit in legion)
+            {
                 Debug.Log(unit);
+            }
+
+            Debug.Log("cohorts");
+            foreach (Cohort c in legion.Cohorts)
+            {
+                Debug.Log(c);
+            }
+
+            Debug.Log("cavalries");
+            foreach (Cavalry c in legion.Cavalries)
+            {
+                Debug.Log(c);
+            }
+
+            //Levert enkel cavalry op:
+            Debug.Log("cavalry with specifier");
+            foreach (Cavalry c in (IEnumerable<Cavalry>) legion)
+            {
+                Debug.Log(c);
+            }
+            //Levert enkel cohort op:
+            Debug.Log("cohort with specifier");
+            foreach (Cohort c in (IEnumerable<Cohort>) legion)
+            {
+                Debug.Log(c);
+            }
+
 
 
             MapRenderer = Instantiate(MapRenderer);
             MapRenderer.name = "Map";
-            MapRenderer.GetComponent<MapRenderer>().StartPin = StartPin;
-            MapRenderer.GetComponent<MapRenderer>().GoalPin = GoalPin;
             float cHeight = CameraHeight;
             cameraObject = new GameObject("MainCamera");
             cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = new Vector3(0, cHeight, 0);
-
-            movableBoardObject = Instantiate(TestPrefab).GetComponent<MovableBoardObject>();
-
-            movableBoardObject.Position =
-                MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(StartPin.transform.position);
-            movableBoardObject.Goal =
-                MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
-
-            Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
-            Rotate(objectRight, Space.Self, InitialCameraAngle);
         }
 
         // Update is called once per frame
@@ -73,8 +90,6 @@ namespace Assets.Game
         private void Update()
         {
             UpdateCamera();
-            movableBoardObject.Goal =
-                MapRenderer.GetComponent<MapRenderer>().WorldToCubicalCoordinate(GoalPin.transform.position);
         }
 
         private static Vector3 MultiplyVector(Vector3 v1, Vector3 v2)
