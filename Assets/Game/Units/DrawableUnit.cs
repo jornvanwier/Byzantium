@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Game.Units
 {
-    public class DrawableUnit : UnitBase
+    public class MeshDrawableUnit : UnitBase
     {
         public Mesh mesh { get; }
         public Defense DefenseType { get; }
@@ -11,7 +11,7 @@ namespace Assets.Game.Units
         public Movement MovementType { get; }
         public static Material material = new Material(Shader.Find("Standard"));
 
-        public DrawableUnit(Mesh mesh, Defense defense = Defense.Armor, Weapon weapon = Weapon.Sword,
+        public MeshDrawableUnit(Mesh mesh, Defense defense = Defense.Armor, Weapon weapon = Weapon.Sword,
             Movement movement = Movement.Foot)
         {
             this.mesh = mesh;
@@ -20,9 +20,7 @@ namespace Assets.Game.Units
             MovementType = movement;
         }
 
-
-
-        public virtual void Draw()
+        public override void Draw()
         {
             Graphics.DrawMesh(mesh, Matrix4x4.TRS(Position, Rotation, new Vector3(0.1f,0.1f,0.1f)), material, 0);
         }

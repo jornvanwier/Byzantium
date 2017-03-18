@@ -4,16 +4,16 @@ using System.Collections.Generic;
 
 namespace Assets.Game.Units.Groups
 {
-    public class Cavalry : UnitBase, IMultipleUnits<DrawableUnit>
+    public class Cavalry : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
-        private List<DrawableUnit> DrawableUnits = new List<DrawableUnit>();
+        private List<MeshDrawableUnit> DrawableUnits = new List<MeshDrawableUnit>();
 
-        public void AddUnit(DrawableUnit unit)
+        public void AddUnit(MeshDrawableUnit unit)
         {
             DrawableUnits.Add(unit);
         }
 
-        public void RemoveUnit(DrawableUnit unit)
+        public void RemoveUnit(MeshDrawableUnit unit)
         {
             int index = DrawableUnits.IndexOf(unit);
             DrawableUnits.RemoveAt(index);
@@ -24,5 +24,9 @@ namespace Assets.Game.Units.Groups
             return DrawableUnits.GetEnumerator();
         }
 
+        public override void Draw()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

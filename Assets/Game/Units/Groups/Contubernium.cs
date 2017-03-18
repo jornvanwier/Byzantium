@@ -5,21 +5,21 @@ using UnityEngine;
 
 namespace Assets.Game.Units.Groups
 {
-    public class Contubernium : UnitBase, IMultipleUnits<DrawableUnit>
+    public class Contubernium : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
-        private List<DrawableUnit> drawableUnits = new List<DrawableUnit>();
+        private List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
 
         public int GetGroupSize()
         {
             return drawableUnits.Count;
         }
 
-        public void AddUnit(DrawableUnit unit)
+        public void AddUnit(MeshDrawableUnit unit)
         {
             drawableUnits.Add(unit);
         }
 
-        public void RemoveUnit(DrawableUnit unit)
+        public void RemoveUnit(MeshDrawableUnit unit)
         {
             int index = drawableUnits.IndexOf(unit);
             drawableUnits.RemoveAt(index);
@@ -37,9 +37,9 @@ namespace Assets.Game.Units.Groups
             }
         }
 
-        public virtual void Draw()
+        public override void Draw()
         {
-            foreach (DrawableUnit u in drawableUnits)
+            foreach (MeshDrawableUnit u in drawableUnits)
             {
                 u.Draw();
             }

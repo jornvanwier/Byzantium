@@ -15,16 +15,22 @@ namespace Assets.Game
         public float InitialCameraAngle = 35;
         public float InitialCameraMoveSpeed = 2;
         public float InitialZoomSpeed = 2;
-        public GameObject MapRenderer;
+        public GameObject MapRendererObject;
+        protected MapRenderer mapRendererScript;
         private bool middleMouseDown;
 
         public Mesh unitMesh;
-        
+        public GameObject goal;
+
         private Vector2 prevMousePos = Vector2.zero;
         private bool rightMouseDown;
         private Vector3 startIntersect;
 
         private Contubernium unit;
+        UnitController script;
+
+        List<GameObject> unitControllers = new List<GameObject>();
+
 
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
@@ -41,32 +47,31 @@ namespace Assets.Game
         {
             unit = new Contubernium();
             for(int i = 0; i < 8; ++i)
-                unit.AddUnit(new DrawableUnit(unitMesh));
+                unit.AddUnit(new MeshDrawableUnit(unitMesh));
 
             unit.Position = new Vector3(5,0,5);
 
-            MapRenderer = Instantiate(MapRenderer);
-            MapRenderer.name = "Map";
+            MapRendererObject = Instantiate(MapRendererObject);
+            MapRendererObject.name = "Map";
             float cHeight = CameraHeight;
             cameraObject = new GameObject("MainCamera");
             cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = new Vector3(0, cHeight, 0);
+            mapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
+
+            GameObject obj = new GameObject("Army");
+            script = obj.AddComponent<UnitController>();
+            script.AttachUnit(unit);
+            script.AttachMapRenderer(mapRendererScript);
+            script.SetGoal(mapRendererScript.WorldToCubicalCoordinate(goal.transform.position));
+
         }
 
         // Update is called once per frame
         [UsedImplicitly]
         private void Update()
         {
-            GameObject obj = GameObject.Find("tracker");
-            if (obj != null)
-            {
-                unit.Position = obj.transform.position;
-                unit.Rotation = obj.transform.rotation;
-            }
-
-            if (unit != null)
-                unit.Draw();
-
+            script.SetGoal(mapRendererScript.WorldToCubicalCoordinate(goal.transform.position));
             UpdateCamera();
         }
 

@@ -24,5 +24,9 @@ namespace Assets.Game.Units.Groups
             return centuries.GetEnumerator();
         }
 
+        public override void Draw()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

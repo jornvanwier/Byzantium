@@ -16,14 +16,14 @@ namespace Assets.Game
         public CubicalCoordinate PreviousPosition { get; set; }
         public CubicalCoordinate Goal { get; set; }
 
-        protected override void Start()
+        public override void Start()
         {
             base.Start();
 
             PreviousPosition = Position;
         }
 
-        protected override void Update()
+        public override void Update()
         {
             SetWorldPos(CreateWorldPos());
 

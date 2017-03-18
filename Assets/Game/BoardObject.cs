@@ -7,7 +7,7 @@ namespace Assets.Game
 {
     public class BoardObject : MonoBehaviour, IBoardPlaceable
     {
-        protected MapRenderer MapRenderer;
+        public MapRenderer MapRenderer;
 
         [SerializeField]
         public CubicalCoordinate Position { get; set; }
@@ -15,13 +15,13 @@ namespace Assets.Game
         public Vector3 DrawOffset { get; set; }
 
         [UsedImplicitly]
-        protected virtual void Start()
+        public virtual void Start()
         {
             MapRenderer = GameObject.Find("Map").GetComponent<MapRenderer>();
         }
 
         [UsedImplicitly]
-        protected virtual void Update()
+        public virtual void Update()
         {
             SetWorldPos(MapRenderer.CubicalCoordinateToWorld(Position) + DrawOffset);
         }

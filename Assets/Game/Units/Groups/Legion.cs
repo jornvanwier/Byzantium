@@ -54,5 +54,9 @@ namespace Assets.Game.Units.Groups
             return cavalry.GetEnumerator();
         }
 
+        public override void Draw()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
