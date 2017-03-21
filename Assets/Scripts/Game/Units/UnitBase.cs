@@ -5,7 +5,7 @@ namespace Assets.Scripts.Game.Units
 {
     public abstract class UnitBase
     {
-        public UnitBase()
+        protected UnitBase()
         {
             WalkSpeed = DefaultSpeed;
         }
