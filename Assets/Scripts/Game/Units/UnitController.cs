@@ -25,9 +25,9 @@ namespace Assets.Scripts.Game.Units
             attachedUnit = unit;
         }
 
-        public void AttachMapRenderer(MapRenderer maprenderer)
+        public void AttachMapRenderer(MapRenderer mapRenderer)
         {
-            mapRenderer = maprenderer;
+            this.mapRenderer = mapRenderer;
         }
 
         public void Start()
