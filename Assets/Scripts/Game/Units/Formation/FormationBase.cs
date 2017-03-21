@@ -1,6 +1,6 @@
-﻿using Assets.Game.Units.Groups;
+﻿using Assets.Scripts.Game.Units.Groups;
 
-namespace Assets.Game.Units.Formation
+namespace Assets.Scripts.Game.Units.Formation
 {
     public abstract class FormationBase : IFormation
     {

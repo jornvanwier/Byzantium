@@ -1,9 +1,9 @@
-﻿using Assets.Map.Pathfinding;
-using Assets.Util;
-using Map;
+﻿using Assets.Scripts.Map;
+using Assets.Scripts.Map.Pathfinding;
+using Assets.Scripts.Util;
 using UnityEngine;
 
-namespace Assets.Game
+namespace Assets.Scripts.Game
 {
     public class MovableBoardObject : BoardObject
     {

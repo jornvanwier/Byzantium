@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Assets.Game.Units;
-using Assets.Game.Units.Groups;
-using Assets.Map;
+using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Groups;
+using Assets.Scripts.Map;
 using JetBrains.Annotations;
 using UnityEngine;
 
-namespace Assets.Game
+namespace Assets.Scripts.Game
 {
     public class WorldManager : MonoBehaviour
     {

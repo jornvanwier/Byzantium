@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Map.Generation;
-using Assets.Map.Pathfinding;
+using Assets.Scripts.Map.Generation;
+using Assets.Scripts.Map.Pathfinding;
 using JetBrains.Annotations;
-using Map;
 using UnityEngine;
 
-namespace Assets.Map
+namespace Assets.Scripts.Map
 {
     public class MapRenderer : MonoBehaviour
     {

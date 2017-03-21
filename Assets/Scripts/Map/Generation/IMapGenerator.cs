@@ -1,4 +1,4 @@
-﻿namespace Map.Generation
+﻿namespace Assets.Scripts.Map.Generation
 {
     public interface IMapGenerator
     {

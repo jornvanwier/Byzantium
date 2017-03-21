@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Assets.Util;
-using Map.Generation;
+using Assets.Scripts.Util;
 using UnityEngine;
 
-namespace Assets.Map.Generation
+namespace Assets.Scripts.Map.Generation
 {
     public class PerlinGenerator : IMapGenerator
     {

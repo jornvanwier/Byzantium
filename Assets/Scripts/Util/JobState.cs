@@ -1,4 +1,4 @@
-﻿namespace Assets.Util
+﻿namespace Assets.Scripts.Util
 {
     public enum JobState
     {

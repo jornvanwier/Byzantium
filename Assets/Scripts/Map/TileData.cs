@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Assets.Map
+namespace Assets.Scripts.Map
 {
     public class TileData
     {

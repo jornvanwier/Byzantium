@@ -1,8 +1,8 @@
 ﻿using System;
-using Assets.Game.Units.Groups;
+using Assets.Scripts.Game.Units.Groups;
 using UnityEngine;
 
-namespace Assets.Game.Units.Formation
+namespace Assets.Scripts.Game.Units.Formation
 {
     public class VerticalLineFormation : FormationBase
     {

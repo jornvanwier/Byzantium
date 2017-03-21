@@ -1,7 +1,4 @@
-﻿using Map;
-using Map.Pathfinding;
-
-namespace Assets.Map.Pathfinding
+﻿namespace Assets.Scripts.Map.Pathfinding
 {
     public class NodeGraph
     {

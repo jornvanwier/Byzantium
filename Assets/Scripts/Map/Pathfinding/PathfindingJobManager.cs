@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using Assets.Util;
-using Map;
+using Assets.Scripts.Util;
 
-namespace Assets.Map.Pathfinding
+namespace Assets.Scripts.Map.Pathfinding
 {
     public class PathfindingJobInfo
     {

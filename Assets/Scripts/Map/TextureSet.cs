@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Assets.Map
+namespace Assets.Scripts.Map
 {
     public class TextureSet : ICloneable
     {

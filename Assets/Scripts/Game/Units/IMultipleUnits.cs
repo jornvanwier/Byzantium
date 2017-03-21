@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Assets.Game.Units
+namespace Assets.Scripts.Game.Units
 {
     public interface IMultipleUnits<T> : IEnumerable
     {

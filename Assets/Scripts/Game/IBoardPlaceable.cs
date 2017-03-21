@@ -1,7 +1,7 @@
-﻿using Map;
+﻿using Assets.Scripts.Map;
 using UnityEngine;
 
-namespace Assets.Game
+namespace Assets.Scripts.Game
 {
     public interface IBoardPlaceable
     {

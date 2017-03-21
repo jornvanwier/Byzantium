@@ -1,7 +1,7 @@
-﻿using Assets.Game.Units.Unit_Enums;
+﻿using Assets.Scripts.Game.Units.Unit_Enums;
 using UnityEngine;
 
-namespace Assets.Game.Units
+namespace Assets.Scripts.Game.Units
 {
     public class MeshDrawableUnit : UnitBase
     {

@@ -1,6 +1,6 @@
 ﻿using Priority_Queue;
 
-namespace Map.Pathfinding
+namespace Assets.Scripts.Map.Pathfinding
 {
     public class AStarNode : FastPriorityQueueNode
     {

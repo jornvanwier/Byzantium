@@ -11,7 +11,7 @@ using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace Plugins.Editor.JetBrains
+namespace Assets.Plugins.Editor.JetBrains
 {
   [InitializeOnLoad]
   public static class RiderPlugin

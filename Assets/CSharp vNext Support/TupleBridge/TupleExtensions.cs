@@ -4,7 +4,7 @@
 
 using System.ComponentModel;
 
-namespace System
+namespace Assets.CSharp_vNext_Support.TupleBridge
 {
     /// <summary>
     /// Provides extension methods for <see cref="Tuple"/> instances to interop with C# tuples features (deconstruction syntax, converting from and to <see cref="ValueTuple"/>).

@@ -1,7 +1,7 @@
-﻿using Assets.Game.Units.Formation;
+﻿using Assets.Scripts.Game.Units.Formation;
 using UnityEngine;
 
-namespace Assets.Game.Units
+namespace Assets.Scripts.Game.Units
 {
     public abstract class UnitBase
     {

@@ -1,7 +1,6 @@
 ﻿using System;
-using Assets.Map;
 
-namespace Map
+namespace Assets.Scripts.Map
 {
     [Serializable]
     public struct CubicalCoordinate

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Assets.Map.Pathfinding;
-using Map;
-using Map.Generation;
-using Map.Pathfinding;
+﻿using System.Collections.Generic;
+using Assets.CSharp_vNext_Support.TupleBridge;
+using Assets.Scripts.Map.Generation;
+using Assets.Scripts.Map.Pathfinding;
 using Priority_Queue;
 using UnityEngine;
 
-namespace Assets.Map
+namespace Assets.Scripts.Map
 {
     public class HexBoard
     {

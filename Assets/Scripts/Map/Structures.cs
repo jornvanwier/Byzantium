@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.Map
+namespace Assets.Scripts.Map
 {
     public struct Int2
     {

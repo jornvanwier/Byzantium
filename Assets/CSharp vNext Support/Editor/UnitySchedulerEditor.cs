@@ -1,11 +1,15 @@
-﻿using UnityEditor;
+﻿using Assets.CSharp_vNext_Support.AsyncTools;
+using UnityEditor;
 
-public static class UnitySchedulerEditor
+namespace Assets.CSharp_vNext_Support.Editor
 {
-	[InitializeOnLoadMethod]
-	private static void InitializeInEditor()
-	{
-		UnityScheduler.InitializeInEditor();
-		EditorApplication.update += UnityScheduler.ProcessEditorUpdate;
-	}
+    public static class UnitySchedulerEditor
+    {
+        [InitializeOnLoadMethod]
+        private static void InitializeInEditor()
+        {
+            UnityScheduler.InitializeInEditor();
+            EditorApplication.update += UnityScheduler.ProcessEditorUpdate;
+        }
+    }
 }

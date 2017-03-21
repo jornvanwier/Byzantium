@@ -1,9 +1,8 @@
-﻿using Assets.Map;
+﻿using Assets.Scripts.Map;
 using JetBrains.Annotations;
-using Map;
 using UnityEngine;
 
-namespace Assets.Game
+namespace Assets.Scripts.Game
 {
     public class BoardObject : MonoBehaviour, IBoardPlaceable
     {

@@ -1,7 +1,6 @@
-﻿using Assets.Map;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Map.Generation
+namespace Assets.Scripts.Map.Generation
 {
     public class OldGenerator : IMapGenerator
     {

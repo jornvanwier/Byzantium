@@ -1,4 +1,4 @@
-﻿namespace Assets.Map.Generation
+﻿namespace Assets.Scripts.Map.Generation
 {
     public class ElevationLevel
     {
