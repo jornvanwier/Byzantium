@@ -15,7 +15,7 @@ namespace Assets.Scripts.Game.Units.Formation
         public abstract void Order(Cohort unit);
 
         public IEnumerable<Vector3> ProcessLocalOffsets(IEnumerable<Vector3> originalPositions,
-            IEnumerable<Vector3> offsetPositions, float defaultSpeed, UnitBase unit)
+            IEnumerable<Vector3> offsetPositions, UnitBase unit)
         {
             float maxDist = 0.0f;
             int i = 0;
@@ -45,7 +45,7 @@ namespace Assets.Scripts.Game.Units.Formation
             }
             else
             {
-                unit.WalkSpeed = defaultSpeed;
+                unit.WalkSpeed = unit.DefaultSpeed;
             }
 
             return newWorldPositions;

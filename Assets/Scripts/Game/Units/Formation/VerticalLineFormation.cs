@@ -30,7 +30,7 @@ namespace Assets.Scripts.Game.Units.Formation
                 ++i;
             }
             var list =
-                new List<Vector3>(ProcessLocalOffsets(originalpositions, localPositions, Contubernium.DefaultSpeed, unit));
+                new List<Vector3>(ProcessLocalOffsets(originalpositions, localPositions, unit));
             int j = 0;
             foreach (UnitBase u in unit)
                 u.Position = list[j++];
