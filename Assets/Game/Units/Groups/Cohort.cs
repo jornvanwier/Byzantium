@@ -9,7 +9,6 @@ namespace Assets.Game.Units.Groups
         private new const float DefaultSpeed = 1.5f;
 
         private readonly List<Century> centuries = new List<Century>();
-        public float CurrentSpeed = DefaultSpeed;
 
         public void AddUnit(Century unit)
         {
