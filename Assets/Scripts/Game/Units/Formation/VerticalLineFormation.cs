@@ -1,6 +1,7 @@
 ﻿using System;
 using Assets.Scripts.Game.Units.Groups;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.Game.Units.Formation
 {
@@ -13,37 +14,27 @@ namespace Assets.Scripts.Game.Units.Formation
 
         public override void Order(Contubernium unit)
         {
-            const float unitSize = 0.15f;
+            
             int unitCount = unit.GetGroupSize();
             Vector3 position = unit.Position;
-
-            var maxDist = 0.0f;
-
             var i = 0;
+            List<Vector3> localPositions = new List<Vector3>();
+            List<Vector3> originalpositions = new List<Vector3>();
+            
             foreach (UnitBase u in unit)
             {
-                var newPosition = new Vector3(position.x, position.y,
+                Vector3 newPosition = new Vector3(position.x, position.y,
                     position.z + i * unitSize - unitCount / 2f * unitSize);
                 Vector3 localPosition = newPosition - position;
-                newPosition = unit.Rotation * localPosition;
-                Vector3 targetPosition = newPosition + position;
-                Vector3 oldPosition = u.Position;
-                u.Position = Vector3.MoveTowards(oldPosition, targetPosition, Time.deltaTime);
-
-                float dist = Vector3.Distance(oldPosition, u.Position);
-                maxDist = dist > maxDist ? dist : maxDist;
+                localPositions.Add(localPosition);
+                originalpositions.Add(u.Position);
                 ++i;
             }
-
-            float speed = maxDist / Time.deltaTime;
-
-            if (speed < unit.WalkSpeed)
+            List<Vector3> list = new List<Vector3>(processLocalOffsets(originalpositions, localPositions, Contubernium.DefaultSpeed, unit));
+            int j = 0;
+            foreach (UnitBase u in unit)
             {
-                unit.WalkSpeed = speed / 10;
-            }
-            else
-            {
-                unit.WalkSpeed = Contubernium.DefaultSpeed;
+                u.Position = list[j++];
             }
         }
 

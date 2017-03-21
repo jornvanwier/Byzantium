@@ -1,9 +1,54 @@
 ﻿using Assets.Scripts.Game.Units.Groups;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Formation
 {
     public abstract class FormationBase : IFormation
     {
+        protected const float unitSize = 0.15f;
+
+        public IEnumerable<Vector3> processLocalOffsets(IEnumerable<Vector3> originalPositions, IEnumerable<Vector3> offsetPositions, float DefaultSpeed, UnitBase unit)
+        {
+            var maxDist = 0.0f;
+            var i = 0;
+            Vector3 position = unit.Position;
+
+            List<Vector3> orPos = new List<Vector3>(originalPositions);
+            List<Vector3> newWorldPositions = new List<Vector3>();
+
+            foreach (Vector3 u in offsetPositions)
+            {
+                Vector3 newPosition = Vector3.zero;
+                newPosition = unit.Rotation * u;
+                Vector3 targetPosition = newPosition + position;
+                Vector3 oldPosition = orPos[i];
+                Vector3 definitivePosition = Vector3.MoveTowards(oldPosition, targetPosition, Time.deltaTime);
+                newWorldPositions.Add(definitivePosition);
+
+                float dist = Vector3.Distance(oldPosition, definitivePosition);
+                maxDist = dist > maxDist ? dist : maxDist;
+                ++i;
+            }
+
+            float speed = maxDist / Time.deltaTime;
+
+            if (speed < unit.WalkSpeed)
+            {
+                unit.WalkSpeed = speed / 10;
+            }
+            else
+            {
+                unit.WalkSpeed = DefaultSpeed;
+            }
+
+
+            return newWorldPositions;
+        }
+
+
+
+
         public abstract void Order(Legion unit);
         public abstract void Order(Contubernium unit);
         public abstract void Order(Cavalry unit);
