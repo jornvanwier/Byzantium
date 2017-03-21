@@ -7,7 +7,7 @@ namespace Assets.Scripts.Game.Units.Groups
     public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>, IEnumerable<Cohort>,
         IEnumerable<Cavalry>
     {
-        protected new const float DefaultSpeed = 1.5f;
+        public new const float DefaultSpeed = 1.5f;
         private readonly List<Cavalry> cavalries = new List<Cavalry>();
 
         private readonly List<Cohort> cohorts = new List<Cohort>();

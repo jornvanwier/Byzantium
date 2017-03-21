@@ -5,7 +5,7 @@ namespace Assets.Scripts.Game.Units
 {
     public abstract class UnitBase
     {
-        protected const float DefaultSpeed = 1;
+        public const float DefaultSpeed = 1;
         public virtual Vector3 Position { get; set; } = Vector3.zero;
 
         public virtual Quaternion Rotation { get; set; } = Quaternion.identity;

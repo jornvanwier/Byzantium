@@ -6,7 +6,7 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Cohort : UnitBase, IMultipleUnits<Century>
     {
-        protected new const float DefaultSpeed = 1.5f;
+        public new const float DefaultSpeed = 1.5f;
 
         private readonly List<Century> centuries = new List<Century>();
 
