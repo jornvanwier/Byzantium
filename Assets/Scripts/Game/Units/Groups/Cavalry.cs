@@ -6,7 +6,7 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Cavalry : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
-        protected new const float DefaultSpeed = 1.5f;
+        public new const float DefaultSpeed = 1.5f;
         private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
 
         public void AddUnit(MeshDrawableUnit unit)
