@@ -10,7 +10,7 @@ namespace Assets.Scripts.Game.Units
             WalkSpeed = DefaultSpeed;
         }
 
-        public virtual float DefaultSpeed { get; } = 1.0f;
+        public virtual float DefaultSpeed { get; }
         public virtual Vector3 Position { get; set; } = Vector3.zero;
 
         public virtual Quaternion Rotation { get; set; } = Quaternion.identity;
