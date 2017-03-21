@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.Game.Units.Groups;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Assets.Scripts.Game.Units.Groups;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Formation
@@ -8,19 +8,25 @@ namespace Assets.Scripts.Game.Units.Formation
     {
         protected const float unitSize = 0.15f;
 
-        public IEnumerable<Vector3> processLocalOffsets(IEnumerable<Vector3> originalPositions, IEnumerable<Vector3> offsetPositions, float DefaultSpeed, UnitBase unit)
+
+        public abstract void Order(Legion unit);
+        public abstract void Order(Contubernium unit);
+        public abstract void Order(Cavalry unit);
+        public abstract void Order(Cohort unit);
+
+        public IEnumerable<Vector3> ProcessLocalOffsets(IEnumerable<Vector3> originalPositions,
+            IEnumerable<Vector3> offsetPositions, float defaultSpeed, UnitBase unit)
         {
             var maxDist = 0.0f;
             var i = 0;
             Vector3 position = unit.Position;
 
-            List<Vector3> orPos = new List<Vector3>(originalPositions);
-            List<Vector3> newWorldPositions = new List<Vector3>();
+            var orPos = new List<Vector3>(originalPositions);
+            var newWorldPositions = new List<Vector3>();
 
             foreach (Vector3 u in offsetPositions)
             {
-                Vector3 newPosition = Vector3.zero;
-                newPosition = unit.Rotation * u;
+                Vector3 newPosition = unit.Rotation * u;
                 Vector3 targetPosition = newPosition + position;
                 Vector3 oldPosition = orPos[i];
                 Vector3 definitivePosition = Vector3.MoveTowards(oldPosition, targetPosition, Time.deltaTime);
@@ -39,19 +45,10 @@ namespace Assets.Scripts.Game.Units.Formation
             }
             else
             {
-                unit.WalkSpeed = DefaultSpeed;
+                unit.WalkSpeed = defaultSpeed;
             }
-
 
             return newWorldPositions;
         }
-
-
-
-
-        public abstract void Order(Legion unit);
-        public abstract void Order(Contubernium unit);
-        public abstract void Order(Cavalry unit);
-        public abstract void Order(Cohort unit);
     }
 }

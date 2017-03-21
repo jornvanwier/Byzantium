@@ -66,7 +66,7 @@ namespace Assets.Scripts.Map
             do
             {
                 cc =
-                    new OddRCoordinate(UnityEngine.Random.Range(0, Size), UnityEngine.Random.Range(0, Size)).ToCubical();
+                    new OddRCoordinate(Random.Range(0, Size), Random.Range(0, Size)).ToCubical();
             } while (this[cc] == (byte) TileType.WaterDeep);
 
             return cc;
