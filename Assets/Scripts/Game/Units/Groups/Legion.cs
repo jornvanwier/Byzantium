@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
@@ -23,6 +24,8 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             return Cohorts.GetEnumerator();
         }
+
+
 
         public void AddUnit(Cavalry unit)
         {
@@ -61,5 +64,7 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             throw new NotImplementedException();
         }
+
+        public override int UnitCount => cavalries.Count + cohorts.Count;
     }
 }

@@ -30,5 +30,7 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             throw new NotImplementedException();
         }
+
+        public override int UnitCount => centuries.Count;
     }
 }

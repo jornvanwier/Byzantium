@@ -19,5 +19,7 @@ namespace Assets.Scripts.Game.Units
         public virtual float WalkSpeed { get; set; } = 1.0f;
 
         public abstract void Draw();
+
+        public abstract int UnitCount { get; }
     }
 }

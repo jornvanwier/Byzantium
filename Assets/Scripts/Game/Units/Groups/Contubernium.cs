@@ -20,6 +20,8 @@ namespace Assets.Scripts.Game.Units.Groups
             }
         }
 
+        public override int UnitCount => drawableUnits.Count;
+
         public void AddUnit(MeshDrawableUnit unit)
         {
             drawableUnits.Add(unit);
