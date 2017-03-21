@@ -4,14 +4,14 @@ using System;
 using Assets.Game.Units.Groups;
 using Assets.Game.Units;
 
-public class VerticalLineFormation : IFormation
+public class VerticalLineFormation : FormationBase
 {
-    public void Order(Legion unit)
+    public override void Order(Legion unit)
     {
         throw new NotImplementedException();
     }
 
-    public void Order(Contubernium unit)
+    public override void Order(Contubernium unit)
     {
         const float unitSize = 0.15f;
         int unitCount = unit.GetGroupSize();
@@ -39,7 +39,7 @@ public class VerticalLineFormation : IFormation
 
         if (speed < unit.WalkSpeed())
         {
-            unit.WalkSpeed();
+            unit.WalkSpeed(speed / 10);
         }
         else
         {
@@ -52,12 +52,12 @@ public class VerticalLineFormation : IFormation
 
     }
 
-    public void Order(Cavalry unit)
+    public override void Order(Cavalry unit)
     {
         throw new NotImplementedException();
     }
 
-    public void Order(Cohort unit)
+    public override void Order(Cohort unit)
     {
         throw new NotImplementedException();
     }
