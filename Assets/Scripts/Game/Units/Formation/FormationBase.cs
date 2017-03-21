@@ -6,7 +6,7 @@ namespace Assets.Scripts.Game.Units.Formation
 {
     public abstract class FormationBase : IFormation
     {
-        protected const float unitSize = 0.15f;
+        protected const float UnitSize = 0.15f;
 
 
         public abstract void Order(Legion unit);
@@ -17,8 +17,8 @@ namespace Assets.Scripts.Game.Units.Formation
         public IEnumerable<Vector3> ProcessLocalOffsets(IEnumerable<Vector3> originalPositions,
             IEnumerable<Vector3> offsetPositions, float defaultSpeed, UnitBase unit)
         {
-            var maxDist = 0.0f;
-            var i = 0;
+            float maxDist = 0.0f;
+            int i = 0;
             Vector3 position = unit.Position;
 
             var orPos = new List<Vector3>(originalPositions);

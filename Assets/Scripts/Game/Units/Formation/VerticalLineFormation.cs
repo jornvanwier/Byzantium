@@ -16,14 +16,14 @@ namespace Assets.Scripts.Game.Units.Formation
         {
             int unitCount = unit.GetGroupSize();
             Vector3 position = unit.Position;
-            var i = 0;
+            int i = 0;
             var localPositions = new List<Vector3>();
             var originalpositions = new List<Vector3>();
 
             foreach (UnitBase u in unit)
             {
                 var newPosition = new Vector3(position.x, position.y,
-                    position.z + i * unitSize - unitCount / 2f * unitSize);
+                    position.z + i * UnitSize - unitCount / 2f * UnitSize);
                 Vector3 localPosition = newPosition - position;
                 localPositions.Add(localPosition);
                 originalpositions.Add(u.Position);
@@ -31,7 +31,7 @@ namespace Assets.Scripts.Game.Units.Formation
             }
             var list =
                 new List<Vector3>(ProcessLocalOffsets(originalpositions, localPositions, Contubernium.DefaultSpeed, unit));
-            var j = 0;
+            int j = 0;
             foreach (UnitBase u in unit)
                 u.Position = list[j++];
         }
