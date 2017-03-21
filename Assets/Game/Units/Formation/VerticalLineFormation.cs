@@ -17,13 +17,13 @@ namespace Assets.Game.Units.Formation
             int unitCount = unit.GetGroupSize();
             Vector3 position = unit.Position;
 
-            var maxDist = 0.0f;
+            float maxDist = 0.0f;
 
-            var i = 0;
+            int i = 0;
             foreach (UnitBase u in unit)
             {
                 var newPosition = new Vector3(position.x, position.y,
-                    position.z + i * unitSize - unitCount / 2 * unitSize);
+                    position.z + i * unitSize - unitCount / 2f * unitSize);
                 Vector3 localPosition = newPosition - position;
                 newPosition = unit.Rotation * localPosition;
                 Vector3 targetPosition = newPosition + position;

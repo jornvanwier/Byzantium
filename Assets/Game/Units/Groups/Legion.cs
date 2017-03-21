@@ -37,7 +37,7 @@ namespace Assets.Game.Units.Groups
 
         public IEnumerator GetEnumerator()
         {
-            var position = 0;
+            int position = 0;
             while (position < cavalries.Count + cohorts.Count)
             {
                 yield return
