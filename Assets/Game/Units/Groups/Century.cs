@@ -6,7 +6,7 @@ namespace Assets.Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
-        private new const float DefaultSpeed = 1.5f;
+        protected new const float DefaultSpeed = 1.5f;
         private readonly List<Contubernium> contubernia = new List<Contubernium>();
 
         public void AddUnit(Contubernium unit)

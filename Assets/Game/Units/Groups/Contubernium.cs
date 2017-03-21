@@ -6,7 +6,7 @@ namespace Assets.Game.Units.Groups
 {
     public class Contubernium : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
-        public new const float DefaultSpeed = 1.5f;
+        protected new const float DefaultSpeed = 1.5f;
         private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
 
         public override Vector3 Position
