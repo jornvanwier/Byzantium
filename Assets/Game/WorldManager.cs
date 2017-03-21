@@ -1,8 +1,8 @@
-﻿using Assets.Game.Units;
+﻿using System.Collections.Generic;
+using Assets.Game.Units;
 using Assets.Game.Units.Groups;
 using Assets.Map;
 using JetBrains.Annotations;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Game
@@ -12,6 +12,7 @@ namespace Assets.Game
         private bool applicationHasFocus;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
+        public GameObject goal;
         public float InitialCameraAngle = 35;
         public float InitialCameraMoveSpeed = 2;
         public float InitialZoomSpeed = 2;
@@ -19,17 +20,16 @@ namespace Assets.Game
         protected MapRenderer mapRendererScript;
         private bool middleMouseDown;
 
-        public Mesh unitMesh;
-        public GameObject goal;
-
         private Vector2 prevMousePos = Vector2.zero;
         private bool rightMouseDown;
+        private UnitController script;
         private Vector3 startIntersect;
 
         private Contubernium unit;
-        UnitController script;
 
-        List<GameObject> unitControllers = new List<GameObject>();
+        private List<GameObject> unitControllers = new List<GameObject>();
+
+        public Mesh unitMesh;
 
 
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
@@ -46,10 +46,10 @@ namespace Assets.Game
         private void Start()
         {
             unit = new Contubernium();
-            for(int i = 0; i < 8; ++i)
+            for (var i = 0; i < 8; ++i)
                 unit.AddUnit(new MeshDrawableUnit(unitMesh));
 
-            unit.Position = new Vector3(5,0,5);
+            unit.Position = new Vector3(5, 0, 5);
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";
@@ -59,12 +59,11 @@ namespace Assets.Game
             cameraObject.transform.position = new Vector3(0, cHeight, 0);
             mapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
 
-            GameObject obj = new GameObject("Army");
+            var obj = new GameObject("Army");
             script = obj.AddComponent<UnitController>();
             script.AttachUnit(unit);
             script.AttachMapRenderer(mapRendererScript);
             script.Goal = mapRendererScript.WorldToCubicalCoordinate(goal.transform.position);
-
         }
 
         // Update is called once per frame

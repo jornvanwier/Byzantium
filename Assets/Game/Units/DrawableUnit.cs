@@ -1,43 +1,29 @@
-﻿using System;
-using Assets.Game.Units.Unit_Enums;
+﻿using Assets.Game.Units.Unit_Enums;
 using UnityEngine;
 
 namespace Assets.Game.Units
 {
     public class MeshDrawableUnit : UnitBase
     {
-        public Mesh mesh { get; }
-        public Defense DefenseType { get; }
-        public Weapon WeaponType { get; }
-        public Movement MovementType { get; }
-        public static Material material = new Material(Shader.Find("Standard"));
+        public static Material Material = new Material(Shader.Find("Standard"));
 
         public MeshDrawableUnit(Mesh mesh, Defense defense = Defense.Armor, Weapon weapon = Weapon.Sword,
             Movement movement = Movement.Foot)
         {
-            this.mesh = mesh;
+            Mesh = mesh;
             DefenseType = defense;
             WeaponType = weapon;
             MovementType = movement;
         }
 
+        public Mesh Mesh { get; }
+        public Defense DefenseType { get; }
+        public Weapon WeaponType { get; }
+        public Movement MovementType { get; }
+
         public override void Draw()
         {
-            Graphics.DrawMesh(mesh, Matrix4x4.TRS(Position, Rotation, new Vector3(0.1f,0.1f,0.1f)), material, 0);
-        }
-
-        public override float WalkSpeed()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void WalkSpeed(float speed)
-        {
-            throw new NotImplementedException();
+            Graphics.DrawMesh(Mesh, Matrix4x4.TRS(Position, Rotation, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
         }
     }
-
-
-
-
 }

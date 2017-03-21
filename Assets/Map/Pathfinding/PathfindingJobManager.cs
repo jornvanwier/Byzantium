@@ -9,8 +9,6 @@ namespace Assets.Map.Pathfinding
     {
         private static int _lastId;
 
-        private int id;
-
         public PathfindingJobInfo()
         {
             Id = ++_lastId;

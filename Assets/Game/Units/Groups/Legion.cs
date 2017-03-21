@@ -4,36 +4,46 @@ using System.Collections.Generic;
 
 namespace Assets.Game.Units.Groups
 {
-    public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>, IEnumerable<Cohort>, IEnumerable<Cavalry>
+    public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>, IEnumerable<Cohort>,
+        IEnumerable<Cavalry>
     {
-        private List<Cavalry> cavalry = new List<Cavalry>();
-        private List<Cohort> cohorts = new List<Cohort>();
-        public const float defaultSpeed = 1.5f;
-        private float currentSpeed = defaultSpeed;
+        public new const float DefaultSpeed = 1.5f;
 
+        private readonly List<Cohort> cohorts = new List<Cohort>();
+        private readonly List<Cavalry> cavalries = new List<Cavalry>();
+        public IEnumerable<Cavalry> Cavalries => cavalries;
+        public IEnumerable<Cohort> Cohorts => cohorts;
 
-        public IEnumerable<Cavalry> Cavalries { get { return cavalry;  } }
-        public IEnumerable<Cohort> Cohorts { get { return cohorts;  } }
-
-        public IEnumerator GetEnumerator()
+        IEnumerator<Cavalry> IEnumerable<Cavalry>.GetEnumerator()
         {
-            var position = 0;
-            while (position < cavalry.Count + cohorts.Count)
-            {
-                yield return position < cavalry.Count ? (UnitBase) cavalry[position] : cohorts[position - cavalry.Count];
-                position++;
-            }
+            return Cavalries.GetEnumerator();
+        }
+
+        IEnumerator<Cohort> IEnumerable<Cohort>.GetEnumerator()
+        {
+            return Cohorts.GetEnumerator();
         }
 
         public void AddUnit(Cavalry unit)
         {
-            cavalry.Add(unit);
+            cavalries.Add(unit);
         }
 
         public void RemoveUnit(Cavalry unit)
         {
-            int index = cavalry.IndexOf(unit);
-            cavalry.RemoveAt(index);
+            int index = cavalries.IndexOf(unit);
+            cavalries.RemoveAt(index);
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            var position = 0;
+            while (position < cavalries.Count + cohorts.Count)
+            {
+                yield return
+                    position < cavalries.Count ? (UnitBase) cavalries[position] : cohorts[position - cavalries.Count];
+                position++;
+            }
         }
 
         public void AddUnit(Cohort unit)
@@ -47,29 +57,9 @@ namespace Assets.Game.Units.Groups
             cohorts.RemoveAt(index);
         }
 
-        IEnumerator<Cohort> IEnumerable<Cohort>.GetEnumerator()
-        {
-            return cohorts.GetEnumerator();
-        }
-
-        IEnumerator<Cavalry> IEnumerable<Cavalry>.GetEnumerator()
-        {
-            return cavalry.GetEnumerator();
-        }
-
         public override void Draw()
         {
             throw new NotImplementedException();
-        }
-
-        public override float WalkSpeed()
-        {
-            return currentSpeed;
-        }
-
-        public override void WalkSpeed(float speed)
-        {
-            currentSpeed = speed;
         }
     }
 }

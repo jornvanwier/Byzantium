@@ -7,9 +7,9 @@ namespace Assets.Game.Units.Groups
     public class Cohort : UnitBase, IMultipleUnits<Century>
     {
         private const float defaultSpeed = 1.5f;
-        public float currentSpeed = defaultSpeed;
 
-        private List<Century> centuries = new List<Century>();
+        private readonly List<Century> centuries = new List<Century>();
+        public float currentSpeed = defaultSpeed;
 
         public void AddUnit(Century unit)
         {
@@ -30,16 +30,6 @@ namespace Assets.Game.Units.Groups
         public override void Draw()
         {
             throw new NotImplementedException();
-        }
-
-        public override float WalkSpeed()
-        {
-            return currentSpeed;
-        }
-
-        public override void WalkSpeed(float speed)
-        {
-            currentSpeed = speed;
         }
     }
 }

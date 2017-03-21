@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using Assets.Game.Units.Groups;
+﻿using Assets.Game.Units.Groups;
 
 public interface IFormation
 {

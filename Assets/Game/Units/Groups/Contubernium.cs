@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,13 +6,16 @@ namespace Assets.Game.Units.Groups
 {
     public class Contubernium : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
-        private List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
-        public const float defaultSpeed = 1.5f;
-        private float currentSpeed = defaultSpeed;
+        public new const float DefaultSpeed = 1.5f;
+        private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
 
-        public int GetGroupSize()
+        public override Vector3 Position
         {
-            return drawableUnits.Count;
+            set
+            {
+                base.Position = value;
+                Formation.Order(this);
+            }
         }
 
         public void AddUnit(MeshDrawableUnit unit)
@@ -32,30 +34,15 @@ namespace Assets.Game.Units.Groups
             return drawableUnits.GetEnumerator();
         }
 
-        public override Vector3 Position { set
-            {
-                base.Position = value;
-                Formation.Order(this);
-            }
+        public int GetGroupSize()
+        {
+            return drawableUnits.Count;
         }
 
         public override void Draw()
         {
             foreach (MeshDrawableUnit u in drawableUnits)
-            {
                 u.Draw();
-            }
-            
-        }
-
-        public override float WalkSpeed()
-        {
-            return currentSpeed;
-        }
-
-        public override void WalkSpeed(float speed)
-        {
-            currentSpeed = speed;
         }
     }
 }
