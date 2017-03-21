@@ -7,7 +7,6 @@ namespace Assets.Scripts.Game.Units
 {
     public class UnitController : MonoBehaviour
     {
-        private const float MovementSpeed = 1.5f;
         private const float RotationSpeed = 3.5f;
         private UnitBase attachedUnit;
 
