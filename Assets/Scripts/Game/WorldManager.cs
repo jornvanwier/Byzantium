@@ -53,11 +53,10 @@ namespace Assets.Scripts.Game
             // Ugly hack to allow static retrieval of the attached meshes
             Meshes = meshHolder;
 
-            unit = new Contubernium();
+            unit = new Contubernium {Position = new Vector3(5, 0, 5)};
 //            for (var i = 0; i < 8; ++i)
 //                unit.AddUnit(new MeshDrawableUnit(SoldierMesh, SwordMesh, ShieldLargeMesh));
 
-            unit.Position = new Vector3(5, 0, 5);
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";
