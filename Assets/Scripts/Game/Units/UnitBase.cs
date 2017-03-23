@@ -18,8 +18,8 @@ namespace Assets.Scripts.Game.Units
         public virtual IFormation Formation { get; set; } = new VerticalLineFormation();
         public virtual float WalkSpeed { get; set; } = 1.0f;
 
-        public abstract void Draw();
-
         public abstract int UnitCount { get; }
+
+        public abstract void Draw();
     }
 }

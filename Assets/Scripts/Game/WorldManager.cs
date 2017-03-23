@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Groups;
-using Assets.Scripts.Game.Units.Unit_Enums;
 using Assets.Scripts.Map;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -11,12 +9,6 @@ namespace Assets.Scripts.Game
 {
     public class WorldManager : MonoBehaviour
     {
-        [SerializeField]
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        private MeshHolder meshHolder = new MeshHolder();
-
-        public static MeshHolder Meshes { get; private set; }
-
         private bool applicationHasFocus;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
@@ -26,6 +18,9 @@ namespace Assets.Scripts.Game
         public float InitialZoomSpeed = 2;
         public GameObject MapRendererObject;
         protected MapRenderer MapRendererScript;
+        
+        public MeshHolder meshHolder;
+
         private bool middleMouseDown;
 
         private Vector2 prevMousePos = Vector2.zero;
@@ -36,6 +31,8 @@ namespace Assets.Scripts.Game
         private Contubernium unit;
 
         private List<GameObject> unitControllers = new List<GameObject>();
+
+        public static MeshHolder Meshes { get; private set; }
 
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
@@ -51,6 +48,7 @@ namespace Assets.Scripts.Game
         private void Start()
         {
             // Ugly hack to allow static retrieval of the attached meshes
+            meshHolder.Initialize();
             Meshes = meshHolder;
 
             unit = Contubernium.CreateSwordUnit();

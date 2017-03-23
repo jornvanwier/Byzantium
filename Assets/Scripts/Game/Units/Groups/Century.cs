@@ -10,6 +10,19 @@ namespace Assets.Scripts.Game.Units.Groups
         public new const float DefaultSpeed = 1.5f;
         private readonly List<Contubernium> contubernia = new List<Contubernium>();
 
+        public override Quaternion Rotation
+        {
+            get { return base.Rotation; }
+            set
+            {
+                base.Rotation = value;
+                foreach (UnitBase child in this)
+                    child.Rotation = value;
+            }
+        }
+
+        public override int UnitCount => contubernia.Count;
+
         public void AddUnit(Contubernium unit)
         {
             contubernia.Add(unit);
@@ -25,21 +38,6 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             return contubernia.GetEnumerator();
         }
-
-        public override Quaternion Rotation
-        {
-            get { return base.Rotation; }
-            set
-            {
-                base.Rotation = value;
-                foreach (UnitBase child in this)
-                {
-                    child.Rotation = value;
-                }
-            }
-        }
-
-        public override int UnitCount => contubernia.Count;
 
         public override void Draw()
         {

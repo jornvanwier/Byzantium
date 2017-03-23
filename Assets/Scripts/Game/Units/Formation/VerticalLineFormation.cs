@@ -16,7 +16,7 @@ namespace Assets.Scripts.Game.Units.Formation
         {
             int unitCount = unit.GetGroupSize();
             Vector3 position = unit.Position;
-            int i = 0;
+            var i = 0;
             var localPositions = new List<Vector3>();
             var originalpositions = new List<Vector3>();
 
@@ -31,7 +31,7 @@ namespace Assets.Scripts.Game.Units.Formation
             }
             var list =
                 new List<Vector3>(ProcessLocalOffsets(originalpositions, localPositions, unit));
-            int j = 0;
+            var j = 0;
             foreach (UnitBase u in unit)
                 u.Position = list[j++];
         }
