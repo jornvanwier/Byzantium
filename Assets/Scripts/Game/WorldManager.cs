@@ -42,9 +42,6 @@ namespace Assets.Scripts.Game
 
     public class WorldManager : MonoBehaviour
     {
-        [SerializeField]
-        public MeshHolder MeshObject = new MeshHolder();
-
         private bool applicationHasFocus;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
@@ -53,7 +50,7 @@ namespace Assets.Scripts.Game
         public float InitialCameraMoveSpeed = 2;
         public float InitialZoomSpeed = 2;
         public GameObject MapRendererObject;
-        protected MapRenderer mapRendererScript;
+        protected MapRenderer MapRendererScript;
         private bool middleMouseDown;
 
         private Vector2 prevMousePos = Vector2.zero;
@@ -64,9 +61,6 @@ namespace Assets.Scripts.Game
         private Contubernium unit;
 
         private List<GameObject> unitControllers = new List<GameObject>();
-
-        public Mesh unitMesh;
-
 
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
@@ -83,7 +77,7 @@ namespace Assets.Scripts.Game
         {
             unit = new Contubernium();
             for (var i = 0; i < 8; ++i)
-                unit.AddUnit(new MeshDrawableUnit(unitMesh));
+                unit.AddUnit(new MeshDrawableUnit(SoldierMesh, SwordMesh, ShieldLargeMesh));
 
             unit.Position = new Vector3(5, 0, 5);
 
@@ -93,20 +87,20 @@ namespace Assets.Scripts.Game
             cameraObject = new GameObject("MainCamera");
             cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = new Vector3(0, cHeight, 0);
-            mapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
+            MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
 
             var obj = new GameObject("Army");
             script = obj.AddComponent<UnitController>();
             script.AttachUnit(unit);
-            script.AttachMapRenderer(mapRendererScript);
-            script.Goal = mapRendererScript.WorldToCubicalCoordinate(goal.transform.position);
+            script.AttachMapRenderer(MapRendererScript);
+            script.Goal = MapRendererScript.WorldToCubicalCoordinate(goal.transform.position);
         }
 
         // Update is called once per frame
         [UsedImplicitly]
         private void Update()
         {
-            script.Goal = mapRendererScript.WorldToCubicalCoordinate(goal.transform.position);
+            script.Goal = MapRendererScript.WorldToCubicalCoordinate(goal.transform.position);
             UpdateCamera();
         }
 
