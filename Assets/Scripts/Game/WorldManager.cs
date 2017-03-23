@@ -43,7 +43,7 @@ namespace Assets.Scripts.Game
     public class WorldManager : MonoBehaviour
     {
         [SerializeField]
-        public static MeshHolder Meshes = new MeshHolder();
+        public MeshHolder Meshes = new MeshHolder();
 
         private bool applicationHasFocus;
         private GameObject cameraObject;
@@ -80,7 +80,7 @@ namespace Assets.Scripts.Game
         {
             unit = new Contubernium();
             for (var i = 0; i < 8; ++i)
-                unit.AddUnit(new MeshDrawableUnit(SoldierMesh, SwordMesh, ShieldLargeMesh));
+                unit.AddUnit(new MeshDrawableUnit(Meshes.Units.Foot, Meshes.Weapons.Sword, Meshes.Defenses.LargeShield));
 
             unit.Position = new Vector3(5, 0, 5);
 
