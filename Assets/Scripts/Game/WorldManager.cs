@@ -2,51 +2,17 @@
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Groups;
+using Assets.Scripts.Game.Units.Unit_Enums;
 using Assets.Scripts.Map;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets.Scripts.Game
 {
-    [Serializable]
-    public class MeshHolder
-    {
-        [Serializable]
-        public class WeaponMeshHolder
-        {
-            public Mesh Sword;
-            public Mesh Spear;
-            public Mesh Bow;
-        }
-
-        [SerializeField]
-        public WeaponMeshHolder Weapons = new WeaponMeshHolder();
-
-        [Serializable]
-        public class DefenseMeshHolder
-        {
-            public Mesh LargeShield;
-            public Mesh SmallShield;
-        }
-
-        [SerializeField]
-        public DefenseMeshHolder Defenses = new DefenseMeshHolder();
-
-        [Serializable]
-        public class UnitMeshHolder
-        {
-            public Mesh Foot;
-            public Mesh Horse;
-        }
-
-        [SerializeField]
-        public UnitMeshHolder Units = new UnitMeshHolder();
-    }
-
     public class WorldManager : MonoBehaviour
     {
         [SerializeField]
-        private MeshHolder meshHolder = new MeshHolder();
+        private readonly MeshHolder meshHolder = new MeshHolder();
 
         public static MeshHolder Meshes { get; private set; }
 

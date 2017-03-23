@@ -14,7 +14,9 @@ namespace Assets.Scripts.Game.Units.Groups
 
             for (int i = 0; i < 8; ++i)
             {
-//                contubernium.AddUnit(new MeshDrawableUnit());
+                contubernium.AddUnit(new MeshDrawableUnit(
+
+                ));
             }
 
             return null;

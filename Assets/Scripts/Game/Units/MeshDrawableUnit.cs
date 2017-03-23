@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Game.Units.Unit_Enums;
+﻿using System;
+using Assets.Scripts.Game.Units.Unit_Enums;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units
@@ -7,16 +9,22 @@ namespace Assets.Scripts.Game.Units
     {
         public static Material Material = new Material(Shader.Find("Standard"));
 
-        public MeshDrawableUnit(Mesh unitMesh, Mesh weaponMesh, Mesh defenseMesh = null, Defense defense = Defense.Armor,
+        public MeshDrawableUnit(Defense defense = Defense.Armor,
             Weapon weapon = Weapon.Sword,
-            Movement movement = Movement.Foot)
+            Soldier soldier = Soldier.Armored)
         {
-            UnitMesh = unitMesh;
-            WeaponMesh = weaponMesh;
-            DefenseMesh = defenseMesh;
+            if (defense == Defense.None && soldier == Soldier.Armored)
+            {
+                throw new ArgumentException("Defense type of None cannot be used with a Soldier type of Armored!");
+            }
+
+            UnitMesh = WorldManager.Meshes.SoldierEnum[soldier];
+            WeaponMesh = WorldManager.Meshes.WeaponEnum[weapon];
+            DefenseMesh = WorldManager.Meshes.DefenseEnum[defense];
+
             DefenseType = defense;
             WeaponType = weapon;
-            MovementType = movement;
+            SoldierType = soldier;
         }
 
         public Mesh UnitMesh { get; }
@@ -24,7 +32,7 @@ namespace Assets.Scripts.Game.Units
         public Mesh DefenseMesh { get; }
         public Defense DefenseType { get; }
         public Weapon WeaponType { get; }
-        public Movement MovementType { get; }
+        public Soldier SoldierType { get; }
 
         public override void Draw()
         {
