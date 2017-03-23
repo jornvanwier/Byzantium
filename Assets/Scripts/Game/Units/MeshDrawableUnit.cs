@@ -30,7 +30,6 @@ namespace Assets.Scripts.Game.Units
         {
             Graphics.DrawMesh(UnitMesh, Matrix4x4.TRS(Position, Rotation, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
 
-
             Vector3 WeaponPosition = (Position + new Vector3(0.2f, 0, 0));
             WeaponPosition = Rotation * WeaponPosition;
 
