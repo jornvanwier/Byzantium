@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
@@ -7,8 +8,43 @@ using UnityEngine;
 
 namespace Assets.Scripts.Game
 {
+    [Serializable]
+    public class MeshHolder
+    {
+        [Serializable]
+        public class WeaponMeshHolder
+        {
+            public Mesh Sword;
+            public Mesh Spear;
+            public Mesh Bow;
+        }
+
+        public WeaponMeshHolder Weapons = new WeaponMeshHolder();
+
+        [Serializable]
+        public class DefenseMeshHolder
+        {
+            public Mesh LargeShield;
+            public Mesh SmallShield;
+        }
+
+        public DefenseMeshHolder Defenses = new DefenseMeshHolder();
+
+        [Serializable]
+        public class UnitMeshHolder
+        {
+            public Mesh Foot;
+            public Mesh Horse;
+        }
+
+        public UnitMeshHolder Units = new UnitMeshHolder();
+    }
+
     public class WorldManager : MonoBehaviour
     {
+        [SerializeField]
+        public MeshHolder MeshObject = new MeshHolder();
+
         private bool applicationHasFocus;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
