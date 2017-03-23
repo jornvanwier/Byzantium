@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Game.Units.Unit_Enums;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
@@ -15,7 +16,9 @@ namespace Assets.Scripts.Game.Units.Groups
             for (int i = 0; i < 8; ++i)
             {
                 contubernium.AddUnit(new MeshDrawableUnit(
-
+                    Defense.SmallShield,
+                    Weapon.Sword,
+                    Soldier.Armored
                 ));
             }
 
