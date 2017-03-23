@@ -20,10 +20,6 @@ namespace Assets.Scripts.Game
 
         [SerializeField] public WeaponMeshHolder Weapons = new WeaponMeshHolder();
 
-        public MeshHolder()
-        {
-        }
-
         public void Initialize()
         {
             WeaponEnum = new Dictionary<Weapon, Mesh>

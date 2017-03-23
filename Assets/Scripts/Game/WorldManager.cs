@@ -18,7 +18,7 @@ namespace Assets.Scripts.Game
         public float InitialZoomSpeed = 2;
         public GameObject MapRendererObject;
         protected MapRenderer MapRendererScript;
-        
+
         public MeshHolder meshHolder;
 
         private bool middleMouseDown;
