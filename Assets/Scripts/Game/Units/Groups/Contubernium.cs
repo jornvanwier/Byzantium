@@ -59,7 +59,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override Quaternion Rotation
         {
-            get => base.Rotation;
+            get { return base.Rotation; }
             set
             {
                 base.Rotation = value;

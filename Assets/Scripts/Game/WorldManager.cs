@@ -12,7 +12,8 @@ namespace Assets.Scripts.Game
     public class WorldManager : MonoBehaviour
     {
         [SerializeField]
-        private readonly MeshHolder meshHolder = new MeshHolder();
+        // ReSharper disable once FieldCanBeMadeReadOnly.Local
+        private MeshHolder meshHolder = new MeshHolder();
 
         public static MeshHolder Meshes { get; private set; }
 
