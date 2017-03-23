@@ -45,16 +45,16 @@ namespace Assets.Scripts.Game.Units
         {
             Graphics.DrawMesh(UnitMesh, Matrix4x4.TRS(Position, Rotation, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
 
-            Vector3 WeaponPosition = Position + new Vector3(0.2f, 0, 0);
-            WeaponPosition = Rotation * WeaponPosition;
+            Vector3 weaponPosition = Position + (Rotation * new Vector3(0.2f, 0, 0));
+//            weaponPosition = Rotation * weaponPosition;
 
             Graphics.DrawMesh(WeaponMesh,
-                Matrix4x4.TRS(WeaponPosition, Rotation, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
+                Matrix4x4.TRS(weaponPosition, Rotation, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
 
 
             if (DefenseMesh != null)
             {
-                Vector3 shieldPosition = Position + new Vector3(0, 0.2f, 0);
+                Vector3 shieldPosition = Position + (Rotation * new Vector3(0, 0.2f, 0));
                 Graphics.DrawMesh(DefenseMesh,
                     Matrix4x4.TRS(shieldPosition, Rotation, new Vector3(0.1f, 0.1f, 0.1f)),
                     Material, 0);
