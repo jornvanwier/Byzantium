@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Game.Units.Unit_Enums;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -18,9 +20,13 @@ namespace Assets.Scripts.Game.Units
                 throw new ArgumentException("Defense type of None cannot be used with a Soldier type of Armored!");
             }
 
-            UnitMesh = WorldManager.Meshes.SoldierEnum[soldier];
-            WeaponMesh = WorldManager.Meshes.WeaponEnum[weapon];
-            DefenseMesh = WorldManager.Meshes.DefenseEnum[defense];
+            Debug.Log(soldier);
+
+            MeshHolder m = WorldManager.Meshes;
+
+            UnitMesh = m.SoldierEnum[soldier];
+            WeaponMesh = m.WeaponEnum[weapon];
+            DefenseMesh = m.DefenseEnum[defense];
 
             DefenseType = defense;
             WeaponType = weapon;

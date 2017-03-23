@@ -22,7 +22,7 @@ namespace Assets.Scripts.Game.Units.Groups
                 ));
             }
 
-            return null;
+            return contubernium;
         }
 
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Assets.Scripts.Game.Units.Unit_Enums;
 using UnityEngine;
 
@@ -48,8 +49,10 @@ namespace Assets.Scripts.Game
 
         public Dictionary<Soldier, Mesh> SoldierEnum;
 
+        [MethodImpl(MethodImplOptions.NoOptimization | MethodImplOptions.NoInlining)]
         public MeshHolder()
         {
+
             WeaponEnum = new Dictionary<Weapon, Mesh>()
             {
                 {Weapon.Sword, Weapons.Sword},
