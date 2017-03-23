@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
@@ -24,8 +25,6 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             return Cohorts.GetEnumerator();
         }
-
-
 
         public void AddUnit(Cavalry unit)
         {
@@ -58,6 +57,19 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             int index = cohorts.IndexOf(unit);
             cohorts.RemoveAt(index);
+        }
+
+        public override Quaternion Rotation
+        {
+            get => base.Rotation;
+            set
+            {
+                base.Rotation = value;
+                foreach (UnitBase child in this)
+                {
+                    child.Rotation = value;
+                }
+            }
         }
 
         public override void Draw()

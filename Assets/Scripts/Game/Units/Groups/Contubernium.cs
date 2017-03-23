@@ -14,7 +14,9 @@ namespace Assets.Scripts.Game.Units.Groups
 
             for (int i = 0; i < 8; ++i)
             {
-//                contubernium.AddUnit(new MeshDrawableUnit());
+                contubernium.AddUnit(new MeshDrawableUnit(
+
+                ));
             }
 
             return null;
@@ -53,6 +55,19 @@ namespace Assets.Scripts.Game.Units.Groups
         public int GetGroupSize()
         {
             return drawableUnits.Count;
+        }
+
+        public override Quaternion Rotation
+        {
+            get => base.Rotation;
+            set
+            {
+                base.Rotation = value;
+                foreach (UnitBase child in this)
+                {
+                    child.Rotation = value;
+                }
+            }
         }
 
         public override void Draw()
