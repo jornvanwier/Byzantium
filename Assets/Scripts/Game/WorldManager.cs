@@ -42,10 +42,13 @@ namespace Assets.Scripts.Game
 
     public class WorldManager : MonoBehaviour
     {
+        [SerializeField]
+        public static MeshHolder Meshes = new MeshHolder();
+
         private bool applicationHasFocus;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
-        public GameObject goal;
+        public GameObject Goal;
         public float InitialCameraAngle = 35;
         public float InitialCameraMoveSpeed = 2;
         public float InitialZoomSpeed = 2;
@@ -93,14 +96,14 @@ namespace Assets.Scripts.Game
             script = obj.AddComponent<UnitController>();
             script.AttachUnit(unit);
             script.AttachMapRenderer(MapRendererScript);
-            script.Goal = MapRendererScript.WorldToCubicalCoordinate(goal.transform.position);
+            script.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
         }
 
         // Update is called once per frame
         [UsedImplicitly]
         private void Update()
         {
-            script.Goal = MapRendererScript.WorldToCubicalCoordinate(goal.transform.position);
+            script.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
             UpdateCamera();
         }
 
