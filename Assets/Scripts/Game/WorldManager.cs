@@ -19,6 +19,7 @@ namespace Assets.Scripts.Game
             public Mesh Bow;
         }
 
+        [SerializeField]
         public WeaponMeshHolder Weapons = new WeaponMeshHolder();
 
         [Serializable]
@@ -28,6 +29,7 @@ namespace Assets.Scripts.Game
             public Mesh SmallShield;
         }
 
+        [SerializeField]
         public DefenseMeshHolder Defenses = new DefenseMeshHolder();
 
         [Serializable]
@@ -37,13 +39,16 @@ namespace Assets.Scripts.Game
             public Mesh Horse;
         }
 
+        [SerializeField]
         public UnitMeshHolder Units = new UnitMeshHolder();
     }
 
     public class WorldManager : MonoBehaviour
     {
         [SerializeField]
-        public MeshHolder Meshes = new MeshHolder();
+        private MeshHolder meshHolder = new MeshHolder();
+
+        public static MeshHolder Meshes { get; private set; }
 
         private bool applicationHasFocus;
         private GameObject cameraObject;
@@ -78,9 +83,12 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Start()
         {
+            // Ugly hack to allow static retrieval of the attached meshes
+            Meshes = meshHolder;
+
             unit = new Contubernium();
-            for (var i = 0; i < 8; ++i)
-                unit.AddUnit(new MeshDrawableUnit(Meshes.Units.Foot, Meshes.Weapons.Sword, Meshes.Defenses.LargeShield));
+//            for (var i = 0; i < 8; ++i)
+//                unit.AddUnit(new MeshDrawableUnit(SoldierMesh, SwordMesh, ShieldLargeMesh));
 
             unit.Position = new Vector3(5, 0, 5);
 
