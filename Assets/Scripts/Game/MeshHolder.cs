@@ -22,6 +22,10 @@ namespace Assets.Scripts.Game
 
         public MeshHolder()
         {
+        }
+
+        public void Initialize()
+        {
             WeaponEnum = new Dictionary<Weapon, Mesh>
             {
                 {Weapon.Sword, Weapons.Sword},

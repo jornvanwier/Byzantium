@@ -59,7 +59,7 @@ namespace Assets.Scripts.Game.Units.Groups
                     Soldier.Armored
                 ));
 
-            return null;
+            return contubernium;
         }
 
         public int GetGroupSize()

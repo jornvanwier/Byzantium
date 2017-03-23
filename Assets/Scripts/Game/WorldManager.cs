@@ -18,10 +18,8 @@ namespace Assets.Scripts.Game
         public float InitialZoomSpeed = 2;
         public GameObject MapRendererObject;
         protected MapRenderer MapRendererScript;
-
-        [SerializeField]
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        private MeshHolder meshHolder = new MeshHolder();
+        
+        public MeshHolder meshHolder;
 
         private bool middleMouseDown;
 
@@ -50,9 +48,10 @@ namespace Assets.Scripts.Game
         private void Start()
         {
             // Ugly hack to allow static retrieval of the attached meshes
+            meshHolder.Initialize();
             Meshes = meshHolder;
 
-            unit = new Contubernium {Position = new Vector3(5, 0, 5)};
+            unit = Contubernium.CreateSwordUnit();
 //            for (var i = 0; i < 8; ++i)
 //                unit.AddUnit(new MeshDrawableUnit(SoldierMesh, SwordMesh, ShieldLargeMesh));
 
