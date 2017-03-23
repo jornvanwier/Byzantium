@@ -55,6 +55,19 @@ namespace Assets.Scripts.Game.Units.Groups
             return drawableUnits.Count;
         }
 
+        public override Quaternion Rotation
+        {
+            get => base.Rotation;
+            set
+            {
+                base.Rotation = value;
+                foreach (UnitBase child in this)
+                {
+                    child.Rotation = value;
+                }
+            }
+        }
+
         public override void Draw()
         {
             foreach (MeshDrawableUnit u in drawableUnits)

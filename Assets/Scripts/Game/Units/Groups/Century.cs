@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
@@ -23,6 +24,19 @@ namespace Assets.Scripts.Game.Units.Groups
         public IEnumerator GetEnumerator()
         {
             return contubernia.GetEnumerator();
+        }
+
+        public override Quaternion Rotation
+        {
+            get => base.Rotation;
+            set
+            {
+                base.Rotation = value;
+                foreach (UnitBase child in this)
+                {
+                    child.Rotation = value;
+                }
+            }
         }
 
         public override int UnitCount => contubernia.Count;
