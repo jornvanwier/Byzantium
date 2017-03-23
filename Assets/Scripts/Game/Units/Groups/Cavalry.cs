@@ -29,5 +29,7 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             throw new NotImplementedException();
         }
+
+        public override int UnitCount => drawableUnits.Count;
     }
 }

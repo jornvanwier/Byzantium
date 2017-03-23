@@ -46,5 +46,7 @@ namespace Assets.Scripts.Game.Units
                     Material, 0);
             }
         }
+
+        public override int UnitCount => 1;
     }
 }

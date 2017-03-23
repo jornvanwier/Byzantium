@@ -8,15 +8,42 @@ using UnityEngine;
 
 namespace Assets.Scripts.Game
 {
+    [Serializable]
+    public class MeshHolder
+    {
+        [Serializable]
+        public class WeaponMeshHolder
+        {
+            public Mesh Sword;
+            public Mesh Spear;
+            public Mesh Bow;
+        }
+
+        public WeaponMeshHolder Weapons = new WeaponMeshHolder();
+
+        [Serializable]
+        public class DefenseMeshHolder
+        {
+            public Mesh LargeShield;
+            public Mesh SmallShield;
+        }
+
+        public DefenseMeshHolder Defenses = new DefenseMeshHolder();
+
+        [Serializable]
+        public class UnitMeshHolder
+        {
+            public Mesh Foot;
+            public Mesh Horse;
+        }
+
+        public UnitMeshHolder Units = new UnitMeshHolder();
+    }
+
     public class WorldManager : MonoBehaviour
     {
-        public Mesh CavalryMesh;
-        public Mesh SoldierMesh;
-        public Mesh SwordMesh;
-        public Mesh BowMesh;
-        public Mesh ShieldSmallMesh;
-        public Mesh ShieldLargeMesh;
-        public Mesh ArmorMesh;
+        [SerializeField]
+        public MeshHolder MeshObject = new MeshHolder();
 
         private bool applicationHasFocus;
         private GameObject cameraObject;
@@ -26,7 +53,7 @@ namespace Assets.Scripts.Game
         public float InitialCameraMoveSpeed = 2;
         public float InitialZoomSpeed = 2;
         public GameObject MapRendererObject;
-        protected MapRenderer MapRendererScript;
+        protected MapRenderer mapRendererScript;
         private bool middleMouseDown;
 
         private Vector2 prevMousePos = Vector2.zero;
@@ -37,6 +64,9 @@ namespace Assets.Scripts.Game
         private Contubernium unit;
 
         private List<GameObject> unitControllers = new List<GameObject>();
+
+        public Mesh unitMesh;
+
 
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
@@ -53,7 +83,7 @@ namespace Assets.Scripts.Game
         {
             unit = new Contubernium();
             for (var i = 0; i < 8; ++i)
-                unit.AddUnit(new MeshDrawableUnit(SoldierMesh, SwordMesh, ShieldLargeMesh));
+                unit.AddUnit(new MeshDrawableUnit(unitMesh));
 
             unit.Position = new Vector3(5, 0, 5);
 
@@ -63,20 +93,20 @@ namespace Assets.Scripts.Game
             cameraObject = new GameObject("MainCamera");
             cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = new Vector3(0, cHeight, 0);
-            MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
+            mapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
 
             var obj = new GameObject("Army");
             script = obj.AddComponent<UnitController>();
             script.AttachUnit(unit);
-            script.AttachMapRenderer(MapRendererScript);
-            script.Goal = MapRendererScript.WorldToCubicalCoordinate(goal.transform.position);
+            script.AttachMapRenderer(mapRendererScript);
+            script.Goal = mapRendererScript.WorldToCubicalCoordinate(goal.transform.position);
         }
 
         // Update is called once per frame
         [UsedImplicitly]
         private void Update()
         {
-            script.Goal = MapRendererScript.WorldToCubicalCoordinate(goal.transform.position);
+            script.Goal = mapRendererScript.WorldToCubicalCoordinate(goal.transform.position);
             UpdateCamera();
         }
 

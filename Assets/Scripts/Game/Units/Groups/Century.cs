@@ -25,6 +25,8 @@ namespace Assets.Scripts.Game.Units.Groups
             return contubernia.GetEnumerator();
         }
 
+        public override int UnitCount => contubernia.Count;
+
         public override void Draw()
         {
             throw new NotImplementedException();

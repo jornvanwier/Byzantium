@@ -8,6 +8,18 @@ namespace Assets.Scripts.Game.Units.Groups
     {
         public override float DefaultSpeed => 1.5f;
 
+        public static Contubernium CreateSwordUnit()
+        {
+            var contubernium = new Contubernium();
+
+            for (int i = 0; i < 8; ++i)
+            {
+//                contubernium.AddUnit(new MeshDrawableUnit());
+            }
+
+            return null;
+        }
+
 
         private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
 
@@ -19,6 +31,8 @@ namespace Assets.Scripts.Game.Units.Groups
                 Formation.Order(this);
             }
         }
+
+        public override int UnitCount => drawableUnits.Count;
 
         public void AddUnit(MeshDrawableUnit unit)
         {
