@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
@@ -15,6 +14,19 @@ namespace Assets.Scripts.Game.Units.Groups
         private readonly List<Cohort> cohorts = new List<Cohort>();
         public IEnumerable<Cavalry> Cavalries => cavalries;
         public IEnumerable<Cohort> Cohorts => cohorts;
+
+        public override Quaternion Rotation
+        {
+            get { return base.Rotation; }
+            set
+            {
+                base.Rotation = value;
+                foreach (UnitBase child in this)
+                    child.Rotation = value;
+            }
+        }
+
+        public override int UnitCount => cavalries.Count + cohorts.Count;
 
         IEnumerator<Cavalry> IEnumerable<Cavalry>.GetEnumerator()
         {
@@ -59,24 +71,9 @@ namespace Assets.Scripts.Game.Units.Groups
             cohorts.RemoveAt(index);
         }
 
-        public override Quaternion Rotation
-        {
-            get { return base.Rotation; }
-            set
-            {
-                base.Rotation = value;
-                foreach (UnitBase child in this)
-                {
-                    child.Rotation = value;
-                }
-            }
-        }
-
         public override void Draw()
         {
             throw new NotImplementedException();
         }
-
-        public override int UnitCount => cavalries.Count + cohorts.Count;
     }
 }

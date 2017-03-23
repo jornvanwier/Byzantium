@@ -7,26 +7,8 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Contubernium : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
-        public override float DefaultSpeed => 1.5f;
-
-        public static Contubernium CreateSwordUnit()
-        {
-            var contubernium = new Contubernium();
-
-            for (int i = 0; i < 8; ++i)
-            {
-                contubernium.AddUnit(new MeshDrawableUnit(
-                    Defense.SmallShield,
-                    Weapon.Sword,
-                    Soldier.Armored
-                ));
-            }
-
-            return null;
-        }
-
-
         private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
+        public override float DefaultSpeed => 1.5f;
 
         public override Vector3 Position
         {
@@ -38,6 +20,17 @@ namespace Assets.Scripts.Game.Units.Groups
         }
 
         public override int UnitCount => drawableUnits.Count;
+
+        public override Quaternion Rotation
+        {
+            get { return base.Rotation; }
+            set
+            {
+                base.Rotation = value;
+                foreach (UnitBase child in this)
+                    child.Rotation = value;
+            }
+        }
 
         public void AddUnit(MeshDrawableUnit unit)
         {
@@ -55,22 +48,23 @@ namespace Assets.Scripts.Game.Units.Groups
             return drawableUnits.GetEnumerator();
         }
 
+        public static Contubernium CreateSwordUnit()
+        {
+            var contubernium = new Contubernium();
+
+            for (var i = 0; i < 8; ++i)
+                contubernium.AddUnit(new MeshDrawableUnit(
+                    Defense.SmallShield,
+                    Weapon.Sword,
+                    Soldier.Armored
+                ));
+
+            return null;
+        }
+
         public int GetGroupSize()
         {
             return drawableUnits.Count;
-        }
-
-        public override Quaternion Rotation
-        {
-            get { return base.Rotation; }
-            set
-            {
-                base.Rotation = value;
-                foreach (UnitBase child in this)
-                {
-                    child.Rotation = value;
-                }
-            }
         }
 
         public override void Draw()

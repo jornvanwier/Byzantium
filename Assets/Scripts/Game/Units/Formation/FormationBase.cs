@@ -17,8 +17,8 @@ namespace Assets.Scripts.Game.Units.Formation
         public IEnumerable<Vector3> ProcessLocalOffsets(IEnumerable<Vector3> originalPositions,
             IEnumerable<Vector3> offsetPositions, UnitBase unit)
         {
-            float maxDist = 0.0f;
-            int i = 0;
+            var maxDist = 0.0f;
+            var i = 0;
             Vector3 position = unit.Position;
 
             var orPos = new List<Vector3>(originalPositions);

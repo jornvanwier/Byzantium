@@ -5,23 +5,55 @@ using UnityEngine;
 
 namespace Assets.Scripts.Game
 {
-
     [Serializable]
     public class MeshHolder
     {
+        public Dictionary<Defense, Mesh> DefenseEnum;
+
+        [SerializeField] public DefenseMeshHolder Defenses = new DefenseMeshHolder();
+
+        public Dictionary<Soldier, Mesh> SoldierEnum;
+
+        [SerializeField] public SoldierMeshHolder Soldiers = new SoldierMeshHolder();
+
+        public Dictionary<Weapon, Mesh> WeaponEnum;
+
+        [SerializeField] public WeaponMeshHolder Weapons = new WeaponMeshHolder();
+
+        public MeshHolder()
+        {
+            WeaponEnum = new Dictionary<Weapon, Mesh>
+            {
+                {Weapon.Sword, Weapons.Sword},
+                {Weapon.Pike, Weapons.Pike},
+                {Weapon.Shortbow, Weapons.Shortbow},
+                {Weapon.Longbow, Weapons.Longbow}
+            };
+
+            DefenseEnum = new Dictionary<Defense, Mesh>
+            {
+                {Defense.None, null},
+                {Defense.Armor, null},
+                {Defense.SmallShield, Defenses.SmallShield},
+                {Defense.LargeShield, Defenses.LargeShield}
+            };
+
+            SoldierEnum = new Dictionary<Soldier, Mesh>
+            {
+                {Soldier.Armored, Soldiers.Armored},
+                {Soldier.Unarmored, Soldiers.Unarmored},
+                {Soldier.Mounted, Soldiers.Mounted}
+            };
+        }
+
         [Serializable]
         public class WeaponMeshHolder
         {
-            public Mesh Sword;
-            public Mesh Pike;
             public Mesh Longbow;
+            public Mesh Pike;
             public Mesh Shortbow;
+            public Mesh Sword;
         }
-
-        [SerializeField]
-        public WeaponMeshHolder Weapons = new WeaponMeshHolder();
-
-        public Dictionary<Weapon, Mesh> WeaponEnum;
 
         [Serializable]
         public class DefenseMeshHolder
@@ -30,48 +62,12 @@ namespace Assets.Scripts.Game
             public Mesh SmallShield;
         }
 
-        [SerializeField]
-        public DefenseMeshHolder Defenses = new DefenseMeshHolder();
-
-        public Dictionary<Defense, Mesh> DefenseEnum;
-
         [Serializable]
         public class SoldierMeshHolder
         {
-            public Mesh Unarmored;
             public Mesh Armored;
             public Mesh Mounted;
-        }
-
-        [SerializeField]
-        public SoldierMeshHolder Soldiers = new SoldierMeshHolder();
-
-        public Dictionary<Soldier, Mesh> SoldierEnum;
-
-        public MeshHolder()
-        {
-            WeaponEnum = new Dictionary<Weapon, Mesh>()
-            {
-                {Weapon.Sword, Weapons.Sword},
-                {Weapon.Pike, Weapons.Pike},
-                {Weapon.Shortbow, Weapons.Shortbow},
-                {Weapon.Longbow, Weapons.Longbow},
-            };
-
-            DefenseEnum = new Dictionary<Defense, Mesh>()
-            {
-                {Defense.None, null},
-                {Defense.Armor, null},
-                {Defense.SmallShield, Defenses.SmallShield},
-                {Defense.LargeShield, Defenses.LargeShield}
-            };
-
-            SoldierEnum = new Dictionary<Soldier, Mesh>()
-            {
-                {Soldier.Armored, Soldiers.Armored},
-                {Soldier.Unarmored, Soldiers.Unarmored},
-                {Soldier.Mounted, Soldiers.Mounted}
-            };
+            public Mesh Unarmored;
         }
     }
 }

@@ -11,6 +11,19 @@ namespace Assets.Scripts.Game.Units.Groups
 
         private readonly List<Century> centuries = new List<Century>();
 
+        public override Quaternion Rotation
+        {
+            get { return base.Rotation; }
+            set
+            {
+                base.Rotation = value;
+                foreach (UnitBase child in this)
+                    child.Rotation = value;
+            }
+        }
+
+        public override int UnitCount => centuries.Count;
+
         public void AddUnit(Century unit)
         {
             centuries.Add(unit);
@@ -27,24 +40,9 @@ namespace Assets.Scripts.Game.Units.Groups
             return centuries.GetEnumerator();
         }
 
-        public override Quaternion Rotation
-        {
-            get { return base.Rotation; }
-            set
-            {
-                base.Rotation = value;
-                foreach (UnitBase child in this)
-                {
-                    child.Rotation = value;
-                }
-            }
-        }
-
         public override void Draw()
         {
             throw new NotImplementedException();
         }
-
-        public override int UnitCount => centuries.Count;
     }
 }
