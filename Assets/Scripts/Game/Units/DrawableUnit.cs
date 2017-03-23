@@ -25,5 +25,7 @@ namespace Assets.Scripts.Game.Units
         {
             Graphics.DrawMesh(Mesh, Matrix4x4.TRS(Position, Rotation, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
         }
+
+        public override int UnitCount => 1;
     }
 }
