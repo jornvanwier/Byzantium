@@ -28,7 +28,7 @@ namespace Game.Units.Formation
 
         public override void Order(Cohort unit)
         {
-            OrderAny<Cohort, Century>(10, unit);
+            OrderAny<Cohort, Century>(3, unit);
         }
 
         public override void Order(Century unit)

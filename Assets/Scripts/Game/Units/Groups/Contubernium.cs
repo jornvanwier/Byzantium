@@ -21,8 +21,6 @@ namespace Game.Units.Groups
             }
         }
 
-        public override int UnitCount => drawableUnits.Count;
-
         public override Quaternion Rotation
         {
             get { return base.Rotation; }
@@ -33,6 +31,8 @@ namespace Game.Units.Groups
                     child.Rotation = value;
             }
         }
+
+        public override int UnitCount => drawableUnits.Count;
 
         public void AddUnit(MeshDrawableUnit unit)
         {

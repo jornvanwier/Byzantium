@@ -9,7 +9,7 @@ namespace Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
-        public new const float DefaultSpeed = 1.5f;
+        public override float DefaultSpeed => 1.5f;
         private readonly List<Contubernium> contubernia = new List<Contubernium>();
 
         public override Quaternion Rotation

@@ -8,7 +8,7 @@ namespace Game.Units.Groups
 {
     public class Cavalry : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
-        public new const float DefaultSpeed = 1.5f;
+        public override float DefaultSpeed => 1.5f;
         private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
 
         public override Quaternion Rotation
