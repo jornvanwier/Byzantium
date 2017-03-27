@@ -11,10 +11,7 @@
 ** class.
 **
 ===========================================================*/
-
-using System;
-
-namespace Assets.CSharp_vNext_Support.FormattableString
+namespace System.Runtime.CompilerServices
 {
     /// <summary>
     /// A factory type used by compilers to create instances of the type <see cref="FormattableString"/>.

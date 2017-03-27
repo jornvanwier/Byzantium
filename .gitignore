@@ -6,6 +6,7 @@
 /Assets/AssetStoreTools*
 
 .idea
+.vs
 
 *.iml
 *.meta
@@ -35,4 +36,3 @@ sysinfo.txt
 
 # Builds
 *.apk
-*.unitypackage

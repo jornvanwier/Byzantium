@@ -6435,26 +6435,26 @@
             <para>
             <see cref="T:System.Threading.Tasks.Task`1"/> instances may be created in a variety of ways. The most common approach is by
             using the task's <see cref="P:System.Threading.Tasks.Task`1.Factory"/> property to retrieve a <see cref="T:System.Threading.Tasks.TaskFactory`1"/> instance that can be used to create tasks for several
-            purposes. For example, to create a <see cref="T:System.Threading.Tasks.Task`1"/> that runs a function, the factory's StartPosNew
+            purposes. For example, to create a <see cref="T:System.Threading.Tasks.Task`1"/> that runs a function, the factory's StartNew
             method may be used:
             <code>
             // C# 
-            var t = Task&lt;int&gt;.Factory.StartPosNew(() =&gt; GenerateResult());
+            var t = Task&lt;int&gt;.Factory.StartNew(() =&gt; GenerateResult());
             - or -
-            var t = Task.Factory.StartPosNew(() =&gt; GenerateResult());
+            var t = Task.Factory.StartNew(() =&gt; GenerateResult());
             
             ' Visual Basic 
-            Dim t = Task&lt;int&gt;.Factory.StartPosNew(Function() GenerateResult())
+            Dim t = Task&lt;int&gt;.Factory.StartNew(Function() GenerateResult())
             - or -
-            Dim t = Task.Factory.StartPosNew(Function() GenerateResult())
+            Dim t = Task.Factory.StartNew(Function() GenerateResult())
             </code>
             </para>
             <para>
             The <see cref="T:System.Threading.Tasks.Task`1"/> class also provides constructors that initialize the task but that do not
-            schedule it for execution. For performance reasons, the StartPosNew method should be the
+            schedule it for execution. For performance reasons, the StartNew method should be the
             preferred mechanism for creating and scheduling computational tasks, but for scenarios where creation
             and scheduling must be separated, the constructors may be used, and the task's 
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see>
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see>
             method may then be used to schedule the task for execution at a later time.
             </para>
             <para>
@@ -6472,21 +6472,21 @@
             <para>
             <see cref="T:System.Threading.Tasks.Task"/> instances may be created in a variety of ways. The most common approach is by
             using the Task type's <see cref="P:System.Threading.Tasks.Task.Factory"/> property to retrieve a <see cref="T:System.Threading.Tasks.TaskFactory"/> instance that can be used to create tasks for several
-            purposes. For example, to create a <see cref="T:System.Threading.Tasks.Task"/> that runs an action, the factory's StartPosNew
+            purposes. For example, to create a <see cref="T:System.Threading.Tasks.Task"/> that runs an action, the factory's StartNew
             method may be used:
             <code>
             // C# 
-            var t = Task.Factory.StartPosNew(() =&gt; DoAction());
+            var t = Task.Factory.StartNew(() =&gt; DoAction());
             
             ' Visual Basic 
-            Dim t = Task.Factory.StartPosNew(Function() DoAction())
+            Dim t = Task.Factory.StartNew(Function() DoAction())
             </code>
             </para>
             <para>
             The <see cref="T:System.Threading.Tasks.Task"/> class also provides constructors that initialize the Task but that do not
-            schedule it for execution. For performance reasons, TaskFactory's StartPosNew method should be the
+            schedule it for execution. For performance reasons, TaskFactory's StartNew method should be the
             preferred mechanism for creating and scheduling computational tasks, but for scenarios where creation
-            and scheduling must be separated, the constructors may be used, and the task's <see cref="M:System.Threading.Tasks.Task.StartPos"/>
+            and scheduling must be separated, the constructors may be used, and the task's <see cref="M:System.Threading.Tasks.Task.Start"/>
             method may then be used to schedule the task for execution at a later time.
             </para>
             <para>
@@ -6685,9 +6685,9 @@
             anywhere other than the task construction/initialization codepaths.
             </summary>
         </member>
-        <member name="M:System.Threading.Tasks.Task.StartPos">
+        <member name="M:System.Threading.Tasks.Task.Start">
             <summary>
-            StartPoss the <see cref="T:System.Threading.Tasks.Task"/>, scheduling it for execution to the current <see cref="T:System.Threading.Tasks.TaskScheduler">TaskScheduler</see>.
+            Starts the <see cref="T:System.Threading.Tasks.Task"/>, scheduling it for execution to the current <see cref="T:System.Threading.Tasks.TaskScheduler">TaskScheduler</see>.
             </summary>
             <remarks>
             A task may only be started and run only once.  Any attempts to schedule a task a second time
@@ -6702,9 +6702,9 @@
             The <see cref="T:System.Threading.Tasks.Task"/> instance has been disposed.
             </exception>
         </member>
-        <member name="M:System.Threading.Tasks.Task.StartPos(System.Threading.Tasks.TaskScheduler)">
+        <member name="M:System.Threading.Tasks.Task.Start(System.Threading.Tasks.TaskScheduler)">
             <summary>
-            StartPoss the <see cref="T:System.Threading.Tasks.Task"/>, scheduling it for execution to the specified <see cref="T:System.Threading.Tasks.TaskScheduler">TaskScheduler</see>.
+            Starts the <see cref="T:System.Threading.Tasks.Task"/>, scheduling it for execution to the specified <see cref="T:System.Threading.Tasks.TaskScheduler">TaskScheduler</see>.
             </summary>
             <remarks>
             A task may only be started and run only once. Any attempts to schedule a task a second time will
@@ -6820,14 +6820,14 @@
             Unlike most of the members of <see cref="T:System.Threading.Tasks.Task"/>, this method is not thread-safe.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.Task.ScheduleAndStartPos(System.Boolean)">
+        <member name="M:System.Threading.Tasks.Task.ScheduleAndStart(System.Boolean)">
             <summary>
             Schedules the task for execution.
             </summary>
             <param name="needsProtection">If true, TASK_STATE_STARTED bit is turned on in
             an atomic fashion, making sure that TASK_STATE_CANCELED does not get set
             underneath us.  If false, TASK_STATE_STARTED bit is OR-ed right in.  This
-            allows us to streamline things a bit for StartPosNew(), where competing cancellations
+            allows us to streamline things a bit for StartNew(), where competing cancellations
             are not a problem.</param>
         </member>
         <member name="M:System.Threading.Tasks.Task.AddException(System.Object)">
@@ -8573,7 +8573,7 @@
             current scheduler (see <see cref="P:System.Threading.Tasks.TaskScheduler.Current">TaskScheduler.Current</see>).
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory`1.StartPosNew(System.Func{`0})">
+        <member name="M:System.Threading.Tasks.TaskFactory`1.StartNew(System.Func{`0})">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -8583,14 +8583,14 @@
             <exception cref="T:System.ArgumentNullException">The exception that is thrown when the <paramref name="function"/>
             argument is null.</exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory`1.StartPosNew(System.Func{`0},System.Threading.CancellationToken)">
+        <member name="M:System.Threading.Tasks.TaskFactory`1.StartNew(System.Func{`0},System.Threading.CancellationToken)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -8604,14 +8604,14 @@
             has already been disposed.
             </exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory`1.StartPosNew(System.Func{`0},System.Threading.Tasks.TaskCreationOptions)">
+        <member name="M:System.Threading.Tasks.TaskFactory`1.StartNew(System.Func{`0},System.Threading.Tasks.TaskCreationOptions)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -8627,14 +8627,14 @@
             <paramref name="creationOptions"/> argument specifies an invalid TaskCreationOptions
             value.</exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory`1.StartPosNew(System.Func{`0},System.Threading.CancellationToken,System.Threading.Tasks.TaskCreationOptions,System.Threading.Tasks.TaskScheduler)">
+        <member name="M:System.Threading.Tasks.TaskFactory`1.StartNew(System.Func{`0},System.Threading.CancellationToken,System.Threading.Tasks.TaskCreationOptions,System.Threading.Tasks.TaskScheduler)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -8659,14 +8659,14 @@
             has already been disposed.
             </exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory`1.StartPosNew(System.Func{System.Object,`0},System.Object)">
+        <member name="M:System.Threading.Tasks.TaskFactory`1.StartNew(System.Func{System.Object,`0},System.Object)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -8678,14 +8678,14 @@
             <exception cref="T:System.ArgumentNullException">The exception that is thrown when the <paramref name="function"/>
             argument is null.</exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory`1.StartPosNew(System.Func{System.Object,`0},System.Object,System.Threading.CancellationToken)">
+        <member name="M:System.Threading.Tasks.TaskFactory`1.StartNew(System.Func{System.Object,`0},System.Object,System.Threading.CancellationToken)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -8701,14 +8701,14 @@
             has already been disposed.
             </exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory`1.StartPosNew(System.Func{System.Object,`0},System.Object,System.Threading.Tasks.TaskCreationOptions)">
+        <member name="M:System.Threading.Tasks.TaskFactory`1.StartNew(System.Func{System.Object,`0},System.Object,System.Threading.Tasks.TaskCreationOptions)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -8726,14 +8726,14 @@
             <paramref name="creationOptions"/> argument specifies an invalid TaskCreationOptions
             value.</exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory`1.StartPosNew(System.Func{System.Object,`0},System.Object,System.Threading.CancellationToken,System.Threading.Tasks.TaskCreationOptions,System.Threading.Tasks.TaskScheduler)">
+        <member name="M:System.Threading.Tasks.TaskFactory`1.StartNew(System.Func{System.Object,`0},System.Object,System.Threading.CancellationToken,System.Threading.Tasks.TaskCreationOptions,System.Threading.Tasks.TaskScheduler)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -8760,10 +8760,10 @@
             has already been disposed.
             </exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
@@ -9980,7 +9980,7 @@
             current scheduler (see <see cref="P:System.Threading.Tasks.TaskScheduler.Current">TaskScheduler.Current</see>).
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew(System.Action)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew(System.Action)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task">Task</see>.
             </summary>
@@ -9989,14 +9989,14 @@
             <exception cref="T:System.ArgumentNullException">The exception that is thrown when the <paramref name="action"/> 
             argument is null.</exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a Task using one of its constructors 
+            Calling StartNew is functionally equivalent to creating a Task using one of its constructors 
             and then calling 
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.  However,
-            unless creation and scheduling must be separated, StartPosNew is the recommended
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.  However,
+            unless creation and scheduling must be separated, StartNew is the recommended
             approach for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew(System.Action,System.Threading.CancellationToken)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew(System.Action,System.Threading.CancellationToken)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task">Task</see>.
             </summary>
@@ -10009,14 +10009,14 @@
             has already been disposed.
             </exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a Task using one of its constructors 
+            Calling StartNew is functionally equivalent to creating a Task using one of its constructors 
             and then calling 
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.  However,
-            unless creation and scheduling must be separated, StartPosNew is the recommended
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.  However,
+            unless creation and scheduling must be separated, StartNew is the recommended
             approach for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew(System.Action,System.Threading.Tasks.TaskCreationOptions)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew(System.Action,System.Threading.Tasks.TaskCreationOptions)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task">Task</see>.
             </summary>
@@ -10031,14 +10031,14 @@
             <paramref name="creationOptions"/> argument specifies an invalid TaskCreationOptions
             value.</exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a Task using one of its constructors and
+            Calling StartNew is functionally equivalent to creating a Task using one of its constructors and
             then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew(System.Action,System.Threading.CancellationToken,System.Threading.Tasks.TaskCreationOptions,System.Threading.Tasks.TaskScheduler)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew(System.Action,System.Threading.CancellationToken,System.Threading.Tasks.TaskCreationOptions,System.Threading.Tasks.TaskScheduler)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task">Task</see>.
             </summary>
@@ -10061,14 +10061,14 @@
             has already been disposed.
             </exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a Task using one of its constructors and
+            Calling StartNew is functionally equivalent to creating a Task using one of its constructors and
             then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew(System.Action{System.Object},System.Object)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew(System.Action{System.Object},System.Object)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task">Task</see>.
             </summary>
@@ -10079,14 +10079,14 @@
             <exception cref="T:System.ArgumentNullException">The exception that is thrown when the <paramref name="action"/>
             argument is null.</exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a Task using one of its constructors and
+            Calling StartNew is functionally equivalent to creating a Task using one of its constructors and
             then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew(System.Action{System.Object},System.Object,System.Threading.CancellationToken)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew(System.Action{System.Object},System.Object,System.Threading.CancellationToken)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task">Task</see>.
             </summary>
@@ -10101,14 +10101,14 @@
             has already been disposed.
             </exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a Task using one of its constructors and
+            Calling StartNew is functionally equivalent to creating a Task using one of its constructors and
             then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew(System.Action{System.Object},System.Object,System.Threading.Tasks.TaskCreationOptions)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew(System.Action{System.Object},System.Object,System.Threading.Tasks.TaskCreationOptions)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task">Task</see>.
             </summary>
@@ -10125,14 +10125,14 @@
             <paramref name="creationOptions"/> argument specifies an invalid TaskCreationOptions
             value.</exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a Task using one of its constructors and
+            Calling StartNew is functionally equivalent to creating a Task using one of its constructors and
             then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew(System.Action{System.Object},System.Object,System.Threading.CancellationToken,System.Threading.Tasks.TaskCreationOptions,System.Threading.Tasks.TaskScheduler)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew(System.Action{System.Object},System.Object,System.Threading.CancellationToken,System.Threading.Tasks.TaskCreationOptions,System.Threading.Tasks.TaskScheduler)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task">Task</see>.
             </summary>
@@ -10157,14 +10157,14 @@
             has already been disposed.
             </exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a Task using one of its constructors and
+            Calling StartNew is functionally equivalent to creating a Task using one of its constructors and
             then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew``1(System.Func{``0})">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew``1(System.Func{``0})">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -10177,14 +10177,14 @@
             <exception cref="T:System.ArgumentNullException">The exception that is thrown when the <paramref name="function"/>
             argument is null.</exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew``1(System.Func{``0},System.Threading.CancellationToken)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew``1(System.Func{``0},System.Threading.CancellationToken)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -10201,14 +10201,14 @@
             has already been disposed.
             </exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew``1(System.Func{``0},System.Threading.Tasks.TaskCreationOptions)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew``1(System.Func{``0},System.Threading.Tasks.TaskCreationOptions)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -10227,14 +10227,14 @@
             <paramref name="creationOptions"/> argument specifies an invalid TaskCreationOptions
             value.</exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew``1(System.Func{``0},System.Threading.CancellationToken,System.Threading.Tasks.TaskCreationOptions,System.Threading.Tasks.TaskScheduler)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew``1(System.Func{``0},System.Threading.CancellationToken,System.Threading.Tasks.TaskCreationOptions,System.Threading.Tasks.TaskScheduler)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -10262,14 +10262,14 @@
             has already been disposed.
             </exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew``1(System.Func{System.Object,``0},System.Object)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew``1(System.Func{System.Object,``0},System.Object)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -10284,14 +10284,14 @@
             <exception cref="T:System.ArgumentNullException">The exception that is thrown when the <paramref name="function"/>
             argument is null.</exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew``1(System.Func{System.Object,``0},System.Object,System.Threading.CancellationToken)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew``1(System.Func{System.Object,``0},System.Object,System.Threading.CancellationToken)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -10310,14 +10310,14 @@
             has already been disposed.
             </exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew``1(System.Func{System.Object,``0},System.Object,System.Threading.Tasks.TaskCreationOptions)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew``1(System.Func{System.Object,``0},System.Object,System.Threading.Tasks.TaskCreationOptions)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -10338,14 +10338,14 @@
             <paramref name="creationOptions"/> argument specifies an invalid TaskCreationOptions
             value.</exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
-        <member name="M:System.Threading.Tasks.TaskFactory.StartPosNew``1(System.Func{System.Object,``0},System.Object,System.Threading.CancellationToken,System.Threading.Tasks.TaskCreationOptions,System.Threading.Tasks.TaskScheduler)">
+        <member name="M:System.Threading.Tasks.TaskFactory.StartNew``1(System.Func{System.Object,``0},System.Object,System.Threading.CancellationToken,System.Threading.Tasks.TaskCreationOptions,System.Threading.Tasks.TaskScheduler)">
             <summary>
             Creates and starts a <see cref="T:System.Threading.Tasks.Task{TResult}"/>.
             </summary>
@@ -10375,10 +10375,10 @@
             has already been disposed.
             </exception>
             <remarks>
-            Calling StartPosNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
+            Calling StartNew is functionally equivalent to creating a <see cref="T:System.Threading.Tasks.Task`1"/> using one
             of its constructors and then calling
-            <see cref="M:System.Threading.Tasks.Task.StartPos">StartPos</see> to schedule it for execution.
-            However, unless creation and scheduling must be separated, StartPosNew is the recommended approach
+            <see cref="M:System.Threading.Tasks.Task.Start">Start</see> to schedule it for execution.
+            However, unless creation and scheduling must be separated, StartNew is the recommended approach
             for both simplicity and performance.
             </remarks>
         </member>
@@ -12488,7 +12488,7 @@
             <see cref="T:System.Threading.Tasks.TaskScheduler"/>  is able to support.
             </summary>
         </member>
-        <member name="P:System.Threading.Tasks.TaskScheduler.RequiresAtomicStartPosTransition">
+        <member name="P:System.Threading.Tasks.TaskScheduler.RequiresAtomicStartTransition">
             <summary>
             Indicates whether this is a custom scheduler, in which case the safe code paths will be taken upon task entry
             using a CAS to transition from queued state to executing.
@@ -12636,7 +12636,7 @@
             Notifies the scheduler that work is progressing (no-op).
             </summary>
         </member>
-        <member name="P:System.Threading.Tasks.ThreadPoolTaskScheduler.RequiresAtomicStartPosTransition">
+        <member name="P:System.Threading.Tasks.ThreadPoolTaskScheduler.RequiresAtomicStartTransition">
             <summary>
             This is the only scheduler that returns false for this property, indicating that the task entry codepath is unsafe (CAS free)
             since we know that the underlying scheduler already takes care of atomic transitions from queued to non-queued.

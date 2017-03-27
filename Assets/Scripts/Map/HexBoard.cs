@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Assets.CSharp_vNext_Support.TupleBridge;
 using Assets.Scripts.Map.Generation;
 using Assets.Scripts.Map.Pathfinding;
+using System;
 using Priority_Queue;
 using UnityEngine;
 
@@ -66,7 +66,7 @@ namespace Assets.Scripts.Map
             do
             {
                 cc =
-                    new OddRCoordinate(Random.Range(0, Size), Random.Range(0, Size)).ToCubical();
+                    new OddRCoordinate(UnityEngine.Random.Range(0, Size), UnityEngine.Random.Range(0, Size)).ToCubical();
             } while (this[cc] == (byte) TileType.WaterDeep);
 
             return cc;

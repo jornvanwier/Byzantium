@@ -1,4 +1,4 @@
-﻿namespace Assets.CSharp_vNext_Support.TupleBridge
+﻿namespace System
 {
     static class SR
     {

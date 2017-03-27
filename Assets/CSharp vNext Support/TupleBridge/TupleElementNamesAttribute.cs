@@ -2,13 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using System.Collections.Generic;
 
-namespace Assets.CSharp_vNext_Support.TupleBridge
+namespace System.Runtime.CompilerServices
 {
     /// <summary>
-    /// Indicates that the use of <see cref="ValueTuple"/> on a member is meant to be treated as a tuple with element names.
+    /// Indicates that the use of <see cref="System.ValueTuple"/> on a member is meant to be treated as a tuple with element names.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue | AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Event )]
     public sealed class TupleElementNamesAttribute : Attribute
@@ -29,8 +28,8 @@ namespace Assets.CSharp_vNext_Support.TupleBridge
         /// instantiation of <see cref="System.ValueType"/> that contains
         /// element names.  For instance, if <c>C</c> is a generic type with
         /// two type parameters, then a use of the constructed type <c>C{<see
-        /// cref="ValueTuple{T1,T2}"/>, <see
-        /// cref="ValueTuple{T1,T2,T3}"/></c> might be intended to
+        /// cref="System.ValueTuple{T1, T2}"/>, <see
+        /// cref="System.ValueTuple{T1, T2, T3}"/></c> might be intended to
         /// treat the first type argument as a tuple with element names and the
         /// second as a tuple without element names. In which case, the
         /// appropriate attribute specification should use a
@@ -49,7 +48,7 @@ namespace Assets.CSharp_vNext_Support.TupleBridge
 
         /// <summary>
         /// Specifies, in a pre-order depth-first traversal of a type's
-        /// construction, which <see cref="ValueTuple"/> elements are
+        /// construction, which <see cref="System.ValueTuple"/> elements are
         /// meant to carry element names.
         /// </summary>
         public IList<string> TransformNames => _transformNames;

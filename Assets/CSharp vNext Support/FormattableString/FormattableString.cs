@@ -11,10 +11,7 @@
 ** class.
 **
 ===========================================================*/
-
-using System;
-
-namespace Assets.CSharp_vNext_Support.FormattableString
+namespace System
 {
     /// <summary>
     /// A composite format string along with the arguments to be formatted. An instance of this
@@ -73,12 +70,12 @@ namespace Assets.CSharp_vNext_Support.FormattableString
                 throw new ArgumentNullException("formattable");
             }
 
-            return formattable.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            return formattable.ToString(Globalization.CultureInfo.InvariantCulture);
         }
 
         public override string ToString()
         {
-            return ToString(System.Globalization.CultureInfo.CurrentCulture);
+            return ToString(Globalization.CultureInfo.CurrentCulture);
         }
     }
 }
