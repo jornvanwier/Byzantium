@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
-using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
+using Game.Units;
 using Game.Units.Formation;
 using Game.Units.Groups;
 using JetBrains.Annotations;
@@ -30,7 +30,7 @@ namespace Assets.Scripts.Game
         private UnitController script;
         private Vector3 startIntersect;
 
-        private Contubernium unit;
+        private UnitBase unit;
 
         private List<GameObject> unitControllers = new List<GameObject>();
 
@@ -53,9 +53,8 @@ namespace Assets.Scripts.Game
             meshHolder.Initialize();
             Meshes = meshHolder;
 
-            unit = Contubernium.CreateSwordUnit();
+            unit = Cohort.CreateUniformMixedUnit();
             unit.Position = new Vector3(5,0,5);
-            unit.Formation = new SquareFormation();
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";

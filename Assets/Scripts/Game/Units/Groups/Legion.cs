@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
-using Assets.Scripts.Game.Units.Groups;
 using UnityEngine;
 
 namespace Game.Units.Groups
@@ -10,7 +9,7 @@ namespace Game.Units.Groups
     public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>, IEnumerable<Cohort>,
         IEnumerable<Cavalry>
     {
-        public new const float DefaultSpeed = 1.5f;
+        public override float DefaultSpeed => 1.5f;
         private readonly List<Cavalry> cavalries = new List<Cavalry>();
 
         private readonly List<Cohort> cohorts = new List<Cohort>();
@@ -25,6 +24,15 @@ namespace Game.Units.Groups
                 base.Rotation = value;
                 foreach (UnitBase child in this)
                     child.Rotation = value;
+            }
+        }
+
+        public override Vector3 Position
+        {
+            set
+            {
+                base.Position = value;
+                Formation.Order(this);
             }
         }
 
@@ -75,7 +83,10 @@ namespace Game.Units.Groups
 
         public override void Draw()
         {
-            throw new NotImplementedException();
+            foreach (UnitBase unit in this)
+            {
+                unit.Draw();
+            }
         }
     }
 }

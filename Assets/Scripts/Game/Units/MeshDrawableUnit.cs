@@ -8,6 +8,8 @@ namespace Game.Units
 {
     public class MeshDrawableUnit : UnitBase
     {
+        public override float DefaultSpeed => 1.5f;
+
         public static Material Material = new Material(Shader.Find("Standard"));
 
         public MeshDrawableUnit(Defense defense = Defense.Armor,
@@ -18,8 +20,6 @@ namespace Game.Units
             {
                 throw new ArgumentException("Defense type of None cannot be used with a Soldier type of Armored!");
             }
-
-            Debug.Log(soldier);
 
             MeshHolder m = WorldManager.Meshes;
 
@@ -45,20 +45,19 @@ namespace Game.Units
         {
             Graphics.DrawMesh(UnitMesh, Matrix4x4.TRS(Position, Rotation, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
 
-            Vector3 weaponPosition = Position + (Rotation * new Vector3(0.2f, 0, 0));
-//            weaponPosition = Rotation * weaponPosition;
+//            Vector3 weaponPosition = Position + (Rotation * new Vector3(0.2f, 0, 0));
 
-            Graphics.DrawMesh(WeaponMesh,
-                Matrix4x4.TRS(weaponPosition, Rotation, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
-
-
-            if (DefenseMesh != null)
-            {
-                Vector3 shieldPosition = Position + (Rotation * new Vector3(0, 0.2f, 0));
-                Graphics.DrawMesh(DefenseMesh,
-                    Matrix4x4.TRS(shieldPosition, Rotation, new Vector3(0.1f, 0.1f, 0.1f)),
-                    Material, 0);
-            }
+//            Graphics.DrawMesh(WeaponMesh,
+//                Matrix4x4.TRS(weaponPosition, Rotation, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
+//
+//
+//            if (DefenseMesh != null)
+//            {
+//                Vector3 shieldPosition = Position + (Rotation * new Vector3(0, 0.2f, 0));
+//                Graphics.DrawMesh(DefenseMesh,
+//                    Matrix4x4.TRS(shieldPosition, Rotation, new Vector3(0.1f, 0.1f, 0.1f)),
+//                    Material, 0);
+//            }
         }
     }
 }

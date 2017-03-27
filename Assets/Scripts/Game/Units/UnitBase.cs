@@ -2,7 +2,7 @@
 using Game.Units.Formation;
 using UnityEngine;
 
-namespace Assets.Scripts.Game.Units
+namespace Game.Units
 {
     public abstract class UnitBase
     {
@@ -11,7 +11,7 @@ namespace Assets.Scripts.Game.Units
             WalkSpeed = DefaultSpeed;
         }
 
-        public virtual float DefaultSpeed { get; }
+        public abstract float DefaultSpeed { get; }
         public virtual Vector3 Position { get; set; } = Vector3.zero;
 
         public virtual Quaternion Rotation { get; set; } = Quaternion.identity;

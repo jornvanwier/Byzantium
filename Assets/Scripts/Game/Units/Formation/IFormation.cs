@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Game.Units.Groups;
-using Game.Units.Groups;
+﻿using Game.Units.Groups;
 
 namespace Assets.Scripts.Game.Units.Formation
 {
@@ -9,5 +8,6 @@ namespace Assets.Scripts.Game.Units.Formation
         void Order(Contubernium unit);
         void Order(Cavalry unit);
         void Order(Cohort unit);
+        void Order(Century unit);
     }
 }

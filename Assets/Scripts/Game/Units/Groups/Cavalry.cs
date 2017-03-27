@@ -1,14 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Game.Units;
+using Assets.Scripts.Game.Units;
 using UnityEngine;
 
-namespace Assets.Scripts.Game.Units.Groups
+namespace Game.Units.Groups
 {
     public class Cavalry : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
-        public new const float DefaultSpeed = 1.5f;
+        public override float DefaultSpeed => 1.5f;
         private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
 
         public override Quaternion Rotation
@@ -19,6 +19,15 @@ namespace Assets.Scripts.Game.Units.Groups
                 base.Rotation = value;
                 foreach (UnitBase child in this)
                     child.Rotation = value;
+            }
+        }
+
+        public override Vector3 Position
+        {
+            set
+            {
+                base.Position = value;
+                Formation.Order(this);
             }
         }
 
@@ -42,7 +51,11 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override void Draw()
         {
-            throw new NotImplementedException();
+            foreach (MeshDrawableUnit unit in this)
+            {
+                unit.Draw();
+            }
+
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Formation;
-using Assets.Scripts.Game.Units.Groups;
 using Game.Units.Groups;
 using UnityEngine;
 
@@ -19,7 +18,7 @@ namespace Game.Units.Formation
 
         public override void Order(Contubernium unit)
         {
-            OrderAny<Contubernium,MeshDrawableUnit>(Mathf.Sqrt(3)/ 3, unit);
+            OrderAny<Contubernium,MeshDrawableUnit>(0.3f, unit);
         }
 
         public override void Order(Cavalry unit)
@@ -29,12 +28,12 @@ namespace Game.Units.Formation
 
         public override void Order(Cohort unit)
         {
-            OrderAny<Cohort, Century>(10, unit);
+            OrderAny<Cohort, Century>(3, unit);
         }
 
         public override void Order(Century unit)
         {
-            OrderAny<Century, Contubernium>(3, unit);
+            OrderAny<Century, Contubernium>(1, unit);
         }
 
         private void OrderAny<T, TChild>(float spacing, T unit) where T : UnitBase, IMultipleUnits<TChild> where TChild : UnitBase

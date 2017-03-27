@@ -1,4 +1,6 @@
-﻿namespace Assets.Scripts.Game.Units
+﻿using Game.Units;
+
+namespace Assets.Scripts.Game.Units
 {
     public class Commander
     {
