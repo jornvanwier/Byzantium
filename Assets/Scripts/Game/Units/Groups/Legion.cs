@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
-using Assets.Scripts.Game.Units.Groups;
 using UnityEngine;
 
 namespace Game.Units.Groups
@@ -25,6 +24,15 @@ namespace Game.Units.Groups
                 base.Rotation = value;
                 foreach (UnitBase child in this)
                     child.Rotation = value;
+            }
+        }
+
+        public override Vector3 Position
+        {
+            set
+            {
+                base.Position = value;
+                Formation.Order(this);
             }
         }
 
@@ -75,7 +83,10 @@ namespace Game.Units.Groups
 
         public override void Draw()
         {
-            throw new NotImplementedException();
+            foreach (UnitBase unit in this)
+            {
+                unit.Draw();
+            }
         }
     }
 }

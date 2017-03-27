@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Game.Units;
 using UnityEngine;
 
-namespace Assets.Scripts.Game.Units.Groups
+namespace Game.Units.Groups
 {
     public class Cohort : UnitBase, IMultipleUnits<Century>
     {
@@ -19,6 +20,15 @@ namespace Assets.Scripts.Game.Units.Groups
                 base.Rotation = value;
                 foreach (UnitBase child in this)
                     child.Rotation = value;
+            }
+        }
+
+        public override Vector3 Position
+        {
+            set
+            {
+                base.Position = value;
+                Formation.Order(this);
             }
         }
 
@@ -42,7 +52,10 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override void Draw()
         {
-            throw new NotImplementedException();
+            foreach (Century unit in this)
+            {
+                unit.Draw();
+            }
         }
     }
 }

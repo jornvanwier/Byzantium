@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Unit_Enums;
+using Game.Units.Formation;
 using UnityEngine;
 
 namespace Game.Units.Groups
@@ -51,16 +52,33 @@ namespace Game.Units.Groups
 
         public static Contubernium CreateSwordUnit()
         {
-            var contubernium = new Contubernium();
+            return CreateCustomUnit(Defense.SmallShield, Weapon.Sword, Soldier.Armored);
+        }
+
+        public static Contubernium CreateLongbowUnit()
+        {
+            return CreateCustomUnit(Defense.None, Weapon.Longbow, Soldier.Unarmored);
+        }
+
+        public static Contubernium CreatePikeUnit()
+        {
+            return CreateCustomUnit(Defense.LargeShield, Weapon.Pike, Soldier.Armored);
+        }
+
+        public static Contubernium CreateCustomUnit(Defense defense, Weapon weapon, Soldier soldier)
+        {
+            var contuberium = new Contubernium {Formation = new SquareFormation()};
 
             for (int i = 0; i < 8; ++i)
-                contubernium.AddUnit(new MeshDrawableUnit(
-                    Defense.SmallShield,
-                    Weapon.Sword,
-                    Soldier.Armored
+            {
+                contuberium.AddUnit(new MeshDrawableUnit(
+                    defense,
+                    weapon,
+                    soldier
                 ));
+            }
 
-            return contubernium;
+            return contuberium;
         }
 
         public int GetGroupSize()
@@ -70,8 +88,10 @@ namespace Game.Units.Groups
 
         public override void Draw()
         {
-            foreach (MeshDrawableUnit u in drawableUnits)
-                u.Draw();
+            foreach (MeshDrawableUnit unit in this)
+            {
+                unit.Draw();
+            }
         }
     }
 }

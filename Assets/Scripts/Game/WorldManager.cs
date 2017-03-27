@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
-using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
 using Game.Units.Formation;
 using Game.Units.Groups;
@@ -30,7 +29,7 @@ namespace Assets.Scripts.Game
         private UnitController script;
         private Vector3 startIntersect;
 
-        private Contubernium unit;
+        private UnitBase unit;
 
         private List<GameObject> unitControllers = new List<GameObject>();
 
@@ -53,7 +52,7 @@ namespace Assets.Scripts.Game
             meshHolder.Initialize();
             Meshes = meshHolder;
 
-            unit = Contubernium.CreateSwordUnit();
+            unit = Century.CreateMixedUnit();
             unit.Position = new Vector3(5,0,5);
             unit.Formation = new SquareFormation();
 

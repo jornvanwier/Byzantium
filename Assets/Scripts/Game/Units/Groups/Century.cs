@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Game.Units.Groups;
+using Assets.Scripts.Game.Units;
+using Game.Units.Formation;
 using UnityEngine;
 
-namespace Assets.Scripts.Game.Units.Groups
+namespace Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
@@ -19,6 +20,15 @@ namespace Assets.Scripts.Game.Units.Groups
                 base.Rotation = value;
                 foreach (UnitBase child in this)
                     child.Rotation = value;
+            }
+        }
+
+        public override Vector3 Position
+        {
+            set
+            {
+                base.Position = value;
+                Formation.Order(this);
             }
         }
 
@@ -40,9 +50,37 @@ namespace Assets.Scripts.Game.Units.Groups
             return contubernia.GetEnumerator();
         }
 
+        public static Century CreateMixedUnit()
+        {
+            var century = new Century {Formation = new SquareFormation()};
+
+            // Frontline with swords
+            for (int i = 0; i < 4; ++i)
+            {
+                century.AddUnit(Contubernium.CreateSwordUnit());
+            }
+
+            // Mid with pikes
+            for (int i = 0; i < 3; ++i)
+            {
+                century.AddUnit(Contubernium.CreatePikeUnit());
+            }
+
+            // Backline with bows
+            for (int i = 0; i < 3; ++i)
+            {
+                century.AddUnit(Contubernium.CreateLongbowUnit());
+            }
+
+            return century;
+        }
+
         public override void Draw()
         {
-            throw new NotImplementedException();
+            foreach (Contubernium unit in this)
+            {
+                unit.Draw();
+            }
         }
     }
 }

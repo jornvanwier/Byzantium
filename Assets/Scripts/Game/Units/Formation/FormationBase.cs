@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
-using Assets.Scripts.Game.Units.Groups;
+using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Formation;
 using Game.Units.Groups;
 using UnityEngine;
 
-namespace Assets.Scripts.Game.Units.Formation
+namespace Game.Units.Formation
 {
     public abstract class FormationBase : IFormation
     {
         protected const float UnitSize = 0.15f;
-
 
         public abstract void Order(Legion unit);
         public abstract void Order(Contubernium unit);
