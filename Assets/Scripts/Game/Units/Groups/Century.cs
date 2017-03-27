@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Game.Units.Groups;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups

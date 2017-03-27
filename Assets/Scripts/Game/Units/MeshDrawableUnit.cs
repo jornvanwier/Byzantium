@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using Assets.Scripts.Game;
+using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Unit_Enums;
 using UnityEngine;
 
-namespace Assets.Scripts.Game.Units
+namespace Game.Units
 {
     public class MeshDrawableUnit : UnitBase
     {

@@ -112,6 +112,12 @@ namespace Assets.Scripts.Map
         // TODO Replace start with unit or legion
         public List<CubicalCoordinate> FindPath(CubicalCoordinate start, CubicalCoordinate goal)
         {
+            if (!CheckCoordinate(start) && !CheckCoordinate(goal))
+            {
+                Debug.Log("Start or end is outside of map!");
+                return null;
+            }
+
             var closedSet = new HashSet<AStarNode>(new AStarNode[Size * Size]);
 
             var cameFrom = new Dictionary<AStarNode, AStarNode>(Size * Size);

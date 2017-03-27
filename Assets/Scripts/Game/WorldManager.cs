@@ -2,6 +2,8 @@
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
+using Game.Units.Formation;
+using Game.Units.Groups;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -53,7 +55,7 @@ namespace Assets.Scripts.Game
 
             unit = Contubernium.CreateSwordUnit();
             unit.Position = new Vector3(5,0,5);
-
+            unit.Formation = new SquareFormation();
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";

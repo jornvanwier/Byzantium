@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Unit_Enums;
 using UnityEngine;
 
-namespace Assets.Scripts.Game.Units.Groups
+namespace Game.Units.Groups
 {
     public class Contubernium : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {

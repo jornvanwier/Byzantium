@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Groups;
+using Game.Units.Groups;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Formation
