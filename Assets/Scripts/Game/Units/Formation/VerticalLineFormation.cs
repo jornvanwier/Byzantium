@@ -48,5 +48,10 @@ namespace Game.Units.Formation
         {
             throw new NotImplementedException();
         }
+
+        public override void Order(Century unit)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -14,6 +14,7 @@ namespace Assets.Scripts.Game.Units.Formation
         public abstract void Order(Contubernium unit);
         public abstract void Order(Cavalry unit);
         public abstract void Order(Cohort unit);
+        public abstract void Order(Century unit);
 
         public IEnumerable<Vector3> ProcessLocalOffsets(IEnumerable<Vector3> originalPositions,
             IEnumerable<Vector3> offsetPositions, UnitBase unit)

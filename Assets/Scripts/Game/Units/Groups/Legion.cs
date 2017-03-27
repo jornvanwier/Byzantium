@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Groups;
 using UnityEngine;
 
-namespace Assets.Scripts.Game.Units.Groups
+namespace Game.Units.Groups
 {
     public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>, IEnumerable<Cohort>,
         IEnumerable<Cavalry>

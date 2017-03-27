@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Formation;
@@ -12,7 +13,8 @@ namespace Game.Units.Formation
     {
         public override void Order(Legion unit)
         {
-            throw new System.NotImplementedException();
+            // Can't use generic method for legion because it contains both cohorts and cavalry
+            throw new NotImplementedException();
         }
 
         public override void Order(Contubernium unit)
@@ -22,12 +24,17 @@ namespace Game.Units.Formation
 
         public override void Order(Cavalry unit)
         {
-            throw new System.NotImplementedException();
+            OrderAny<Cavalry, MeshDrawableUnit>(2, unit);
         }
 
         public override void Order(Cohort unit)
         {
-            throw new System.NotImplementedException();
+            OrderAny<Cohort, Century>(10, unit);
+        }
+
+        public override void Order(Century unit)
+        {
+            OrderAny<Century, Contubernium>(3, unit);
         }
 
         private void OrderAny<T, TChild>(float spacing, T unit) where T : UnitBase, IMultipleUnits<TChild> where TChild : UnitBase
