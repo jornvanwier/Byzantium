@@ -133,15 +133,15 @@ RectTransform:
   m_GameObject: {fileID: 301481359}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.265154, y: 2.265155, z: 2.265155}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 622972162}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -461, y: -154}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 442, y: -180}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &301481361
 MonoBehaviour:
@@ -343,6 +343,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 685882234}
   - {fileID: 301481360}
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -352,6 +353,74 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &685882233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 685882234}
+  - component: {fileID: 685882236}
+  - component: {fileID: 685882235}
+  m_Layer: 5
+  m_Name: Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &685882234
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 685882233}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.22, y: 0.44, z: 1}
+  m_Children: []
+  m_Father: {fileID: 622972162}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 451, y: -195}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &685882235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 685882233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &685882236
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 685882233}
 --- !u!1 &992876522
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,24 +525,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CameraRotateSpeed: 50
   Goal: {fileID: 319929466}
-  InitialCameraAngle: 90
+  InitialCameraAngle: 30
   InitialCameraMoveSpeed: 2
+  InitialMiniMapZoomSpeed: 2
   InitialZoomSpeed: 2
   MapRendererObject: {fileID: 1482278021882804, guid: ce1e59d011eb91f47aafc694c0a662c5,
     type: 2}
-  meshHolder:
+  MeshHolder:
     Defenses:
-      LargeShield: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
-      SmallShield: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+      LargeShield: {fileID: 0}
+      SmallShield: {fileID: 0}
     Soldiers:
-      Armored: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-      Mounted: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
-      Unarmored: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+      Armored: {fileID: 0}
+      Mounted: {fileID: 0}
+      Unarmored: {fileID: 0}
     Weapons:
-      Longbow: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-      Pike: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-      Shortbow: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-      Sword: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      Longbow: {fileID: 0}
+      Pike: {fileID: 0}
+      Shortbow: {fileID: 0}
+      Sword: {fileID: 0}
+  InitialMiniMapZoom: 608
+  MiniMapSize: {x: 200, y: 200}
 --- !u!1 &1818346141
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,7 +668,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 1100
   field of view: 49
   orthographic: 0
   orthographic size: 5

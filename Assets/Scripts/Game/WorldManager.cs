@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Map;
+using Assets.Scripts.Util;
 using Game.Units;
 using Game.Units.Groups;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Game
 {
@@ -85,12 +87,21 @@ namespace Assets.Scripts.Game
             Rotate(objectRight, Space.Self, InitialCameraAngle);
 
             miniMapCamera = GameObject.Find("MiniMapCamera").GetComponent<Camera>();
+            miniMapImage = GameObject.Find("MiniMap").GetComponent<RawImage>();
         }
+
+        public Vector2 MiniMapSize;
+        private RawImage miniMapImage;
 
         // Update is called once per frame
         [UsedImplicitly]
         private void Update()
         {
+            //Mini map set position takes ~200 nanoseconds
+            miniMapImage.rectTransform.sizeDelta = new Vector2(MiniMapSize.x, MiniMapSize.y);
+            miniMapImage.transform.position = new Vector3(Screen.width - MiniMapSize.x / 2, MiniMapSize.y / 2);
+
+
             unitController.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
             UpdateCamera();
             UpdateMiniMapCamera();

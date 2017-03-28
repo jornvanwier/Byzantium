@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Units;
+using Game.Units.Formation;
 using Game.Units.Groups;
 using UnityEngine;
 
-namespace Game.Units.Formation
+namespace Assets.Scripts.Game.Units.Formation
 {
     public class VerticalLineFormation : FormationBase
     {
