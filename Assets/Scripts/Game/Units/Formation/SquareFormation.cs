@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Formation;
+using Assets.Scripts.Map;
 using Game.Units.Groups;
 using UnityEngine;
 
@@ -39,7 +40,7 @@ namespace Game.Units.Formation
         private void OrderAny<T, TChild>(float spacing, T unit) where T : UnitBase, IMultipleUnits<TChild> where TChild : UnitBase
         {
             int rowWidth = (int) Mathf.Sqrt(unit.UnitCount);
-            int columnHeight = unit.UnitCount - rowWidth;
+            int columnHeight = unit.UnitCount / rowWidth;
 
             var localPositions = new List<Vector3>();
             var originalpositions = new List<Vector3>();
@@ -53,7 +54,7 @@ namespace Game.Units.Formation
                 float z = unit.Position.z + spacing * (i / rowWidth) - (spacing * columnHeight / 4);
 
                 localPositions.Add(new Vector3(x, unit.Position.y, z) - unit.Position);
-                originalpositions.Add(child.Position);
+                originalpositions.Add(child.Position); 
 
                 ++i;
             }
@@ -65,6 +66,8 @@ namespace Game.Units.Formation
             {
                 u.Position = processed[j++];
             }
+
+            unit.ChildrenDimensions = new Int2(rowWidth, columnHeight);
         }
     }
 }

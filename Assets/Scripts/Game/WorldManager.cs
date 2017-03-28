@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
 using Game.Units;
 using Game.Units.Formation;
@@ -21,7 +22,7 @@ namespace Assets.Scripts.Game
         public GameObject MapRendererObject;
         protected MapRenderer MapRendererScript;
 
-        public MeshHolder meshHolder;
+        public MeshHolder MeshHolder;
 
         private bool middleMouseDown;
 
@@ -50,11 +51,12 @@ namespace Assets.Scripts.Game
         private void Start()
         {
             // Ugly hack to allow static retrieval of the attached meshes
-            meshHolder.Initialize();
-            Meshes = meshHolder;
+            MeshHolder.Initialize();
+            Meshes = MeshHolder;
 
             unit = Cohort.CreateUniformMixedUnit();
             unit.Position = new Vector3(5,0,5);
+            unit.Formation = new SetColumnFormation();
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";

@@ -2,6 +2,7 @@
 using Assets.Scripts.Game;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Unit_Enums;
+using Assets.Scripts.Map;
 using UnityEngine;
 
 namespace Game.Units
@@ -11,6 +12,14 @@ namespace Game.Units
         public override float DefaultSpeed => 1.5f;
 
         public static Material Material = new Material(Shader.Find("Standard"));
+
+        private readonly Int2 dimensions = new Int2(1, 1);
+
+        public override Int2 ChildrenDimensions
+        {
+            get { return dimensions; }
+            set { throw new MemberAccessException("Cannot set dimensions of this object."); }
+        }
 
         public MeshDrawableUnit(Defense defense = Defense.Armor,
             Weapon weapon = Weapon.Sword,
