@@ -48,15 +48,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1482278021882804}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3ba7a05192d68e4ab7895703baa8d3b, type: 3}
+  m_Script: {fileID: 11500000, guid: 9def48cdbc62d034e9ee691a58864346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AlbedoMaps:
   - {fileID: 2800000, guid: c56bc7b16986c4c4f9b40790779bc49a, type: 3}
   - {fileID: 2800000, guid: 8fda10975a489b4499bb214f519f2ca0, type: 3}
-  - {fileID: 2800000, guid: 4af1d3e16932b3d47bbe57a6ec7bb060, type: 3}
+  - {fileID: 2800000, guid: 3ecd03094a833ae4dacdad5de3f3eeb2, type: 3}
   - {fileID: 2800000, guid: 6425abaa4f0dc1a4580278f5b3626bf7, type: 3}
-  - {fileID: 2800000, guid: 463165244922dd4449ee045c60352511, type: 3}
+  - {fileID: 2800000, guid: 301304881d1f9c6418e7689cf1d0e277, type: 3}
   - {fileID: 2800000, guid: 79abba6907004f5418a0e70eb36c42a8, type: 3}
   - {fileID: 2800000, guid: 91abe4fd09c8cf14db1e293125616dd0, type: 3}
   - {fileID: 2800000, guid: fa042e70872161548a1b1efe5df43a5f, type: 3}
@@ -76,5 +76,5 @@ MonoBehaviour:
   DefaultMetallMap: {fileID: 2800000, guid: b43fe40c8a42e3c498d13b13d228b977, type: 3}
   DefaultNormalMap: {fileID: 2800000, guid: 143b056ee1cfe2346aa38f52eb2422d7, type: 3}
   HexMaterial: {fileID: 2100000, guid: fe0831c8b5f572041ace39327b77a4d2, type: 2}
-  MapSize: 256
+  MapSize: 1024
   Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}

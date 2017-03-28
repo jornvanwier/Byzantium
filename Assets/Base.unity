@@ -228,29 +228,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 1115913131}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 936761077cd7b0f428cef7995eb99c61, type: 3}
+  m_Script: {fileID: 11500000, guid: fc4ed03abbec71143afdd7dd19d93f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   CameraRotateSpeed: 50
   Goal: {fileID: 319929466}
-  InitialCameraAngle: 0
+  InitialCameraAngle: 35
   InitialCameraMoveSpeed: 2
   InitialZoomSpeed: 2
   MapRendererObject: {fileID: 1482278021882804, guid: ce1e59d011eb91f47aafc694c0a662c5,
     type: 2}
   meshHolder:
     Defenses:
-      LargeShield: {fileID: 0}
-      SmallShield: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+      LargeShield: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+      SmallShield: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
     Soldiers:
-      Armored: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-      Mounted: {fileID: 0}
-      Unarmored: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+      Armored: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+      Mounted: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+      Unarmored: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
     Weapons:
-      Longbow: {fileID: 0}
-      Pike: {fileID: 0}
-      Shortbow: {fileID: 0}
-      Sword: {fileID: 0}
+      Longbow: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      Pike: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      Shortbow: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+      Sword: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1818346141
 GameObject:
   m_ObjectHideFlags: 0
