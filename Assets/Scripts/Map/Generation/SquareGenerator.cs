@@ -6,17 +6,13 @@
         {
             var result = new byte[size, size];
 
-            for (var x = 0; x < size; ++x)
-            for (var y = 0; y < size; ++y)
+            for (int x = 0; x < size; ++x)
+            for (int y = 0; y < size; ++y)
                 if (x <= borderPercentage * size || x >= size - borderPercentage * size ||
                     y <= borderPercentage * size || y >= size - borderPercentage * size)
-                {
                     result[x, y] = (byte) TileType.WaterShallow;
-                }
                 else
-                {
                     result[x, y] = (byte) TileType.GrassLand;
-                }
 
             return result;
         }

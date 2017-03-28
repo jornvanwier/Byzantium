@@ -22,7 +22,7 @@ namespace Assets.Scripts.Map
             byte[] b = {(byte) type};
             var t = new BitArray(b);
 
-            for (var i = 0; i < t.Length; ++i)
+            for (int i = 0; i < t.Length; ++i)
                 _data.Set(i, t[i]);
         }
 

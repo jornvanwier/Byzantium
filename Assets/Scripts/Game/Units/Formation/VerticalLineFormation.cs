@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Scripts.Game.Units;
-using Assets.Scripts.Game.Units.Formation;
+using System.Linq;
 using Game.Units.Groups;
 using UnityEngine;
 
@@ -18,7 +17,7 @@ namespace Game.Units.Formation
         {
             int unitCount = unit.GetGroupSize();
             Vector3 position = unit.Position;
-            var i = 0;
+            int i = 0;
             var localPositions = new List<Vector3>();
             var originalpositions = new List<Vector3>();
 
@@ -33,7 +32,26 @@ namespace Game.Units.Formation
             }
             var list =
                 new List<Vector3>(ProcessLocalOffsets(originalpositions, localPositions, unit));
-            var j = 0;
+            int j = 0;
+            foreach (UnitBase u in unit)
+                u.Position = list[j++];
+        }
+
+        public void OrderLinq(Contubernium unit)
+        {
+            int unitCount = unit.GetGroupSize();
+            Vector3 position = unit.Position;
+            int i = 0;
+
+            List<Vector3> localPositions = (from UnitBase u in unit
+                    select
+                    new Vector3(position.x, position.y, position.z + i++ * UnitSize - unitCount / 2f * UnitSize) -
+                    position)
+                .ToList();
+            List<Vector3> originalpositions = (from UnitBase u in unit select u.Position).ToList();
+
+            var list = new List<Vector3>(ProcessLocalOffsets(originalpositions, localPositions, unit));
+            int j = 0;
             foreach (UnitBase u in unit)
                 u.Position = list[j++];
         }

@@ -70,13 +70,11 @@ namespace Game.Units.Groups
             var contuberium = new Contubernium {Formation = new SquareFormation()};
 
             for (int i = 0; i < 8; ++i)
-            {
                 contuberium.AddUnit(new MeshDrawableUnit(
                     defense,
                     weapon,
                     soldier
                 ));
-            }
 
             return contuberium;
         }
@@ -89,9 +87,7 @@ namespace Game.Units.Groups
         public override void Draw()
         {
             foreach (MeshDrawableUnit unit in this)
-            {
                 unit.Draw();
-            }
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
@@ -8,8 +7,8 @@ namespace Game.Units.Groups
 {
     public class Cavalry : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
-        public override float DefaultSpeed => 1.5f;
         private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
+        public override float DefaultSpeed => 1.5f;
 
         public override Quaternion Rotation
         {
@@ -52,10 +51,7 @@ namespace Game.Units.Groups
         public override void Draw()
         {
             foreach (MeshDrawableUnit unit in this)
-            {
                 unit.Draw();
-            }
-
         }
     }
 }

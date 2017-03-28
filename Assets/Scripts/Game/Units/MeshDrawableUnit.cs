@@ -1,6 +1,5 @@
 ﻿using System;
 using Assets.Scripts.Game;
-using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Unit_Enums;
 using Assets.Scripts.Map;
 using UnityEngine;
@@ -9,8 +8,6 @@ namespace Game.Units
 {
     public class MeshDrawableUnit : UnitBase
     {
-        public override float DefaultSpeed => 1.5f;
-
         public static Material Material = new Material(Shader.Find("Standard"));
 
         private readonly Int2 dimensions = new Int2(1, 1);
@@ -26,9 +23,7 @@ namespace Game.Units
             Soldier soldier = Soldier.Armored)
         {
             if (defense == Defense.None && soldier == Soldier.Armored)
-            {
                 throw new ArgumentException("Defense type of None cannot be used with a Soldier type of Armored!");
-            }
 
             MeshHolder m = WorldManager.Meshes;
 
@@ -40,6 +35,8 @@ namespace Game.Units
             WeaponType = weapon;
             SoldierType = soldier;
         }
+
+        public override float DefaultSpeed => 1.5f;
 
         public Mesh UnitMesh { get; }
         public Mesh WeaponMesh { get; }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Assets.Scripts.Util;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Assets.Scripts.Map.Generation
 {
@@ -48,14 +49,12 @@ namespace Assets.Scripts.Map.Generation
 
         public byte[,] Generate(int size, float borderPercentage)
         {
-            int seed = new System.Random().Next(0, 1000);
+            int seed = new Random().Next(0, 1000);
             Debug.Log(seed);
             float borderSize = borderPercentage * size;
             int moistureResolution = size / 1024; //moet factor van size zijn, hoger is preciezer en trager
             if (moistureResolution == 0)
-            {
                 moistureResolution = 1;
-            }
 
             byte[,] tileMap = null;
             Utils.LogOperationTime("Total map generation", () =>
@@ -84,8 +83,8 @@ namespace Assets.Scripts.Map.Generation
             int height = heightMap.GetLength(1);
             var map = new byte[width, height];
 
-            for (var y = 0; y < height; y++)
-            for (var x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
             {
                 float currentHeight = heightMap[x, y];
                 float currentMoisture = moistureMap[x, y];
@@ -112,12 +111,12 @@ namespace Assets.Scripts.Map.Generation
             var bigMap = new T[width * factor, height * factor];
 
 
-            for (var y = 0; y < height; y++)
-            for (var x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
             {
                 T value = map[x, y];
-                for (var i = 0; i < factor; i++)
-                for (var j = 0; j < factor; j++)
+                for (int i = 0; i < factor; i++)
+                for (int j = 0; j < factor; j++)
                     bigMap[x * factor + i, y * factor + j] = value;
             }
 
@@ -136,7 +135,7 @@ namespace Assets.Scripts.Map.Generation
 
             long count = 0;
 
-            for (var i = 0; i < numThreads; i++)
+            for (int i = 0; i < numThreads; i++)
             {
                 int partNum = i;
                 var t = new Thread(() =>
@@ -181,9 +180,7 @@ namespace Assets.Scripts.Map.Generation
                         float distance = waterTile.Distance(currentPositionOnTileMap);
                         count++;
                         if (distance < closestWaterTile)
-                        {
                             closestWaterTile = distance;
-                        }
                     }
                     moisture = closestWaterTile;
                 }
@@ -196,8 +193,8 @@ namespace Assets.Scripts.Map.Generation
         {
             int size = waterMap.GetLength(0);
             var beachWaterTiles = new List<Int2>();
-            for (var y = 0; y < size; y += resolution)
-            for (var x = 0; x < size; x += resolution)
+            for (int y = 0; y < size; y += resolution)
+            for (int x = 0; x < size; x += resolution)
                 if (waterMap[x, y])
                 {
                     var currentTile = new Int2(x, y);
@@ -206,9 +203,7 @@ namespace Assets.Scripts.Map.Generation
                     {
                         bool neighbourIsWater = waterMap[neighbour.X, neighbour.Y];
                         if (neighbourIsWater)
-                        {
                             continue;
-                        }
                         beachWaterTiles.Add(currentTile);
                         break;
                     }
@@ -219,9 +214,9 @@ namespace Assets.Scripts.Map.Generation
         private void AddRivers(byte[,] tileMap, float[,] heightMap, int numRivers, int initialRiverWidth = 5)
         {
             int size = tileMap.GetLength(0);
-            var failedRivers = 0;
+            int failedRivers = 0;
             var threads = new List<Thread>();
-            for (var i = 0; i < numRivers; ++i)
+            for (int i = 0; i < numRivers; ++i)
             {
                 var t = new Thread(() =>
                 {
@@ -233,9 +228,7 @@ namespace Assets.Scripts.Map.Generation
 
                     List<Int2> river = GetRiver(size, startPos, heightMap);
                     if (river.Count == 0)
-                    {
                         failedRivers++;
-                    }
 
                     foreach (Int2 riverTile in river)
                         tileMap[riverTile.X, riverTile.Y] = (byte) TileType.WaterDeep;
@@ -248,9 +241,7 @@ namespace Assets.Scripts.Map.Generation
                 thread.Join();
 
             if (failedRivers > 0)
-            {
                 Debug.LogWarning("Failed creating " + failedRivers + " out of " + numRivers + " rivers");
-            }
         }
 
         private static List<Int2> GetRiver(int mapSize, Int2 startPos, float[,] heightMap)
@@ -258,9 +249,7 @@ namespace Assets.Scripts.Map.Generation
             var river = new List<Int2> {startPos};
 
             if (AddRiverTile(mapSize, river, heightMap))
-            {
                 return river;
-            }
 
             river.RemoveAt(0);
             return river;
@@ -272,9 +261,7 @@ namespace Assets.Scripts.Map.Generation
             float currentHeight = heightMap[currentTile.X, currentTile.Y];
 
             if (currentHeight > RiverStartHeight)
-            {
                 return true;
-            }
 
             IOrderedEnumerable<Int2> neighbours =
                 GetNeighbours(mapSize, currentTile)
@@ -286,9 +273,7 @@ namespace Assets.Scripts.Map.Generation
             {
                 river.Add(neighbour);
                 if (AddRiverTile(mapSize, river, heightMap))
-                {
                     return true;
-                }
                 river.RemoveAt(river.Count - 1);
             }
 
@@ -301,48 +286,34 @@ namespace Assets.Scripts.Map.Generation
             int y = position.Y;
             int width = size, height = size;
             if (x >= width || y >= height || x < 0 || y < 0)
-            {
                 throw new ArgumentException("Requested position is out of bounds");
-            }
 
             if (x + 1 == width) //right boundary
             {
                 if (y + 1 == height) //bottom boundary
-                {
                     return new[] {new Int2(x, y - 1), new Int2(x - 1, y)};
-                }
                 if (y == 0) //top boundary
-                {
                     return new[] {new Int2(x, y + 1), new Int2(x - 1, y)};
-                }
                 return new[] {new Int2(x, y + 1), new Int2(x - 1, y), new Int2(x, y - 1)};
             }
             if (x == 0) //left boundary
             {
                 if (y + 1 == height) //bottom boundary
-                {
                     return new[] {new Int2(x, y - 1), new Int2(x + 1, y)};
-                }
                 if (y == 0) //top boundary
-                {
                     return new[] {new Int2(x, y + 1), new Int2(x + 1, y)};
-                }
                 return new[] {new Int2(x, y + 1), new Int2(x + 1, y), new Int2(x, y - 1)};
             }
             if (y + 1 == height) //bottom boundary
-            {
                 return new[] {new Int2(x + 1, y), new Int2(x, y - 1), new Int2(x - 1, y)};
-            }
             if (y == 0) //top boundary
-            {
                 return new[] {new Int2(x, y + 1), new Int2(x + 1, y), new Int2(x - 1, y)};
-            }
             return new[] {new Int2(x, y + 1), new Int2(x + 1, y), new Int2(x, y - 1), new Int2(x - 1, y)};
         }
 
         private static Int2 GetRiverStartPosition(int size)
         {
-            var random = new System.Random();
+            var random = new Random();
             int x = random.Next(0, size);
             int y = random.Next(0, size);
             return new Int2(x, y);
@@ -350,11 +321,11 @@ namespace Assets.Scripts.Map.Generation
 
         private static bool[,] GetWaterMap(float[,] floatMap)
         {
-            var size = (int) Mathf.Sqrt(floatMap.Length);
+            int size = (int) Mathf.Sqrt(floatMap.Length);
             var map = new bool[size, size];
 
-            for (var y = 0; y < size; y++)
-            for (var x = 0; x < size; x++)
+            for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
             {
                 bool isWater = floatMap[x, y] <= WaterHeight;
                 map[x, y] = isWater;
@@ -376,9 +347,9 @@ namespace Assets.Scripts.Map.Generation
 
             //fill moistureMap
             var map = new float[size, size];
-            var random = new System.Random(seed);
+            var random = new Random(seed);
             var octaveOffsets = new Vector2[octaves];
-            for (var i = 0; i < octaves; i++)
+            for (int i = 0; i < octaves; i++)
             {
                 float offsetX = random.Next(-10000, 10000);
                 float offsetY = random.Next(-10000, 10000);
@@ -391,7 +362,7 @@ namespace Assets.Scripts.Map.Generation
             int numThreads = Environment.ProcessorCount;
             var threads = new List<Thread>();
 
-            for (var i = 0; i < numThreads; i++)
+            for (int i = 0; i < numThreads; i++)
             {
                 int partNum = i;
                 var t = new Thread(() =>
@@ -421,8 +392,8 @@ namespace Assets.Scripts.Map.Generation
             int size = map.GetLength(0);
             float scale = Scale * size / 4;
 
-            for (var y = 0; y < size; y++)
-            for (var x = 0; x < size; x++)
+            for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
             {
                 float mapX = x / scale;
                 float mapY = y / scale;
@@ -437,22 +408,18 @@ namespace Assets.Scripts.Map.Generation
 
             float lowest = float.PositiveInfinity,
                 highest = float.NegativeInfinity;
-            for (var y = 0; y < size; y++)
-            for (var x = 0; x < size; x++)
+            for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
             {
                 if (map[x, y] < lowest)
-                {
                     lowest = map[x, y];
-                }
                 if (map[x, y] > highest)
-                {
                     highest = map[x, y];
-                }
             }
 
             float multiplier = highestAllowedValue / (highest - lowest);
-            for (var y = 0; y < size; y++)
-            for (var x = 0; x < size; x++)
+            for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
             {
                 map[x, y] -= lowest;
                 map[x, y] *= multiplier;
@@ -462,8 +429,8 @@ namespace Assets.Scripts.Map.Generation
         private static void InvertMap(ref float[,] map, float max = 1)
         {
             int size = map.GetLength(0);
-            for (var y = 0; y < size; y++)
-            for (var x = 0; x < size; x++)
+            for (int y = 0; y < size; y++)
+            for (int x = 0; x < size; x++)
                 map[x, y] = max - map[x, y];
         }
 
@@ -492,7 +459,7 @@ namespace Assets.Scripts.Map.Generation
                     amplitudeModifier = Mathf.Min(distanceToBorder, borderSize / 2) / (borderSize / 2);
                 }
 
-                for (var i = 0; i < octaves; i++)
+                for (int i = 0; i < octaves; i++)
                 {
                     float mapX = (x - halfSize) / scale * frequency + octaveOffsets[i].x + position.x;
                     float mapY = (y - halfSize) / scale * frequency + octaveOffsets[i].y + position.y;

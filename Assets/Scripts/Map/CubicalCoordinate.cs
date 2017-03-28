@@ -62,9 +62,7 @@ namespace Assets.Scripts.Map
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
-            {
                 return false;
-            }
             return obj is CubicalCoordinate && Equals((CubicalCoordinate) obj);
         }
 

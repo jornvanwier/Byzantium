@@ -60,9 +60,9 @@ namespace Assets.Scripts.Map
             textureSets = new List<TextureSet>();
 
             TextureSet.SetDefaultTextures(defaultTextureSet);
-            for (var i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
+            for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
                 textureSets.Add((TextureSet) defaultTextureSet.Clone());
-            for (var i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
+            for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
                 textureSets[i].AlbedoMap = AlbedoMaps[i];
 
             albedoMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
@@ -71,8 +71,8 @@ namespace Assets.Scripts.Map
             glossyMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
             metallMaps = new Texture2DArray(TextureSize, TextureSize, textureSets.Count, TextureFormat.DXT5, true);
 
-            for (var i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
-            for (var j = 0; j < Convert.ToInt32(Mathf.Log(TextureSize, 2) + 1); ++j)
+            for (int i = 0; i < Enum.GetNames(typeof(TileType)).Length; ++i)
+            for (int j = 0; j < Convert.ToInt32(Mathf.Log(TextureSize, 2) + 1); ++j)
             {
                 Graphics.CopyTexture(textureSets[i].AlbedoMap, 0, j, albedoMaps, i, j);
                 Graphics.CopyTexture(textureSets[i].AmbOccMap, 0, j, amboccMaps, i, j);
@@ -97,8 +97,8 @@ namespace Assets.Scripts.Map
 
             data = new int[MapSize, MapSize];
 
-            for (var x = 0; x < MapSize; ++x)
-            for (var y = 0; y < MapSize; ++y)
+            for (int x = 0; x < MapSize; ++x)
+            for (int y = 0; y < MapSize; ++y)
             {
                 data[x, y] = hexBoard.Storage[x, y];
                 var t = new TileData((TileType) hexBoard.Storage[x, y], false);
@@ -201,17 +201,11 @@ namespace Assets.Scripts.Map
             float yDiff = Mathf.Abs(cubeY - rY);
 
             if (xDiff > yDiff && xDiff > zDiff)
-            {
                 rX = -rY - rZ;
-            }
             else if (yDiff > zDiff)
-            {
                 rY = -rX - rZ;
-            }
             else
-            {
                 rZ = -rX - rY;
-            }
 
             return new CubicalCoordinate(rZ, rX);
         }

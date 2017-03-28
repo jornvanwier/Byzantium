@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Map.Generation;
 using Assets.Scripts.Map.Pathfinding;
-using System;
 using Priority_Queue;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Map
 {
@@ -66,7 +67,7 @@ namespace Assets.Scripts.Map
             do
             {
                 cc =
-                    new OddRCoordinate(UnityEngine.Random.Range(0, Size), UnityEngine.Random.Range(0, Size)).ToCubical();
+                    new OddRCoordinate(Random.Range(0, Size), Random.Range(0, Size)).ToCubical();
             } while (this[cc] == (byte) TileType.WaterDeep);
 
             return cc;
@@ -81,9 +82,7 @@ namespace Assets.Scripts.Map
             {
                 CubicalCoordinate neighbour = cc + direction;
                 if (!CheckCoordinate(neighbour))
-                {
                     continue;
-                }
 
                 var tuple = new Tuple<CubicalCoordinate, byte>(neighbour, this[neighbour]);
                 neighbours.Add(tuple);
@@ -99,9 +98,7 @@ namespace Assets.Scripts.Map
             {
                 CubicalCoordinate neighbour = cc + direction;
                 if (!CheckCoordinate(neighbour))
-                {
                     continue;
-                }
 
                 nodes.Add(NodeGraph[neighbour]);
             }
@@ -156,32 +153,24 @@ namespace Assets.Scripts.Map
                 {
                     // Have already processed neighbour
                     if (closedSet.Contains(neighbour))
-                    {
                         continue;
-                    }
 
                     float traverseCost = CalculateGScore(neighbour.Position);
 
                     // If tile is not traversible skip
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
                     if (traverseCost == float.MaxValue)
-                    {
                         continue;
-                    }
 
                     float tentativeGScore = gScore[current] + traverseCost;
 
                     // Neighbour is new
                     if (!queue.Contains(neighbour))
-                    {
                         queue.Enqueue(neighbour,
                             tentativeGScore + CubicalCoordinate.DistanceBetween(neighbour.Position, goalNode.Position));
-                    }
                     // This path is not better
                     else if (tentativeGScore >= gScore[neighbour])
-                    {
                         continue;
-                    }
 
                     // This path is the best we've found so far
 

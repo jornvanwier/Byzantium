@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
 using Game.Units.Formation;
@@ -9,8 +8,8 @@ namespace Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
-        public override float DefaultSpeed => 1.5f;
         private readonly List<Contubernium> contubernia = new List<Contubernium>();
+        public override float DefaultSpeed => 1.5f;
 
         public override Quaternion Rotation
         {
@@ -56,21 +55,15 @@ namespace Game.Units.Groups
 
             // Frontline with swords
             for (int i = 0; i < 4; ++i)
-            {
                 century.AddUnit(Contubernium.CreateSwordUnit());
-            }
 
             // Mid with pikes
             for (int i = 0; i < 3; ++i)
-            {
                 century.AddUnit(Contubernium.CreatePikeUnit());
-            }
 
             // Backline with bows
             for (int i = 0; i < 3; ++i)
-            {
                 century.AddUnit(Contubernium.CreateLongbowUnit());
-            }
 
             return century;
         }
@@ -78,9 +71,7 @@ namespace Game.Units.Groups
         public override void Draw()
         {
             foreach (Contubernium unit in this)
-            {
                 unit.Draw();
-            }
         }
     }
 }

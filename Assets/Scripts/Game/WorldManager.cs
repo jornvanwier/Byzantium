@@ -3,7 +3,6 @@ using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
 using Game.Units;
-using Game.Units.Formation;
 using Game.Units.Groups;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -12,12 +11,16 @@ namespace Assets.Scripts.Game
 {
     public class WorldManager : MonoBehaviour
     {
+        private const float CameraZoomLowerLimit = 1;
+        private const float MiniMapZoomUpperLimit = 1000;
+        private const float MiniMapZoomLowerLimit = 5;
         private bool applicationHasFocus;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
         public GameObject Goal;
         public float InitialCameraAngle = 35;
         public float InitialCameraMoveSpeed = 2;
+        [Range(0.1f, 5)] public float InitialMiniMapZoomSpeed = 2f;
         public float InitialZoomSpeed = 2;
         public GameObject MapRendererObject;
         protected MapRenderer MapRendererScript;
@@ -26,12 +29,16 @@ namespace Assets.Scripts.Game
 
         private bool middleMouseDown;
 
+        private Camera miniMapCamera;
+
+        [Range(CameraZoomLowerLimit, MiniMapZoomUpperLimit)] public float InitialMiniMapZoom = 100;
+
         private Vector2 prevMousePos = Vector2.zero;
         private bool rightMouseDown;
-        private UnitController script;
         private Vector3 startIntersect;
 
         private UnitBase unit;
+        private UnitController unitController;
 
         private List<GameObject> unitControllers = new List<GameObject>();
 
@@ -39,7 +46,11 @@ namespace Assets.Scripts.Game
 
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
-        private float ZoomSpeed => InitialZoomSpeed * (CameraHeight - 1);
+        private float ZoomSpeed => InitialZoomSpeed * (CameraHeight - CameraZoomLowerLimit);
+
+        private float MiniMapZoomSpeed
+            =>
+                InitialMiniMapZoomSpeed * (miniMapCamera.transform.position.y - MiniMapZoomLowerLimit) / 100f;
 
         [UsedImplicitly]
         private void OnApplicationFocus(bool hasFocus)
@@ -53,7 +64,7 @@ namespace Assets.Scripts.Game
             // Ugly hack to allow static retrieval of the attached meshes
             MeshHolder.Initialize();
             Meshes = MeshHolder;
-
+            
             unit = Cohort.CreateUniformMixedUnit();
             unit.Position = new Vector3(5,0,5);
             unit.Formation = new SetColumnFormation();
@@ -67,18 +78,24 @@ namespace Assets.Scripts.Game
             MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
 
             var obj = new GameObject("Army");
-            script = obj.AddComponent<UnitController>();
-            script.AttachUnit(unit);
-            script.AttachMapRenderer(MapRendererScript);
-            script.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
+            unitController = obj.AddComponent<UnitController>();
+            unitController.AttachUnit(unit);
+            unitController.AttachMapRenderer(MapRendererScript);
+            unitController.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
+
+            Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
+            Rotate(objectRight, Space.Self, InitialCameraAngle);
+
+            miniMapCamera = GameObject.Find("MiniMapCamera").GetComponent<Camera>();
         }
 
         // Update is called once per frame
         [UsedImplicitly]
         private void Update()
         {
-            script.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
+            unitController.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
             UpdateCamera();
+            UpdateMiniMapCamera();
         }
 
         private static Vector3 MultiplyVector(Vector3 v1, Vector3 v2)
@@ -92,6 +109,20 @@ namespace Assets.Scripts.Game
             return Vector3.Normalize(result);
         }
 
+        private void UpdateMiniMapCamera()
+        {
+            Vector3 camPos = cameraObject.transform.position;
+            miniMapCamera.transform.position = new Vector3(camPos.x, InitialMiniMapZoom, camPos.z);
+
+            if (Input.GetKey(KeyCode.Equals) || Input.GetKey(KeyCode.KeypadPlus))
+                InitialMiniMapZoom -= MiniMapZoomSpeed;
+            if (Input.GetKey(KeyCode.Minus) || Input.GetKey(KeyCode.KeypadMinus))
+            {
+                InitialMiniMapZoom += MiniMapZoomSpeed;
+                if (InitialMiniMapZoom > MiniMapZoomUpperLimit)
+                    InitialMiniMapZoom = MiniMapZoomUpperLimit;
+            }
+        }
 
         private void UpdateCamera()
         {
@@ -107,47 +138,27 @@ namespace Assets.Scripts.Game
 
             //Keyboard movement
             if (Input.GetKey(KeyCode.Space))
-            {
                 Ascend();
-            }
             if (Input.GetKey(KeyCode.LeftShift))
-            {
                 Descend();
-            }
 
             if (Input.GetKey(KeyCode.W))
-            {
                 Pan(worldForward);
-            }
             if (Input.GetKey(KeyCode.A))
-            {
                 Pan(worldRight, -1f);
-            }
             if (Input.GetKey(KeyCode.S))
-            {
                 Pan(worldForward, -1f);
-            }
             if (Input.GetKey(KeyCode.D))
-            {
                 Pan(worldRight);
-            }
 
             if (Input.GetKey(KeyCode.UpArrow))
-            {
                 Rotate(objectRight, Space.Self);
-            }
             if (Input.GetKey(KeyCode.DownArrow))
-            {
                 Rotate(objectRight, Space.Self, -1f);
-            }
             if (Input.GetKey(KeyCode.RightArrow))
-            {
                 Rotate(Vector3.up);
-            }
             if (Input.GetKey(KeyCode.LeftArrow))
-            {
                 Rotate(Vector3.up, Space.World, -1f);
-            }
 
             //Mouse scroll zoom
             float zoom = Input.GetAxis("Mouse ScrollWheel");
@@ -161,9 +172,7 @@ namespace Assets.Scripts.Game
                 var camera = cameraObject.GetComponent<Camera>();
                 Ray ray = camera.ScreenPointToRay(position);
                 if (plane.Raycast(ray, out float rayDistance))
-                {
                     startIntersect = ray.GetPoint(rayDistance);
-                }
                 rightMouseDown = true;
             }
             if (Input.GetMouseButtonUp(1))
@@ -172,9 +181,7 @@ namespace Assets.Scripts.Game
                 prevMousePos = Vector2.zero;
             }
             if (Input.GetMouseButtonDown(2))
-            {
                 middleMouseDown = true;
-            }
             if (Input.GetMouseButtonUp(2))
             {
                 middleMouseDown = false;
@@ -200,9 +207,7 @@ namespace Assets.Scripts.Game
                             Space.World);
                     }
                     if (rightMouseDown)
-                    {
                         cameraObject.transform.RotateAround(startIntersect, Vector3.up, -movement.x);
-                    }
                 }
                 prevMousePos = position;
             }
@@ -213,21 +218,13 @@ namespace Assets.Scripts.Game
             {
                 const int margin = 10;
                 if (Input.mousePosition.x < margin)
-                {
                     Pan(worldRight, -1f);
-                }
                 if (Input.mousePosition.y < margin)
-                {
                     Pan(worldForward, -1f);
-                }
                 if (Input.mousePosition.y > Screen.height - margin)
-                {
                     Pan(worldForward);
-                }
                 if (Input.mousePosition.x > Screen.width - margin)
-                {
                     Pan(worldRight);
-                }
             }
         }
 
