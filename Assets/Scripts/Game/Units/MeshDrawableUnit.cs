@@ -16,7 +16,10 @@ namespace Game.Units
         {
             get { return dimensions; }
             set { throw new MemberAccessException("Cannot set dimensions of this object."); }
-        }
+        }   
+
+        public override Vector2 DrawSize => new Vector2(0.1f, 0.1f);
+        protected override float ChildSpacing => -1;
 
         public MeshDrawableUnit(Defense defense = Defense.Armor,
             Weapon weapon = Weapon.Sword,

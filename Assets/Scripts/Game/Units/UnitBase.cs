@@ -21,6 +21,9 @@ namespace Game.Units
         public virtual float WalkSpeed { get; set; } = 1.0f;
 
         public virtual Int2 ChildrenDimensions { get; set; }
+        public abstract Vector2 DrawSize { get; }
+
+        protected abstract float ChildSpacing { get; }
 
         public abstract int UnitCount { get; }
 

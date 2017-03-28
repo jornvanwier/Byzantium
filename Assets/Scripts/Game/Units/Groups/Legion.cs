@@ -85,5 +85,9 @@ namespace Game.Units.Groups
             foreach (UnitBase unit in this)
                 unit.Draw();
         }
+
+        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(cohorts[0].DrawSize, ChildrenDimensions);
+        protected override float ChildSpacing => 0.1f;
+
     }
 }
