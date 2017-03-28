@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Assets.Scripts.Game.Units;
-using Assets.Scripts.Game.Units.Formation;
 using Game.Units.Groups;
 using UnityEngine;
 
@@ -18,7 +16,7 @@ namespace Game.Units.Formation
 
         public override void Order(Contubernium unit)
         {
-            OrderAny<Contubernium,MeshDrawableUnit>(0.3f, unit);
+            OrderAny<Contubernium, MeshDrawableUnit>(0.3f, unit);
         }
 
         public override void Order(Cavalry unit)
@@ -36,7 +34,8 @@ namespace Game.Units.Formation
             OrderAny<Century, Contubernium>(1, unit);
         }
 
-        private void OrderAny<T, TChild>(float spacing, T unit) where T : UnitBase, IMultipleUnits<TChild> where TChild : UnitBase
+        private void OrderAny<T, TChild>(float spacing, T unit) where T : UnitBase, IMultipleUnits<TChild>
+            where TChild : UnitBase
         {
             int rowWidth = (int) Mathf.Sqrt(unit.UnitCount);
             int columnHeight = unit.UnitCount - rowWidth;
@@ -48,9 +47,9 @@ namespace Game.Units.Formation
 
             foreach (UnitBase child in unit)
             {
-                float x = unit.Position.x + spacing * (i % rowWidth) - (spacing * rowWidth / 4);
+                float x = unit.Position.x + spacing * (i % rowWidth) - spacing * rowWidth / 4;
                 // ReSharper disable once PossibleLossOfFraction
-                float z = unit.Position.z + spacing * (i / rowWidth) - (spacing * columnHeight / 4);
+                float z = unit.Position.z + spacing * (i / rowWidth) - spacing * columnHeight / 4;
 
                 localPositions.Add(new Vector3(x, unit.Position.y, z) - unit.Position);
                 originalpositions.Add(child.Position);
@@ -62,9 +61,7 @@ namespace Game.Units.Formation
 
             int j = 0;
             foreach (UnitBase u in unit)
-            {
                 u.Position = processed[j++];
-            }
         }
     }
 }

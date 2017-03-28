@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
 using Game.Units.Formation;
@@ -9,9 +8,8 @@ namespace Game.Units.Groups
 {
     public class Cohort : UnitBase, IMultipleUnits<Century>
     {
-        public override float DefaultSpeed => 1.5f;
-
         private readonly List<Century> centuries = new List<Century>();
+        public override float DefaultSpeed => 1.5f;
 
         public override Quaternion Rotation
         {
@@ -35,18 +33,6 @@ namespace Game.Units.Groups
 
         public override int UnitCount => centuries.Count;
 
-        public static Cohort CreateUniformMixedUnit()
-        {
-            var cohort = new Cohort {Formation = new SquareFormation()};
-
-            for (int i = 0; i < 6; ++i)
-            {
-                cohort.AddUnit(Century.CreateMixedUnit());
-            }
-
-            return cohort;
-        }
-
         public void AddUnit(Century unit)
         {
             centuries.Add(unit);
@@ -63,12 +49,20 @@ namespace Game.Units.Groups
             return centuries.GetEnumerator();
         }
 
+        public static Cohort CreateUniformMixedUnit()
+        {
+            var cohort = new Cohort {Formation = new SquareFormation()};
+
+            for (int i = 0; i < 6; ++i)
+                cohort.AddUnit(Century.CreateMixedUnit());
+
+            return cohort;
+        }
+
         public override void Draw()
         {
             foreach (Century unit in this)
-            {
                 unit.Draw();
-            }
         }
     }
 }

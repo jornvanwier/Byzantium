@@ -16,8 +16,8 @@ namespace Assets.Scripts.Map.Generation
             seedX -= seedX / 2;
             seedY -= seedY / 2;
 
-            for (var x = 0; x < size; ++x)
-            for (var y = 0; y < size; ++y)
+            for (int x = 0; x < size; ++x)
+            for (int y = 0; y < size; ++y)
             {
                 float distanceToCenter = Mathf.Sqrt(Mathf.Pow(x - center, 2) + Mathf.Pow(y - center, 2)) /
                                          ((float) size / 2),
@@ -30,25 +30,14 @@ namespace Assets.Scripts.Map.Generation
                 else
                 {
                     if (height < landChance)
-                    {
                         if (distanceToCenter > 1 - borderPercentage - beachSize)
-                        {
-                            //if on border of circle, and it would normally be grass: beach
                             map[x, y] = (byte) TileType.Beach;
-                        }
                         else
-                        {
                             map[x, y] = (byte) TileType.GrassLand;
-                        }
-                    }
                     else if (height < landChance + beachSize)
-                    {
                         map[x, y] = (byte) TileType.Beach;
-                    }
                     else
-                    {
                         map[x, y] = (byte) TileType.WaterShallow;
-                    }
                 }
             }
 

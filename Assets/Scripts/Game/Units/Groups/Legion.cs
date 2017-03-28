@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
 using UnityEngine;
@@ -9,10 +8,10 @@ namespace Game.Units.Groups
     public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>, IEnumerable<Cohort>,
         IEnumerable<Cavalry>
     {
-        public override float DefaultSpeed => 1.5f;
         private readonly List<Cavalry> cavalries = new List<Cavalry>();
 
         private readonly List<Cohort> cohorts = new List<Cohort>();
+        public override float DefaultSpeed => 1.5f;
         public IEnumerable<Cavalry> Cavalries => cavalries;
         public IEnumerable<Cohort> Cohorts => cohorts;
 
@@ -61,7 +60,7 @@ namespace Game.Units.Groups
 
         public IEnumerator GetEnumerator()
         {
-            var position = 0;
+            int position = 0;
             while (position < cavalries.Count + cohorts.Count)
             {
                 yield return
@@ -84,9 +83,7 @@ namespace Game.Units.Groups
         public override void Draw()
         {
             foreach (UnitBase unit in this)
-            {
                 unit.Draw();
-            }
         }
     }
 }

@@ -41,19 +41,15 @@ namespace Assets.Scripts.Game.Units
             attachedUnit.Draw();
 
             if (currentPathInfo?.Path != null)
-            {
                 foreach (CubicalCoordinate c in currentPathInfo.Path)
                     mapRenderer.MarkTileSelectedForNextFrame(c);
-            }
 
             SetWorldPosition(CreateWorldPos());
 
             Position = mapRenderer.WorldToCubicalCoordinate(CreateWorldPos());
 
             if (Position == Goal)
-            {
                 return;
-            }
             if (IsPathValid())
             {
                 AdvanceOnPath();
@@ -141,9 +137,7 @@ namespace Assets.Scripts.Game.Units
         protected bool IsPathValid()
         {
             if (currentPathInfo?.GoalPos != Goal)
-            {
                 return false;
-            }
 
             return true;
         }

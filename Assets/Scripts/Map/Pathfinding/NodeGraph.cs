@@ -29,8 +29,8 @@
         public void CreateNodes()
         {
             NodeStorage = new AStarNode[size, size];
-            for (var q = 0; q < size; ++q)
-            for (var r = 0; r < size; ++r)
+            for (int q = 0; q < size; ++q)
+            for (int r = 0; r < size; ++r)
             {
                 CubicalCoordinate coord = new OddRCoordinate(q, r).ToCubical();
                 NodeStorage[r, q] = new AStarNode(coord);

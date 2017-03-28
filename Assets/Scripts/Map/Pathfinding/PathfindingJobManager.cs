@@ -54,9 +54,7 @@ namespace Assets.Scripts.Map.Pathfinding
         public bool IsFinished(int id)
         {
             if (storage.ContainsKey(id))
-            {
                 return storage[id].State != JobState.Working;
-            }
             return false;
         }
 
