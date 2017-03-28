@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Map
 {
@@ -33,14 +34,19 @@ namespace Assets.Scripts.Map
             return new Int2(i1.X * i2.X, i1.Y * i2.Y);
         }
 
-        public static Int2 operator *(Int2 i1, float scalar)
+        public static Vector2 operator *(Int2 i1, float scalar)
         {
-            return new Int2((int) (i1.X * scalar), (int) (i1.Y * scalar));
+            return new Vector2(i1.X * scalar, i1.Y * scalar);
         }
 
         public static Int2 operator *(Int2 i1, int scalar)
         {
             return new Int2(i1.X * scalar, i1.Y * scalar);
+        }
+
+        public static implicit operator Vector2(Int2 src)
+        {
+            return new Vector2(src.X, src.Y);
         }
     }
 

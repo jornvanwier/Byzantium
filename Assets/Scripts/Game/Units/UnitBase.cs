@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Game.Units.Formation;
+using Assets.Scripts.Map;
 using Game.Units.Formation;
 using UnityEngine;
 
@@ -18,6 +19,11 @@ namespace Game.Units
 
         public virtual IFormation Formation { get; set; } = new VerticalLineFormation();
         public virtual float WalkSpeed { get; set; } = 1.0f;
+
+        public virtual Int2 ChildrenDimensions { get; set; }
+        public abstract Vector2 DrawSize { get; }
+
+        protected abstract float ChildSpacing { get; }
 
         public abstract int UnitCount { get; }
 
