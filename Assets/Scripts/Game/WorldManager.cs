@@ -70,7 +70,7 @@ namespace Assets.Scripts.Game
             
             unit = Cohort.CreateUniformMixedUnit();
             unit.Position = new Vector3(5,0,5);
-            unit.Formation = new SquareFormation();
+            unit.Formation = new SetRowFormation();
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";

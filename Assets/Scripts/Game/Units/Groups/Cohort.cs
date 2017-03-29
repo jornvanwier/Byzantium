@@ -66,7 +66,7 @@ namespace Game.Units.Groups
         }
 
         public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions);
-        protected override float ChildSpacing => 1.5f;
+        protected override float ChildSpacing => 1.8f;
 
     }
 }

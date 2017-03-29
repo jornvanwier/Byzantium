@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Formation;
+using Assets.Scripts.Map;
 using Game.Units.Formation;
 using UnityEngine;
 
@@ -51,7 +53,7 @@ namespace Game.Units.Groups
 
         public static Century CreateMixedUnit()
         {
-            var century = new Century {Formation = new SquareFormation()};
+            var century = new Century {Formation = new SetColumnFormation()};
 
             // Frontline with swords
             for (int i = 0; i < 4; ++i)
@@ -74,8 +76,8 @@ namespace Game.Units.Groups
                 unit.Draw();
         }
 
-        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions);
-        protected override float ChildSpacing => 1.2f;
+        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions + new Int2(0,2));
+        protected override float ChildSpacing => 1f;
 
     }
 }

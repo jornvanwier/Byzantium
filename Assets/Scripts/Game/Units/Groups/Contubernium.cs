@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Unit_Enums;
+using Assets.Scripts.Map;
 using Game.Units.Formation;
 using UnityEngine;
 
@@ -91,7 +92,7 @@ namespace Game.Units.Groups
         }
 
         public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(drawableUnits[0].DrawSize, ChildrenDimensions);
-        protected override float ChildSpacing => 1.1f;
+        protected override float ChildSpacing => 1f;
 
     }
 }
