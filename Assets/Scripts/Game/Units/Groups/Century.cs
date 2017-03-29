@@ -33,6 +33,9 @@ namespace Game.Units.Groups
 
         public override int UnitCount => contubernia.Count;
 
+        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions);
+        protected override float ChildSpacing => 1.2f;
+
         public void AddUnit(Contubernium unit)
         {
             contubernia.Add(unit);
@@ -73,9 +76,5 @@ namespace Game.Units.Groups
             foreach (Contubernium unit in this)
                 unit.Draw();
         }
-
-        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions);
-        protected override float ChildSpacing => 1.2f;
-
     }
 }

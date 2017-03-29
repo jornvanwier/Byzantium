@@ -32,6 +32,9 @@ namespace Game.Units.Groups
 
         public override int UnitCount => drawableUnits.Count;
 
+        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(drawableUnits[0].DrawSize, ChildrenDimensions);
+        protected override float ChildSpacing => 1.2f;
+
         public void AddUnit(MeshDrawableUnit unit)
         {
             drawableUnits.Add(unit);
@@ -53,8 +56,5 @@ namespace Game.Units.Groups
             foreach (MeshDrawableUnit unit in this)
                 unit.Draw();
         }
-
-        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(drawableUnits[0].DrawSize, ChildrenDimensions);
-        protected override float ChildSpacing => 1.2f;
     }
 }

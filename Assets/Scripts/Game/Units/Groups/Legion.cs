@@ -37,6 +37,9 @@ namespace Game.Units.Groups
 
         public override int UnitCount => cavalries.Count + cohorts.Count;
 
+        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(cohorts[0].DrawSize, ChildrenDimensions);
+        protected override float ChildSpacing => 0.1f;
+
         IEnumerator<Cavalry> IEnumerable<Cavalry>.GetEnumerator()
         {
             return Cavalries.GetEnumerator();
@@ -85,9 +88,5 @@ namespace Game.Units.Groups
             foreach (UnitBase unit in this)
                 unit.Draw();
         }
-
-        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(cohorts[0].DrawSize, ChildrenDimensions);
-        protected override float ChildSpacing => 0.1f;
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Map;
 using Game.Units;
 using Game.Units.Formation;
@@ -11,7 +12,7 @@ namespace Assets.Scripts.Game.Units.Formation
     {
         public override void Order(Legion unit)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override void Order(Contubernium unit)
@@ -36,7 +37,7 @@ namespace Assets.Scripts.Game.Units.Formation
 
         private void OrderAny<T, TChild>(int width, float spacing, T unit) where T : UnitBase, IMultipleUnits<TChild>
             where TChild : UnitBase
-        { 
+        {
             int columnHeight = unit.UnitCount / width;
 
             var localPositions = new List<Vector3>();
@@ -46,9 +47,9 @@ namespace Assets.Scripts.Game.Units.Formation
 
             foreach (UnitBase child in unit)
             {
-                float x = unit.Position.x + spacing * (i % width) - (spacing * width / 4);
+                float x = unit.Position.x + spacing * (i % width) - spacing * width / 4;
                 // ReSharper disable once PossibleLossOfFraction
-                float z = unit.Position.z + spacing * (i / width) - (spacing * columnHeight / 4);
+                float z = unit.Position.z + spacing * (i / width) - spacing * columnHeight / 4;
 
                 localPositions.Add(new Vector3(x, unit.Position.y, z) - unit.Position);
                 originalpositions.Add(child.Position);
@@ -60,9 +61,7 @@ namespace Assets.Scripts.Game.Units.Formation
 
             int j = 0;
             foreach (UnitBase u in unit)
-            {
                 u.Position = processed[j++];
-            }
 
             unit.ChildrenDimensions = new Int2(width, columnHeight);
         }

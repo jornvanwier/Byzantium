@@ -33,6 +33,9 @@ namespace Game.Units.Groups
 
         public override int UnitCount => centuries.Count;
 
+        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions);
+        protected override float ChildSpacing => 1.5f;
+
         public void AddUnit(Century unit)
         {
             centuries.Add(unit);
@@ -64,9 +67,5 @@ namespace Game.Units.Groups
             foreach (Century unit in this)
                 unit.Draw();
         }
-
-        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions);
-        protected override float ChildSpacing => 1.5f;
-
     }
 }
