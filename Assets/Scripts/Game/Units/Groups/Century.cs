@@ -1,12 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
 using Assets.Scripts.Util;
 using Game.Units;
-using Game.Units.Formation;
 using Game.Units.Groups;
 using UnityEngine;
 

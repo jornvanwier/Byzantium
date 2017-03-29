@@ -1,6 +1,4 @@
-﻿
-
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Groups;
@@ -37,7 +35,9 @@ namespace Game.Units.Groups
 
         public override int UnitCount => centuries.Count;
 
-        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions + new Vector2(1.5f,0));
+        public override Vector2 DrawSize
+            => ChildSpacing * Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions + new Vector2(1.5f, 0));
+
         protected override float ChildSpacing => 1.3f;
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator

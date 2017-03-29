@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
+using Assets.Scripts.Map;
 using Game.Units;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -135,13 +136,17 @@ namespace Assets.Scripts.UI
 
             foreach (UnitController army in armies)
             foreach (MeshDrawableUnit drawableUnit in army.AttachedUnit.AllUnits)
-                Debug.Log(drawableUnit);
-
-            for (int x = 0; x < SizeX; x++)
-            for (int y = 0; y < SizeY; y++)
-                t.SetPixel(x, y, Random.Range(0, 2) == 1 ? Color.red : new Color(0, 0, 0, 0));
+            {
+                Int2 mappedUnitPosition = UnitToPosition(drawableUnit);
+                t.SetPixel(mappedUnitPosition.X, mappedUnitPosition.Y, army.Faction.Color);
+            }
 
             return t;
+        }
+
+        private Int2 UnitToPosition(MeshDrawableUnit unit)
+        {
+            return new Int2();
         }
 
         public void AttachMapObject(GameObject mapRenderer)

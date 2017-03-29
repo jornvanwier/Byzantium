@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Game.Units.Groups;
 using Game.Units.Groups;
 using UnityEngine;
 
-namespace Game.Units.Formation
+namespace Assets.Scripts.Game.Units.Formation
 {
     public abstract class FormationBase : IFormation
     {
