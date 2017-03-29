@@ -1,6 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Formation;
+using Assets.Scripts.Map;
+using Assets.Scripts.Util;
+using Game.Units;
 using Game.Units.Formation;
 using Game.Units.Groups;
 using UnityEngine;
@@ -34,12 +39,19 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override int UnitCount => contubernia.Count;
 
-        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions + new Int2(0,2));
+        public override Vector2 DrawSize
+            => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions + new Int2(0, 2));
+
         protected override float ChildSpacing => 1f;
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
-            get { return contubernia.SelectMany(unit => unit.AllUnits).GetEnumerator(); }
+            get
+            {
+                foreach (Contubernium contubernium in contubernia)
+                foreach (MeshDrawableUnit drawableUnit in contubernium.AllUnits)
+                    yield return drawableUnit;
+            }
         }
 
         public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
