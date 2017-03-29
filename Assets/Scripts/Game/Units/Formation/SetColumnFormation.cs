@@ -35,6 +35,7 @@ namespace Assets.Scripts.Game.Units.Formation
         public override void Order(Century unit)
         {
             SquareFormation.OrderAnySetColumn<Century, Contubernium>(2, unit);
+            Debug.Log(unit.DrawSize);
         }
     }
 }

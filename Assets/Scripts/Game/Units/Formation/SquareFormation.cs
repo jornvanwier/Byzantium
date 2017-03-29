@@ -34,6 +34,7 @@ namespace Game.Units.Formation
         public override void Order(Century unit)
         {
             OrderAny<Century, Contubernium>(unit);
+            Debug.Log(unit.DrawSize);
         }
 
         public static void OrderAnySetRow<T, TChild>(int width, T unit) where T : UnitBase, IMultipleUnits<TChild>
