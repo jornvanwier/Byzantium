@@ -22,6 +22,8 @@ namespace Assets.Scripts.Game
         public float InitialZoomSpeed = 2;
         public GameObject MapRendererObject;
         protected MapRenderer MapRendererScript;
+        public static Material unitMaterial;
+        public Material uMatter;
 
         public MeshHolder MeshHolder;
 
@@ -57,6 +59,7 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Start()
         {
+            unitMaterial = uMatter;
             // Ugly hack to allow static retrieval of the attached meshes
             MeshHolder.Initialize();
             Meshes = MeshHolder;
