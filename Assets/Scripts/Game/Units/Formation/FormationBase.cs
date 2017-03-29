@@ -16,7 +16,7 @@ namespace Game.Units.Formation
         public abstract void Order(Cohort unit);
         public abstract void Order(Century unit);
 
-        public IEnumerable<Vector3> ProcessLocalOffsets(IEnumerable<Vector3> originalPositions,
+        protected static IEnumerable<Vector3> ProcessLocalOffsets(IEnumerable<Vector3> originalPositions,
             IEnumerable<Vector3> offsetPositions, UnitBase unit)
         {
             float maxDist = 0.0f;

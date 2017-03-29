@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
 using Assets.Scripts.UI;
 using Game.Units;
@@ -24,6 +25,8 @@ namespace Assets.Scripts.Game
         public float InitialZoomSpeed = 2;
         public GameObject MapRendererObject;
         protected MapRenderer MapRendererScript;
+        public static Material unitMaterial;
+        public Material uMatter;
 
         public MeshHolder MeshHolder;
 
@@ -56,13 +59,14 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Start()
         {
+            unitMaterial = uMatter;
             // Ugly hack to allow static retrieval of the attached meshes
             MeshHolder.Initialize();
             Meshes = MeshHolder;
 
             unit = Cohort.CreateUniformMixedUnit();
-            unit.Position = new Vector3(5, 0, 5);
-            unit.Formation = new SquareFormation();
+            unit.Position = new Vector3(5,0,5);
+            unit.Formation = new SetColumnFormation();
 
 
             MapRendererObject = Instantiate(MapRendererObject);
@@ -87,10 +91,6 @@ namespace Assets.Scripts.Game
             uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
             var miniMap = uiCanvas.GetComponent<MiniMap>();
             miniMap.AttachCamera(cameraObject.GetComponent<Camera>());
-            miniMap.AttachMapObject(MapRendererObject);
-            miniMap.AttachArmies(allArmies);
-
-            miniMap.UpdateOverlayTexture();
         }
 
         // Update is called once per frame

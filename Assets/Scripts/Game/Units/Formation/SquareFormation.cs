@@ -19,6 +19,7 @@ namespace Game.Units.Formation
         public override void Order(Contubernium unit)
         {
             OrderAny<Contubernium, MeshDrawableUnit>(unit);
+//            Debug.Log(unit.DrawSize);
         }
 
         public override void Order(Cavalry unit)
@@ -36,12 +37,34 @@ namespace Game.Units.Formation
             OrderAny<Century, Contubernium>(unit);
         }
 
-        private void OrderAny<T, TChild>(T unit) where T : UnitBase, IMultipleUnits<TChild>
+        public static void OrderAnySetRow<T, TChild>(int width, T unit) where T : UnitBase, IMultipleUnits<TChild>
             where TChild : UnitBase
         {
-            int rowWidth = (int) Mathf.Sqrt(unit.UnitCount);
+            int columnHeight = unit.UnitCount / width;
+
+            OrderAny<T, TChild>(width, columnHeight, unit);
+        }
+
+        public static void OrderAnySetColumn<T, TChild>(int height, T unit) where T : UnitBase, IMultipleUnits<TChild>
+            where TChild : UnitBase
+        {
+            int rowWidth = unit.UnitCount / height;
+
+            OrderAny<T, TChild>(rowWidth, height, unit);
+        }
+
+        public static void OrderAny<T, TChild>(T unit) where T : UnitBase, IMultipleUnits<TChild>
+            where TChild : UnitBase
+        {
+            int rowWidth = (int)Mathf.Sqrt(unit.UnitCount);
             int columnHeight = unit.UnitCount / rowWidth;
 
+            OrderAny<T, TChild>(rowWidth, columnHeight, unit);
+        }
+
+        private static void OrderAny<T, TChild>(int rowWidth, int columnHeight, T unit) where T : UnitBase, IMultipleUnits<TChild>
+            where TChild : UnitBase
+        {
             var localPositions = new List<Vector3>();
             var originalpositions = new List<Vector3>();
 

@@ -546,14 +546,15 @@ MonoBehaviour:
   InitialZoomSpeed: 10
   MapRendererObject: {fileID: 1482278021882804, guid: ce1e59d011eb91f47aafc694c0a662c5,
     type: 2}
+  uMatter: {fileID: 2100000, guid: f49ede822207b2f4eb7b0ffa6986bc6b, type: 2}
   MeshHolder:
     Defenses:
       LargeShield: {fileID: 0}
       SmallShield: {fileID: 0}
     Soldiers:
-      Armored: {fileID: 0}
-      Mounted: {fileID: 0}
-      Unarmored: {fileID: 0}
+      Armored: {fileID: 4300000, guid: 91358c3cdda101e4d95058f5a982ba28, type: 3}
+      Mounted: {fileID: 4300000, guid: 91358c3cdda101e4d95058f5a982ba28, type: 3}
+      Unarmored: {fileID: 4300000, guid: 91358c3cdda101e4d95058f5a982ba28, type: 3}
     Weapons:
       Longbow: {fileID: 0}
       Pike: {fileID: 0}

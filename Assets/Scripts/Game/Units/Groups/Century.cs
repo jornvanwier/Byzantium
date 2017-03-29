@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Assets.Scripts.Util;
-using Game.Units;
+using Assets.Scripts.Game.Units;
 using Game.Units.Formation;
 using Game.Units.Groups;
 using UnityEngine;
@@ -36,8 +34,8 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override int UnitCount => contubernia.Count;
 
-        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions);
-        protected override float ChildSpacing => 1.2f;
+        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions + new Int2(0,2));
+        protected override float ChildSpacing => 1f;
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
@@ -64,7 +62,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Century CreateMixedUnit()
         {
-            var century = new Century {Formation = new SquareFormation()};
+            var century = new Century {Formation = new SetColumnFormation()};
 
             // Frontline with swords
             for (int i = 0; i < 4; ++i)

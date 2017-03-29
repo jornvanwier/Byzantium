@@ -48,6 +48,11 @@ namespace Assets.Scripts.Map
         {
             return new Vector2(src.X, src.Y);
         }
+
+        public override string ToString()
+        {
+            return $"X {X}, Y {Y}";
+        }
     }
 
     public struct Int3
