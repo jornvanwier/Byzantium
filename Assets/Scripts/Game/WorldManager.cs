@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
 using Assets.Scripts.UI;
 using Game.Units;
@@ -65,8 +66,8 @@ namespace Assets.Scripts.Game
             Meshes = MeshHolder;
 
             unit = Cohort.CreateUniformMixedUnit();
-            unit.Position = new Vector3(5, 0, 5);
-            unit.Formation = new SquareFormation();
+            unit.Position = new Vector3(5,0,5);
+            unit.Formation = new SetColumnFormation();
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";
@@ -88,6 +89,11 @@ namespace Assets.Scripts.Game
             uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
             var miniMap = uiCanvas.GetComponent<MiniMap>();
             miniMap.AttachCamera(cameraObject.GetComponent<Camera>());
+
+            for (int i = 100 - 1; i >= 0; i--)
+            {
+                Debug.Log(FactionNameGenerator.Generate());
+            }
         }
 
         // Update is called once per frame
