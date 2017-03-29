@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Game;
 using Assets.Scripts.Game.Units.Unit_Enums;
 using Assets.Scripts.Map;
+using Assets.Scripts.Util;
 using UnityEngine;
 
 namespace Game.Units
 {
     public class MeshDrawableUnit : UnitBase
     {
-        public static Material Material = new Material(Shader.Find("Standard"));
+        public static Material Material = WorldManager.unitMaterial;
 
         private readonly Int2 dimensions = new Int2(1, 1);
 
@@ -50,9 +52,17 @@ namespace Game.Units
 
         public override int UnitCount => 1;
 
+        public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
+        {
+            get { yield return this; }
+        }
+
+        public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
+
         public override void Draw()
         {
-            Graphics.DrawMesh(UnitMesh, Matrix4x4.TRS(Position, Rotation, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
+            Quaternion rotate = Rotation * Quaternion.Euler(0,180,0);
+            Graphics.DrawMesh(UnitMesh, Matrix4x4.TRS(Position, rotate, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
 
 //            Vector3 weaponPosition = Position + (Rotation * new Vector3(0.2f, 0, 0));
 

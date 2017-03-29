@@ -14,6 +14,8 @@ namespace Assets.Scripts.Game
     public class WorldManager : MonoBehaviour
     {
         private const float CameraZoomLowerLimit = 1;
+
+        private readonly List<UnitController> allArmies = new List<UnitController>();
         private bool applicationHasFocus;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
@@ -23,6 +25,8 @@ namespace Assets.Scripts.Game
         public float InitialZoomSpeed = 2;
         public GameObject MapRendererObject;
         protected MapRenderer MapRendererScript;
+        public static Material unitMaterial;
+        public Material uMatter;
 
         public MeshHolder MeshHolder;
 
@@ -40,14 +44,11 @@ namespace Assets.Scripts.Game
         private UnitBase unit;
         private UnitController unitController;
 
-        private List<GameObject> unitControllers = new List<GameObject>();
-
         public static MeshHolder Meshes { get; private set; }
 
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
         private float ZoomSpeed => InitialZoomSpeed * (CameraHeight - CameraZoomLowerLimit);
-
 
         [UsedImplicitly]
         private void OnApplicationFocus(bool hasFocus)
@@ -58,6 +59,7 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Start()
         {
+            unitMaterial = uMatter;
             // Ugly hack to allow static retrieval of the attached meshes
             MeshHolder.Initialize();
             Meshes = MeshHolder;
@@ -65,6 +67,7 @@ namespace Assets.Scripts.Game
             unit = Cohort.CreateUniformMixedUnit();
             unit.Position = new Vector3(5,0,5);
             unit.Formation = new SquareFormation();
+
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";
@@ -76,9 +79,11 @@ namespace Assets.Scripts.Game
 
             var obj = new GameObject("Army");
             unitController = obj.AddComponent<UnitController>();
-            unitController.AttachUnit(unit);
-            unitController.AttachMapRenderer(MapRendererScript);
+            unitController.AttachedUnit = unit;
+            unitController.MapRenderer = MapRendererScript;
             unitController.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
+
+            allArmies.Add(unitController);
 
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
             Rotate(objectRight, Space.Self, InitialCameraAngle);
@@ -86,6 +91,10 @@ namespace Assets.Scripts.Game
             uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
             var miniMap = uiCanvas.GetComponent<MiniMap>();
             miniMap.AttachCamera(cameraObject.GetComponent<Camera>());
+            miniMap.AttachMapObject(MapRendererObject);
+            miniMap.AttachArmies(allArmies);
+
+            miniMap.UpdateOverlayTexture();
         }
 
         // Update is called once per frame
@@ -109,14 +118,8 @@ namespace Assets.Scripts.Game
 
         private void UpdateCamera()
         {
-            Vector3 worldPosition = cameraObject.transform.position;
-            Vector3 localPosition = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.position;
-
             Vector3 worldRight = cameraObject.transform.right;
-            Vector3 worldUp = cameraObject.transform.up;
             Vector3 worldForward = cameraObject.transform.forward;
-
-            Vector3 objectForward = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.forward;
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
 
             //Keyboard movement

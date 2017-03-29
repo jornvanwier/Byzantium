@@ -1,4 +1,7 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using Assets.Scripts.Game.Units;
+using Game.Units;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +11,12 @@ namespace Assets.Scripts.UI
     {
         private const float ZoomUpperLimit = 1000;
         private const float ZoomLowerLimit = 5;
+
+        private List<UnitController> armies;
+
+        private Image border;
+
+        [Range(0.1f, 100)] public float BorderSize = 10;
         private Camera camera;
         private RawImage image;
         [Range(ZoomLowerLimit, ZoomUpperLimit)] public float InitialZoom = 100;
@@ -16,8 +25,67 @@ namespace Assets.Scripts.UI
 
         private Camera mainCamera;
 
+        private GameObject mapObject;
+
+        private float posX;
+        private float posY;
+
+        private float sizeX;
+
+        private float sizeY;
+        private RawImage unitOverlay;
+
         private float ZoomSpeed
             => InitialZoomSpeed * (camera.transform.position.y - ZoomLowerLimit) / 100f;
+
+        [SerializeField]
+        public float PosX
+        {
+            get { return posX; }
+            set
+            {
+                posX = value;
+                image.transform.position = new Vector3(PosX - BorderSize, PosY + BorderSize);
+                unitOverlay.transform.position = new Vector3(PosX - BorderSize, PosY + BorderSize);
+                border.transform.position = new Vector3(PosX - BorderSize, PosY + BorderSize);
+            }
+        }
+
+        public float PosY
+        {
+            get { return posY; }
+            set
+            {
+                posY = value;
+                image.transform.position = new Vector3(PosX - BorderSize, PosY + BorderSize);
+                unitOverlay.transform.position = new Vector3(PosX - BorderSize, PosY + BorderSize);
+                border.transform.position = new Vector3(PosX - BorderSize, PosY + BorderSize);
+            }
+        }
+
+        public float SizeX
+        {
+            get { return sizeX; }
+            set
+            {
+                sizeX = value;
+                image.rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
+                unitOverlay.rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
+                border.rectTransform.sizeDelta = new Vector2(SizeX + BorderSize * 2, SizeY + BorderSize * 2);
+            }
+        }
+
+        public float SizeY
+        {
+            get { return sizeY; }
+            set
+            {
+                sizeY = value;
+                image.rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
+                unitOverlay.rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
+                border.rectTransform.sizeDelta = new Vector2(SizeX + BorderSize * 2, SizeY + BorderSize * 2);
+            }
+        }
 
         // Use this for initialization
         [UsedImplicitly]
@@ -25,6 +93,16 @@ namespace Assets.Scripts.UI
         {
             camera = GameObject.Find("MiniMapCamera").GetComponent<Camera>();
             image = GameObject.Find("MiniMapImage").GetComponent<RawImage>();
+            border = GameObject.Find("MiniMapBorder").GetComponent<Image>();
+            unitOverlay = GameObject.Find("UnitOverlay").GetComponent<RawImage>();
+
+            UpdatePositionAndSize();
+        }
+
+        private void UpdatePositionAndSize()
+        {
+            PosX = Screen.width - SizeX / 2;
+            PosY = SizeY / 2;
 
             SizeX = 200;
             SizeY = 200;
@@ -36,56 +114,40 @@ namespace Assets.Scripts.UI
         {
             //Mini map set position takes ~200 nanoseconds
             UpdateCamera();
-
-            PosX = Screen.width - SizeX / 2;
-            PosY = SizeY / 2;
+            UpdatePositionAndSize();
         }
 
-        private float posX;
-        private float posY;
-
-        public float PosX
+        public void UpdateOverlayTexture()
         {
-            get { return posX; }
-            set
-            {
-                posX = value;
-                image.transform.position = new Vector3(PosX, PosY);
-            }
+            Texture2D newTex = GetTexture();
+            newTex.Apply();
+            unitOverlay.texture = newTex;
         }
 
-        public float PosY
+        public void AttachArmies(List<UnitController> armies)
         {
-            get { return posY; }
-            set
-            {
-                posY = value;
-                image.transform.position = new Vector3(PosX, PosY);
-            }
+            this.armies = armies;
         }
 
-        private float sizeX;
-
-        public float SizeX
+        private Texture2D GetTexture()
         {
-            get { return sizeX; }
-            set
-            {
-                sizeX = value;
-                image.rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
-            }
+            var t = new Texture2D((int) SizeX, (int) SizeY);
+
+            foreach (UnitController army in armies)
+            foreach (MeshDrawableUnit drawableUnit in army.AttachedUnit.AllUnits)
+                Debug.Log(drawableUnit);
+
+            for (int x = 0; x < SizeX; x++)
+            for (int y = 0; y < SizeY; y++)
+                t.SetPixel(x, y, Random.Range(0, 2) == 1 ? Color.red : new Color(0, 0, 0, 0));
+
+            return t;
         }
 
-        private float sizeY;
-
-        public float SizeY
+        public void AttachMapObject(GameObject mapRenderer)
         {
-            get { return sizeY; }
-            set
-            {
-                sizeY = value;
-                image.rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
-            }
+            mapObject = mapRenderer;
+            mapObject.layer = LayerMask.NameToLayer("MapLayer");
         }
 
         public void AttachCamera(Camera mainCamera)

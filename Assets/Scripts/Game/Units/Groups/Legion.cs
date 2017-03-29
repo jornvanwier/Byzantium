@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
+using Assets.Scripts.Util;
 using UnityEngine;
 
 namespace Game.Units.Groups
@@ -39,6 +40,21 @@ namespace Game.Units.Groups
 
         public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(cohorts[0].DrawSize, ChildrenDimensions);
         protected override float ChildSpacing => 0.1f;
+
+        public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
+        {
+            get
+            {
+                foreach (Cavalry cavalry in cavalries)
+                foreach (MeshDrawableUnit drawableUnit in cavalry.AllUnits)
+                    yield return drawableUnit;
+                foreach (Cohort cohort in cohorts)
+                foreach (MeshDrawableUnit drawableUnit in cohort.AllUnits)
+                    yield return drawableUnit;
+            }
+        }
+
+        public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
 
         IEnumerator<Cavalry> IEnumerable<Cavalry>.GetEnumerator()
         {

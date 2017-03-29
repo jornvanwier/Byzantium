@@ -9,44 +9,37 @@ namespace Assets.Scripts.Game.Units
     public class UnitController : MonoBehaviour
     {
         private const float RotationSpeed = 3.5f;
-        private UnitBase attachedUnit;
 
         private PathfindingJobInfo currentPathInfo;
-        private MapRenderer mapRenderer;
+
         private Vector3 movementDrawOffset;
         private int nextPathId = -1;
         private CubicalCoordinate previousPosition;
 
+        public UnitBase AttachedUnit { get; set; }
+
+        public MapRenderer MapRenderer { get; set; }
+
         public CubicalCoordinate Position { get; set; }
         public CubicalCoordinate Goal { get; set; }
 
-        public void AttachUnit(UnitBase unit)
-        {
-            attachedUnit = unit;
-        }
-
-        public void AttachMapRenderer(MapRenderer mapRenderer)
-        {
-            this.mapRenderer = mapRenderer;
-        }
-
         public void Start()
         {
-            Position = mapRenderer.WorldToCubicalCoordinate(transform.position);
+            Position = MapRenderer.WorldToCubicalCoordinate(transform.position);
             previousPosition = Position;
         }
 
         public void Update()
         {
-            attachedUnit.Draw();
+            AttachedUnit.Draw();
 
             if (currentPathInfo?.Path != null)
                 foreach (CubicalCoordinate c in currentPathInfo.Path)
-                    mapRenderer.MarkTileSelectedForNextFrame(c);
+                    MapRenderer.MarkTileSelectedForNextFrame(c);
 
             SetWorldPosition(CreateWorldPos());
 
-            Position = mapRenderer.WorldToCubicalCoordinate(CreateWorldPos());
+            Position = MapRenderer.WorldToCubicalCoordinate(CreateWorldPos());
 
             if (Position == Goal)
                 return;
@@ -88,28 +81,28 @@ namespace Assets.Scripts.Game.Units
             {
                 currentPathInfo.Path.RemoveAt(0);
                 previousPosition = Position;
-                movementDrawOffset = currentPos - mapRenderer.CubicalCoordinateToWorld(previousPosition);
+                movementDrawOffset = currentPos - MapRenderer.CubicalCoordinateToWorld(previousPosition);
             }
 
             Vector3 nextPos = Vector3.MoveTowards(currentPos,
-                mapRenderer.CubicalCoordinateToWorld(currentPathInfo.Path[0]),
-                attachedUnit.WalkSpeed * Time.deltaTime);
-            movementDrawOffset = nextPos - mapRenderer.CubicalCoordinateToWorld(previousPosition);
+                MapRenderer.CubicalCoordinateToWorld(currentPathInfo.Path[0]),
+                AttachedUnit.WalkSpeed * Time.deltaTime);
+            movementDrawOffset = nextPos - MapRenderer.CubicalCoordinateToWorld(previousPosition);
 
             SetWorldRotation(Quaternion.Slerp(transform.rotation,
-                Quaternion.LookRotation(nextPos - mapRenderer.CubicalCoordinateToWorld(currentPathInfo.Path[0])),
+                Quaternion.LookRotation(nextPos - MapRenderer.CubicalCoordinateToWorld(currentPathInfo.Path[0])),
                 Time.deltaTime * RotationSpeed)
             );
         }
 
         protected void SetUnitWorldPos(Vector3 position)
         {
-            attachedUnit.Position = position;
+            AttachedUnit.Position = position;
         }
 
         protected void SetUnitWorldRotation(Quaternion rotation)
         {
-            attachedUnit.Rotation = rotation;
+            AttachedUnit.Rotation = rotation;
         }
 
         protected void SetWorldPosition(Vector3 position)
@@ -126,7 +119,7 @@ namespace Assets.Scripts.Game.Units
 
         protected Vector3 CreateWorldPos()
         {
-            return mapRenderer.CubicalCoordinateToWorld(previousPosition) + movementDrawOffset;
+            return MapRenderer.CubicalCoordinateToWorld(previousPosition) + movementDrawOffset;
         }
 
         protected void RequestNewPath()
@@ -136,10 +129,7 @@ namespace Assets.Scripts.Game.Units
 
         protected bool IsPathValid()
         {
-            if (currentPathInfo?.GoalPos != Goal)
-                return false;
-
-            return true;
+            return currentPathInfo?.GoalPos == Goal;
         }
     }
 }

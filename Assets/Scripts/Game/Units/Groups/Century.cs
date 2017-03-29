@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
+using Assets.Scripts.Util;
+using Game.Units;
 using Game.Units.Formation;
+using Game.Units.Groups;
 using UnityEngine;
 
-namespace Game.Units.Groups
+namespace Assets.Scripts.Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
@@ -37,6 +41,13 @@ namespace Game.Units.Groups
 
         public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions + new Int2(0,2));
         protected override float ChildSpacing => 1f;
+
+        public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
+        {
+            get { return contubernia.SelectMany(unit => unit.AllUnits).GetEnumerator(); }
+        }
+
+        public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
 
         public void AddUnit(Contubernium unit)
         {
