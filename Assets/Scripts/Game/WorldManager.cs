@@ -91,6 +91,10 @@ namespace Assets.Scripts.Game
             uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
             var miniMap = uiCanvas.GetComponent<MiniMap>();
             miniMap.AttachCamera(cameraObject.GetComponent<Camera>());
+            miniMap.AttachMapObject(MapRendererObject);
+            miniMap.AttachArmies(allArmies);
+
+            miniMap.UpdateOverlayTexture();
         }
 
         // Update is called once per frame
