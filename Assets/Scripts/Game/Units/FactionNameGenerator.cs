@@ -263,7 +263,7 @@ namespace Assets.Scripts.Game.Units
             "Hitters",
             "Soldiers",
             "Men",
-            "Woman",
+            "Women",
             "Thieves",
             "Knights",
             "Rogues",

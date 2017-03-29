@@ -5,16 +5,19 @@ namespace Assets.Scripts.Game.Units
 {
     public class Faction
     {
-        private static List<Color> usedColors;
+        private static readonly List<Color> UsedColors = new List<Color>();
 
-        public Faction(string name)
+        public Faction(string name = null)
         {
+            if (name == null)
+                name = FactionNameGenerator.Generate();
+
             Name = name;
             do
             {
                 Color = Random.ColorHSV();
-            } while (usedColors.Contains(Color));
-            usedColors.Add(Color);
+            } while (UsedColors.Contains(Color));
+            UsedColors.Add(Color);
         }
 
         public string Name { get; set; }

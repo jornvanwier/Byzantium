@@ -75,6 +75,9 @@ namespace Game.Units.Groups
 
             for (int i = 0; i < 6; ++i)
                 cohort.AddUnit(Century.CreateMixedUnit());
+            
+            var faction = new Faction();
+            cohort.Commander = new Commander(cohort, faction);
 
             return cohort;
         }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
-using Assets.Scripts.Map;
 using Game.Units;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -116,7 +115,11 @@ namespace Assets.Scripts.UI
             //Mini map set position takes ~200 nanoseconds
             UpdateCamera();
             UpdatePositionAndSize();
+            if (ShowUnits)
+                UpdateOverlayTexture();
         }
+
+        public bool ShowUnits;
 
         public void UpdateOverlayTexture()
         {
@@ -132,21 +135,28 @@ namespace Assets.Scripts.UI
 
         private Texture2D GetTexture()
         {
-            var t = new Texture2D((int) SizeX, (int) SizeY);
+            var texture = new Texture2D((int) SizeX, (int) SizeY);
+            var colors = new Color[(int) (SizeX * SizeY)];
+            var transparent = new Color(0, 0, 0, 0);
+
+            for (int i = 0; i < SizeX * SizeY; i++)
+                colors[i] = transparent;
+
+            texture.SetPixels(colors);
 
             foreach (UnitController army in armies)
             foreach (MeshDrawableUnit drawableUnit in army.AttachedUnit.AllUnits)
             {
-                Int2 mappedUnitPosition = UnitToPosition(drawableUnit);
-                t.SetPixel(mappedUnitPosition.X, mappedUnitPosition.Y, army.Faction.Color);
+                Vector2 mappedUnitPosition = UnitToPosition(drawableUnit);
+                texture.SetPixel((int) mappedUnitPosition.x, (int) mappedUnitPosition.y, army.Faction.Color);
             }
 
-            return t;
+            return texture;
         }
 
-        private Int2 UnitToPosition(MeshDrawableUnit unit)
+        private Vector2 UnitToPosition(UnitBase unit)
         {
-            return new Int2();
+            return camera.WorldToScreenPoint(unit.Position);
         }
 
         public void AttachMapObject(GameObject mapRenderer)

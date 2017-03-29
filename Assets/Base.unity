@@ -434,9 +434,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6148b40fe93870742ba4c94c9ed26861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BorderSize: 10
   InitialZoom: 100
   InitialZoomSpeed: 2
-  BorderSize: 10
+  ShowUnits: 1
 --- !u!1 &992876522
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,7 +547,6 @@ MonoBehaviour:
   InitialZoomSpeed: 10
   MapRendererObject: {fileID: 1482278021882804, guid: ce1e59d011eb91f47aafc694c0a662c5,
     type: 2}
-  uMatter: {fileID: 2100000, guid: f49ede822207b2f4eb7b0ffa6986bc6b, type: 2}
   MeshHolder:
     Defenses:
       LargeShield: {fileID: 0}
@@ -560,6 +560,7 @@ MonoBehaviour:
       Pike: {fileID: 0}
       Shortbow: {fileID: 0}
       Sword: {fileID: 0}
+  uMatter: {fileID: 2100000, guid: f49ede822207b2f4eb7b0ffa6986bc6b, type: 2}
 --- !u!1 &1361681493
 GameObject:
   m_ObjectHideFlags: 0
@@ -683,7 +684,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -2082471764
+  randomSeed: 1224832257
   InitialModule:
     serializedVersion: 3
     enabled: 1

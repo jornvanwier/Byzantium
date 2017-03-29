@@ -30,8 +30,6 @@ namespace Assets.Scripts.Game
 
         private bool middleMouseDown;
 
-        private Camera miniMapCamera;
-
 
         private Vector2 prevMousePos = Vector2.zero;
         private bool rightMouseDown;
