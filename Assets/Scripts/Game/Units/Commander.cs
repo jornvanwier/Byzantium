@@ -1,6 +1,4 @@
-﻿using Game.Units;
-
-namespace Assets.Scripts.Game.Units
+﻿namespace Assets.Scripts.Game.Units
 {
     public class Commander
     {
@@ -18,6 +16,6 @@ namespace Assets.Scripts.Game.Units
             this.name = name;
         }
 
-        private Faction Faction { get; set; }
+        public Faction Faction { get; set; }
     }
 }

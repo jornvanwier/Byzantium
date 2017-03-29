@@ -3,7 +3,6 @@ using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
 using Assets.Scripts.UI;
-using Game.Units;
 using Game.Units.Formation;
 using Game.Units.Groups;
 using JetBrains.Annotations;
@@ -14,6 +13,7 @@ namespace Assets.Scripts.Game
     public class WorldManager : MonoBehaviour
     {
         private const float CameraZoomLowerLimit = 1;
+        public static Material unitMaterial;
 
         private readonly List<UnitController> allArmies = new List<UnitController>();
         private bool applicationHasFocus;
@@ -25,8 +25,6 @@ namespace Assets.Scripts.Game
         public float InitialZoomSpeed = 2;
         public GameObject MapRendererObject;
         protected MapRenderer MapRendererScript;
-        public static Material unitMaterial;
-        public Material uMatter;
 
         public MeshHolder MeshHolder;
 
@@ -40,6 +38,7 @@ namespace Assets.Scripts.Game
         private Vector3 startIntersect;
 
         private Canvas uiCanvas;
+        public Material uMatter;
 
         private UnitBase unit;
         private UnitController unitController;

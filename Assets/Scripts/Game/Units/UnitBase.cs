@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
+using Game.Units;
 using UnityEngine;
 
-namespace Game.Units
+namespace Assets.Scripts.Game.Units
 {
     public abstract class UnitBase
     {
+        private Commander commander;
+
         protected UnitBase()
         {
             WalkSpeed = DefaultSpeed;
@@ -27,6 +31,17 @@ namespace Game.Units
 
         public abstract int UnitCount { get; }
         public abstract IEnumerable<MeshDrawableUnit> AllUnits { get; }
+
+        public Commander Commander
+        {
+            get { return commander; }
+            set
+            {
+                if (this is MeshDrawableUnit)
+                    throw new ArgumentException("Single unit cannot have a commander");
+                commander = value;
+            }
+        }
 
         public abstract void Draw();
     }

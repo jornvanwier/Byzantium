@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Map;
 using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.Util;
-using Game.Units;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units
@@ -22,6 +21,8 @@ namespace Assets.Scripts.Game.Units
 
         public CubicalCoordinate Position { get; set; }
         public CubicalCoordinate Goal { get; set; }
+
+        public Faction Faction => AttachedUnit.Commander.Faction;
 
         public void Start()
         {

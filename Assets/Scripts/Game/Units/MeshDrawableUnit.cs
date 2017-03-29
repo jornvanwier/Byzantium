@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Game;
+using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Unit_Enums;
 using Assets.Scripts.Map;
 using Assets.Scripts.Util;
@@ -61,7 +62,7 @@ namespace Game.Units
 
         public override void Draw()
         {
-            Quaternion rotate = Rotation * Quaternion.Euler(0,180,0);
+            Quaternion rotate = Rotation * Quaternion.Euler(0, 180, 0);
             Graphics.DrawMesh(UnitMesh, Matrix4x4.TRS(Position, rotate, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
 
 //            Vector3 weaponPosition = Position + (Rotation * new Vector3(0.2f, 0, 0));

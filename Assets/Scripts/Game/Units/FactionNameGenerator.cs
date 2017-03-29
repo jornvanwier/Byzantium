@@ -4,7 +4,8 @@ namespace Assets.Scripts.Game.Units
 {
     public static class FactionNameGenerator
     {
-        private static readonly string[] Adjectives = {
+        private static readonly string[] Adjectives =
+        {
             "Spicy",
             "Stranded",
             "Good",
@@ -241,10 +242,11 @@ namespace Assets.Scripts.Game.Units
             "Many",
             "Numerous",
             "Sparse",
-            "Substantial",
+            "Substantial"
         };
 
-        private static readonly string[] Nouns = {
+        private static readonly string[] Nouns =
+        {
             "Boys",
             "Girls",
             "Guys",
@@ -271,7 +273,7 @@ namespace Assets.Scripts.Game.Units
             "Seafarers",
             "Merchants",
             "Buccaneers",
-            "Privateers",
+            "Privateers"
         };
 
         public static string Generate()

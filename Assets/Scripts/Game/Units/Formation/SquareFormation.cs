@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
 using Game.Units.Groups;
@@ -57,13 +58,14 @@ namespace Game.Units.Formation
         public static void OrderAny<T, TChild>(T unit) where T : UnitBase, IMultipleUnits<TChild>
             where TChild : UnitBase
         {
-            int rowWidth = (int)Mathf.Sqrt(unit.UnitCount);
+            int rowWidth = (int) Mathf.Sqrt(unit.UnitCount);
             int columnHeight = unit.UnitCount / rowWidth;
 
             OrderAny<T, TChild>(rowWidth, columnHeight, unit);
         }
 
-        private static void OrderAny<T, TChild>(int rowWidth, int columnHeight, T unit) where T : UnitBase, IMultipleUnits<TChild>
+        private static void OrderAny<T, TChild>(int rowWidth, int columnHeight, T unit)
+            where T : UnitBase, IMultipleUnits<TChild>
             where TChild : UnitBase
         {
             var localPositions = new List<Vector3>();
