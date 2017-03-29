@@ -12,15 +12,6 @@ namespace Game.Units
 
         private readonly Int2 dimensions = new Int2(1, 1);
 
-        public override Int2 ChildrenDimensions
-        {
-            get { return dimensions; }
-            set { throw new MemberAccessException("Cannot set dimensions of this object."); }
-        }   
-
-        public override Vector2 DrawSize => new Vector2(0.1f, 0.1f);
-        protected override float ChildSpacing => -1;
-
         public MeshDrawableUnit(Defense defense = Defense.Armor,
             Weapon weapon = Weapon.Sword,
             Soldier soldier = Soldier.Armored)
@@ -38,6 +29,15 @@ namespace Game.Units
             WeaponType = weapon;
             SoldierType = soldier;
         }
+
+        public override Int2 ChildrenDimensions
+        {
+            get { return dimensions; }
+            set { throw new MemberAccessException("Cannot set dimensions of this object."); }
+        }
+
+        public override Vector2 DrawSize => new Vector2(0.1f, 0.1f);
+        protected override float ChildSpacing => -1;
 
         public override float DefaultSpeed => 1.5f;
 

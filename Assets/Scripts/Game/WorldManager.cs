@@ -2,28 +2,24 @@
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
-using Assets.Scripts.Util;
+using Assets.Scripts.UI;
 using Game.Units;
 using Game.Units.Formation;
 using Game.Units.Groups;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.Game
 {
     public class WorldManager : MonoBehaviour
     {
         private const float CameraZoomLowerLimit = 1;
-        private const float MiniMapZoomUpperLimit = 1000;
-        private const float MiniMapZoomLowerLimit = 5;
         private bool applicationHasFocus;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
         public GameObject Goal;
         public float InitialCameraAngle = 35;
         public float InitialCameraMoveSpeed = 2;
-        [Range(0.1f, 5)] public float InitialMiniMapZoomSpeed = 2f;
         public float InitialZoomSpeed = 2;
         public GameObject MapRendererObject;
         protected MapRenderer MapRendererScript;
@@ -34,11 +30,12 @@ namespace Assets.Scripts.Game
 
         private Camera miniMapCamera;
 
-        [Range(CameraZoomLowerLimit, MiniMapZoomUpperLimit)] public float InitialMiniMapZoom = 100;
 
         private Vector2 prevMousePos = Vector2.zero;
         private bool rightMouseDown;
         private Vector3 startIntersect;
+
+        private Canvas uiCanvas;
 
         private UnitBase unit;
         private UnitController unitController;
@@ -51,9 +48,6 @@ namespace Assets.Scripts.Game
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
         private float ZoomSpeed => InitialZoomSpeed * (CameraHeight - CameraZoomLowerLimit);
 
-        private float MiniMapZoomSpeed
-            =>
-                InitialMiniMapZoomSpeed * (miniMapCamera.transform.position.y - MiniMapZoomLowerLimit) / 100f;
 
         [UsedImplicitly]
         private void OnApplicationFocus(bool hasFocus)
@@ -67,10 +61,10 @@ namespace Assets.Scripts.Game
             // Ugly hack to allow static retrieval of the attached meshes
             MeshHolder.Initialize();
             Meshes = MeshHolder;
-            
+
             unit = Cohort.CreateUniformMixedUnit();
             unit.Position = new Vector3(5,0,5);
-            unit.Formation = new SetRowFormation();
+            unit.Formation = new SetColumnFormation();
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";
@@ -89,25 +83,17 @@ namespace Assets.Scripts.Game
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
             Rotate(objectRight, Space.Self, InitialCameraAngle);
 
-            miniMapCamera = GameObject.Find("MiniMapCamera").GetComponent<Camera>();
-            miniMapImage = GameObject.Find("MiniMap").GetComponent<RawImage>();
+            uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
+            var miniMap = uiCanvas.GetComponent<MiniMap>();
+            miniMap.AttachCamera(cameraObject.GetComponent<Camera>());
         }
-
-        public Vector2 MiniMapSize;
-        private RawImage miniMapImage;
 
         // Update is called once per frame
         [UsedImplicitly]
         private void Update()
         {
-            //Mini map set position takes ~200 nanoseconds
-            miniMapImage.rectTransform.sizeDelta = new Vector2(MiniMapSize.x, MiniMapSize.y);
-            miniMapImage.transform.position = new Vector3(Screen.width - MiniMapSize.x / 2, MiniMapSize.y / 2);
-
-
             unitController.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
             UpdateCamera();
-            UpdateMiniMapCamera();
         }
 
         private static Vector3 MultiplyVector(Vector3 v1, Vector3 v2)
@@ -119,21 +105,6 @@ namespace Assets.Scripts.Game
         {
             Vector3 result = MultiplyVector(vector, new Vector3(1, 0, 1));
             return Vector3.Normalize(result);
-        }
-
-        private void UpdateMiniMapCamera()
-        {
-            Vector3 camPos = cameraObject.transform.position;
-            miniMapCamera.transform.position = new Vector3(camPos.x, InitialMiniMapZoom, camPos.z);
-
-            if (Input.GetKey(KeyCode.Equals) || Input.GetKey(KeyCode.KeypadPlus))
-                InitialMiniMapZoom -= MiniMapZoomSpeed;
-            if (Input.GetKey(KeyCode.Minus) || Input.GetKey(KeyCode.KeypadMinus))
-            {
-                InitialMiniMapZoom += MiniMapZoomSpeed;
-                if (InitialMiniMapZoom > MiniMapZoomUpperLimit)
-                    InitialMiniMapZoom = MiniMapZoomUpperLimit;
-            }
         }
 
         private void UpdateCamera()

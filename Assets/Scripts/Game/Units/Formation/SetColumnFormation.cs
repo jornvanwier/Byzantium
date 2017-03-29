@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Map;
 using Game.Units;
 using Game.Units.Formation;
@@ -13,7 +14,7 @@ namespace Assets.Scripts.Game.Units.Formation
 
         public override void Order(Legion unit)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override void Order(Contubernium unit)
@@ -28,7 +29,7 @@ namespace Assets.Scripts.Game.Units.Formation
 
         public override void Order(Cohort unit)
         {
-            SquareFormation.OrderAnySetColumn<Cohort, Century>(2, unit);
+            SquareFormation.OrderAnySetColumn<Cohort, Century>(3, unit);
         }
 
         public override void Order(Century unit)

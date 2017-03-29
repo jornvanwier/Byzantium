@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Map;
 using Game.Units;
 using Game.Units.Formation;
@@ -11,7 +12,7 @@ namespace Assets.Scripts.Game.Units.Formation
     {
         public override void Order(Legion unit)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override void Order(Contubernium unit)

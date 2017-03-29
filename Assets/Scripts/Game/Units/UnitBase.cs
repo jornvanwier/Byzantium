@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
-using Game.Units.Formation;
 using UnityEngine;
 
 namespace Game.Units

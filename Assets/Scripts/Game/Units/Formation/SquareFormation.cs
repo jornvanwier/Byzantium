@@ -87,9 +87,7 @@ namespace Game.Units.Formation
 
             int j = 0;
             foreach (UnitBase u in unit)
-            {
                 u.Position = processed[j++];
-            }
 
             unit.ChildrenDimensions = new Int2(rowWidth, columnHeight);
         }
