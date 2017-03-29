@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Groups;
+using Assets.Scripts.Util;
 using Game.Units.Formation;
 using UnityEngine;
 
@@ -35,6 +37,19 @@ namespace Game.Units.Groups
 
         public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions);
         protected override float ChildSpacing => 1.5f;
+
+        public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
+        {
+            get
+            {
+                foreach (Century century in centuries)
+                foreach (MeshDrawableUnit drawableUnit in century.AllUnits)
+                    yield return drawableUnit;
+            }
+        }
+
+
+        public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
 
         public void AddUnit(Century unit)
         {

@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Game.Units.Formation;
+﻿using System.Collections.Generic;
+using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
 using UnityEngine;
 
@@ -25,6 +26,7 @@ namespace Game.Units
         protected abstract float ChildSpacing { get; }
 
         public abstract int UnitCount { get; }
+        public abstract IEnumerable<MeshDrawableUnit> AllUnits { get; }
 
         public abstract void Draw();
     }

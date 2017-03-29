@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using Assets.Scripts.Game;
 using Assets.Scripts.Game.Units.Unit_Enums;
 using Assets.Scripts.Map;
+using Assets.Scripts.Util;
 using UnityEngine;
 
 namespace Game.Units
@@ -49,6 +51,13 @@ namespace Game.Units
         public Soldier SoldierType { get; }
 
         public override int UnitCount => 1;
+
+        public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
+        {
+            get { yield return this; }
+        }
+
+        public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
 
         public override void Draw()
         {
