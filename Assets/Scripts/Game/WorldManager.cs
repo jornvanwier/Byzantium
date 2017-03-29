@@ -85,6 +85,7 @@ namespace Assets.Scripts.Game
             uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
             var miniMap = uiCanvas.GetComponent<MiniMap>();
             miniMap.AttachCamera(cameraObject.GetComponent<Camera>());
+            miniMap.AttachMapObject(MapRendererObject);
         }
 
         // Update is called once per frame
@@ -108,14 +109,8 @@ namespace Assets.Scripts.Game
 
         private void UpdateCamera()
         {
-            Vector3 worldPosition = cameraObject.transform.position;
-            Vector3 localPosition = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.position;
-
             Vector3 worldRight = cameraObject.transform.right;
-            Vector3 worldUp = cameraObject.transform.up;
             Vector3 worldForward = cameraObject.transform.forward;
-
-            Vector3 objectForward = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.forward;
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
 
             //Keyboard movement

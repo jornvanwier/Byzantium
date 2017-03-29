@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Assets.Scripts.Map;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,8 +17,64 @@ namespace Assets.Scripts.UI
 
         private Camera mainCamera;
 
+        private float posX;
+        private float posY;
+
+        private float sizeX;
+
+        private float sizeY;
+
         private float ZoomSpeed
             => InitialZoomSpeed * (camera.transform.position.y - ZoomLowerLimit) / 100f;
+
+        [SerializeField]
+        public float PosX
+        {
+            get { return posX; }
+            set
+            {
+                posX = value;
+                image.transform.position = new Vector3(PosX, PosY);
+                border.transform.position = new Vector3(PosX, PosY);
+            }
+        }
+
+        public float PosY
+        {
+            get { return posY; }
+            set
+            {
+                posY = value;
+                image.transform.position = new Vector3(PosX, PosY);
+                border.transform.position = new Vector3(PosX, PosY);
+            }
+        }
+
+        public float SizeX
+        {
+            get { return sizeX; }
+            set
+            {
+                sizeX = value;
+                image.rectTransform.sizeDelta = new Vector2(SizeX - BorderSize * 2, SizeY - BorderSize * 2);
+                border.rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
+            }
+        }
+
+        public float SizeY
+        {
+            get { return sizeY; }
+            set
+            {
+                sizeY = value;
+                image.rectTransform.sizeDelta = new Vector2(SizeX - BorderSize * 2, SizeY - BorderSize * 2);
+                border.rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
+            }
+        }
+
+        [Range(0.1f, 100)] public float BorderSize = 10;
+
+        private Image border;
 
         // Use this for initialization
         [UsedImplicitly]
@@ -25,9 +82,7 @@ namespace Assets.Scripts.UI
         {
             camera = GameObject.Find("MiniMapCamera").GetComponent<Camera>();
             image = GameObject.Find("MiniMapImage").GetComponent<RawImage>();
-
-            SizeX = 200;
-            SizeY = 200;
+            border = GameObject.Find("MiniMapBorder").GetComponent<Image>();
         }
 
         // Update is called once per frame
@@ -39,53 +94,17 @@ namespace Assets.Scripts.UI
 
             PosX = Screen.width - SizeX / 2;
             PosY = SizeY / 2;
+
+            SizeX = 200;
+            SizeY = 200;
         }
 
-        private float posX;
-        private float posY;
+        private GameObject mapObject;
 
-        public float PosX
+        public void AttachMapObject(GameObject mapRenderer)
         {
-            get { return posX; }
-            set
-            {
-                posX = value;
-                image.transform.position = new Vector3(PosX, PosY);
-            }
-        }
-
-        public float PosY
-        {
-            get { return posY; }
-            set
-            {
-                posY = value;
-                image.transform.position = new Vector3(PosX, PosY);
-            }
-        }
-
-        private float sizeX;
-
-        public float SizeX
-        {
-            get { return sizeX; }
-            set
-            {
-                sizeX = value;
-                image.rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
-            }
-        }
-
-        private float sizeY;
-
-        public float SizeY
-        {
-            get { return sizeY; }
-            set
-            {
-                sizeY = value;
-                image.rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
-            }
+            mapObject = mapRenderer;
+            mapObject.layer = LayerMask.NameToLayer("MapLayer");
         }
 
         public void AttachCamera(Camera mainCamera)
