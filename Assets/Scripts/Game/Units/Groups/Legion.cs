@@ -38,8 +38,7 @@ namespace Game.Units.Groups
 
         public override int UnitCount => cavalries.Count + cohorts.Count;
 
-        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(cohorts[0].DrawSize, ChildrenDimensions);
-        protected override float ChildSpacing => 0.1f;
+        public override Vector2 DrawSize => Vector2.Scale(cohorts[0].DrawSize, ChildrenDimensions);
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {

@@ -25,7 +25,7 @@ namespace Assets.Scripts.Game.Units.Formation
 
         public override void Order(Cohort unit)
         {
-            SquareFormation.OrderAnySetRow<Cohort, Century>(3, unit);
+            SquareFormation.OrderAnySetRow<Cohort, Century>(1, unit);
         }
 
         public override void Order(Century unit)

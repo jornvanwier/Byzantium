@@ -56,6 +56,8 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Start()
         {
+            var a = Vector2.Scale(new Vector2(0.11f, 0.05f), new Int2(2, 4));
+
             unitMaterial = uMatter;
             // Ugly hack to allow static retrieval of the attached meshes
             MeshHolder.Initialize();
@@ -63,7 +65,6 @@ namespace Assets.Scripts.Game
 
             unit = Cohort.CreateUniformMixedUnit();
             unit.Position = new Vector3(5,0,5);
-            unit.Formation = new SquareFormation();
 
 
             MapRendererObject = Instantiate(MapRendererObject);
