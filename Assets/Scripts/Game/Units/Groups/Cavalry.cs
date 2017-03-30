@@ -7,6 +7,11 @@ namespace Game.Units.Groups
 {
     public class Cavalry : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
+        private Cavalry(Faction faction)
+        {
+            Commander = new Commander(this, faction);
+        }
+
         private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
         public override float DefaultSpeed => 1.5f;
 

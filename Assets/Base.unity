@@ -438,6 +438,8 @@ MonoBehaviour:
   InitialZoom: 100
   InitialZoomSpeed: 2
   ShowUnits: 1
+  OffsetX: 28
+  OffsetY: 27
 --- !u!1 &992876522
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,7 +562,9 @@ MonoBehaviour:
       Pike: {fileID: 0}
       Shortbow: {fileID: 0}
       Sword: {fileID: 0}
-  uMatter: {fileID: 2100000, guid: f49ede822207b2f4eb7b0ffa6986bc6b, type: 2}
+  UMatter: {fileID: 0}
+  CameraZoomLowerLimit: 1
+  CameraZoomUpperLimit: 1000
 --- !u!1 &1361681493
 GameObject:
   m_ObjectHideFlags: 0
@@ -3790,7 +3794,7 @@ GameObject:
   - component: {fileID: 1886766404}
   - component: {fileID: 1886766403}
   - component: {fileID: 1886766402}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: MiniMapCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}

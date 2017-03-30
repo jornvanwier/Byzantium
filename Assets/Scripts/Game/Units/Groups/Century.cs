@@ -11,6 +11,10 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
+        private Century(Faction faction)
+        {
+            Commander = new Commander(this, faction);
+        }
         private readonly List<Contubernium> contubernia = new List<Contubernium>();
         public override float DefaultSpeed => 1.5f;
 
@@ -69,21 +73,21 @@ namespace Assets.Scripts.Game.Units.Groups
             return contubernia.GetEnumerator();
         }
 
-        public static Century CreateMixedUnit()
+        public static Century CreateMixedUnit(Faction faction)
         {
-            var century = new Century {Formation = new SetColumnFormation()};
+            var century = new Century(faction) { Formation = new SetColumnFormation()};
 
             // Frontline with swords
             for (int i = 0; i < 4; ++i)
-                century.AddUnit(Contubernium.CreateSwordUnit());
+                century.AddUnit(Contubernium.CreateSwordUnit(faction));
 
             // Mid with pikes
             for (int i = 0; i < 3; ++i)
-                century.AddUnit(Contubernium.CreatePikeUnit());
+                century.AddUnit(Contubernium.CreatePikeUnit(faction));
 
             // Backline with bows
             for (int i = 0; i < 3; ++i)
-                century.AddUnit(Contubernium.CreateLongbowUnit());
+                century.AddUnit(Contubernium.CreateLongbowUnit(faction));
 
             return century;
         }

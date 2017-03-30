@@ -1,15 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts.Game.Units;
-using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Util;
+using Game.Units;
 using Game.Units.Formation;
 using UnityEngine;
 
-namespace Game.Units.Groups
+namespace Assets.Scripts.Game.Units.Groups
 {
     public class Cohort : UnitBase, IMultipleUnits<Century>
     {
+        private Cohort(Faction faction)
+        {
+            Commander = new Commander(this, faction);
+        }
+
         private readonly List<Century> centuries = new List<Century>();
         public override float DefaultSpeed => 1.5f;
 
@@ -69,15 +73,12 @@ namespace Game.Units.Groups
             return centuries.GetEnumerator();
         }
 
-        public static Cohort CreateUniformMixedUnit()
+        public static Cohort CreateUniformMixedUnit(Faction faction)
         {
-            var cohort = new Cohort {Formation = new SquareFormation()};
+            var cohort = new Cohort(faction){Formation = new SquareFormation()};
 
             for (int i = 0; i < 6; ++i)
-                cohort.AddUnit(Century.CreateMixedUnit());
-            
-            var faction = new Faction();
-            cohort.Commander = new Commander(cohort, faction);
+                cohort.AddUnit(Century.CreateMixedUnit(faction));
 
             return cohort;
         }

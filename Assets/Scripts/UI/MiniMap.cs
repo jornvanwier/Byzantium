@@ -17,7 +17,7 @@ namespace Assets.Scripts.UI
         private Image border;
 
         [Range(0.1f, 100)] public float BorderSize = 10;
-        private Camera camera;
+        private new Camera camera;
         private RawImage image;
         [Range(ZoomLowerLimit, ZoomUpperLimit)] public float InitialZoom = 100;
 
@@ -148,15 +148,20 @@ namespace Assets.Scripts.UI
             foreach (MeshDrawableUnit drawableUnit in army.AttachedUnit.AllUnits)
             {
                 Vector2 mappedUnitPosition = UnitToPosition(drawableUnit);
-                texture.SetPixel((int) mappedUnitPosition.x, (int) mappedUnitPosition.y, army.Faction.Color);
+                if (mappedUnitPosition.x >= 0 && mappedUnitPosition.y >= 0 && mappedUnitPosition.x < SizeX &&
+                    mappedUnitPosition.y < SizeY)
+                    texture.SetPixel((int) mappedUnitPosition.x, (int) mappedUnitPosition.y, army.Faction.Color);
             }
 
             return texture;
         }
 
+        [Range(25, 35)] public float OffsetX = 28;
+        [Range(25, 35)] public float OffsetY = 27;
+
         private Vector2 UnitToPosition(UnitBase unit)
         {
-            return camera.WorldToScreenPoint(unit.Position);
+            return camera.WorldToScreenPoint(unit.Position) - new Vector3(OffsetX, OffsetY, 0);
         }
 
         public void AttachMapObject(GameObject mapRenderer)
@@ -172,8 +177,18 @@ namespace Assets.Scripts.UI
 
         private void UpdateCamera()
         {
-            Vector3 camPos = mainCamera.transform.position;
-            camera.transform.position = new Vector3(camPos.x, InitialZoom, camPos.z);
+            Vector3 position = new Vector2(Screen.width / 2, Screen.height / 2);
+            var plane = new Plane(Vector3.up, Vector3.zero);
+            var intersect = new Vector3();
+
+            Ray ray = mainCamera.ScreenPointToRay(position);
+            if (plane.Raycast(ray, out float rayDistance))
+                intersect = ray.GetPoint(rayDistance);
+
+            camera.transform.position = new Vector3(intersect.x, InitialZoom, intersect.z);
+            Vector3 oldAngle = camera.transform.rotation.eulerAngles;
+            Vector3 newAngle = new Vector3(oldAngle.x, mainCamera.transform.rotation.eulerAngles.y, oldAngle.z);
+            camera.transform.eulerAngles = newAngle;
 
             if (Input.GetKey(KeyCode.Equals) || Input.GetKey(KeyCode.KeypadPlus))
                 InitialZoom -= ZoomSpeed;

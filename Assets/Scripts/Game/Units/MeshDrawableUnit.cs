@@ -11,7 +11,7 @@ namespace Game.Units
 {
     public class MeshDrawableUnit : UnitBase
     {
-        public static Material Material = WorldManager.unitMaterial;
+        public static Material Material = WorldManager.UnitMaterial;
 
         private readonly Int2 dimensions = new Int2(1, 1);
 

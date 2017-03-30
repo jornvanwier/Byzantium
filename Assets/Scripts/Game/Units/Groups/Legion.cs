@@ -1,14 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts.Game.Units;
 using Assets.Scripts.Util;
+using Game.Units;
+using Game.Units.Groups;
 using UnityEngine;
 
-namespace Game.Units.Groups
+namespace Assets.Scripts.Game.Units.Groups
 {
     public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>, IEnumerable<Cohort>,
         IEnumerable<Cavalry>
     {
+        private Legion(Faction faction)
+        {
+            Commander = new Commander(this, faction);
+        }
         private readonly List<Cavalry> cavalries = new List<Cavalry>();
 
         private readonly List<Cohort> cohorts = new List<Cohort>();
