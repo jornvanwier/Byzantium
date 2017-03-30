@@ -40,10 +40,9 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override int UnitCount => contubernia.Count;
 
-        public override Vector2 DrawSize
-            => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions + new Int2(0, 2));
+        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions);
 
-        protected override float ChildSpacing => 1f;
+        private const float ChildSpacing = 1.3f;
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {

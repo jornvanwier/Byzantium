@@ -39,8 +39,7 @@ namespace Game.Units
             set { throw new MemberAccessException("Cannot set dimensions of this object."); }
         }
 
-        public override Vector2 DrawSize => new Vector2(0.1f, 0.1f);
-        protected override float ChildSpacing => -1;
+        public override Vector2 DrawSize => new Vector2(0.11f, 0.05f);
 
         public override float DefaultSpeed => 1.5f;
 
@@ -52,6 +51,8 @@ namespace Game.Units
         public Soldier SoldierType { get; }
 
         public override int UnitCount => 1;
+
+        private Vector3 oldPosition = Vector3.zero;
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {

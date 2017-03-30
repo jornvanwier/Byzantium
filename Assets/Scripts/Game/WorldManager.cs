@@ -60,15 +60,13 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Start()
         {
-            UnitMaterial = UMatter;
+            unitMaterial = uMatter;
             // Ugly hack to allow static retrieval of the attached meshes
             MeshHolder.Initialize();
             Meshes = MeshHolder;
 
-            var faction = new Faction();
-
-            unit = Cohort.CreateUniformMixedUnit(faction);
-            unit.Position = new Vector3(5, 0, 5);
+            unit = Cohort.CreateUniformMixedUnit();
+            unit.Position = new Vector3(5,0,5);
             unit.Formation = new SquareFormation();
 
 

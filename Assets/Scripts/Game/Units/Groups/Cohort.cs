@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Util;
 using Game.Units;
 using Game.Units.Formation;
@@ -39,11 +41,10 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override int UnitCount => centuries.Count;
 
-        public override Vector2 DrawSize
-            => ChildSpacing * Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions + new Vector2(1.5f, 0));
+        public override Vector2 DrawSize => Vector2.Scale(new Vector2(ChildSpacingX, ChildSpacingY), Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions));
 
-        protected override float ChildSpacing => 1.3f;
-
+        private const float ChildSpacingX = 1.7f;
+        private const float ChildSpacingY = 1.15f;
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
             get
@@ -75,7 +76,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Cohort CreateUniformMixedUnit(Faction faction)
         {
-            var cohort = new Cohort(faction){Formation = new SquareFormation()};
+            var cohort = new Cohort {Formation = new SquareFormation()};
 
             for (int i = 0; i < 6; ++i)
                 cohort.AddUnit(Century.CreateMixedUnit(faction));

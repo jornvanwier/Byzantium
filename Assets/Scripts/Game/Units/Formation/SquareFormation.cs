@@ -87,13 +87,13 @@ namespace Game.Units.Formation
                 ++i;
             }
 
-            var processed = new List<Vector3>(ProcessLocalOffsets(originalpositions, localPositions, unit));
+            var processed = new List<Vector3>(ProcessLocalOffsets<T,TChild>(localPositions, unit));
 
             int j = 0;
             foreach (UnitBase u in unit)
                 u.Position = processed[j++];
 
-            unit.ChildrenDimensions = new Int2(rowWidth, columnHeight);
+            unit.ChildrenDimensions = new Int2(columnHeight, rowWidth);
         }
     }
 }
