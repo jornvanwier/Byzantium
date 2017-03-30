@@ -27,8 +27,6 @@ namespace Assets.Scripts.Game.Units
         public virtual Int2 ChildrenDimensions { get; set; }
         public abstract Vector2 DrawSize { get; }
 
-        protected abstract float ChildSpacing { get; }
-
         public abstract int UnitCount { get; }
         public abstract IEnumerable<MeshDrawableUnit> AllUnits { get; }
 
