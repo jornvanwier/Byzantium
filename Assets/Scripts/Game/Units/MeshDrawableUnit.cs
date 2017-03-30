@@ -53,6 +53,8 @@ namespace Game.Units
 
         public override int UnitCount => 1;
 
+        private Vector3 oldPosition = Vector3.zero;
+
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
             get { yield return this; }
