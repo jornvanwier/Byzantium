@@ -76,7 +76,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Cohort CreateUniformMixedUnit(Faction faction)
         {
-            var cohort = new Cohort {Formation = new SquareFormation()};
+            var cohort = new Cohort(faction) {Formation = new SquareFormation()};
 
             for (int i = 0; i < 6; ++i)
                 cohort.AddUnit(Century.CreateMixedUnit(faction));
