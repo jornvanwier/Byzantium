@@ -1,7 +1,11 @@
 ﻿using System;
 using Assets.Scripts.Game.Units.Groups;
+<<<<<<< HEAD
 using Game.Units;
 using Game.Units.Groups;
+=======
+using Game.Units.Formation;
+>>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
 
 namespace Assets.Scripts.Game.Units.Formation
 {

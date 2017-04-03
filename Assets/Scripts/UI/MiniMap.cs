@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
-using Game.Units;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,8 +41,7 @@ namespace Assets.Scripts.UI
 
         private float ZoomSpeed
             => InitialZoomSpeed * (camera.transform.position.y - ZoomLowerLimit) / 100f;
-
-        [SerializeField]
+        
         public float PosX
         {
             get { return posX; }

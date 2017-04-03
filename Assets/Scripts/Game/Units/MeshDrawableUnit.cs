@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Scripts.Game;
-using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Unit_Enums;
 using Assets.Scripts.Map;
 using Assets.Scripts.Util;
 using UnityEngine;
 
-namespace Game.Units
+namespace Assets.Scripts.Game.Units
 {
     public class MeshDrawableUnit : UnitBase
     {
@@ -34,6 +32,9 @@ namespace Game.Units
             WeaponType = weapon;
             SoldierType = soldier;
         }
+
+        private const int StartHealth = 200;
+        public override int Health { get; set; } = StartHealth;
 
         public override Int2 ChildrenDimensions
         {

@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Game.Units.Unit_Enums;
+=======
+>>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
 using UnityEngine;
 
-namespace Game.Units.Groups
+namespace Assets.Scripts.Game.Units.Groups
 {
     public class Cavalry : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
@@ -16,6 +19,19 @@ namespace Game.Units.Groups
             Commander = new Commander(this, faction);
         }
 
+<<<<<<< HEAD
+=======
+        public override int Health
+        {
+            get { return drawableUnits[0].Health; }
+            set
+            {
+                foreach (MeshDrawableUnit meshDrawableUnit in drawableUnits)
+                    meshDrawableUnit.Health = value;
+            }
+        }
+
+>>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
         public override float DefaultSpeed => 1.5f;
 
         public override Quaternion Rotation

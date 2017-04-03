@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Util;
-using Game.Units;
-using Game.Units.Groups;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
@@ -11,6 +9,10 @@ namespace Assets.Scripts.Game.Units.Groups
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
         private const float ChildSpacing = 1.3f;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
         private readonly List<Contubernium> contubernia = new List<Contubernium>();
 
         private Century(Faction faction)
@@ -18,6 +20,19 @@ namespace Assets.Scripts.Game.Units.Groups
             Commander = new Commander(this, faction);
         }
 
+<<<<<<< HEAD
+=======
+        public override int Health
+        {
+            get { return contubernia[0].Health; }
+            set
+            {
+                foreach (Contubernium contubernium in contubernia)
+                    contubernium.Health = value;
+            }
+        }
+
+>>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
         public override float DefaultSpeed => 1.5f;
 
         public override Quaternion Rotation

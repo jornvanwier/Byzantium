@@ -1,8 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Util;
 using Game.Units;
+=======
+using Assets.Scripts.Util;
+using Game.Units.Formation;
+>>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
@@ -60,6 +65,17 @@ namespace Assets.Scripts.Game.Units.Groups
 
 
         public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
+
+
+        public override int Health
+        {
+            get { return centuries[0].Health; }
+            set
+            {
+                foreach (Century century in centuries)
+                    century.Health = value;
+            }
+        }
 
         public void AddUnit(Century unit)
         {

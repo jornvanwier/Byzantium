@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Map;
 using Assets.Scripts.Map.Pathfinding;
+using Assets.Scripts.UI;
 using Assets.Scripts.Util;
 using UnityEngine;
 
@@ -21,6 +22,7 @@ namespace Assets.Scripts.Game.Units
 
         public CubicalCoordinate Position { get; set; }
         public CubicalCoordinate Goal { get; set; }
+        public HealthBar HealthBar { get; private set; }
 
         public Faction Faction => AttachedUnit.Commander.Faction;
 
@@ -28,10 +30,35 @@ namespace Assets.Scripts.Game.Units
         {
             Position = MapRenderer.WorldToCubicalCoordinate(transform.position);
             previousPosition = Position;
+
+            var obj = new GameObject("ArmyHealth");
+            obj.transform.SetParent(GameObject.Find("uiCanvas").transform);
+            HealthBar = obj.AddComponent<HealthBar>();
+        }
+
+        public void AttachCamera(Camera camera)
+        {
+            this.camera = camera;
+        }
+
+        private new Camera camera;
+
+        
+
+        private void UpdateHealthBar()
+        {
+            if (camera == null) return;
+            Vector3 healthBarPosition = transform.position + Vector3.up;
+            Vector3 point = camera.WorldToScreenPoint(healthBarPosition);
+            HealthBar.PosX = point.x;
+            HealthBar.PosY = point.y;
+
+            HealthBar.Value = AttachedUnit.Health;
         }
 
         public void Update()
         {
+            UpdateHealthBar();
             AttachedUnit.Draw();
 
             if (currentPathInfo?.Path != null)

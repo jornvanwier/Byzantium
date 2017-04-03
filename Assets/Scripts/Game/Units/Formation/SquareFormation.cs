@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
+<<<<<<< HEAD
 using Game.Units;
 using Game.Units.Groups;
+=======
+>>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Formation
@@ -82,7 +85,15 @@ namespace Assets.Scripts.Game.Units.Formation
                 ++i;
             }
 
+<<<<<<< HEAD
             ProcessLocalOffsets<T, TChild>(localPositions, unit);
+=======
+            var processed = new List<Vector3>(ProcessLocalOffsets<T, TChild>(localPositions, unit));
+
+            int j = 0;
+            foreach (UnitBase u in unit)
+                u.Position = processed[j++];
+>>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
 
             unit.ChildrenDimensions = new Int2(columnHeight, rowWidth);
         }

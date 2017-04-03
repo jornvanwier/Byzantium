@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Formation.LegionFormation;
 using Assets.Scripts.Map;
 using Assets.Scripts.Util;
-using Game.Units;
-using Game.Units.Groups;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
@@ -20,6 +18,25 @@ namespace Assets.Scripts.Game.Units.Groups
             Commander = new Commander(this, faction);
         }
 
+<<<<<<< HEAD
+=======
+        public override int Health
+        {
+            get
+            {
+                if (cohorts.Count > 0) return cohorts[0].Health;
+                return cavalries.Count > 0 ? cavalries[0].Health : 0;
+            }
+            set
+            {
+                foreach (Cohort cohort in cohorts)
+                    cohort.Health = value;
+                foreach (Cavalry cavalry in cavalries)
+                    cavalry.Health = value;
+            }
+        }
+
+>>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
         public override float DefaultSpeed => 1.5f;
         public IEnumerable<Cavalry> Cavalries => cavalries;
         public IEnumerable<Cohort> Cohorts => cohorts;
