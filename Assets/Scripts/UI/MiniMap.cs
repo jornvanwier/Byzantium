@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
-using Game.Units;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,8 +26,13 @@ namespace Assets.Scripts.UI
 
         private GameObject mapObject;
 
+        [Range(25, 35)] public float OffsetX = 28;
+        [Range(25, 35)] public float OffsetY = 27;
+
         private float posX;
         private float posY;
+
+        public bool ShowUnits;
 
         private float sizeX;
 
@@ -119,8 +123,6 @@ namespace Assets.Scripts.UI
                 UpdateOverlayTexture();
         }
 
-        public bool ShowUnits;
-
         public void UpdateOverlayTexture()
         {
             Texture2D newTex = GetTexture();
@@ -156,9 +158,6 @@ namespace Assets.Scripts.UI
             return texture;
         }
 
-        [Range(25, 35)] public float OffsetX = 28;
-        [Range(25, 35)] public float OffsetY = 27;
-
         private Vector2 UnitToPosition(UnitBase unit)
         {
             return camera.WorldToScreenPoint(unit.Position) - new Vector3(OffsetX, OffsetY, 0);
@@ -187,7 +186,7 @@ namespace Assets.Scripts.UI
 
             camera.transform.position = new Vector3(intersect.x, InitialZoom, intersect.z);
             Vector3 oldAngle = camera.transform.rotation.eulerAngles;
-            Vector3 newAngle = new Vector3(oldAngle.x, mainCamera.transform.rotation.eulerAngles.y, oldAngle.z);
+            var newAngle = new Vector3(oldAngle.x, mainCamera.transform.rotation.eulerAngles.y, oldAngle.z);
             camera.transform.eulerAngles = newAngle;
 
             if (Input.GetKey(KeyCode.Equals) || Input.GetKey(KeyCode.KeypadPlus))

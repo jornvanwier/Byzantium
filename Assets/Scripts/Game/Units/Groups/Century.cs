@@ -1,21 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Formation;
-using Assets.Scripts.Map;
 using Assets.Scripts.Util;
-using Game.Units;
-using Game.Units.Groups;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
+        private const float ChildSpacing = 1.3f;
+
+        private readonly List<Contubernium> contubernia = new List<Contubernium>();
+
         private Century(Faction faction)
         {
             Commander = new Commander(this, faction);
         }
-        private readonly List<Contubernium> contubernia = new List<Contubernium>();
+
+        public override int Health
+        {
+            get { return contubernia[0].Health; }
+            set
+            {
+                foreach (Contubernium contubernium in contubernia)
+                    contubernium.Health = value;
+            }
+        }
+
         public override float DefaultSpeed => 1.5f;
 
         public override Quaternion Rotation
@@ -41,8 +52,6 @@ namespace Assets.Scripts.Game.Units.Groups
         public override int UnitCount => contubernia.Count;
 
         public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions);
-
-        private const float ChildSpacing = 1.3f;
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
@@ -74,7 +83,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Century CreateMixedUnit(Faction faction)
         {
-            var century = new Century(faction) { Formation = new SetColumnFormation()};
+            var century = new Century(faction) {Formation = new SetColumnFormation()};
 
             // Frontline with swords
             for (int i = 0; i < 4; ++i)

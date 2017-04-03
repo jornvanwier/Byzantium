@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
-using Game.Units;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units
@@ -29,6 +28,8 @@ namespace Assets.Scripts.Game.Units
 
         public abstract int UnitCount { get; }
         public abstract IEnumerable<MeshDrawableUnit> AllUnits { get; }
+
+        public abstract int Health { get; set; }
 
         public Commander Commander
         {

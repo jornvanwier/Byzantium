@@ -1,20 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Unit_Enums;
 using Game.Units.Formation;
 using UnityEngine;
 
-namespace Game.Units.Groups
+namespace Assets.Scripts.Game.Units.Groups
 {
     public class Contubernium : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
+        private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
+
         private Contubernium(Faction faction)
         {
             Commander = new Commander(this, faction);
         }
 
-        private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
+        public override int Health
+        {
+            get { return drawableUnits[0].Health; }
+            set
+            {
+                foreach (MeshDrawableUnit meshDrawableUnit in drawableUnits)
+                    meshDrawableUnit.Health = value;
+            }
+        }
+
         public override float DefaultSpeed => 1.5f;
 
         public override Vector3 Position

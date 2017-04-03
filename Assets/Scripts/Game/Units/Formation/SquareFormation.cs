@@ -4,7 +4,6 @@ using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
-using Game.Units.Groups;
 using UnityEngine;
 
 namespace Game.Units.Formation
@@ -87,7 +86,7 @@ namespace Game.Units.Formation
                 ++i;
             }
 
-            var processed = new List<Vector3>(ProcessLocalOffsets<T,TChild>(localPositions, unit));
+            var processed = new List<Vector3>(ProcessLocalOffsets<T, TChild>(localPositions, unit));
 
             int j = 0;
             foreach (UnitBase u in unit)

@@ -1,8 +1,6 @@
 ﻿using System;
 using Assets.Scripts.Game.Units.Groups;
-using Game.Units;
 using Game.Units.Formation;
-using Game.Units.Groups;
 
 namespace Assets.Scripts.Game.Units.Formation
 {

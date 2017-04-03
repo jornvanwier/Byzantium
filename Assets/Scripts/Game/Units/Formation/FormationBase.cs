@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Groups;
-using Game.Units.Groups;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Formation
@@ -33,7 +32,6 @@ namespace Assets.Scripts.Game.Units.Formation
                 Vector3 definitivePosition = Vector3.MoveTowards(oldPosition, targetPosition, Time.deltaTime);
                 newWorldPositions.Add(definitivePosition);
 
-                
 
                 float dist = Vector3.Distance(oldPosition, definitivePosition);
                 maxDist = dist > maxDist ? dist : maxDist;
@@ -50,7 +48,8 @@ namespace Assets.Scripts.Game.Units.Formation
             return newWorldPositions;
         }
 
-        protected static IEnumerable<Vector3> ProcessLocalOffsets<T,TChild>(List<Vector3> offsetPositions, T unit) where T : UnitBase, IMultipleUnits<TChild> where TChild : UnitBase
+        protected static IEnumerable<Vector3> ProcessLocalOffsets<T, TChild>(List<Vector3> offsetPositions, T unit)
+            where T : UnitBase, IMultipleUnits<TChild> where TChild : UnitBase
         {
             float maxDist = 0.0f;
             int i = 0;
@@ -82,6 +81,5 @@ namespace Assets.Scripts.Game.Units.Formation
 
             return newWorldPositions;
         }
-
     }
 }

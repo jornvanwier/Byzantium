@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Util;
-using Game.Units;
-using Game.Units.Groups;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
@@ -10,13 +8,31 @@ namespace Assets.Scripts.Game.Units.Groups
     public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>, IEnumerable<Cohort>,
         IEnumerable<Cavalry>
     {
+        private readonly List<Cavalry> cavalries = new List<Cavalry>();
+
+        private readonly List<Cohort> cohorts = new List<Cohort>();
+
         private Legion(Faction faction)
         {
             Commander = new Commander(this, faction);
         }
-        private readonly List<Cavalry> cavalries = new List<Cavalry>();
 
-        private readonly List<Cohort> cohorts = new List<Cohort>();
+        public override int Health
+        {
+            get
+            {
+                if (cohorts.Count > 0) return cohorts[0].Health;
+                return cavalries.Count > 0 ? cavalries[0].Health : 0;
+            }
+            set
+            {
+                foreach (Cohort cohort in cohorts)
+                    cohort.Health = value;
+                foreach (Cavalry cavalry in cavalries)
+                    cavalry.Health = value;
+            }
+        }
+
         public override float DefaultSpeed => 1.5f;
         public IEnumerable<Cavalry> Cavalries => cavalries;
         public IEnumerable<Cohort> Cohorts => cohorts;
