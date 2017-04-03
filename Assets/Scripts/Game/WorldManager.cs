@@ -50,9 +50,10 @@ namespace Assets.Scripts.Game
         private UnitController unitController;
 
         public static MeshHolder Meshes { get; private set; }
-        private float CameraHeight => cameraObject?.transform.position.y ?? 10;
+        private float CameraHeight => cameraObject?.transform.position.y ?? CameraStartPosition.y;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
         private float ZoomSpeed => InitialZoomSpeed * CameraHeight;
+        public Vector3 CameraStartPosition;
 
         public UnitController SelectedArmy
         {
@@ -80,19 +81,20 @@ namespace Assets.Scripts.Game
             Meshes = MeshHolder;
 
             var faction = new Faction();
-            
+
             unit = Legion.CreateStandardLegion(faction);
             unit.Position = new Vector3(5, 0, 5);
 
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";
-            float cHeight = CameraHeight;
             cameraObject = new GameObject("MainCamera");
             cameraObject.AddComponent<Camera>();
-            cameraObject.transform.position = new Vector3(0, cHeight, 0);
-            cameraObject.GetComponent<Camera>().farClipPlane = CameraZoomUpperLimit + 100;
+            cameraObject.transform.position = new Vector3(CameraStartPosition.x, CameraStartPosition.y,
+                CameraStartPosition.z);
             camera = cameraObject.GetComponent<Camera>();
+            camera.farClipPlane = CameraZoomUpperLimit + 100;
+            camera.nearClipPlane = 0.01f;
 
             MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
 
