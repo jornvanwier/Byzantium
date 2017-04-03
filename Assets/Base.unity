@@ -229,8 +229,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 389fbed70b251e946a34e64e817f6688, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: e78d8dd6a93a4bf458f338159639459c, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 622972160}
   - component: {fileID: 622972159}
   - component: {fileID: 622972163}
+  - component: {fileID: 622972164}
   m_Layer: 5
   m_Name: uiCanvas
   m_TagString: Untagged
@@ -441,6 +442,17 @@ MonoBehaviour:
   OffsetX: 28
   OffsetY: 27
   ShowUnits: 1
+--- !u!114 &622972164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 622972158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd4124dd0ff3564898fa944fc038bc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &992876522
 GameObject:
   m_ObjectHideFlags: 0
@@ -3966,7 +3978,7 @@ GameObject:
   - component: {fileID: 2076701337}
   - component: {fileID: 2076701336}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: InfoPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3986,9 +3998,9 @@ RectTransform:
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0.2543834}
-  m_AnchoredPosition: {x: 261.5, y: 206.5}
-  m_SizeDelta: {x: 523, y: 413}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 436, y: 93}
+  m_SizeDelta: {x: 819.2, y: 101}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2076701336
 MonoBehaviour:
@@ -4002,15 +4014,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 9c60584c39489474a9ef492369805a53, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 13e4554319dca8c47867506f16f45dfe, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
