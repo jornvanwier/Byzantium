@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
-using Game.Units;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units
@@ -10,6 +9,8 @@ namespace Assets.Scripts.Game.Units
     public abstract class UnitBase
     {
         private Commander commander;
+
+        private Rect hitbox;
 
         protected UnitBase()
         {
@@ -21,14 +22,28 @@ namespace Assets.Scripts.Game.Units
 
         public virtual Quaternion Rotation { get; set; } = Quaternion.identity;
 
-        public virtual IFormation Formation { get; set; } = new VerticalLineFormation();
+        public virtual IFormation Formation { get; set; }
         public virtual float WalkSpeed { get; set; } = 1.0f;
 
         public virtual Int2 ChildrenDimensions { get; set; }
         public abstract Vector2 DrawSize { get; }
 
+        public Rect Hitbox
+        {
+            get
+            {
+                hitbox.x = Position.x - DrawSize.x;
+                hitbox.y = Position.y - DrawSize.y;
+                hitbox.width = DrawSize.x * 2;
+                hitbox.height = DrawSize.y * 2;
+                return hitbox;
+            }
+        }
+
         public abstract int UnitCount { get; }
         public abstract IEnumerable<MeshDrawableUnit> AllUnits { get; }
+
+        public abstract int Health { get; set; }
 
         public Commander Commander
         {

@@ -1,17 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Formation;
-using Assets.Scripts.Map;
 using Assets.Scripts.Util;
-using Game.Units;
-using Game.Units.Groups;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
+        private const float ChildSpacing = 1.3f;
         private readonly List<Contubernium> contubernia = new List<Contubernium>();
+
+        private Century(Faction faction)
+        {
+            Commander = new Commander(this, faction);
+        }
+        public override int Health
+        {
+            get { return contubernia[0].Health; }
+            set
+            {
+                foreach (Contubernium contubernium in contubernia)
+                    contubernium.Health = value;
+            }
+        }
         public override float DefaultSpeed => 1.5f;
 
         public override Quaternion Rotation
@@ -38,8 +50,6 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions);
 
-        private const float ChildSpacing = 1.3f;
-
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
             get
@@ -63,26 +73,21 @@ namespace Assets.Scripts.Game.Units.Groups
             contubernia.RemoveAt(index);
         }
 
-        public IEnumerator GetEnumerator()
+        public static Century CreateMixedUnit(Faction faction)
         {
-            return contubernia.GetEnumerator();
-        }
-
-        public static Century CreateMixedUnit()
-        {
-            var century = new Century {Formation = new SetColumnFormation()};
+            var century = new Century(faction) {Formation = new SetColumnFormation()};
 
             // Frontline with swords
             for (int i = 0; i < 4; ++i)
-                century.AddUnit(Contubernium.CreateSwordUnit());
+                century.AddUnit(Contubernium.CreateSwordUnit(faction));
 
             // Mid with pikes
             for (int i = 0; i < 3; ++i)
-                century.AddUnit(Contubernium.CreatePikeUnit());
+                century.AddUnit(Contubernium.CreatePikeUnit(faction));
 
             // Backline with bows
             for (int i = 0; i < 3; ++i)
-                century.AddUnit(Contubernium.CreateLongbowUnit());
+                century.AddUnit(Contubernium.CreateLongbowUnit(faction));
 
             return century;
         }
@@ -91,6 +96,16 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             foreach (Contubernium unit in this)
                 unit.Draw();
+        }
+
+        IEnumerator<Contubernium> IEnumerable<Contubernium>.GetEnumerator()
+        {
+            return contubernia.GetEnumerator();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return ((IEnumerable<Contubernium>)this).GetEnumerator();
         }
     }
 }

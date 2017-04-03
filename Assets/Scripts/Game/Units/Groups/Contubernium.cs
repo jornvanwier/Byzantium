@@ -1,15 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Game.Units.Unit_Enums;
-using Game.Units.Formation;
 using UnityEngine;
 
-namespace Game.Units.Groups
+namespace Assets.Scripts.Game.Units.Groups
 {
     public class Contubernium : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
         private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
+
+        private Contubernium(Faction faction)
+        {
+            Commander = new Commander(this, faction);
+        }
+
+        public override int Health
+        {
+            get { return drawableUnits[0].Health; }
+            set
+            {
+                foreach (MeshDrawableUnit meshDrawableUnit in drawableUnits)
+                    meshDrawableUnit.Health = value;
+            }
+        }
         public override float DefaultSpeed => 1.5f;
 
         public override Vector3 Position
@@ -49,29 +63,24 @@ namespace Game.Units.Groups
             drawableUnits.RemoveAt(index);
         }
 
-        public IEnumerator GetEnumerator()
+        public static Contubernium CreateSwordUnit(Faction faction)
         {
-            return drawableUnits.GetEnumerator();
+            return CreateCustomUnit(faction, Defense.SmallShield, Weapon.Sword, Soldier.Armored);
         }
 
-        public static Contubernium CreateSwordUnit()
+        public static Contubernium CreateLongbowUnit(Faction faction)
         {
-            return CreateCustomUnit(Defense.SmallShield, Weapon.Sword, Soldier.Armored);
+            return CreateCustomUnit(faction, Defense.None, Weapon.Longbow, Soldier.Unarmored);
         }
 
-        public static Contubernium CreateLongbowUnit()
+        public static Contubernium CreatePikeUnit(Faction faction)
         {
-            return CreateCustomUnit(Defense.None, Weapon.Longbow, Soldier.Unarmored);
+            return CreateCustomUnit(faction, Defense.LargeShield, Weapon.Pike, Soldier.Armored);
         }
 
-        public static Contubernium CreatePikeUnit()
+        public static Contubernium CreateCustomUnit(Faction faction, Defense defense, Weapon weapon, Soldier soldier)
         {
-            return CreateCustomUnit(Defense.LargeShield, Weapon.Pike, Soldier.Armored);
-        }
-
-        public static Contubernium CreateCustomUnit(Defense defense, Weapon weapon, Soldier soldier)
-        {
-            var contuberium = new Contubernium {Formation = new SquareFormation()};
+            var contuberium = new Contubernium(faction) {Formation = new SquareFormation()};
 
             for (int i = 0; i < 8; ++i)
                 contuberium.AddUnit(new MeshDrawableUnit(
@@ -92,6 +101,16 @@ namespace Game.Units.Groups
         {
             foreach (MeshDrawableUnit unit in this)
                 unit.Draw();
+        }
+
+        IEnumerator<MeshDrawableUnit> IEnumerable<MeshDrawableUnit>.GetEnumerator()
+        {
+            return drawableUnits.GetEnumerator();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return ((IEnumerable<MeshDrawableUnit>)this).GetEnumerator();
         }
     }
 }

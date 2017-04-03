@@ -1,17 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Formation.LegionFormation;
+using Assets.Scripts.Map;
 using Assets.Scripts.Util;
 using UnityEngine;
 
-namespace Game.Units.Groups
+namespace Assets.Scripts.Game.Units.Groups
 {
-    public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>, IEnumerable<Cohort>,
-        IEnumerable<Cavalry>
+    public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>
     {
         private readonly List<Cavalry> cavalries = new List<Cavalry>();
 
         private readonly List<Cohort> cohorts = new List<Cohort>();
+
+        private Legion(Faction faction)
+        {
+            Commander = new Commander(this, faction);
+        }
+        
+        public override int Health
+        {
+            get
+            {
+                if (cohorts.Count > 0) return cohorts[0].Health;
+                return cavalries.Count > 0 ? cavalries[0].Health : 0;
+            }
+            set
+            {
+                foreach (Cohort cohort in cohorts)
+                    cohort.Health = value;
+                foreach (Cavalry cavalry in cavalries)
+                    cavalry.Health = value;
+            }
+        }
+        
         public override float DefaultSpeed => 1.5f;
         public IEnumerable<Cavalry> Cavalries => cavalries;
         public IEnumerable<Cohort> Cohorts => cohorts;
@@ -37,8 +59,33 @@ namespace Game.Units.Groups
         }
 
         public override int UnitCount => cavalries.Count + cohorts.Count;
+        public int CavalryCount => cavalries.Count;
+        public int CohortCount => cohorts.Count;
 
         public override Vector2 DrawSize => Vector2.Scale(cohorts[0].DrawSize, ChildrenDimensions);
+
+        public Int2 ChildrenDimensionsCohort { get; set; }
+        public Int2 ChildrenDimensionsCavalry { get; set; }
+
+        public static Legion CreateStandardLegion(Faction faction)
+        {
+            var legion = new Legion(faction)
+            {
+                Formation = new MarchingFormation()
+            };
+
+            for (int i = 0; i < 2; i++)
+            {
+                legion.AddUnit(Cavalry.CreatePikeUnit(faction));
+            }
+
+            for (int i = 0; i < 6; i++)
+            {
+                legion.AddUnit(Cohort.CreateUniformMixedUnit(faction));
+            }
+
+            return legion;
+        }
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {

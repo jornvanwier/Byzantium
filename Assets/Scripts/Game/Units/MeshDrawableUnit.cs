@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Scripts.Game;
-using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Unit_Enums;
 using Assets.Scripts.Map;
 using Assets.Scripts.Util;
 using UnityEngine;
 
-namespace Game.Units
+namespace Assets.Scripts.Game.Units
 {
     public class MeshDrawableUnit : UnitBase
     {
-        public static Material Material = WorldManager.unitMaterial;
+        private const int StartHealth = 200;
+        public static Material Material = WorldManager.UnitMaterial;
 
         private readonly Int2 dimensions = new Int2(1, 1);
+
+        private Vector3 oldPosition = Vector3.zero;
 
         public MeshDrawableUnit(Defense defense = Defense.Armor,
             Weapon weapon = Weapon.Sword,
@@ -33,13 +34,15 @@ namespace Game.Units
             SoldierType = soldier;
         }
 
+        public override int Health { get; set; } = StartHealth;
+
         public override Int2 ChildrenDimensions
         {
             get { return dimensions; }
             set { throw new MemberAccessException("Cannot set dimensions of this object."); }
         }
 
-        public override Vector2 DrawSize => new Vector2(0.11f, 0.05f);
+        public override Vector2 DrawSize => new Vector2(0.011f, 0.008f);
 
         public override float DefaultSpeed => 1.5f;
 
@@ -52,8 +55,6 @@ namespace Game.Units
 
         public override int UnitCount => 1;
 
-        private Vector3 oldPosition = Vector3.zero;
-
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
             get { yield return this; }
@@ -64,7 +65,7 @@ namespace Game.Units
         public override void Draw()
         {
             Quaternion rotate = Rotation * Quaternion.Euler(0, 180, 0);
-            Graphics.DrawMesh(UnitMesh, Matrix4x4.TRS(Position, rotate, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
+            Graphics.DrawMesh(UnitMesh, Matrix4x4.TRS(Position, rotate, new Vector3(0.01f, 0.01f, 0.01f)), Material, 0);
 
 //            Vector3 weaponPosition = Position + (Rotation * new Vector3(0.2f, 0, 0));
 

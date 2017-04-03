@@ -1,18 +1,12 @@
-﻿using System;
-using Assets.Scripts.Game.Units.Groups;
-using Game.Units;
-using Game.Units.Formation;
-using Game.Units.Groups;
+﻿using Assets.Scripts.Game.Units.Groups;
 
 namespace Assets.Scripts.Game.Units.Formation
 {
     public class SetColumnFormation : FormationBase
     {
-        private const float MeshDrawableUnitSize = 0.1f;
-
         public override void Order(Legion unit)
         {
-            throw new NotImplementedException();
+            throw new FormationIncompatibleException(unit);
         }
 
         public override void Order(Contubernium unit)

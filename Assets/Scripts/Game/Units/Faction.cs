@@ -18,6 +18,8 @@ namespace Assets.Scripts.Game.Units
                 Color = Random.ColorHSV();
             } while (UsedColors.Contains(Color));
             UsedColors.Add(Color);
+
+            Color = Color.white;
         }
 
         public string Name { get; set; }
