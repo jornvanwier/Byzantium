@@ -8,6 +8,7 @@ namespace Assets.Scripts.Game.Units
         {
             "Spicy",
             "Stranded",
+            "Noice",
             "Good",
             "New",
             "First",
@@ -242,6 +243,7 @@ namespace Assets.Scripts.Game.Units
             "Many",
             "Numerous",
             "Sparse",
+            "Second",
             "Substantial"
         };
 
@@ -260,6 +262,7 @@ namespace Assets.Scripts.Game.Units
             "Defenders",
             "Protectors",
             "Slayers",
+            "Sons",
             "Hitters",
             "Soldiers",
             "Men",

@@ -41,8 +41,7 @@ namespace Assets.Scripts.UI
 
         private float ZoomSpeed
             => InitialZoomSpeed * (camera.transform.position.y - ZoomLowerLimit) / 100f;
-
-        [SerializeField]
+        
         public float PosX
         {
             get { return posX; }

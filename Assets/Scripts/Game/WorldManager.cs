@@ -79,6 +79,8 @@ namespace Assets.Scripts.Game
             cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = new Vector3(0, cHeight, 0);
             cameraObject.GetComponent<Camera>().farClipPlane = CameraZoomUpperLimit + 100;
+            camera = cameraObject.GetComponent<Camera>();
+
             MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
 
             var obj = new GameObject("Army");
@@ -87,6 +89,8 @@ namespace Assets.Scripts.Game
             unitController.MapRenderer = MapRendererScript;
             unitController.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
 
+            unitController.AttachCamera(camera);
+
             allArmies.Add(unitController);
 
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
@@ -94,7 +98,7 @@ namespace Assets.Scripts.Game
 
             uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
             var miniMap = uiCanvas.GetComponent<MiniMap>();
-            miniMap.AttachCamera(cameraObject.GetComponent<Camera>());
+            miniMap.AttachCamera(camera);
             miniMap.AttachMapObject(MapRendererObject);
             miniMap.AttachArmies(allArmies);
 
@@ -107,6 +111,7 @@ namespace Assets.Scripts.Game
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
         }
 
+        private new Camera camera;
         // Update is called once per frame
         [UsedImplicitly]
         private void Update()
@@ -195,7 +200,6 @@ namespace Assets.Scripts.Game
             {
                 Vector2 position = Input.mousePosition;
                 var plane = new Plane(Vector3.up, Vector3.zero);
-                var camera = cameraObject.GetComponent<Camera>();
                 Ray ray = camera.ScreenPointToRay(position);
                 plane.Raycast(ray, out float rayDistance);
                 if (prevMousePos != Vector2.zero)
@@ -231,7 +235,46 @@ namespace Assets.Scripts.Game
                 if (Input.mousePosition.x > Screen.width - margin)
                     Pan(worldRight);
             }
+
+            //Click units
+            if (Input.GetMouseButtonUp(0))
+            {
+                DeselectAll();
+
+                Vector2 position = Input.mousePosition;
+                var plane = new Plane(Vector3.up, Vector3.zero);
+                Ray ray = camera.ScreenPointToRay(position);
+                plane.Raycast(ray, out float rayDistance);
+                Vector3 intersectPoint = ray.GetPoint(rayDistance);
+                var intersect = new Vector2(intersectPoint.x, intersectPoint.z);
+                foreach (UnitController controller in allArmies)
+                {
+                    if (controller.AttachedUnit.Hitbox.Contains(intersect))
+                    {
+                        Select(controller);
+                    }
+                }
+            }
         }
+
+        private void Select(UnitController army)
+        {
+            army.HealthBar.Show();
+        }
+
+        private void Deselect(UnitController army)
+        {
+            army.HealthBar.Hide();
+        }
+
+        private void DeselectAll()
+        {
+            foreach (UnitController controller in allArmies)
+            {
+                Deselect(controller);
+            }
+        }
+
 
         private void Ascend()
         {

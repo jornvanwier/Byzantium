@@ -33,7 +33,8 @@ namespace Assets.Scripts.Game.Units
             SoldierType = soldier;
         }
 
-        public override int Health { get; set; } = 200;
+        private const int StartHealth = 200;
+        public override int Health { get; set; } = StartHealth;
 
         public override Int2 ChildrenDimensions
         {
