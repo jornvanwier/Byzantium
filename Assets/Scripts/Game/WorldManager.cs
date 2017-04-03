@@ -15,6 +15,8 @@ namespace Assets.Scripts.Game
 
         private readonly List<UnitController> allArmies = new List<UnitController>();
         private bool applicationHasFocus;
+
+        private new Camera camera;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
 
@@ -37,6 +39,8 @@ namespace Assets.Scripts.Game
 
         private Vector2 prevMousePos = Vector2.zero;
         private bool rightMouseDown;
+
+        private UnitController selectedArmy;
         private Vector3 startIntersect;
 
         private Canvas uiCanvas;
@@ -49,6 +53,17 @@ namespace Assets.Scripts.Game
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
         private float ZoomSpeed => InitialZoomSpeed * CameraHeight;
+
+        public UnitController SelectedArmy
+        {
+            get { return selectedArmy; }
+            set
+            {
+                DeselectAll();
+                selectedArmy = value;
+                Select(selectedArmy);
+            }
+        }
 
         [UsedImplicitly]
         private void OnApplicationFocus(bool hasFocus)
@@ -109,7 +124,6 @@ namespace Assets.Scripts.Game
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
         }
 
-        private new Camera camera;
         // Update is called once per frame
         [UsedImplicitly]
         private void Update()
@@ -238,7 +252,6 @@ namespace Assets.Scripts.Game
             if (Input.GetMouseButtonUp(0))
             {
                 DeselectAll();
-
                 Vector2 position = Input.mousePosition;
                 var plane = new Plane(Vector3.up, Vector3.zero);
                 Ray ray = camera.ScreenPointToRay(position);
@@ -246,21 +259,17 @@ namespace Assets.Scripts.Game
                 Vector3 intersectPoint = ray.GetPoint(rayDistance);
                 var intersect = new Vector2(intersectPoint.x, intersectPoint.z);
                 foreach (UnitController controller in allArmies)
-                {
                     if (controller.AttachedUnit.Hitbox.Contains(intersect))
-                    {
-                        Select(controller);
-                    }
-                }
+                        SelectedArmy = controller;
             }
         }
 
-        private void Select(UnitController army)
+        private static void Select(UnitController army)
         {
             army.HealthBar.Show();
         }
 
-        private void Deselect(UnitController army)
+        private static void Deselect(UnitController army)
         {
             army.HealthBar.Hide();
         }
@@ -268,9 +277,7 @@ namespace Assets.Scripts.Game
         private void DeselectAll()
         {
             foreach (UnitController controller in allArmies)
-            {
                 Deselect(controller);
-            }
         }
 
 

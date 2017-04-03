@@ -9,6 +9,7 @@ namespace Assets.Scripts.Game.Units
 {
     public class MeshDrawableUnit : UnitBase
     {
+        private const int StartHealth = 200;
         public static Material Material = WorldManager.UnitMaterial;
 
         private readonly Int2 dimensions = new Int2(1, 1);
@@ -33,7 +34,6 @@ namespace Assets.Scripts.Game.Units
             SoldierType = soldier;
         }
 
-        private const int StartHealth = 200;
         public override int Health { get; set; } = StartHealth;
 
         public override Int2 ChildrenDimensions

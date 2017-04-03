@@ -41,7 +41,7 @@ namespace Assets.Scripts.UI
 
         private float ZoomSpeed
             => InitialZoomSpeed * (camera.transform.position.y - ZoomLowerLimit) / 100f;
-        
+
         public float PosX
         {
             get { return posX; }
@@ -159,7 +159,8 @@ namespace Assets.Scripts.UI
 
         private Vector2 UnitToPosition(UnitBase unit)
         {
-            return camera.WorldToScreenPoint(unit.Position) - new Vector3(OffsetX, OffsetY, 0);
+            Vector3 var = camera.WorldToScreenPoint(unit.Position);
+            return var - new Vector3(OffsetX, OffsetY, 0);
         }
 
         public void AttachMapObject(GameObject mapRenderer)

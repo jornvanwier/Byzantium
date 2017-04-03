@@ -10,6 +10,8 @@ namespace Assets.Scripts.Game.Units
     {
         private Commander commander;
 
+        private Rect hitbox;
+
         protected UnitBase()
         {
             WalkSpeed = DefaultSpeed;
@@ -25,8 +27,6 @@ namespace Assets.Scripts.Game.Units
 
         public virtual Int2 ChildrenDimensions { get; set; }
         public abstract Vector2 DrawSize { get; }
-
-        private Rect hitbox;
 
         public Rect Hitbox
         {
