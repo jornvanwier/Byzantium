@@ -55,7 +55,7 @@ namespace Assets.Scripts.Game.Units.Formation
             int i = 0;
             Vector3 position = unit.Position;
 
-            foreach (TChild child in (IEnumerable<TChild>)unit)
+            foreach (TChild child in unit)
             {
                 Vector3 oldPosition = child.Position;
                 Vector3 newPosition = unit.Rotation * offsetPositions[i];

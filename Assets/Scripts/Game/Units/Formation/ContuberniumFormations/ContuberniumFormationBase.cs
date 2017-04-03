@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Game.Units.Groups;
-using Game.Units.Groups;
 
 namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormations
 {

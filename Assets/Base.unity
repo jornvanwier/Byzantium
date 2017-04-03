@@ -437,9 +437,9 @@ MonoBehaviour:
   BorderSize: 10
   InitialZoom: 100
   InitialZoomSpeed: 2
-  ShowUnits: 1
   OffsetX: 28
   OffsetY: 27
+  ShowUnits: 0
 --- !u!1 &992876522
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,10 +543,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraRotateSpeed: 50
+  CameraZoomLowerLimit: 1
+  CameraZoomUpperLimit: 1000
   Goal: {fileID: 319929466}
-  InitialCameraAngle: 30
+  InitialCameraAngle: 35
   InitialCameraMoveSpeed: 2
-  InitialZoomSpeed: 10
+  InitialZoomSpeed: 2
   MapRendererObject: {fileID: 1482278021882804, guid: ce1e59d011eb91f47aafc694c0a662c5,
     type: 2}
   MeshHolder:
@@ -555,7 +557,7 @@ MonoBehaviour:
       SmallShield: {fileID: 0}
     Soldiers:
       Armored: {fileID: 4300000, guid: 91358c3cdda101e4d95058f5a982ba28, type: 3}
-      Mounted: {fileID: 4300000, guid: 91358c3cdda101e4d95058f5a982ba28, type: 3}
+      Mounted: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
       Unarmored: {fileID: 4300000, guid: 91358c3cdda101e4d95058f5a982ba28, type: 3}
     Weapons:
       Longbow: {fileID: 0}
@@ -563,8 +565,6 @@ MonoBehaviour:
       Shortbow: {fileID: 0}
       Sword: {fileID: 0}
   UMatter: {fileID: 2100000, guid: f49ede822207b2f4eb7b0ffa6986bc6b, type: 2}
-  CameraZoomLowerLimit: 1
-  CameraZoomUpperLimit: 1000
 --- !u!1 &1361681493
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,9 +17,7 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             Commander = new Commander(this, faction);
         }
-
-<<<<<<< HEAD
-=======
+        
         public override int Health
         {
             get
@@ -35,8 +33,7 @@ namespace Assets.Scripts.Game.Units.Groups
                     cavalry.Health = value;
             }
         }
-
->>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
+        
         public override float DefaultSpeed => 1.5f;
         public IEnumerable<Cavalry> Cavalries => cavalries;
         public IEnumerable<Cohort> Cohorts => cohorts;

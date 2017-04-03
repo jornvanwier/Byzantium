@@ -1,13 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-<<<<<<< HEAD
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Util;
-using Game.Units;
-=======
-using Assets.Scripts.Util;
-using Game.Units.Formation;
->>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups

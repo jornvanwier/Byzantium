@@ -1,19 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
-<<<<<<< HEAD
-using Assets.Scripts.Game.Units.Formation;
-using Assets.Scripts.Game.Units.Formation.ContuberniumFormations;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
 using Assets.Scripts.UI;
-using Game.Units.Groups;
-=======
-using Assets.Scripts.Game.Units.Groups;
-using Assets.Scripts.Map;
-using Assets.Scripts.UI;
-using Game.Units.Formation;
->>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -75,15 +65,9 @@ namespace Assets.Scripts.Game
             Meshes = MeshHolder;
 
             var faction = new Faction();
-
-<<<<<<< HEAD
+            
             unit = Legion.CreateStandardLegion(faction);
             unit.Position = new Vector3(5, 0, 5);
-=======
-            unit = Cohort.CreateUniformMixedUnit(faction);
-            unit.Position = new Vector3(5, 0, 5);
-            unit.Formation = new SquareFormation();
->>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
 
 
             MapRendererObject = Instantiate(MapRendererObject);

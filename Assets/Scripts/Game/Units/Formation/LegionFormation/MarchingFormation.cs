@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
-using Game.Units.Groups;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Formation.LegionFormation

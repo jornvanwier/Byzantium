@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
+using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
-using Game.Units;
-using Game.Units.Groups;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormations

@@ -9,19 +9,12 @@ namespace Assets.Scripts.Game.Units.Groups
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
         private const float ChildSpacing = 1.3f;
-<<<<<<< HEAD
-=======
-
->>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
         private readonly List<Contubernium> contubernia = new List<Contubernium>();
 
         private Century(Faction faction)
         {
             Commander = new Commander(this, faction);
         }
-
-<<<<<<< HEAD
-=======
         public override int Health
         {
             get { return contubernia[0].Health; }
@@ -31,8 +24,6 @@ namespace Assets.Scripts.Game.Units.Groups
                     contubernium.Health = value;
             }
         }
-
->>>>>>> 7614ab8d53f8e87ba5e5818bb40feaf144ba48e5
         public override float DefaultSpeed => 1.5f;
 
         public override Quaternion Rotation
