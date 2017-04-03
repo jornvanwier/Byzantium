@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
@@ -13,22 +12,14 @@ namespace Assets.Scripts.UI
         private static readonly Color HealthyColor = Color.green;
         private static readonly Color DamageColor = Color.red;
 
+        private readonly Color transparent = new Color(0, 0, 0, 0);
+
         private Color[] pixels;
 
         private float posX, posY;
 
         private int size;
         private Texture2D texture2D;
-
-        private readonly Color transparent = new Color(0,0,0,0);
-        public void Hide()
-        {
-            color = transparent;
-        }
-        public void Show()
-        {
-            color = Color.white;
-        }
 
         public int Value
         {
@@ -44,13 +35,6 @@ namespace Assets.Scripts.UI
                         pixels[i] = DamageColor;
                 UpdateTexture();
             }
-        }
-
-        private void UpdateTexture()
-        {
-            texture2D.SetPixels(pixels);
-            texture2D.Apply();
-            texture = texture2D;
         }
 
         public int Size
@@ -84,6 +68,23 @@ namespace Assets.Scripts.UI
                 posY = value;
                 transform.position = new Vector3(PosX, PosY);
             }
+        }
+
+        public void Hide()
+        {
+            color = transparent;
+        }
+
+        public void Show()
+        {
+            color = Color.white;
+        }
+
+        private void UpdateTexture()
+        {
+            texture2D.SetPixels(pixels);
+            texture2D.Apply();
+            texture = texture2D;
         }
 
         protected override void Start()

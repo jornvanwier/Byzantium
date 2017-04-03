@@ -10,6 +10,8 @@ namespace Assets.Scripts.Game.Units
     {
         private const float RotationSpeed = 3.5f;
 
+        private new Camera camera;
+
         private PathfindingJobInfo currentPathInfo;
 
         private Vector3 movementDrawOffset;
@@ -41,9 +43,6 @@ namespace Assets.Scripts.Game.Units
             this.camera = camera;
         }
 
-        private new Camera camera;
-
-        
 
         private void UpdateHealthBar()
         {
