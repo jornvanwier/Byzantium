@@ -6,6 +6,7 @@ using Assets.Scripts.Map;
 using Assets.Scripts.UI;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Game
 {
@@ -125,6 +126,14 @@ namespace Assets.Scripts.Game
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
         }
+
+        public void AttachInfoPanel(InfoPanel panel)
+        {
+            infoPanel = panel;
+            infoPanel.Hide();
+        }
+
+        private InfoPanel infoPanel;
 
         // Update is called once per frame
         [UsedImplicitly]
@@ -266,14 +275,16 @@ namespace Assets.Scripts.Game
             }
         }
 
-        private static void Select(UnitController army)
+        private void Select(UnitController army)
         {
             army.HealthBar.Show();
+            infoPanel.Show();
         }
 
-        private static void Deselect(UnitController army)
+        private void Deselect(UnitController army)
         {
             army.HealthBar.Hide();
+            infoPanel.Hide();
         }
 
         private void DeselectAll()

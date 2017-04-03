@@ -556,11 +556,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CameraRotateSpeed: 50
-  CameraZoomLowerLimit: 1
+  CameraZoomLowerLimit: 0.5
   CameraZoomUpperLimit: 1000
   Goal: {fileID: 319929466}
-  InitialCameraAngle: 30
-  InitialCameraMoveSpeed: 2
+  InitialCameraAngle: 45
+  InitialCameraMoveSpeed: 1
   InitialZoomSpeed: 10
   MapRendererObject: {fileID: 1482278021882804, guid: ce1e59d011eb91f47aafc694c0a662c5,
     type: 2}
@@ -578,6 +578,7 @@ MonoBehaviour:
       Shortbow: {fileID: 0}
       Sword: {fileID: 0}
   UMatter: {fileID: 2100000, guid: f49ede822207b2f4eb7b0ffa6986bc6b, type: 2}
+  CameraStartPosition: {x: 0, y: 2, z: -3.5}
 --- !u!1 &1361681493
 GameObject:
   m_ObjectHideFlags: 0
@@ -3765,7 +3766,7 @@ Light:
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 0.05
+    m_Bias: 0
     m_NormalBias: 0.4
     m_NearPlane: 0.2
   m_Cookie: {fileID: 0}

@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Assets.Scripts.Game;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,7 +42,7 @@ namespace Assets.Scripts.UI
             set
             {
                 sizeX = value;
-                panelTransform.sizeDelta = new Vector2(SizeX, SizeY);
+                rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
             }
         }
 
@@ -51,7 +52,7 @@ namespace Assets.Scripts.UI
             set
             {
                 sizeY = value;
-                panelTransform.sizeDelta = new Vector2(SizeX, SizeY);
+                rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
             }
         }
 
@@ -64,14 +65,18 @@ namespace Assets.Scripts.UI
             SizeY = miniMap.rectTransform.sizeDelta.y;
         }
 
-        private RectTransform panelTransform;
+        private RectTransform rectTransform;
+        private Image image;
         // Use this for initialization
         [UsedImplicitly]
         private void Start()
         {
             panel = GameObject.Find("InfoPanel");
-            panelTransform = panel.GetComponent<RectTransform>();
+            rectTransform = panel.GetComponent<RectTransform>();
+            image = panel.GetComponent<Image>();
             miniMap = GameObject.Find("MiniMapBorder").GetComponent<Image>();
+
+            GameObject.Find("WorldManager").GetComponent<WorldManager>().AttachInfoPanel(this);
 
             UpdatePositionAndSize();
         }
@@ -81,6 +86,18 @@ namespace Assets.Scripts.UI
         private void Update()
         {
             UpdatePositionAndSize();
+        }
+
+        private readonly Color transparent = new Color(0, 0, 0, 0);
+
+        public void Hide()
+        {
+            image.color = transparent;
+        }
+
+        public void Show()
+        {
+            image.color = Color.white;
         }
     }
 }
