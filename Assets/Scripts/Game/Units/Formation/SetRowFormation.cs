@@ -1,6 +1,4 @@
-﻿using System;
-using Assets.Scripts.Game.Units.Groups;
-using Game.Units.Formation;
+﻿using Assets.Scripts.Game.Units.Groups;
 
 namespace Assets.Scripts.Game.Units.Formation
 {
@@ -8,7 +6,7 @@ namespace Assets.Scripts.Game.Units.Formation
     {
         public override void Order(Legion unit)
         {
-            throw new NotImplementedException();
+            throw new FormationIncompatibleException(unit);
         }
 
         public override void Order(Contubernium unit)

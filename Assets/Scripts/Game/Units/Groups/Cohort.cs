@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Util;
-using Game.Units.Formation;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
@@ -82,11 +82,6 @@ namespace Assets.Scripts.Game.Units.Groups
             centuries.RemoveAt(index);
         }
 
-        public IEnumerator GetEnumerator()
-        {
-            return centuries.GetEnumerator();
-        }
-
         public static Cohort CreateUniformMixedUnit(Faction faction)
         {
             var cohort = new Cohort(faction) {Formation = new SquareFormation()};
@@ -101,6 +96,16 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             foreach (Century unit in this)
                 unit.Draw();
+        }
+
+        IEnumerator<Century> IEnumerable<Century>.GetEnumerator()
+        {
+            return centuries.GetEnumerator();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return ((IEnumerable<Century>)this).GetEnumerator();
         }
     }
 }

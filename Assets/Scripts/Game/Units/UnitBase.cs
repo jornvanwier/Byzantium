@@ -22,7 +22,7 @@ namespace Assets.Scripts.Game.Units
 
         public virtual Quaternion Rotation { get; set; } = Quaternion.identity;
 
-        public virtual IFormation Formation { get; set; } = new VerticalLineFormation();
+        public virtual IFormation Formation { get; set; }
         public virtual float WalkSpeed { get; set; } = 1.0f;
 
         public virtual Int2 ChildrenDimensions { get; set; }

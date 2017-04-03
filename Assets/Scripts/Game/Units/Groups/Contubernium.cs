@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Game.Units.Unit_Enums;
-using Game.Units.Formation;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
@@ -24,7 +24,6 @@ namespace Assets.Scripts.Game.Units.Groups
                     meshDrawableUnit.Health = value;
             }
         }
-
         public override float DefaultSpeed => 1.5f;
 
         public override Vector3 Position
@@ -62,11 +61,6 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             int index = drawableUnits.IndexOf(unit);
             drawableUnits.RemoveAt(index);
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return drawableUnits.GetEnumerator();
         }
 
         public static Contubernium CreateSwordUnit(Faction faction)
@@ -107,6 +101,16 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             foreach (MeshDrawableUnit unit in this)
                 unit.Draw();
+        }
+
+        IEnumerator<MeshDrawableUnit> IEnumerable<MeshDrawableUnit>.GetEnumerator()
+        {
+            return drawableUnits.GetEnumerator();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return ((IEnumerable<MeshDrawableUnit>)this).GetEnumerator();
         }
     }
 }

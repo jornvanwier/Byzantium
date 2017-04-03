@@ -4,7 +4,6 @@ using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
 using Assets.Scripts.UI;
-using Game.Units.Formation;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -81,10 +80,9 @@ namespace Assets.Scripts.Game
             Meshes = MeshHolder;
 
             var faction = new Faction();
-
-            unit = Cohort.CreateUniformMixedUnit(faction);
+            
+            unit = Legion.CreateStandardLegion(faction);
             unit.Position = new Vector3(5, 0, 5);
-            unit.Formation = new SquareFormation();
 
 
             MapRendererObject = Instantiate(MapRendererObject);

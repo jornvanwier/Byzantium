@@ -42,7 +42,7 @@ namespace Assets.Scripts.Game.Units
             set { throw new MemberAccessException("Cannot set dimensions of this object."); }
         }
 
-        public override Vector2 DrawSize => new Vector2(0.11f, 0.05f);
+        public override Vector2 DrawSize => new Vector2(0.11f, 0.08f);
 
         public override float DefaultSpeed => 1.5f;
 
