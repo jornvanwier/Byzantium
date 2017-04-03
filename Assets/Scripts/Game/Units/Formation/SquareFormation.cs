@@ -69,7 +69,6 @@ namespace Game.Units.Formation
             where TChild : UnitBase
         {
             var localPositions = new List<Vector3>();
-            var originalpositions = new List<Vector3>();
 
             int i = 0;
 
@@ -82,7 +81,6 @@ namespace Game.Units.Formation
                 float z = unit.Position.z + spacing.y * (i / rowWidth) - spacing.y * columnHeight / 4;
 
                 localPositions.Add(new Vector3(x, unit.Position.y, z) - unit.Position);
-                originalpositions.Add(child.Position);
 
                 ++i;
             }
