@@ -42,7 +42,7 @@ namespace Assets.Scripts.Game.Units
             set { throw new MemberAccessException("Cannot set dimensions of this object."); }
         }
 
-        public override Vector2 DrawSize => new Vector2(0.11f, 0.08f);
+        public override Vector2 DrawSize => new Vector2(0.011f, 0.008f);
 
         public override float DefaultSpeed => 1.5f;
 
@@ -65,7 +65,7 @@ namespace Assets.Scripts.Game.Units
         public override void Draw()
         {
             Quaternion rotate = Rotation * Quaternion.Euler(0, 180, 0);
-            Graphics.DrawMesh(UnitMesh, Matrix4x4.TRS(Position, rotate, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
+            Graphics.DrawMesh(UnitMesh, Matrix4x4.TRS(Position, rotate, new Vector3(0.01f, 0.01f, 0.01f)), Material, 0);
 
 //            Vector3 weaponPosition = Position + (Rotation * new Vector3(0.2f, 0, 0));
 
