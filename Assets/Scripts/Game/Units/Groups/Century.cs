@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Formation;
-using Assets.Scripts.Map;
 using Assets.Scripts.Util;
 using Game.Units;
 using Game.Units.Groups;
@@ -11,11 +10,14 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
+        private const float ChildSpacing = 1.3f;
+        private readonly List<Contubernium> contubernia = new List<Contubernium>();
+
         private Century(Faction faction)
         {
             Commander = new Commander(this, faction);
         }
-        private readonly List<Contubernium> contubernia = new List<Contubernium>();
+
         public override float DefaultSpeed => 1.5f;
 
         public override Quaternion Rotation
@@ -42,8 +44,6 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions);
 
-        private const float ChildSpacing = 1.3f;
-
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
             get
@@ -67,14 +67,9 @@ namespace Assets.Scripts.Game.Units.Groups
             contubernia.RemoveAt(index);
         }
 
-        public IEnumerator GetEnumerator()
-        {
-            return contubernia.GetEnumerator();
-        }
-
         public static Century CreateMixedUnit(Faction faction)
         {
-            var century = new Century(faction) { Formation = new SetColumnFormation()};
+            var century = new Century(faction) {Formation = new SetColumnFormation()};
 
             // Frontline with swords
             for (int i = 0; i < 4; ++i)
@@ -95,6 +90,16 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             foreach (Contubernium unit in this)
                 unit.Draw();
+        }
+
+        IEnumerator<Contubernium> IEnumerable<Contubernium>.GetEnumerator()
+        {
+            return contubernia.GetEnumerator();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return ((IEnumerable<Contubernium>)this).GetEnumerator();
         }
     }
 }

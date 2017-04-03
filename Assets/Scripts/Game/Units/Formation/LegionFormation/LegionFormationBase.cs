@@ -1,11 +1,11 @@
 ﻿using Assets.Scripts.Game.Units.Groups;
 using Game.Units.Groups;
 
-namespace Assets.Scripts.Game.Units.Formation
+namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 {
-    public abstract class ContuberniumFormationBase : FormationBase
+    public abstract class LegionFormationBase : FormationBase
     {
-        public override void Order(Legion unit)
+        public override void Order(Contubernium unit)
         {
             throw new FormationIncompatibleException(unit);
         }

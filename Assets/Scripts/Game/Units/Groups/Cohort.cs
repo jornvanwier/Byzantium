@@ -1,22 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts.Game.Units;
-using Assets.Scripts.Game.Units.Groups;
+using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Util;
 using Game.Units;
-using Game.Units.Formation;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
     public class Cohort : UnitBase, IMultipleUnits<Century>
     {
+        private const float ChildSpacingX = 1.7f;
+        private const float ChildSpacingY = 1.15f;
+
+        private readonly List<Century> centuries = new List<Century>();
+
         private Cohort(Faction faction)
         {
             Commander = new Commander(this, faction);
         }
 
-        private readonly List<Century> centuries = new List<Century>();
         public override float DefaultSpeed => 1.5f;
 
         public override Quaternion Rotation
@@ -41,10 +43,11 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override int UnitCount => centuries.Count;
 
-        public override Vector2 DrawSize => Vector2.Scale(new Vector2(ChildSpacingX, ChildSpacingY), Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions));
+        public override Vector2 DrawSize
+            =>
+                Vector2.Scale(new Vector2(ChildSpacingX, ChildSpacingY),
+                    Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions));
 
-        private const float ChildSpacingX = 1.7f;
-        private const float ChildSpacingY = 1.15f;
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
             get
@@ -69,11 +72,6 @@ namespace Assets.Scripts.Game.Units.Groups
             centuries.RemoveAt(index);
         }
 
-        public IEnumerator GetEnumerator()
-        {
-            return centuries.GetEnumerator();
-        }
-
         public static Cohort CreateUniformMixedUnit(Faction faction)
         {
             var cohort = new Cohort(faction) {Formation = new SquareFormation()};
@@ -88,6 +86,16 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             foreach (Century unit in this)
                 unit.Draw();
+        }
+
+        IEnumerator<Century> IEnumerable<Century>.GetEnumerator()
+        {
+            return centuries.GetEnumerator();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return ((IEnumerable<Century>)this).GetEnumerator();
         }
     }
 }

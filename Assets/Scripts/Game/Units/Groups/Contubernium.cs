@@ -1,20 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Formation;
+using Assets.Scripts.Game.Units.Formation.ContuberniumFormations;
 using Assets.Scripts.Game.Units.Unit_Enums;
-using Game.Units.Formation;
 using UnityEngine;
 
 namespace Game.Units.Groups
 {
     public class Contubernium : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
+        private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
+
         private Contubernium(Faction faction)
         {
             Commander = new Commander(this, faction);
         }
 
-        private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
         public override float DefaultSpeed => 1.5f;
 
         public override Vector3 Position
@@ -52,11 +54,6 @@ namespace Game.Units.Groups
         {
             int index = drawableUnits.IndexOf(unit);
             drawableUnits.RemoveAt(index);
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return drawableUnits.GetEnumerator();
         }
 
         public static Contubernium CreateSwordUnit(Faction faction)
@@ -97,6 +94,16 @@ namespace Game.Units.Groups
         {
             foreach (MeshDrawableUnit unit in this)
                 unit.Draw();
+        }
+
+        IEnumerator<MeshDrawableUnit> IEnumerable<MeshDrawableUnit>.GetEnumerator()
+        {
+            return drawableUnits.GetEnumerator();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return ((IEnumerable<MeshDrawableUnit>)this).GetEnumerator();
         }
     }
 }

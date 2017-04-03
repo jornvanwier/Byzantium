@@ -15,6 +15,8 @@ namespace Game.Units
 
         private readonly Int2 dimensions = new Int2(1, 1);
 
+        private Vector3 oldPosition = Vector3.zero;
+
         public MeshDrawableUnit(Defense defense = Defense.Armor,
             Weapon weapon = Weapon.Sword,
             Soldier soldier = Soldier.Armored)
@@ -39,7 +41,7 @@ namespace Game.Units
             set { throw new MemberAccessException("Cannot set dimensions of this object."); }
         }
 
-        public override Vector2 DrawSize => new Vector2(0.11f, 0.05f);
+        public override Vector2 DrawSize => new Vector2(0.11f, 0.08f);
 
         public override float DefaultSpeed => 1.5f;
 
@@ -51,8 +53,6 @@ namespace Game.Units
         public Soldier SoldierType { get; }
 
         public override int UnitCount => 1;
-
-        private Vector3 oldPosition = Vector3.zero;
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {

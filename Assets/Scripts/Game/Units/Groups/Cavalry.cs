@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Formation;
+using Assets.Scripts.Game.Units.Unit_Enums;
 using UnityEngine;
 
 namespace Game.Units.Groups
 {
     public class Cavalry : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
+        private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
+
         private Cavalry(Faction faction)
         {
             Commander = new Commander(this, faction);
         }
 
-        private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
         public override float DefaultSpeed => 1.5f;
 
         public override Quaternion Rotation
@@ -35,9 +38,28 @@ namespace Game.Units.Groups
             }
         }
 
+        public static Cavalry CreatePikeUnit(Faction faction)
+        {
+            var cavalry = new Cavalry(faction)
+            {
+                Formation = new SquareFormation()
+            };
+
+            for (int i = 0; i < 64; i++)
+            {
+                cavalry.AddUnit(new MeshDrawableUnit(
+                    Defense.None,
+                    Weapon.Pike,
+                    Soldier.Mounted
+                    ));
+            }
+
+            return cavalry;
+        }
+
         public override int UnitCount => drawableUnits.Count;
 
-        public override Vector2 DrawSize => Vector2.Scale(drawableUnits[0].DrawSize, ChildrenDimensions);
+        public override Vector2 DrawSize => Vector2.Scale(drawableUnits[0].DrawSize * 2, ChildrenDimensions);
 
         public override IEnumerable<MeshDrawableUnit> AllUnits => drawableUnits;
 
@@ -52,15 +74,20 @@ namespace Game.Units.Groups
             drawableUnits.RemoveAt(index);
         }
 
-        public IEnumerator GetEnumerator()
-        {
-            return drawableUnits.GetEnumerator();
-        }
-
         public override void Draw()
         {
             foreach (MeshDrawableUnit unit in this)
                 unit.Draw();
+        }
+
+        IEnumerator<MeshDrawableUnit> IEnumerable<MeshDrawableUnit>.GetEnumerator()
+        {
+            return drawableUnits.GetEnumerator();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return ((IEnumerable<MeshDrawableUnit>)this).GetEnumerator();
         }
     }
 }

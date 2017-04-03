@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Formation;
+using Assets.Scripts.Game.Units.Formation.ContuberniumFormations;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
 using Assets.Scripts.UI;
-using Game.Units.Formation;
 using Game.Units.Groups;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -20,10 +20,16 @@ namespace Assets.Scripts.Game
         private bool applicationHasFocus;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
+
+        public float CameraZoomLowerLimit = 1;
+
+        public float CameraZoomUpperLimit = 1000;
         public GameObject Goal;
         public float InitialCameraAngle = 35;
         public float InitialCameraMoveSpeed = 2;
         public float InitialZoomSpeed = 2;
+
+        private Rect mapBounds;
         public GameObject MapRendererObject;
         protected MapRenderer MapRendererScript;
 
@@ -43,13 +49,9 @@ namespace Assets.Scripts.Game
         private UnitController unitController;
 
         public static MeshHolder Meshes { get; private set; }
-
-        public float CameraZoomLowerLimit = 1;
         private float CameraHeight => cameraObject?.transform.position.y ?? 10;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
         private float ZoomSpeed => InitialZoomSpeed * CameraHeight;
-
-        private Rect mapBounds;
 
         [UsedImplicitly]
         private void OnApplicationFocus(bool hasFocus)
@@ -67,9 +69,8 @@ namespace Assets.Scripts.Game
 
             var faction = new Faction();
 
-            unit = Cohort.CreateUniformMixedUnit(faction);
-            unit.Position = new Vector3(5,0,5);
-            unit.Formation = new SquareFormation();
+            unit = Legion.CreateStandardLegion(faction);
+            unit.Position = new Vector3(5, 0, 5);
 
 
             MapRendererObject = Instantiate(MapRendererObject);
@@ -257,21 +258,13 @@ namespace Assets.Scripts.Game
         private void CheckBounds(Vector3 prevPos)
         {
             if (CameraHeight < CameraZoomLowerLimit)
-            {
                 cameraObject.transform.position = prevPos;
-            }
             else if (CameraHeight > CameraZoomUpperLimit)
-            {
                 cameraObject.transform.position = prevPos;
-            }
             var position = new Vector2(cameraObject.transform.position.x, cameraObject.transform.position.z);
             if (!mapBounds.Contains(position))
-            {
                 cameraObject.transform.position = prevPos;
-            }
         }
-
-        public float CameraZoomUpperLimit = 1000;
 
         private void Pan(Vector3 direction, float multiplier = 1)
         {

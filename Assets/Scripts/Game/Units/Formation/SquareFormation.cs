@@ -1,26 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Scripts.Game.Units;
-using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
+using Game.Units;
 using Game.Units.Groups;
 using UnityEngine;
 
-namespace Game.Units.Formation
+namespace Assets.Scripts.Game.Units.Formation
 {
     public class SquareFormation : FormationBase
     {
         public override void Order(Legion unit)
         {
-            // Can't use generic method for legion because it contains both cohorts and cavalry
-            throw new NotImplementedException();
+            throw new FormationIncompatibleException(unit);
         }
 
         public override void Order(Contubernium unit)
         {
             OrderAny<Contubernium, MeshDrawableUnit>(unit);
-//            Debug.Log(unit.DrawSize);
         }
 
         public override void Order(Cavalry unit)
@@ -85,11 +82,7 @@ namespace Game.Units.Formation
                 ++i;
             }
 
-            var processed = new List<Vector3>(ProcessLocalOffsets<T,TChild>(localPositions, unit));
-
-            int j = 0;
-            foreach (UnitBase u in unit)
-                u.Position = processed[j++];
+            ProcessLocalOffsets<T, TChild>(localPositions, unit);
 
             unit.ChildrenDimensions = new Int2(columnHeight, rowWidth);
         }
