@@ -76,11 +76,28 @@ namespace Assets.Scripts.UI
             SizeY = miniMap.rectTransform.sizeDelta.y;
         }
 
+        public string Title
+        {
+            get { return titleText.text; }
+            set { titleText.text = value; }
+        }
+
+        public string Commander
+        {
+            get { return commanderText.text; }
+            set { commanderText.text = value; }
+        }
+
+        private RectTransform rectTransform;
+        private Image image;
+        private Text titleText;
+        private Text commanderText;
         // Use this for initialization
         [UsedImplicitly]
         private void Start()
         {
-            titleText = GameObject.Find("Text").GetComponent<Text>();
+            titleText = GameObject.Find("InfoText").GetComponent<Text>();
+            commanderText = GameObject.Find("CommanderText").GetComponent<Text>();
             panel = GameObject.Find("InfoPanel");
             rectTransform = panel.GetComponent<RectTransform>();
             image = panel.GetComponent<Image>();

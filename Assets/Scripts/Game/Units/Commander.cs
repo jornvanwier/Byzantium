@@ -3,7 +3,6 @@
     public class Commander
     {
         private UnitBase children;
-        private string name;
 
         public Commander(UnitBase children, Faction faction, string name = null)
         {
@@ -13,9 +12,10 @@
             if (name == null)
                 name = NameGenerator.Generate();
 
-            this.name = name;
+            Name = name;
         }
 
         public Faction Faction { get; set; }
+        public string Name { get; set; }
     }
 }
