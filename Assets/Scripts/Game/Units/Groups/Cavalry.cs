@@ -70,7 +70,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override int UnitCount => drawableUnits.Count;
 
-        public override Vector2 DrawSize => Vector2.Scale(drawableUnits[0].DrawSize * 2, ChildrenDimensions);
+        public override Vector2 DrawSize => Vector2.Scale(drawableUnits[0].DrawSize, ChildrenDimensions);
 
         public override IEnumerable<MeshDrawableUnit> AllUnits => drawableUnits;
 

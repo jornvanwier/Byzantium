@@ -68,17 +68,17 @@ namespace Assets.Scripts.Game.Units.Formation
 
             Vector2 spacing = unit.DrawSize;
 
-            foreach (UnitBase child in unit)
+            foreach (TChild child in unit)
             {
-                float x = unit.Position.x + spacing.x * (i % rowWidth) - spacing.x * rowWidth / 4;
+                float x = unit.Position.x + spacing.x * (i % rowWidth) - spacing.x / 2;
                 // ReSharper disable once PossibleLossOfFraction
-                float z = unit.Position.z + spacing.y * (i / rowWidth) - spacing.y * columnHeight / 4;
+                float z = unit.Position.z + spacing.y * (i / rowWidth) - spacing.y / 2;
 
                 localPositions.Add(new Vector3(x, unit.Position.y, z) - unit.Position);
 
                 ++i;
             }
-            
+
             ProcessLocalOffsets<T, TChild>(localPositions, unit);
 
             unit.ChildrenDimensions = new Int2(columnHeight, rowWidth);
