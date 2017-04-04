@@ -65,12 +65,20 @@ namespace Assets.Scripts.UI
             SizeY = miniMap.rectTransform.sizeDelta.y;
         }
 
+        public string Title
+        {
+            get { return titleText.text; }
+            set { titleText.text = value; }
+        }
+
         private RectTransform rectTransform;
         private Image image;
+        private Text titleText;
         // Use this for initialization
         [UsedImplicitly]
         private void Start()
         {
+            titleText = GameObject.Find("Text").GetComponent<Text>();
             panel = GameObject.Find("InfoPanel");
             rectTransform = panel.GetComponent<RectTransform>();
             image = panel.GetComponent<Image>();
@@ -92,12 +100,14 @@ namespace Assets.Scripts.UI
 
         public void Hide()
         {
-            image.color = transparent;
+            panel.SetActive(false);
+            //image.color = transparent;
         }
 
         public void Show()
         {
-            image.color = Color.white;
+            panel.SetActive(true);
+            //image.color = Color.white;
         }
     }
 }

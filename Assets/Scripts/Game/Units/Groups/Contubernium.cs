@@ -8,6 +8,7 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Contubernium : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
+        public override string UnitName => "Contubernium";
         private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
 
         private Contubernium(Faction faction)

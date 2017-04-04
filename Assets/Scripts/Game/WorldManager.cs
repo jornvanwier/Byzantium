@@ -83,7 +83,7 @@ namespace Assets.Scripts.Game
 
             var faction = new Faction();
 
-            unit = Legion.CreateStandardLegion(faction);
+            unit = Contubernium.CreateLongbowUnit(faction);
             unit.Position = new Vector3(5, 0, 5);
 
 
@@ -273,11 +273,24 @@ namespace Assets.Scripts.Game
                     if (controller.AttachedUnit.Hitbox.Contains(intersect))
                         SelectedArmy = controller;
             }
+
+            foreach (UnitController controller in allArmies)
+            {
+                var meshDrawableUnits = controller.AttachedUnit as Contubernium;
+                if (meshDrawableUnits == null) continue;
+                foreach (MeshDrawableUnit meshDrawableUnit in meshDrawableUnits)
+                {
+                    Graphics.DrawMesh(TestMesh, Matrix4x4.TRS(meshDrawableUnit.Position, Quaternion.Euler(0,0,0), new Vector3(0.01f, 0.01f, 0.01f)), TestMaterial, 0);
+                }
+            }
         }
 
+        public Mesh TestMesh;
+        public Material TestMaterial;
         private void Select(UnitController army)
         {
             army.HealthBar.Show();
+            infoPanel.Title = army.AttachedUnit.Info;
             infoPanel.Show();
         }
 

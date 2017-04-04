@@ -9,6 +9,7 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>
     {
+        public override string UnitName => "Legion";
         private readonly List<Cavalry> cavalries = new List<Cavalry>();
 
         private readonly List<Cohort> cohorts = new List<Cohort>();
