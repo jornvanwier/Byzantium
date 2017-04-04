@@ -164,10 +164,10 @@ namespace Assets.Scripts.UI
             }
             texture2D.Apply();
         }
-
+        
         private Vector2 UnitToPosition(UnitBase unit)
         {
-            return camera.WorldToScreenPoint(unit.Position) - new Vector3(OffsetX, OffsetY, 0);
+            return camera.WorldToScreenPoint(unit.Position) * 0.8f;
         }
 
         public void AttachMapObject(GameObject mapRenderer)
