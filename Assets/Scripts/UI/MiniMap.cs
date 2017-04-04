@@ -167,7 +167,9 @@ namespace Assets.Scripts.UI
 
         private Vector2 UnitToPosition(UnitBase unit)
         {
-            return camera.WorldToScreenPoint(unit.Position) - new Vector3(OffsetX, OffsetY, 0);
+            // blues clues klopt als army position in linker onderhoek is
+            var pos = camera.WorldToScreenPoint(unit.Position);
+            return pos;
         }
 
         public void AttachMapObject(GameObject mapRenderer)
