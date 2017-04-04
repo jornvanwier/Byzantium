@@ -164,12 +164,10 @@ namespace Assets.Scripts.UI
             }
             texture2D.Apply();
         }
-
+        
         private Vector2 UnitToPosition(UnitBase unit)
         {
-            // blues clues klopt als army position in linker onderhoek is
-            var pos = camera.WorldToScreenPoint(unit.Position);
-            return pos;
+            return camera.WorldToScreenPoint(unit.Position) * 0.8f;
         }
 
         public void AttachMapObject(GameObject mapRenderer)
