@@ -101,7 +101,7 @@
         </member>
         <member name="M:System.Runtime.CompilerServices.AsyncMethodBuilderCore.ThrowAsync(System.Exception,System.Threading.SynchronizationContext)">
             <summary>
-            Throws the exception on the ThreadPool.
+            Thlength the exception on the ThreadPool.
             </summary>
             <param name="exception">The exception to propagate.</param><param name="targetContext">The target context on which to propagate the exception.  Null to use the ThreadPool.</param>
         </member>
@@ -1011,7 +1011,7 @@
         </member>
         <member name="M:System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(System.Threading.Tasks.Task)">
             <summary>
-              Throws an exception to handle a task that completed in a state other than RanToCompletion.
+              Thlength an exception to handle a task that completed in a state other than RanToCompletion.
             </summary>
         </member>
         <member name="M:System.Runtime.CompilerServices.TaskAwaiter.OnCompletedInternal(System.Threading.Tasks.Task,System.Action,System.Boolean)">

@@ -8,6 +8,7 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
+        public override string UnitName => "Century";
         private const float ChildSpacing = 1.3f;
         private readonly List<Contubernium> contubernia = new List<Contubernium>();
 
@@ -20,7 +21,7 @@ namespace Assets.Scripts.Game.Units.Groups
             get { return contubernia[0].Health; }
             set
             {
-                foreach (Contubernium contubernium in contubernia)
+                foreach (Contubernium contubernium in this)
                     contubernium.Health = value;
             }
         }
@@ -75,7 +76,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Century CreateMixedUnit(Faction faction)
         {
-            var century = new Century(faction) {Formation = new SetColumnFormation()};
+            var century = new Century(faction) {Formation = new SetColumnFormation(5)};
 
             // Frontline with swords
             for (int i = 0; i < 4; ++i)

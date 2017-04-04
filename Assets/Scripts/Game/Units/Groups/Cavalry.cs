@@ -9,13 +9,14 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Cavalry : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
+        public override string UnitName => "Cavalry";
         private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
 
         private Cavalry(Faction faction)
         {
             Commander = new Commander(this, faction);
         }
-        
+
         public override int Health
         {
             get { return drawableUnits[0].Health; }
@@ -25,7 +26,7 @@ namespace Assets.Scripts.Game.Units.Groups
                     meshDrawableUnit.Health = value;
             }
         }
-        
+
         public override float DefaultSpeed => 1.5f;
 
         public override Quaternion Rotation
@@ -61,7 +62,7 @@ namespace Assets.Scripts.Game.Units.Groups
                     Defense.None,
                     Weapon.Pike,
                     Soldier.Mounted
-                    ));
+                ));
             }
 
             return cavalry;
@@ -69,7 +70,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override int UnitCount => drawableUnits.Count;
 
-        public override Vector2 DrawSize => Vector2.Scale(drawableUnits[0].DrawSize * 2, ChildrenDimensions);
+        public override Vector2 DrawSize => Vector2.Scale(drawableUnits[0].DrawSize, ChildrenDimensions);
 
         public override IEnumerable<MeshDrawableUnit> AllUnits => drawableUnits;
 
@@ -97,7 +98,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public IEnumerator GetEnumerator()
         {
-            return ((IEnumerable<MeshDrawableUnit>)this).GetEnumerator();
+            return ((IEnumerable<MeshDrawableUnit>) this).GetEnumerator();
         }
     }
 }

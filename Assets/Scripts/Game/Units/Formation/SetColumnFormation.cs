@@ -4,6 +4,13 @@ namespace Assets.Scripts.Game.Units.Formation
 {
     public class SetColumnFormation : FormationBase
     {
+        private int length;
+
+        public SetColumnFormation(int length)
+        {
+            this.length = length;
+        }
+
         public override void Order(Legion unit)
         {
             throw new FormationIncompatibleException(unit);
@@ -11,22 +18,22 @@ namespace Assets.Scripts.Game.Units.Formation
 
         public override void Order(Contubernium unit)
         {
-            SquareFormation.OrderAnySetColumn<Contubernium, MeshDrawableUnit>(2, unit);
+            SquareFormation.OrderAnySetColumn<Contubernium, MeshDrawableUnit>(length, unit);
         }
 
         public override void Order(Cavalry unit)
         {
-            SquareFormation.OrderAnySetColumn<Cavalry, MeshDrawableUnit>(1, unit);
+            SquareFormation.OrderAnySetColumn<Cavalry, MeshDrawableUnit>(length, unit);
         }
 
         public override void Order(Cohort unit)
         {
-            SquareFormation.OrderAnySetColumn<Cohort, Century>(3, unit);
+            SquareFormation.OrderAnySetColumn<Cohort, Century>(length, unit);
         }
 
         public override void Order(Century unit)
         {
-            SquareFormation.OrderAnySetColumn<Century, Contubernium>(2, unit);
+            SquareFormation.OrderAnySetColumn<Century, Contubernium>(length, unit);
         }
     }
 }

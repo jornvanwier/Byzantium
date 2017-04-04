@@ -618,7 +618,7 @@
             </summary>
             <param name="key">The key of the value to get or set.</param>
             <value>The value associated with the specified key. If the specified key is not found, a get
-            operation throws a
+            operation thlength a
             <see cref="T:Sytem.Collections.Generic.KeyNotFoundException"/>, and a set operation creates a new
             element with the specified key.</value>
             <exception cref="T:System.ArgumentNullException"><paramref name="key"/> is a null reference
@@ -1485,7 +1485,7 @@
         </member>
         <member name="T:System.Collections.Concurrent.SystemCollectionsConcurrent_ProducerConsumerCollectionDebugView`1">
             <summary>
-            A debugger view of the IProducerConsumerCollection that makes it simple to browse the
+            A debugger view of the IProducerConsumerCollection that makes it simple to blengthe the
             collection's contents at a point in time.
             </summary>
             <typeparam name="T">The type of elements stored within.</typeparam>
@@ -1494,7 +1494,7 @@
             <summary>
             Constructs a new debugger view object for the provided collection object.
             </summary>
-            <param name="collection">A collection to browse in the debugger.</param>
+            <param name="collection">A collection to blengthe in the debugger.</param>
         </member>
         <member name="P:System.Collections.Concurrent.SystemCollectionsConcurrent_ProducerConsumerCollectionDebugView`1.Items">
             <summary>
@@ -2296,7 +2296,7 @@
             <see cref="T:System.Exception"/> was handled. After all invocations, if any exceptions went
             unhandled, all unhandled exceptions will be put into a new <see cref="T:System.AggregateException"/>
             which will be thrown. Otherwise, the <see cref="M:System.AggregateException.Handle(System.Func{System.Exception,System.Boolean})"/> method simply returns. If any
-            invocations of the <paramref name="predicate"/> throws an exception, it will halt the processing
+            invocations of the <paramref name="predicate"/> thlength an exception, it will halt the processing
             of any more exceptions and immediately propagate the thrown exception as-is.
             </remarks>
             <exception cref="T:System.AggregateException">An exception contained by this <see cref="T:System.AggregateException"/> was not handled.</exception>
@@ -2521,7 +2521,7 @@
         </member>
         <member name="M:System.Threading.CancellationToken.ThrowIfCancellationRequested">
             <summary>
-            Throws a <see cref="T:System.OperationCanceledException">OperationCanceledException</see> if
+            Thlength a <see cref="T:System.OperationCanceledException">OperationCanceledException</see> if
             this token has had cancellation requested.
             </summary>
             <remarks>
@@ -2751,7 +2751,7 @@
         </member>
         <member name="M:System.Threading.CancellationTokenSource.ThrowIfDisposed">
             <summary>
-            Throws an exception if the source has been disposed.
+            Thlength an exception if the source has been disposed.
             </summary>
         </member>
         <member name="M:System.Threading.CancellationTokenSource.InternalGetStaticSource(System.Boolean)">
@@ -3167,7 +3167,7 @@
         </member>
         <member name="M:System.Threading.CountdownEvent.ThrowIfDisposed">
             <summary>
-            Throws an exception if the latch has been disposed.
+            Thlength an exception if the latch has been disposed.
             </summary>
         </member>
         <member name="P:System.Threading.CountdownEvent.CurrentCount">
@@ -3566,7 +3566,7 @@
         </member>
         <member name="M:System.Lazy`1.GetObjectFromMode(System.Threading.LazyThreadSafetyMode)">
             <summary>
-            Static helper function that returns an object based on the given mode. it also throws an exception if the mode is invalid
+            Static helper function that returns an object based on the given mode. it also thlength an exception if the mode is invalid
             </summary>
         </member>
         <member name="M:System.Lazy`1.OnSerializing(System.Runtime.Serialization.StreamingContext)">
@@ -3632,7 +3632,7 @@
         </member>
         <member name="M:System.System_LazyDebugView`1.#ctor(System.Lazy{`0})">
             <summary>Constructs a new debugger view object for the provided Lazy object.</summary>
-            <param name="lazy">A Lazy object to browse in the debugger.</param>
+            <param name="lazy">A Lazy object to blengthe in the debugger.</param>
         </member>
         <member name="P:System.System_LazyDebugView`1.IsValueCreated">
             <summary>Returns whether the Lazy object is initialized or not.</summary>
@@ -3655,7 +3655,7 @@
             <summary>
             This mode makes no guarantees around the thread-safety of the <see cref="T:System.Threading.Lazy{T}"/> instance.  If used from multiple threads, the behavior of the <see cref="T:System.Threading.Lazy{T}"/> is undefined.
             This mode should be used when a <see cref="T:System.Threading.Lazy{T}"/> is guaranteed to never be initialized from more than one thread simultaneously and high performance is crucial. 
-            If valueFactory throws an exception when the <see cref="T:System.Threading.Lazy{T}"/> is initialized, the exception will be cached and returned on subsequent accesses to Value. Also, if valueFactory recursively
+            If valueFactory thlength an exception when the <see cref="T:System.Threading.Lazy{T}"/> is initialized, the exception will be cached and returned on subsequent accesses to Value. Also, if valueFactory recursively
             accesses Value on this <see cref="T:System.Threading.Lazy{T}"/> instance, a <see cref="T:System.InvalidOperationException"/> will be thrown.
             </summary>
         </member>
@@ -3663,7 +3663,7 @@
             <summary>
             When multiple threads attempt to simultaneously initialize a <see cref="T:System.Threading.Lazy{T}"/> instance, this mode allows each thread to execute the
             valueFactory but only the first thread to complete initialization will be allowed to set the final value of the  <see cref="T:System.Threading.Lazy{T}"/>.
-            Once initialized successfully, any future calls to Value will return the cached result.  If valueFactory throws an exception on any thread, that exception will be
+            Once initialized successfully, any future calls to Value will return the cached result.  If valueFactory thlength an exception on any thread, that exception will be
             propagated out of Value. If any thread executes valueFactory without throwing an exception and, therefore, successfully sets the value, that value will be returned on
             subsequent accesses to Value from any thread.  If no thread succeeds in setting the value, IsValueCreated will remain false and subsequent accesses to Value will result in
             the valueFactory delegate re-executing.  Also, if valueFactory recursively accesses Value on this  <see cref="T:System.Threading.Lazy{T}"/> instance, an exception will NOT be thrown.
@@ -3673,7 +3673,7 @@
             <summary>
             This mode uses locks to ensure that only a single thread can initialize a <see cref="T:System.Threading.Lazy{T}"/> instance in a thread-safe manner.  In general,
             taken if this mode is used in conjunction with a <see cref="T:System.Threading.Lazy{T}"/> valueFactory delegate that uses locks internally, a deadlock can occur if not
-            handled carefully.  If valueFactory throws an exception when the<see cref="T:System.Threading.Lazy{T}"/> is initialized, the exception will be cached and returned on
+            handled carefully.  If valueFactory thlength an exception when the<see cref="T:System.Threading.Lazy{T}"/> is initialized, the exception will be cached and returned on
             subsequent accesses to Value. Also, if valueFactory recursively accesses Value on this <see cref="T:System.Threading.Lazy{T}"/> instance, a  <see cref="T:System.InvalidOperationException"/> will be thrown.
             </summary>
         </member>
@@ -3953,7 +3953,7 @@
         </member>
         <member name="M:System.Threading.SystemThreading_ThreadLocalDebugView`1.#ctor(System.Threading.ThreadLocal{`0})">
             <summary>Constructs a new debugger view object for the provided ThreadLocal object.</summary>
-            <param name="tlocal">A ThreadLocal object to browse in the debugger.</param>
+            <param name="tlocal">A ThreadLocal object to blengthe in the debugger.</param>
         </member>
         <member name="P:System.Threading.SystemThreading_ThreadLocalDebugView`1.IsValueCreated">
             <summary>Returns whether the ThreadLocal object is initialized or not.</summary>
@@ -4599,7 +4599,7 @@
             <exception cref="T:System.ArgumentException">The exception that is thrown when the 
             <paramref name="actions"/> array contains a null element.</exception>
             <exception cref="T:System.AggregateException">The exception that is thrown when any
-            action in the <paramref name="actions"/> array throws an exception.</exception>
+            action in the <paramref name="actions"/> array thlength an exception.</exception>
             <remarks>
             This method can be used to execute a set of operations, potentially in parallel.   
             No guarantees are made about the order in which the operations execute or whether 
@@ -4625,7 +4625,7 @@
             the <see cref="T:System.Threading.CancellationToken">CancellationToken</see> in the 
             <paramref name="parallelOptions"/> is set.</exception>
             <exception cref="T:System.AggregateException">The exception that is thrown when any 
-            action in the <paramref name="actions"/> array throws an exception.</exception>
+            action in the <paramref name="actions"/> array thlength an exception.</exception>
             <exception cref="T:System.ObjectDisposedException">The exception that is thrown when the 
             the <see cref="T:System.Threading.CancellationTokenSource">CancellationTokenSource</see> associated with the 
             the <see cref="T:System.Threading.CancellationToken">CancellationToken</see> in the 
@@ -6101,7 +6101,7 @@
         <member name="M:System.Threading.Tasks.Parallel.ThrowIfReducableToSingleOCE(System.Collections.Generic.IEnumerable{System.Exception},System.Threading.CancellationToken)">
             <summary>
             Internal utility function that implements the OCE filtering behavior for all Parallel.* APIs.
-            Throws a single OperationCancelledException object with the token if the Exception collection only contains 
+            Thlength a single OperationCancelledException object with the token if the Exception collection only contains 
             OperationCancelledExceptions with the given CancellationToken.
             
             </summary>
@@ -6174,7 +6174,7 @@
             </summary>
             <remarks>
             When an iteration of a loop calls <see cref="M:System.Threading.Tasks.ParallelLoopState.Break"/> or <see cref="M:System.Threading.Tasks.ParallelLoopState.Stop"/>, or
-            when one throws an exception, or when the loop is canceled, the <see cref="T:System.Threading.Tasks.Parallel"/> class will proactively
+            when one thlength an exception, or when the loop is canceled, the <see cref="T:System.Threading.Tasks.Parallel"/> class will proactively
             attempt to prohibit additional iterations of the loop from starting execution.
             However, there may be cases where it is unable to prevent additional iterations from starting.
             It may also be the case that a long-running iteration has already begun execution.  In such
@@ -6782,7 +6782,7 @@
         </member>
         <member name="M:System.Threading.Tasks.Task.ThrowIfDisposed">
             <summary>
-            Throws an exception if the task has been disposed, and hence can no longer be accessed.
+            Thlength an exception if the task has been disposed, and hence can no longer be accessed.
             </summary>
             <exception cref="T:System.ObjectDisposedException">The task has been disposed.</exception>
         </member>
@@ -6846,7 +6846,7 @@
         </member>
         <member name="M:System.Threading.Tasks.Task.ThrowIfExceptional(System.Boolean)">
             <summary>
-            Throws an aggregate exception if the task contains exceptions. 
+            Thlength an aggregate exception if the task contains exceptions. 
             </summary>
         </member>
         <member name="M:System.Threading.Tasks.Task.UpdateExceptionObservedStatus">
@@ -6901,7 +6901,7 @@
         </member>
         <member name="M:System.Threading.Tasks.Task.FinishThreadAbortedTask(System.Boolean,System.Boolean)">
             <summary>
-            Special purpose Finish() entry point to be used when the task delegate throws a ThreadAbortedException
+            Special purpose Finish() entry point to be used when the task delegate thlength a ThreadAbortedException
             This makes a note in the state flags so that we avoid any costly synchronous operations in the finish codepath
             such as inlined continuations
             </summary>
@@ -7909,7 +7909,7 @@
         <member name="P:System.Threading.Tasks.Task.IsExceptionObservedByParent">
             <summary>
             Checks whether the TASK_STATE_EXCEPTIONOBSERVEDBYPARENT status flag is set,
-            This will only be used by the implicit wait to prevent double throws
+            This will only be used by the implicit wait to prevent double thlength
             
             </summary>
         </member>
@@ -8844,7 +8844,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory`1.FromAsync(System.Func{System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,`0},System.Object,System.Threading.Tasks.TaskCreationOptions)">
@@ -8868,7 +8868,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory`1.FromAsync``1(System.Func{``0,System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,`0},``0,System.Object)">
@@ -8891,7 +8891,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory`1.FromAsync``1(System.Func{``0,System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,`0},``0,System.Object,System.Threading.Tasks.TaskCreationOptions)">
@@ -8919,7 +8919,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory`1.FromAsync``2(System.Func{``0,``1,System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,`0},``0,``1,System.Object)">
@@ -8946,7 +8946,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory`1.FromAsync``2(System.Func{``0,``1,System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,`0},``0,``1,System.Object,System.Threading.Tasks.TaskCreationOptions)">
@@ -8978,7 +8978,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory`1.FromAsync``3(System.Func_{``0,``1,``2,System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,`0},``0,``1,``2,System.Object)">
@@ -9009,7 +9009,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory`1.FromAsync``3(System.Func_{``0,``1,``2,System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,`0},``0,``1,``2,System.Object,System.Threading.Tasks.TaskCreationOptions)">
@@ -9045,7 +9045,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory`1.ContinueWhenAll(System.Threading.Tasks.Task[],System.Func{System.Threading.Tasks.Task[],`0})">
@@ -10459,7 +10459,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task">Task</see> that represents the
             asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync(System.Func{System.AsyncCallback,System.Object,System.IAsyncResult},System.Action{System.IAsyncResult},System.Object,System.Threading.Tasks.TaskCreationOptions)">
@@ -10483,7 +10483,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task">Task</see> that represents the
             asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync``1(System.Func{``0,System.AsyncCallback,System.Object,System.IAsyncResult},System.Action{System.IAsyncResult},``0,System.Object)">
@@ -10507,7 +10507,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task">Task</see> that represents the
             asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync``1(System.Func{``0,System.AsyncCallback,System.Object,System.IAsyncResult},System.Action{System.IAsyncResult},``0,System.Object,System.Threading.Tasks.TaskCreationOptions)">
@@ -10536,7 +10536,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task">Task</see> that represents the
             asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync``2(System.Func{``0,``1,System.AsyncCallback,System.Object,System.IAsyncResult},System.Action{System.IAsyncResult},``0,``1,System.Object)">
@@ -10564,7 +10564,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task">Task</see> that represents the
             asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync``2(System.Func{``0,``1,System.AsyncCallback,System.Object,System.IAsyncResult},System.Action{System.IAsyncResult},``0,``1,System.Object,System.Threading.Tasks.TaskCreationOptions)">
@@ -10597,7 +10597,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task">Task</see> that represents the
             asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync``3(System.Func_{``0,``1,``2,System.AsyncCallback,System.Object,System.IAsyncResult},System.Action{System.IAsyncResult},``0,``1,``2,System.Object)">
@@ -10629,7 +10629,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task">Task</see> that represents the
             asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync``3(System.Func_{``0,``1,``2,System.AsyncCallback,System.Object,System.IAsyncResult},System.Action{System.IAsyncResult},``0,``1,``2,System.Object,System.Threading.Tasks.TaskCreationOptions)">
@@ -10666,7 +10666,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task">Task</see> that represents the
             asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync``1(System.IAsyncResult,System.Func{System.IAsyncResult,``0})">
@@ -10758,7 +10758,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync``1(System.Func{System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,``0},System.Object,System.Threading.Tasks.TaskCreationOptions)">
@@ -10785,7 +10785,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync``2(System.Func{``0,System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,``1},``0,System.Object)">
@@ -10811,7 +10811,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync``2(System.Func{``0,System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,``1},``0,System.Object,System.Threading.Tasks.TaskCreationOptions)">
@@ -10842,7 +10842,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync``3(System.Func{``0,``1,System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,``2},``0,``1,System.Object)">
@@ -10872,7 +10872,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync``3(System.Func{``0,``1,System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,``2},``0,``1,System.Object,System.Threading.Tasks.TaskCreationOptions)">
@@ -10907,7 +10907,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync``4(System.Func_{``0,``1,``2,System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,``3},``0,``1,``2,System.Object)">
@@ -10941,7 +10941,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.FromAsync``4(System.Func_{``0,``1,``2,System.AsyncCallback,System.Object,System.IAsyncResult},System.Func{System.IAsyncResult,``3},``0,``1,``2,System.Object,System.Threading.Tasks.TaskCreationOptions)">
@@ -10980,7 +10980,7 @@
             <returns>The created <see cref="T:System.Threading.Tasks.Task{TResult}">Task</see> that
             represents the asynchronous operation.</returns>
             <remarks>
-            This method throws any exceptions thrown by the <paramref name="beginMethod"/>.
+            This method thlength any exceptions thrown by the <paramref name="beginMethod"/>.
             </remarks>
         </member>
         <member name="M:System.Threading.Tasks.TaskFactory.CheckFromAsyncOptions(System.Threading.Tasks.TaskCreationOptions,System.Boolean)">
@@ -13755,7 +13755,7 @@
             equal to Timeout.Infinite.</exception>
         </member>
         <member name="M:System.Collections.Concurrent.BlockingCollection`1.CheckDisposed">
-            <summary>Throws a System.ObjectDisposedException if the collection was disposed</summary>
+            <summary>Thlength a System.ObjectDisposedException if the collection was disposed</summary>
             <exception cref="T:System.ObjectDisposedException">If the collection has been disposed.</exception>
         </member>
         <member name="P:System.Collections.Concurrent.BlockingCollection`1.BoundedCapacity">
@@ -13799,13 +13799,13 @@
             the current mode of operation.</summary>
         </member>
         <member name="T:System.Collections.Concurrent.SystemThreadingCollections_BlockingCollectionDebugView`1">
-            <summary>A debugger view of the blocking collection that makes it simple to browse the
+            <summary>A debugger view of the blocking collection that makes it simple to blengthe the
             collection's contents at a point in time.</summary>
             <typeparam name="T">The type of element that the BlockingCollection will hold.</typeparam>
         </member>
         <member name="M:System.Collections.Concurrent.SystemThreadingCollections_BlockingCollectionDebugView`1.#ctor(System.Collections.Concurrent.BlockingCollection{`0})">
             <summary>Constructs a new debugger view object for the provided blocking collection object.</summary>
-            <param name="collection">A blocking collection to browse in the debugger.</param>
+            <param name="collection">A blocking collection to blengthe in the debugger.</param>
         </member>
         <member name="P:System.Collections.Concurrent.SystemThreadingCollections_BlockingCollectionDebugView`1.Items">
             <summary>Returns a snapshot of the underlying collection's elements.</summary>
@@ -14501,7 +14501,7 @@
         <member name="M:System.Linq.ParallelEnumerable.Zip``3(System.Linq.ParallelQuery{``0},System.Collections.Generic.IEnumerable{``1},System.Func{``0,``1,``2})">
             <summary>
             This Zip overload should never be called. 
-            This method is marked as obsolete and always throws 
+            This method is marked as obsolete and always thlength 
             <see cref="T:System.NotSupportedException"/> when invoked.
             </summary>
             <typeparam name="TFirst">This type parameter is not used.</typeparam>
@@ -14510,7 +14510,7 @@
             <param name="first">This parameter is not used.</param>
             <param name="second">This parameter is not used.</param>
             <param name="resultSelector">This parameter is not used.</param>
-            <returns>This overload always throws a <see cref="T:System.NotSupportedException"/>.</returns>
+            <returns>This overload always thlength a <see cref="T:System.NotSupportedException"/>.</returns>
             <exception cref="T:System.NotSupportedException">The exception that occurs when this method is called.</exception>
             <remarks>
             This overload exists to disallow usage of Zip with a left data source of type
@@ -14544,7 +14544,7 @@
         <member name="M:System.Linq.ParallelEnumerable.Join``4(System.Linq.ParallelQuery{``0},System.Collections.Generic.IEnumerable{``1},System.Func{``0,``2},System.Func{``1,``2},System.Func{``0,``1,``3})">
             <summary>
             This Join overload should never be called. 
-            This method is marked as obsolete and always throws <see cref="T:System.NotSupportedException"/> when invoked.
+            This method is marked as obsolete and always thlength <see cref="T:System.NotSupportedException"/> when invoked.
             </summary>
             <typeparam name="TOuter">This type parameter is not used.</typeparam>
             <typeparam name="TInner">This type parameter is not used.</typeparam>
@@ -14555,7 +14555,7 @@
             <param name="outerKeySelector">This parameter is not used.</param>
             <param name="innerKeySelector">This parameter is not used.</param>
             <param name="resultSelector">This parameter is not used.</param>
-            <returns>This overload always throws a <see cref="T:System.NotSupportedException"/>.</returns>
+            <returns>This overload always thlength a <see cref="T:System.NotSupportedException"/>.</returns>
             <exception cref="T:System.NotSupportedException">The exception that occurs when this method is called.</exception>
             <remarks>
             This overload exists to disallow usage Join with a left data source of type
@@ -14590,7 +14590,7 @@
         <member name="M:System.Linq.ParallelEnumerable.Join``4(System.Linq.ParallelQuery{``0},System.Collections.Generic.IEnumerable{``1},System.Func{``0,``2},System.Func{``1,``2},System.Func{``0,``1,``3},System.Collections.Generic.IEqualityComparer{``2})">
             <summary>
             This Join overload should never be called. 
-            This method is marked as obsolete and always throws <see cref="T:System.NotSupportedException"/> when invoked.
+            This method is marked as obsolete and always thlength <see cref="T:System.NotSupportedException"/> when invoked.
             </summary>
             <typeparam name="TOuter">This type parameter is not used.</typeparam>
             <typeparam name="TInner">This type parameter is not used.</typeparam>
@@ -14602,7 +14602,7 @@
             <param name="innerKeySelector">This parameter is not used.</param>
             <param name="resultSelector">This parameter is not used.</param>
             <param name="comparer">This parameter is not used.</param>
-            <returns>This overload always throws a <see cref="T:System.NotSupportedException"/>.</returns>
+            <returns>This overload always thlength a <see cref="T:System.NotSupportedException"/>.</returns>
             <exception cref="T:System.NotSupportedException">The exception that occurs when this method is called.</exception>
             <remarks>
             This overload exists to disallow usage of Join with a left data source of type
@@ -14637,7 +14637,7 @@
         <member name="M:System.Linq.ParallelEnumerable.GroupJoin``4(System.Linq.ParallelQuery{``0},System.Collections.Generic.IEnumerable{``1},System.Func{``0,``2},System.Func{``1,``2},System.Func{``0,System.Collections.Generic.IEnumerable{``1},``3})">
              <summary>
              This GroupJoin overload should never be called. 
-             This method is marked as obsolete and always throws <see cref="T:System.NotSupportedException"/> when called.
+             This method is marked as obsolete and always thlength <see cref="T:System.NotSupportedException"/> when called.
              </summary>
              <typeparam name="TOuter">This type parameter is not used.</typeparam>
              <typeparam name="TInner">This type parameter is not used.</typeparam>
@@ -14648,7 +14648,7 @@
              <param name="outerKeySelector">This parameter is not used.</param>
              <param name="innerKeySelector">This parameter is not used.</param>
              <param name="resultSelector">This parameter is not used.</param>
-             <returns>This overload always throws a <see cref="T:System.NotSupportedException"/>.</returns>
+             <returns>This overload always thlength a <see cref="T:System.NotSupportedException"/>.</returns>
              <exception cref="T:System.NotSupportedException">The exception that occurs when this method is called.</exception>
              <remarks>
              This overload exists to disallow usage of GroupJoin with a left data source of type
@@ -14685,7 +14685,7 @@
         <member name="M:System.Linq.ParallelEnumerable.GroupJoin``4(System.Linq.ParallelQuery{``0},System.Collections.Generic.IEnumerable{``1},System.Func{``0,``2},System.Func{``1,``2},System.Func{``0,System.Collections.Generic.IEnumerable{``1},``3},System.Collections.Generic.IEqualityComparer{``2})">
             <summary>
             This GroupJoin overload should never be called. 
-            This method is marked as obsolete and always throws <see cref="T:System.NotSupportedException"/> when called.
+            This method is marked as obsolete and always thlength <see cref="T:System.NotSupportedException"/> when called.
             </summary>
             <typeparam name="TOuter">This type parameter is not used.</typeparam>
             <typeparam name="TInner">This type parameter is not used.</typeparam>
@@ -14697,7 +14697,7 @@
             <param name="innerKeySelector">This parameter is not used.</param>
             <param name="resultSelector">This parameter is not used.</param>
             <param name="comparer">This parameter is not used.</param>
-            <returns>This overload always throws a <see cref="T:System.NotSupportedException"/>.</returns>
+            <returns>This overload always thlength a <see cref="T:System.NotSupportedException"/>.</returns>
             <exception cref="T:System.NotSupportedException">The exception that occurs when this method is called.</exception>
             <remarks>
             This overload exists to disallow usage of GroupJoin with a left data source of type
@@ -15114,7 +15114,7 @@
         </member>
         <member name="M:System.Linq.ParallelEnumerable.PerformSequentialAggregation``2(System.Linq.ParallelQuery{``0},``1,System.Boolean,System.Func{``1,``0,``1})">
             <summary>
-            Run an aggregation sequentially. If the user-provided reduction function throws an exception, wrap
+            Run an aggregation sequentially. If the user-provided reduction function thlength an exception, wrap
             it with an AggregateException.
             </summary>
             <param name="source"></param>
@@ -17184,12 +17184,12 @@
         <member name="M:System.Linq.ParallelEnumerable.Concat``1(System.Linq.ParallelQuery{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>
             This Concat overload should never be called. 
-            This method is marked as obsolete and always throws <see cref="T:System.NotSupportedException"/> when called.
+            This method is marked as obsolete and always thlength <see cref="T:System.NotSupportedException"/> when called.
             </summary>
             <typeparam name="TSource">This type parameter is not used.</typeparam>
             <param name="first">This parameter is not used.</param>
             <param name="second">This parameter is not used.</param>
-            <returns>This overload always throws a <see cref="T:System.NotSupportedException"/>.</returns>
+            <returns>This overload always thlength a <see cref="T:System.NotSupportedException"/>.</returns>
             <exception cref="T:System.NotSupportedException">The exception that occurs when this method is called.</exception>
             <remarks>
             This overload exists to disallow usage of Concat with a left data source of type
@@ -17223,12 +17223,12 @@
         <member name="M:System.Linq.ParallelEnumerable.SequenceEqual``1(System.Linq.ParallelQuery{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>
             This SequenceEqual overload should never be called. 
-            This method is marked as obsolete and always throws <see cref="T:System.NotSupportedException"/> when called.
+            This method is marked as obsolete and always thlength <see cref="T:System.NotSupportedException"/> when called.
             </summary>
             <typeparam name="TSource">This type parameter is not used.</typeparam>
             <param name="first">This parameter is not used.</param>
             <param name="second">This parameter is not used.</param>
-            <returns>This overload always throws a <see cref="T:System.NotSupportedException"/>.</returns>
+            <returns>This overload always thlength a <see cref="T:System.NotSupportedException"/>.</returns>
             <exception cref="T:System.NotSupportedException">Thrown every time this method is called.</exception>
             <remarks>
             This overload exists to disallow usage of SequenceEqual with a left data source of type
@@ -17269,13 +17269,13 @@
         <member name="M:System.Linq.ParallelEnumerable.SequenceEqual``1(System.Linq.ParallelQuery{``0},System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
             <summary>
             This SequenceEqual overload should never be called. 
-            This method is marked as obsolete and always throws <see cref="T:System.NotSupportedException"/> when called.
+            This method is marked as obsolete and always thlength <see cref="T:System.NotSupportedException"/> when called.
             </summary>
             <typeparam name="TSource">This type parameter is not used.</typeparam>
             <param name="first">This parameter is not used.</param>
             <param name="second">This parameter is not used.</param>
             <param name="comparer">This parameter is not used.</param>
-            <returns>This overload always throws a <see cref="T:System.NotSupportedException"/>.</returns>
+            <returns>This overload always thlength a <see cref="T:System.NotSupportedException"/>.</returns>
             <exception cref="T:System.NotSupportedException">Thrown every time this method is called.</exception>
             <remarks>
             This overload exists to disallow usage of SequenceEqual with a left data source of type
@@ -17324,12 +17324,12 @@
         <member name="M:System.Linq.ParallelEnumerable.Union``1(System.Linq.ParallelQuery{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>
             This Union overload should never be called. 
-            This method is marked as obsolete and always throws <see cref="T:System.NotSupportedException"/> when called.
+            This method is marked as obsolete and always thlength <see cref="T:System.NotSupportedException"/> when called.
             </summary>
             <typeparam name="TSource">This type parameter is not used.</typeparam>
             <param name="first">This parameter is not used.</param>
             <param name="second">This parameter is not used.</param>
-            <returns>This overload always throws a <see cref="T:System.NotSupportedException"/>.</returns>
+            <returns>This overload always thlength a <see cref="T:System.NotSupportedException"/>.</returns>
             <exception cref="T:System.NotSupportedException">The exception that occurs when this method is called.</exception>
             <remarks>
             This overload exists to disallow usage of Union with a left data source of type
@@ -17354,13 +17354,13 @@
         <member name="M:System.Linq.ParallelEnumerable.Union``1(System.Linq.ParallelQuery{``0},System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
             <summary>
             This Union overload should never be called. 
-            This method is marked as obsolete and always throws <see cref="T:System.NotSupportedException"/> when called.
+            This method is marked as obsolete and always thlength <see cref="T:System.NotSupportedException"/> when called.
             </summary>
             <typeparam name="TSource">This type parameter is not used.</typeparam>
             <param name="first">This parameter is not used.</param>
             <param name="second">This parameter is not used.</param>
             <param name="comparer">This parameter is not used.</param>
-            <returns>This overload always throws a <see cref="T:System.NotSupportedException"/>.</returns>
+            <returns>This overload always thlength a <see cref="T:System.NotSupportedException"/>.</returns>
             <exception cref="T:System.NotSupportedException">The exception that occurs when this method is called.</exception>
             <remarks>
             This overload exists to disallow usage of Union with a left data source of type
@@ -17389,12 +17389,12 @@
         <member name="M:System.Linq.ParallelEnumerable.Intersect``1(System.Linq.ParallelQuery{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>
             This Intersect overload should never be called. 
-            This method is marked as obsolete and always throws <see cref="T:System.NotSupportedException"/> when called.
+            This method is marked as obsolete and always thlength <see cref="T:System.NotSupportedException"/> when called.
             </summary>
             <typeparam name="TSource">This type parameter is not used.</typeparam>
             <param name="first">This parameter is not used.</param>
             <param name="second">This parameter is not used.</param>
-            <returns>This overload always throws a <see cref="T:System.NotSupportedException"/>.</returns>
+            <returns>This overload always thlength a <see cref="T:System.NotSupportedException"/>.</returns>
             <exception cref="T:System.NotSupportedException">The exception that occurs when this method is called.</exception>
             <remarks>
             This overload exists to disallow usage of Intersect with a left data source of type
@@ -17424,13 +17424,13 @@
         <member name="M:System.Linq.ParallelEnumerable.Intersect``1(System.Linq.ParallelQuery{``0},System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
             <summary>
             This Intersect overload should never be called. 
-            This method is marked as obsolete and always throws <see cref="T:System.NotSupportedException"/> when called.
+            This method is marked as obsolete and always thlength <see cref="T:System.NotSupportedException"/> when called.
             </summary>
             <typeparam name="TSource">This type parameter is not used.</typeparam>
             <param name="first">This parameter is not used.</param>
             <param name="second">This parameter is not used.</param>
             <param name="comparer">This parameter is not used.</param>
-            <returns>This overload always throws a <see cref="T:System.NotSupportedException"/>.</returns>
+            <returns>This overload always thlength a <see cref="T:System.NotSupportedException"/>.</returns>
             <exception cref="T:System.NotSupportedException">The exception that occurs when this method is called.</exception>
             <remarks>
             This overload exists to disallow usage of Intersect with a left data source of type
@@ -17460,12 +17460,12 @@
         <member name="M:System.Linq.ParallelEnumerable.Except``1(System.Linq.ParallelQuery{``0},System.Collections.Generic.IEnumerable{``0})">
             <summary>
             This Except overload should never be called. 
-            This method is marked as obsolete and always throws <see cref="T:System.NotSupportedException"/> when called.
+            This method is marked as obsolete and always thlength <see cref="T:System.NotSupportedException"/> when called.
             </summary>
             <typeparam name="TSource">This type parameter is not used.</typeparam>
             <param name="first">This parameter is not used.</param>
             <param name="second">This parameter is not used.</param>
-            <returns>This overload always throws a <see cref="T:System.NotSupportedException"/>.</returns>
+            <returns>This overload always thlength a <see cref="T:System.NotSupportedException"/>.</returns>
             <exception cref="T:System.NotSupportedException">The exception that occurs when this method is called.</exception>
             <remarks>
             This overload exists to disallow usage of Except with a left data source of type
@@ -17494,13 +17494,13 @@
         <member name="M:System.Linq.ParallelEnumerable.Except``1(System.Linq.ParallelQuery{``0},System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
             <summary>
             This Except overload should never be called. 
-            This method is marked as obsolete and always throws <see cref="T:System.NotSupportedException"/> when called.
+            This method is marked as obsolete and always thlength <see cref="T:System.NotSupportedException"/> when called.
             </summary>
             <typeparam name="TSource">This type parameter is not used.</typeparam>
             <param name="first">This parameter is not used.</param>
             <param name="second">This parameter is not used.</param>
             <param name="comparer">This parameter is not used.</param>
-            <returns>This overload always throws a <see cref="T:System.NotSupportedException"/>.</returns>
+            <returns>This overload always thlength a <see cref="T:System.NotSupportedException"/>.</returns>
             <exception cref="T:System.NotSupportedException">The exception that occurs when this method is called.</exception>
             <remarks>
             This overload exists to disallow usage of Except with a left data source of type
@@ -17970,7 +17970,7 @@
         </member>
         <member name="M:System.Linq.ParallelEnumerable.Single``1(System.Linq.ParallelQuery{``0})">
             <summary>
-            Returns the only element of a parallel sequence, and throws an exception if there is not 
+            Returns the only element of a parallel sequence, and thlength an exception if there is not 
             exactly one element in the sequence.
             </summary>
             <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
@@ -17992,7 +17992,7 @@
         <member name="M:System.Linq.ParallelEnumerable.Single``1(System.Linq.ParallelQuery{``0},System.Func{``0,System.Boolean})">
             <summary>
             Returns the only element of a parallel sequence that satisfies a specified condition, 
-            and throws an exception if more than one such element exists.
+            and thlength an exception if more than one such element exists.
             </summary>
             <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
             <param name="source">The sequence to return the single element of.</param>
@@ -18014,7 +18014,7 @@
         <member name="M:System.Linq.ParallelEnumerable.SingleOrDefault``1(System.Linq.ParallelQuery{``0})">
             <summary>
             Returns the only element of a parallel sequence, or a default value if the sequence is 
-            empty; this method throws an exception if there is more than one element in the sequence.
+            empty; this method thlength an exception if there is more than one element in the sequence.
             </summary>
             <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
             <param name="source">The sequence to return the single element of.</param>
@@ -18035,7 +18035,7 @@
         <member name="M:System.Linq.ParallelEnumerable.SingleOrDefault``1(System.Linq.ParallelQuery{``0},System.Func{``0,System.Boolean})">
             <summary>
             Returns the only element of a parallel sequence that satisfies a specified condition 
-            or a default value if no such element exists; this method throws an exception 
+            or a default value if no such element exists; this method thlength an exception 
             if more than one element satisfies the condition.
             </summary>
             <typeparam name="TSource">The type of the elements of <paramref name="source"/>.</typeparam>
@@ -19444,7 +19444,7 @@
         </member>
         <member name="M:System.Linq.Parallel.CancellationState.ThrowIfCanceled(System.Threading.CancellationToken)">
             <summary>
-            Throws an OCE if the merged token has been canceled.
+            Thlength an OCE if the merged token has been canceled.
             </summary>
             <param name="token">A token to check for cancelation.</param>
         </member>
@@ -19580,7 +19580,7 @@
         </member>
         <member name="M:System.Linq.Parallel.ExceptionAggregator.ThrowOCEorAggregateException(System.Exception,System.Linq.Parallel.CancellationState)">
             <summary>
-            Accepts an exception, wraps it as if it was crossing the parallel->sequential boundary, and throws the
+            Accepts an exception, wraps it as if it was crossing the parallel->sequential boundary, and thlength the
             wrapped exception. In sequential fallback cases, we use this method to throw exceptions that are consistent
             with exceptions thrown by PLINQ when the query is executed by worker tasks.
             
