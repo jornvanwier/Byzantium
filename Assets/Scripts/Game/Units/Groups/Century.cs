@@ -8,6 +8,7 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
+        public override string UnitName => "Century";
         private const float ChildSpacing = 1.3f;
         private readonly List<Contubernium> contubernia = new List<Contubernium>();
 

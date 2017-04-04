@@ -9,7 +9,7 @@ namespace Assets.Scripts.UI
     public class MiniMap : MonoBehaviour
     {
         private const float ZoomUpperLimit = 1000;
-        private const float ZoomLowerLimit = 5;
+        private const float ZoomLowerLimit = 1;
 
         private List<UnitController> armies;
 
@@ -34,9 +34,9 @@ namespace Assets.Scripts.UI
 
         public bool ShowUnits;
 
-        private float sizeX;
+        private int sizeX;
 
-        private float sizeY;
+        private int sizeY;
         private RawImage unitOverlay;
 
         private float ZoomSpeed
@@ -66,7 +66,7 @@ namespace Assets.Scripts.UI
             }
         }
 
-        public float SizeX
+        public int SizeX
         {
             get { return sizeX; }
             set
@@ -75,10 +75,16 @@ namespace Assets.Scripts.UI
                 image.rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
                 unitOverlay.rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
                 border.rectTransform.sizeDelta = new Vector2(SizeX + BorderSize * 2, SizeY + BorderSize * 2);
+
+                boundaries = new Rect(Vector2.zero, new Vector2(SizeX, SizeY));
+                texture2D = new Texture2D(SizeX, SizeY);
+                colors = new Color[SizeX * SizeY];
             }
         }
 
-        public float SizeY
+        private Rect boundaries;
+
+        public int SizeY
         {
             get { return sizeY; }
             set
@@ -87,6 +93,10 @@ namespace Assets.Scripts.UI
                 image.rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
                 unitOverlay.rectTransform.sizeDelta = new Vector2(SizeX, SizeY);
                 border.rectTransform.sizeDelta = new Vector2(SizeX + BorderSize * 2, SizeY + BorderSize * 2);
+
+                boundaries = new Rect(Vector2.zero, new Vector2(SizeX, SizeY));
+                texture2D = new Texture2D(SizeX, SizeY);
+                colors = new Color[SizeX * SizeY];
             }
         }
 
@@ -122,11 +132,13 @@ namespace Assets.Scripts.UI
                 UpdateOverlayTexture();
         }
 
+        private Texture2D texture2D;
+        private Color[] colors;
+
         public void UpdateOverlayTexture()
         {
-            Texture2D newTex = GetTexture();
-            newTex.Apply();
-            unitOverlay.texture = newTex;
+            UpdateTexture();
+            unitOverlay.texture = texture2D;
         }
 
         public void AttachArmies(List<UnitController> armies)
@@ -134,33 +146,28 @@ namespace Assets.Scripts.UI
             this.armies = armies;
         }
 
-        private Texture2D GetTexture()
-        {
-            var texture = new Texture2D((int) SizeX, (int) SizeY);
-            var colors = new Color[(int) (SizeX * SizeY)];
-            var transparent = new Color(0, 0, 0, 0);
+        private readonly Color transparent = new Color(0, 0, 0, 0);
 
+        private void UpdateTexture()
+        {
             for (int i = 0; i < SizeX * SizeY; i++)
                 colors[i] = transparent;
 
-            texture.SetPixels(colors);
+            texture2D.SetPixels(colors);
 
             foreach (UnitController army in armies)
             foreach (MeshDrawableUnit drawableUnit in army.AttachedUnit.AllUnits)
             {
                 Vector2 mappedUnitPosition = UnitToPosition(drawableUnit);
-                if (mappedUnitPosition.x >= 0 && mappedUnitPosition.y >= 0 && mappedUnitPosition.x < SizeX &&
-                    mappedUnitPosition.y < SizeY)
-                    texture.SetPixel((int) mappedUnitPosition.x, (int) mappedUnitPosition.y, army.Faction.Color);
+                if (boundaries.Contains(mappedUnitPosition))
+                    texture2D.SetPixel((int) mappedUnitPosition.x, (int) mappedUnitPosition.y, army.Faction.Color);
             }
-
-            return texture;
+            texture2D.Apply();
         }
 
         private Vector2 UnitToPosition(UnitBase unit)
         {
-            Vector3 var = camera.WorldToScreenPoint(unit.Position);
-            return var - new Vector3(OffsetX, OffsetY, 0);
+            return camera.WorldToScreenPoint(unit.Position) - new Vector3(OffsetX, OffsetY, 0);
         }
 
         public void AttachMapObject(GameObject mapRenderer)

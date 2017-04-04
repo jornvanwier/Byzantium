@@ -81,5 +81,7 @@ namespace Assets.Scripts.Game.Units
 //                    Material, 0);
 //            }
         }
+
+        public override string UnitName => "Single Unit";
     }
 }

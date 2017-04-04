@@ -8,6 +8,7 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Cohort : UnitBase, IMultipleUnits<Century>
     {
+        public override string UnitName => "Cohort";
         private const float ChildSpacingX = 1.7f;
         private const float ChildSpacingY = 1.15f;
 

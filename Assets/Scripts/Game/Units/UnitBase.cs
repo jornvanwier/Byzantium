@@ -57,5 +57,9 @@ namespace Assets.Scripts.Game.Units
         }
 
         public abstract void Draw();
+
+        public abstract string UnitName { get; }
+
+        public string Info => "This is " + UnitName + "\nHealth: " + Health / 2f + "%";
     }
 }
