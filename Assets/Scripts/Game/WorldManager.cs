@@ -81,8 +81,6 @@ namespace Assets.Scripts.Game
         private void Start()
         {
             uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
-            var loadingPanel = uiCanvas.GetComponent<LoadingPanel>();
-            loadingPanel.Show();
 
             UnitMaterial = UMatter;
             // Ugly hack to allow static retrieval of the attached meshes
@@ -91,7 +89,7 @@ namespace Assets.Scripts.Game
 
             var faction = new Faction();
 
-            unit = Legion.CreateStandardLegion(faction);
+            unit = Century.CreateMixedUnit(faction);
             unit.Position = new Vector3(5, 0, 5);
 
 
@@ -132,8 +130,6 @@ namespace Assets.Scripts.Game
             var scale = new Vector3(size * 0.9296482412060302f, size, 1);
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
-
-            loadingPanel.Hide();
         }
 
         public void AttachInfoPanel(InfoPanel panel)
@@ -280,22 +276,7 @@ namespace Assets.Scripts.Game
                     if (controller.AttachedUnit.Hitbox.Contains(intersect))
                         SelectedArmy = controller;
             }
-
-            foreach (UnitController controller in allArmies)
-            {
-                var meshDrawableUnits = controller.AttachedUnit as Contubernium;
-                if (meshDrawableUnits == null) continue;
-                foreach (MeshDrawableUnit meshDrawableUnit in meshDrawableUnits)
-                {
-                    Graphics.DrawMesh(TestMesh,
-                        Matrix4x4.TRS(meshDrawableUnit.Position, Quaternion.Euler(0, 0, 0),
-                            new Vector3(0.01f, 0.01f, 0.01f)), TestMaterial, 0);
-                }
-            }
         }
-
-        public Mesh TestMesh;
-        public Material TestMaterial;
 
         private void Select(UnitController army)
         {

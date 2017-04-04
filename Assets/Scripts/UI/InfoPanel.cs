@@ -14,8 +14,7 @@ namespace Assets.Scripts.UI
         private GameObject panel;
         private float posX;
         private float posY;
-
-        private RectTransform rectTransform;
+        
         private float sizeX;
 
         private float sizeY;
@@ -76,12 +75,6 @@ namespace Assets.Scripts.UI
             SizeY = miniMap.rectTransform.sizeDelta.y;
         }
 
-        public string Title
-        {
-            get { return titleText.text; }
-            set { titleText.text = value; }
-        }
-
         public string Commander
         {
             get { return commanderText.text; }
@@ -89,8 +82,6 @@ namespace Assets.Scripts.UI
         }
 
         private RectTransform rectTransform;
-        private Image image;
-        private Text titleText;
         private Text commanderText;
         // Use this for initialization
         [UsedImplicitly]

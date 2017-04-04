@@ -79,5 +79,7 @@ namespace Assets.Scripts.Game.Units
                        "\nCavalry:\t" + cavalryCount;
             }
         }
+
+        public abstract void Draw();
     }
 }
