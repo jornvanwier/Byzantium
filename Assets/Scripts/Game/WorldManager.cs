@@ -6,7 +6,6 @@ using Assets.Scripts.Map;
 using Assets.Scripts.UI;
 using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.Game
 {
@@ -20,11 +19,14 @@ namespace Assets.Scripts.Game
         private new Camera camera;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
+        public Vector3 CameraStartPosition;
 
         public float CameraZoomLowerLimit = 1;
 
         public float CameraZoomUpperLimit = 1000;
         public GameObject Goal;
+
+        private InfoPanel infoPanel;
         public float InitialCameraAngle = 35;
         public float InitialCameraMoveSpeed = 2;
         public float InitialZoomSpeed = 2;
@@ -43,6 +45,9 @@ namespace Assets.Scripts.Game
 
         private UnitController selectedArmy;
         private Vector3 startIntersect;
+        public Material TestMaterial;
+
+        public Mesh TestMesh;
 
         private Canvas uiCanvas;
         public Material UMatter;
@@ -54,7 +59,6 @@ namespace Assets.Scripts.Game
         private float CameraHeight => cameraObject?.transform.position.y ?? CameraStartPosition.y;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
         private float ZoomSpeed => InitialZoomSpeed * CameraHeight;
-        public Vector3 CameraStartPosition;
 
         public UnitController SelectedArmy
         {
@@ -76,6 +80,10 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Start()
         {
+            uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
+            var loadingPanel = uiCanvas.GetComponent<LoadingPanel>();
+            loadingPanel.Show();
+
             UnitMaterial = UMatter;
             // Ugly hack to allow static retrieval of the attached meshes
             MeshHolder.Initialize();
@@ -85,7 +93,6 @@ namespace Assets.Scripts.Game
 
             unit = Century.CreateMixedUnit(faction);
             unit.Position = new Vector3(5, 0, 5);
-
 
 
             MapRendererObject = Instantiate(MapRendererObject);
@@ -113,7 +120,6 @@ namespace Assets.Scripts.Game
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
             Rotate(objectRight, Space.Self, InitialCameraAngle);
 
-            uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
             var miniMap = uiCanvas.GetComponent<MiniMap>();
             miniMap.AttachCamera(camera);
             miniMap.AttachMapObject(MapRendererObject);
@@ -126,6 +132,8 @@ namespace Assets.Scripts.Game
             var scale = new Vector3(size * 0.9296482412060302f, size, 1);
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
+
+            loadingPanel.Hide();
         }
 
         public void AttachInfoPanel(InfoPanel panel)
@@ -133,8 +141,6 @@ namespace Assets.Scripts.Game
             infoPanel = panel;
             infoPanel.Hide();
         }
-
-        private InfoPanel infoPanel;
 
         // Update is called once per frame
         [UsedImplicitly]
@@ -280,14 +286,12 @@ namespace Assets.Scripts.Game
                 var meshDrawableUnits = controller.AttachedUnit as Contubernium;
                 if (meshDrawableUnits == null) continue;
                 foreach (MeshDrawableUnit meshDrawableUnit in meshDrawableUnits)
-                {
-                    Graphics.DrawMesh(TestMesh, Matrix4x4.TRS(meshDrawableUnit.Position, Quaternion.Euler(0,0,0), new Vector3(0.01f, 0.01f, 0.01f)), TestMaterial, 0);
-                }
+                    Graphics.DrawMesh(TestMesh,
+                        Matrix4x4.TRS(meshDrawableUnit.Position, Quaternion.Euler(0, 0, 0),
+                            new Vector3(0.01f, 0.01f, 0.01f)), TestMaterial, 0);
             }
         }
 
-        public Mesh TestMesh;
-        public Material TestMaterial;
         private void Select(UnitController army)
         {
             army.HealthBar.Show();

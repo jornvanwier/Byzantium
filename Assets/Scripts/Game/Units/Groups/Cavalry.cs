@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Game.Units.Unit_Enums;
 using UnityEngine;
@@ -9,13 +8,14 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Cavalry : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
-        public override string UnitName => "Cavalry";
         private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
 
         private Cavalry(Faction faction)
         {
             Commander = new Commander(this, faction);
         }
+
+        public override string UnitName => "Cavalry";
 
         public override int Health
         {
@@ -49,25 +49,6 @@ namespace Assets.Scripts.Game.Units.Groups
             }
         }
 
-        public static Cavalry CreatePikeUnit(Faction faction)
-        {
-            var cavalry = new Cavalry(faction)
-            {
-                Formation = new SquareFormation()
-            };
-
-            for (int i = 0; i < 64; i++)
-            {
-                cavalry.AddUnit(new MeshDrawableUnit(
-                    Defense.None,
-                    Weapon.Pike,
-                    Soldier.Mounted
-                ));
-            }
-
-            return cavalry;
-        }
-
         public override int UnitCount => drawableUnits.Count;
 
         public override Vector2 DrawSize => Vector2.Scale(drawableUnits[0].DrawSize, ChildrenDimensions);
@@ -85,12 +66,6 @@ namespace Assets.Scripts.Game.Units.Groups
             drawableUnits.RemoveAt(index);
         }
 
-        public override void Draw()
-        {
-            foreach (MeshDrawableUnit unit in this)
-                unit.Draw();
-        }
-
         IEnumerator<MeshDrawableUnit> IEnumerable<MeshDrawableUnit>.GetEnumerator()
         {
             return drawableUnits.GetEnumerator();
@@ -99,6 +74,29 @@ namespace Assets.Scripts.Game.Units.Groups
         public IEnumerator GetEnumerator()
         {
             return ((IEnumerable<MeshDrawableUnit>) this).GetEnumerator();
+        }
+
+        public static Cavalry CreatePikeUnit(Faction faction)
+        {
+            var cavalry = new Cavalry(faction)
+            {
+                Formation = new SquareFormation()
+            };
+
+            for (int i = 0; i < 64; i++)
+                cavalry.AddUnit(new MeshDrawableUnit(
+                    Defense.None,
+                    Weapon.Pike,
+                    Soldier.Mounted
+                ));
+
+            return cavalry;
+        }
+
+        public override void Draw()
+        {
+            foreach (MeshDrawableUnit unit in this)
+                unit.Draw();
         }
     }
 }

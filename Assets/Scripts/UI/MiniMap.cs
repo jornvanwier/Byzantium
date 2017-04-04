@@ -11,12 +11,17 @@ namespace Assets.Scripts.UI
         private const float ZoomUpperLimit = 1000;
         private const float ZoomLowerLimit = 1;
 
+        private readonly Color transparent = new Color(0, 0, 0, 0);
+
         private List<UnitController> armies;
 
         private Image border;
 
         [Range(0.1f, 100)] public float BorderSize = 10;
+
+        private Rect boundaries;
         private new Camera camera;
+        private Color[] colors;
         private RawImage image;
         [Range(ZoomLowerLimit, ZoomUpperLimit)] public float InitialZoom = 100;
 
@@ -37,6 +42,8 @@ namespace Assets.Scripts.UI
         private int sizeX;
 
         private int sizeY;
+
+        private Texture2D texture2D;
         private RawImage unitOverlay;
 
         private float ZoomSpeed
@@ -81,8 +88,6 @@ namespace Assets.Scripts.UI
                 colors = new Color[SizeX * SizeY];
             }
         }
-
-        private Rect boundaries;
 
         public int SizeY
         {
@@ -132,9 +137,6 @@ namespace Assets.Scripts.UI
                 UpdateOverlayTexture();
         }
 
-        private Texture2D texture2D;
-        private Color[] colors;
-
         public void UpdateOverlayTexture()
         {
             UpdateTexture();
@@ -145,8 +147,6 @@ namespace Assets.Scripts.UI
         {
             this.armies = armies;
         }
-
-        private readonly Color transparent = new Color(0, 0, 0, 0);
 
         private void UpdateTexture()
         {
@@ -164,7 +164,7 @@ namespace Assets.Scripts.UI
             }
             texture2D.Apply();
         }
-        
+
         private Vector2 UnitToPosition(UnitBase unit)
         {
             return camera.WorldToScreenPoint(unit.Position) * 0.8f;

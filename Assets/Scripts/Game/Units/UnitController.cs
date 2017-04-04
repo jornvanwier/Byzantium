@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Map;
+﻿using System.Linq;
+using Assets.Scripts.Game.Units.Groups;
+using Assets.Scripts.Map;
 using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.UI;
 using Assets.Scripts.Util;
@@ -14,6 +16,8 @@ namespace Assets.Scripts.Game.Units
 
         private PathfindingJobInfo currentPathInfo;
 
+        private GameObject drawSize;
+
         private Vector3 movementDrawOffset;
         private int nextPathId = -1;
         private CubicalCoordinate previousPosition;
@@ -27,8 +31,6 @@ namespace Assets.Scripts.Game.Units
         public HealthBar HealthBar { get; private set; }
 
         public Faction Faction => AttachedUnit.Commander.Faction;
-
-        private GameObject drawSize;
 
         public void Start()
         {
@@ -65,7 +67,7 @@ namespace Assets.Scripts.Game.Units
             AttachedUnit.Draw();
 
             drawSize.transform.localScale = new Vector3(AttachedUnit.DrawSize.x, 0.01f, AttachedUnit.DrawSize.y);
-            drawSize.transform.position = AttachedUnit.Position;
+            drawSize.transform.position = ((IMultipleUnits<Contubernium>)AttachedUnit).First().Position;
 
             if (currentPathInfo?.Path != null)
                 foreach (CubicalCoordinate c in currentPathInfo.Path)

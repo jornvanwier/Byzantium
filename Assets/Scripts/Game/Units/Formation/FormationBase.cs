@@ -47,7 +47,7 @@ namespace Assets.Scripts.Game.Units.Formation
 
             return newWorldPositions;
         }
-        
+
         protected static void ProcessLocalOffsets<T, TChild>(List<Vector3> offsetPositions, T unit)
             where T : UnitBase, IMultipleUnits<TChild> where TChild : UnitBase
         {

@@ -42,7 +42,7 @@ namespace Assets.Scripts.Game.Units
             set { throw new MemberAccessException("Cannot set dimensions of this object."); }
         }
 
-        public override Vector2 DrawSize => new Vector2(0.11f, 0.08f);
+        public override Vector2 DrawSize => new Vector2(0.22f, 0.16f);
 
         public override float DefaultSpeed => 1.5f;
 
@@ -61,6 +61,8 @@ namespace Assets.Scripts.Game.Units
         }
 
         public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
+
+        public override string UnitName => "Single Unit";
 
         public override void Draw()
         {
@@ -81,7 +83,5 @@ namespace Assets.Scripts.Game.Units
 //                    Material, 0);
 //            }
         }
-
-        public override string UnitName => "Single Unit";
     }
 }

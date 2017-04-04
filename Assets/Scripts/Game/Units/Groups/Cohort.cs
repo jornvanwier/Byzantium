@@ -8,7 +8,6 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Cohort : UnitBase, IMultipleUnits<Century>
     {
-        public override string UnitName => "Cohort";
         private const float ChildSpacingX = 1.7f;
         private const float ChildSpacingY = 1.15f;
 
@@ -18,6 +17,8 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             Commander = new Commander(this, faction);
         }
+
+        public override string UnitName => "Cohort";
 
         public override float DefaultSpeed => 1.5f;
 
@@ -83,6 +84,16 @@ namespace Assets.Scripts.Game.Units.Groups
             centuries.RemoveAt(index);
         }
 
+        IEnumerator<Century> IEnumerable<Century>.GetEnumerator()
+        {
+            return centuries.GetEnumerator();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return ((IEnumerable<Century>) this).GetEnumerator();
+        }
+
         public static Cohort CreateUniformMixedUnit(Faction faction)
         {
             var cohort = new Cohort(faction) {Formation = new SquareFormation()};
@@ -97,16 +108,6 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             foreach (Century unit in this)
                 unit.Draw();
-        }
-
-        IEnumerator<Century> IEnumerable<Century>.GetEnumerator()
-        {
-            return centuries.GetEnumerator();
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return ((IEnumerable<Century>)this).GetEnumerator();
         }
     }
 }

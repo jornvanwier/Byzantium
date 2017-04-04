@@ -4,7 +4,7 @@ namespace Assets.Scripts.Game.Units.Formation
 {
     public class SetColumnFormation : FormationBase
     {
-        private int length;
+        private readonly int length;
 
         public SetColumnFormation(int length)
         {
