@@ -28,6 +28,8 @@ namespace Assets.Scripts.Game.Units
 
         public Faction Faction => AttachedUnit.Commander.Faction;
 
+        private GameObject drawSize;
+
         public void Start()
         {
             Position = MapRenderer.WorldToCubicalCoordinate(transform.position);
@@ -36,6 +38,8 @@ namespace Assets.Scripts.Game.Units
             var obj = new GameObject("ArmyHealth");
             obj.transform.SetParent(GameObject.Find("uiCanvas").transform);
             HealthBar = obj.AddComponent<HealthBar>();
+
+            drawSize = GameObject.CreatePrimitive(PrimitiveType.Cube);
         }
 
         public void AttachCamera(Camera camera)
@@ -59,6 +63,9 @@ namespace Assets.Scripts.Game.Units
         {
             UpdateHealthBar();
             AttachedUnit.Draw();
+
+            drawSize.transform.localScale = new Vector3(AttachedUnit.DrawSize.x, 0.01f, AttachedUnit.DrawSize.y);
+            drawSize.transform.position = AttachedUnit.Position;
 
             if (currentPathInfo?.Path != null)
                 foreach (CubicalCoordinate c in currentPathInfo.Path)

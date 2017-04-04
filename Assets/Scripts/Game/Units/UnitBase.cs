@@ -32,10 +32,10 @@ namespace Assets.Scripts.Game.Units
         {
             get
             {
-                hitbox.x = Position.x - DrawSize.x;
-                hitbox.y = Position.y - DrawSize.y;
-                hitbox.width = DrawSize.x * 2;
-                hitbox.height = DrawSize.y * 2;
+                hitbox.x = Position.x - DrawSize.x / 2;
+                hitbox.y = Position.y - DrawSize.y / 2;
+                hitbox.width = DrawSize.x;
+                hitbox.height = DrawSize.y;
                 return hitbox;
             }
         }

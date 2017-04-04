@@ -83,8 +83,9 @@ namespace Assets.Scripts.Game
 
             var faction = new Faction();
 
-            unit = Legion.CreateStandardLegion(faction);
+            unit = Century.CreateMixedUnit(faction);
             unit.Position = new Vector3(5, 0, 5);
+
 
 
             MapRendererObject = Instantiate(MapRendererObject);

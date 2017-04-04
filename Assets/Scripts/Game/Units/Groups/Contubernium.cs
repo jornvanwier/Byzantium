@@ -80,7 +80,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Contubernium CreateCustomUnit(Faction faction, Defense defense, Weapon weapon, Soldier soldier)
         {
-            var contuberium = new Contubernium(faction) {Formation = new SquareFormation()};
+            var contuberium = new Contubernium(faction) {Formation = new SetColumnFormation(2)};
 
             for (int i = 0; i < 8; ++i)
                 contuberium.AddUnit(new MeshDrawableUnit(

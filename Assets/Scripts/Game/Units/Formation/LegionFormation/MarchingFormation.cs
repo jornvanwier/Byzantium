@@ -12,7 +12,7 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
         {
             var localPositions = new List<Vector3>();
 
-            float cavalrySize = unit.CavalryCount * unit.Cavalries.First().DrawSize.y * 4;
+            float cavalrySize = unit.CavalryCount * unit.Cavalries.First().DrawSize.x;
             float totalSizeY = cavalrySize + unit.CohortCount * unit.Cohorts.First().DrawSize.y;
 
             int i = 0;
@@ -24,7 +24,7 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 
             ProcessLocalOffsets<Legion, Cavalry>(localPositions, unit);
 
-            unit.ChildrenDimensionsCavalry = new Int2(unit.CavalryCount, 1);
+            unit.ChildrenDimensionsCavalry = new Int2(1, unit.CavalryCount);
 
             localPositions.Clear();
 
@@ -32,13 +32,13 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 
             foreach (Cohort c in (IEnumerable<Cohort>)unit)
             {
-                localPositions.Add(new Vector3(0,0,cavalrySize + ++i * unit.Cohorts.First().DrawSize.y - totalSizeY / 2));
+                localPositions.Add(new Vector3(0,0,cavalrySize + i++ * unit.Cohorts.First().DrawSize.y - totalSizeY / 2));
             }
 
             ProcessLocalOffsets<Legion, Cohort>(localPositions, unit);
 
-            unit.ChildrenDimensionsCohort = new Int2(unit.CohortCount,1);
-            unit.ChildrenDimensions = new Int2(unit.UnitCount, 1);
+            unit.ChildrenDimensionsCohort = new Int2(1, unit.CohortCount);
+            unit.ChildrenDimensions = new Int2(1, unit.UnitCount);
         }
     }
 }
