@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
 using UnityEngine;
@@ -58,8 +59,9 @@ namespace Assets.Scripts.Game.Units
 
         public abstract string UnitName { get; }
 
-        public string Info => "This is " + UnitName + "\nHealth: " + Health / 2f + "%";
-
-        public abstract void Draw();
+        public string Info
+        {
+            get { return "This is " + UnitName + "\nHealth: " + Health / 2f + "%\nThere are " + AllUnits.Count()+" units in this army"; }
+        }
     }
 }
