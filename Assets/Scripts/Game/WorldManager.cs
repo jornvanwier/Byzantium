@@ -83,9 +83,8 @@ namespace Assets.Scripts.Game
 
             var faction = new Faction();
 
-            unit = Century.CreateMixedUnit(faction);
+            unit = Legion.CreateStandardLegion(faction);
             unit.Position = new Vector3(5, 0, 5);
-
 
 
             MapRendererObject = Instantiate(MapRendererObject);
@@ -281,17 +280,21 @@ namespace Assets.Scripts.Game
                 if (meshDrawableUnits == null) continue;
                 foreach (MeshDrawableUnit meshDrawableUnit in meshDrawableUnits)
                 {
-                    Graphics.DrawMesh(TestMesh, Matrix4x4.TRS(meshDrawableUnit.Position, Quaternion.Euler(0,0,0), new Vector3(0.01f, 0.01f, 0.01f)), TestMaterial, 0);
+                    Graphics.DrawMesh(TestMesh,
+                        Matrix4x4.TRS(meshDrawableUnit.Position, Quaternion.Euler(0, 0, 0),
+                            new Vector3(0.01f, 0.01f, 0.01f)), TestMaterial, 0);
                 }
             }
         }
 
         public Mesh TestMesh;
         public Material TestMaterial;
+
         private void Select(UnitController army)
         {
             army.HealthBar.Show();
             infoPanel.Title = army.AttachedUnit.Info;
+            infoPanel.Commander = army.AttachedUnit.Commander.Name + "\n" + army.Faction.Name;
             infoPanel.Show();
         }
 
