@@ -7,14 +7,18 @@ namespace Assets.Scripts.UI
 {
     public class InfoPanel : MonoBehaviour
     {
+        private readonly Color transparent = new Color(0, 0, 0, 0);
+        private Image image;
         private Image miniMap;
 
         private GameObject panel;
         private float posX;
         private float posY;
+        
         private float sizeX;
 
         private float sizeY;
+        private Text titleText;
 
         public float PosX
         {
@@ -56,6 +60,12 @@ namespace Assets.Scripts.UI
             }
         }
 
+        public string Title
+        {
+            get { return titleText.text; }
+            set { titleText.text = value; }
+        }
+
         private void UpdatePositionAndSize()
         {
             PosX = SizeX / 2;
@@ -65,20 +75,20 @@ namespace Assets.Scripts.UI
             SizeY = miniMap.rectTransform.sizeDelta.y;
         }
 
-        public string Title
+        public string Commander
         {
-            get { return titleText.text; }
-            set { titleText.text = value; }
+            get { return commanderText.text; }
+            set { commanderText.text = value; }
         }
 
         private RectTransform rectTransform;
-        private Image image;
-        private Text titleText;
+        private Text commanderText;
         // Use this for initialization
         [UsedImplicitly]
         private void Start()
         {
-            titleText = GameObject.Find("Text").GetComponent<Text>();
+            titleText = GameObject.Find("InfoText").GetComponent<Text>();
+            commanderText = GameObject.Find("CommanderText").GetComponent<Text>();
             panel = GameObject.Find("InfoPanel");
             rectTransform = panel.GetComponent<RectTransform>();
             image = panel.GetComponent<Image>();
@@ -95,8 +105,6 @@ namespace Assets.Scripts.UI
         {
             UpdatePositionAndSize();
         }
-
-        private readonly Color transparent = new Color(0, 0, 0, 0);
 
         public void Hide()
         {

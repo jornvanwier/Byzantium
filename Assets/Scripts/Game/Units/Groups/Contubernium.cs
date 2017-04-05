@@ -8,13 +8,14 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Contubernium : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
-        public override string UnitName => "Contubernium";
         private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
 
         private Contubernium(Faction faction)
         {
             Commander = new Commander(this, faction);
         }
+
+        public override string UnitName => "Contubernium";
 
         public override int Health
         {
@@ -25,6 +26,7 @@ namespace Assets.Scripts.Game.Units.Groups
                     meshDrawableUnit.Health = value;
             }
         }
+
         public override float DefaultSpeed => 1.5f;
 
         public override Vector3 Position
@@ -62,6 +64,16 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             int index = drawableUnits.IndexOf(unit);
             drawableUnits.RemoveAt(index);
+        }
+
+        IEnumerator<MeshDrawableUnit> IEnumerable<MeshDrawableUnit>.GetEnumerator()
+        {
+            return drawableUnits.GetEnumerator();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return ((IEnumerable<MeshDrawableUnit>) this).GetEnumerator();
         }
 
         public static Contubernium CreateSwordUnit(Faction faction)
@@ -102,16 +114,6 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             foreach (MeshDrawableUnit unit in this)
                 unit.Draw();
-        }
-
-        IEnumerator<MeshDrawableUnit> IEnumerable<MeshDrawableUnit>.GetEnumerator()
-        {
-            return drawableUnits.GetEnumerator();
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return ((IEnumerable<MeshDrawableUnit>)this).GetEnumerator();
         }
     }
 }

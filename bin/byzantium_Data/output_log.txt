@@ -1,0 +1,66 @@
+Initialize engine version: 5.6.0f1 (bf5cca3e2788)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce 940M (ID=0x139c)
+    Vendor:   NVIDIA
+    VRAM:     2019 MB
+    Driver:   21.21.13.7892
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\AsyncBridge.Net35.dll (this message is harmless)
+Loading C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\AsyncBridge.Net35.dll into Unity Child Domain
+Platform assembly: C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\System.Threading.dll (this message is harmless)
+Loading C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\System.Threading.dll into Unity Child Domain
+Platform assembly: C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\Priority Queue.dll (this message is harmless)
+Loading C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\Priority Queue.dll into Unity Child Domain
+- Completed reload, in  0.189 seconds
+Platform assembly: C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\System.dll (this message is harmless)
+Platform assembly: C:\Users\ruurd\Source\Repos\Byzantium\bin\byzantium_Data\Managed\Boo.Lang.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 1.580999 ms
+55
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Performed Heightmap in 204.6444 milliseconds
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Performed Watermap in 26.5194 milliseconds
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Performed Moisturemap in 420.2975 milliseconds
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Performed Tilemap in 88.5612 milliseconds
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Performed Total map generation in 745.5251 milliseconds
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Created map
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
+Setting up 4 worker threads for Enlighten.
+  Thread -> id: 54c8 -> priority: 1 
+  Thread -> id: 42c8 -> priority: 1 
+  Thread -> id: 5214 -> priority: 1 
+  Thread -> id: 4c30 -> priority: 1 

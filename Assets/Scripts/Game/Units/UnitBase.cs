@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units.Formation;
+using Assets.Scripts.Game.Units.Unit_Enums;
 using Assets.Scripts.Map;
 using UnityEngine;
 
@@ -57,13 +58,28 @@ namespace Assets.Scripts.Game.Units
             }
         }
 
-        public abstract void Draw();
-
         public abstract string UnitName { get; }
 
         public string Info
         {
-            get { return "This is " + UnitName + "\nHealth: " + Health / 2f + "%\nThere are " + AllUnits.Count()+" units in this army"; }
+            get
+            {
+                int soldierCount = 0;
+                int cavalryCount = 0;
+                foreach (MeshDrawableUnit meshDrawableUnit in AllUnits)
+                {
+                    if (meshDrawableUnit.SoldierType == Soldier.Mounted)
+                        cavalryCount++;
+                    else
+                        soldierCount++;
+                }
+                return UnitName +
+                       "\nHealth:\t\t" + Health / 2f +
+                       "%\nSoldiers:\t" + soldierCount +
+                       "\nCavalry:\t" + cavalryCount;
+            }
         }
+
+        public abstract void Draw();
     }
 }

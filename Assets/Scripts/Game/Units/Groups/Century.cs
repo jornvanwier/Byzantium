@@ -8,7 +8,6 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
-        public override string UnitName => "Century";
         private const float ChildSpacing = 1.3f;
         private readonly List<Contubernium> contubernia = new List<Contubernium>();
 
@@ -16,6 +15,9 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             Commander = new Commander(this, faction);
         }
+
+        public override string UnitName => "Century";
+
         public override int Health
         {
             get { return contubernia[0].Health; }
@@ -25,6 +27,7 @@ namespace Assets.Scripts.Game.Units.Groups
                     contubernium.Health = value;
             }
         }
+
         public override float DefaultSpeed => 1.5f;
 
         public override Quaternion Rotation
@@ -74,6 +77,16 @@ namespace Assets.Scripts.Game.Units.Groups
             contubernia.RemoveAt(index);
         }
 
+        IEnumerator<Contubernium> IEnumerable<Contubernium>.GetEnumerator()
+        {
+            return contubernia.GetEnumerator();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return ((IEnumerable<Contubernium>) this).GetEnumerator();
+        }
+
         public static Century CreateMixedUnit(Faction faction)
         {
             var century = new Century(faction) {Formation = new SetColumnFormation(5)};
@@ -97,16 +110,6 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             foreach (Contubernium unit in this)
                 unit.Draw();
-        }
-
-        IEnumerator<Contubernium> IEnumerable<Contubernium>.GetEnumerator()
-        {
-            return contubernia.GetEnumerator();
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            return ((IEnumerable<Contubernium>)this).GetEnumerator();
         }
     }
 }

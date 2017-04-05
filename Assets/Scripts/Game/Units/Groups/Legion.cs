@@ -9,7 +9,6 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>
     {
-        public override string UnitName => "Legion";
         private readonly List<Cavalry> cavalries = new List<Cavalry>();
 
         private readonly List<Cohort> cohorts = new List<Cohort>();
@@ -18,7 +17,9 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             Commander = new Commander(this, faction);
         }
-        
+
+        public override string UnitName => "Legion";
+
         public override int Health
         {
             get
@@ -34,7 +35,7 @@ namespace Assets.Scripts.Game.Units.Groups
                     cavalry.Health = value;
             }
         }
-        
+
         public override float DefaultSpeed => 1.5f;
         public IEnumerable<Cavalry> Cavalries => cavalries;
         public IEnumerable<Cohort> Cohorts => cohorts;
@@ -68,26 +69,6 @@ namespace Assets.Scripts.Game.Units.Groups
         public Int2 ChildrenDimensionsCohort { get; set; }
         public Int2 ChildrenDimensionsCavalry { get; set; }
 
-        public static Legion CreateStandardLegion(Faction faction)
-        {
-            var legion = new Legion(faction)
-            {
-                Formation = new MarchingFormation()
-            };
-
-            for (int i = 0; i < 2; i++)
-            {
-                legion.AddUnit(Cavalry.CreatePikeUnit(faction));
-            }
-
-            for (int i = 0; i < 6; i++)
-            {
-                legion.AddUnit(Cohort.CreateUniformMixedUnit(faction));
-            }
-
-            return legion;
-        }
-
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
             get
@@ -108,11 +89,6 @@ namespace Assets.Scripts.Game.Units.Groups
             return Cavalries.GetEnumerator();
         }
 
-        IEnumerator<Cohort> IEnumerable<Cohort>.GetEnumerator()
-        {
-            return Cohorts.GetEnumerator();
-        }
-
         public void AddUnit(Cavalry unit)
         {
             cavalries.Add(unit);
@@ -122,6 +98,11 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             int index = cavalries.IndexOf(unit);
             cavalries.RemoveAt(index);
+        }
+
+        IEnumerator<Cohort> IEnumerable<Cohort>.GetEnumerator()
+        {
+            return Cohorts.GetEnumerator();
         }
 
         public IEnumerator GetEnumerator()
@@ -144,6 +125,22 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             int index = cohorts.IndexOf(unit);
             cohorts.RemoveAt(index);
+        }
+
+        public static Legion CreateStandardLegion(Faction faction)
+        {
+            var legion = new Legion(faction)
+            {
+                Formation = new MarchingFormation()
+            };
+
+            for (int i = 0; i < 2; i++)
+                legion.AddUnit(Cavalry.CreatePikeUnit(faction));
+
+            for (int i = 0; i < 6; i++)
+                legion.AddUnit(Cohort.CreateUniformMixedUnit(faction));
+
+            return legion;
         }
 
         public override void Draw()

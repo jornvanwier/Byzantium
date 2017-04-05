@@ -17,10 +17,8 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 
             int i = 0;
 
-            foreach (Cavalry c in (IEnumerable<Cavalry>)unit)
-            {
-                localPositions.Add(new Vector3(0,0,i++ * unit.Cavalries.First().DrawSize.y - totalSizeY / 2));
-            }
+            foreach (Cavalry c in (IEnumerable<Cavalry>) unit)
+                localPositions.Add(new Vector3(0, 0, i++ * unit.Cavalries.First().DrawSize.y - totalSizeY / 2));
 
             ProcessLocalOffsets<Legion, Cavalry>(localPositions, unit);
 
@@ -30,10 +28,9 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 
             i = 0;
 
-            foreach (Cohort c in (IEnumerable<Cohort>)unit)
-            {
-                localPositions.Add(new Vector3(0,0,cavalrySize + i++ * unit.Cohorts.First().DrawSize.y - totalSizeY / 2));
-            }
+            foreach (Cohort c in (IEnumerable<Cohort>) unit)
+                localPositions.Add(new Vector3(0, 0,
+                    cavalrySize + i++ * unit.Cohorts.First().DrawSize.y - totalSizeY / 2));
 
             ProcessLocalOffsets<Legion, Cohort>(localPositions, unit);
 
