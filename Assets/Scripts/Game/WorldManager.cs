@@ -87,7 +87,7 @@ namespace Assets.Scripts.Game
             MeshHolder.Initialize();
             Meshes = MeshHolder;
 
-            var faction = new Faction();
+            Faction faction = FactionManager.Factions[0];
 
             unit = Century.CreateMixedUnit(faction);
             unit.Position = new Vector3(5, 0, 5);
