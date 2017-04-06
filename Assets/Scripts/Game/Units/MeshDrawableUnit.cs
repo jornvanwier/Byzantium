@@ -1,39 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Scripts.Game.Units.Unit_Enums;
 using Assets.Scripts.Map;
 using Assets.Scripts.Util;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units
 {
+    public enum SoldierType
+    {
+        Sword,
+        Spear,
+        Bow,
+        HorseSword,
+        HorseSpear,
+        HorseBow
+    }
+
+
+
     public class MeshDrawableUnit : UnitBase
     {
         private const int StartHealth = 200;
-        public static Material Material = WorldManager.UnitMaterial;
+        public static List<GameObject> unitMeshes = null;
+
+        private Mesh mesh;
+        private Material material;
+        private Transform transform;
 
         private readonly Int2 dimensions = new Int2(1, 1);
-
+        private SoldierType soldierType;
         private Vector3 oldPosition = Vector3.zero;
 
-        public MeshDrawableUnit(Defense defense = Defense.Armor,
-            Weapon weapon = Weapon.Sword,
-            Soldier soldier = Soldier.Armored)
+        public MeshDrawableUnit(SoldierType type)
         {
-            if (defense == Defense.None && soldier == Soldier.Armored)
-                throw new ArgumentException("Defense type of None cannot be used with a Soldier type of Armored!");
+            soldierType = type;
+            if (type == SoldierType.HorseBow || type == SoldierType.HorseSpear || type == SoldierType.HorseSword)
+            {
+                IsCavalry = true;
+            }
 
-            MeshHolder m = WorldManager.Meshes;
+            GameObject m = null;
+            switch (soldierType)
+            {
+                case SoldierType.Sword:
+                    m = unitMeshes[0];
+                    break;
+                case SoldierType.Spear:
+                    m = unitMeshes[1];
+                    break;
+                case SoldierType.Bow:
+                    m = unitMeshes[2];
+                    break;
+                case SoldierType.HorseSword:
+                    m = unitMeshes[3];
+                    break;
+                case SoldierType.HorseSpear:
+                    m = unitMeshes[4];
+                    break;
+                case SoldierType.HorseBow:
+                    m = unitMeshes[5];
+                    break;
+            }
+            mesh = m.GetComponent<MeshFilter>().sharedMesh;
+            material = m.GetComponent<MeshRenderer>().sharedMaterial;
+            transform = m.transform;
 
-            UnitMesh = m.SoldierEnum[soldier];
-            WeaponMesh = m.WeaponEnum[weapon];
-            DefenseMesh = m.DefenseEnum[defense];
-
-            DefenseType = defense;
-            WeaponType = weapon;
-            SoldierType = soldier;
-
-            IsCavalry = SoldierType == Soldier.Mounted;
         }
 
         public override int Health { get; set; } = StartHealth;
@@ -48,13 +79,6 @@ namespace Assets.Scripts.Game.Units
 
         public override float DefaultSpeed => 1.5f;
 
-        public Mesh UnitMesh { get; }
-        public Mesh WeaponMesh { get; }
-        public Mesh DefenseMesh { get; }
-        public Defense DefenseType { get; }
-        public Weapon WeaponType { get; }
-        public Soldier SoldierType { get; }
-
         public override int UnitCount => 1;
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
@@ -68,24 +92,8 @@ namespace Assets.Scripts.Game.Units
 
         public override void Draw()
         {
-            if (UnitMesh == null) return;
-
-            Quaternion rotate = Rotation * Quaternion.Euler(0, 180, 0);
-            Graphics.DrawMesh(UnitMesh, Matrix4x4.TRS(Position, rotate, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
-
-//            Vector3 weaponPosition = Position + (Rotation * new Vector3(0.2f, 0, 0));
-
-//            Graphics.DrawMesh(WeaponMesh,
-//                Matrix4x4.TRS(weaponPosition, Rotation, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
-//
-//
-//            if (DefenseMesh != null)
-//            {
-//                Vector3 shieldPosition = Position + (Rotation * new Vector3(0, 0.2f, 0));
-//                Graphics.DrawMesh(DefenseMesh,
-//                    Matrix4x4.TRS(shieldPosition, Rotation, new Vector3(0.1f, 0.1f, 0.1f)),
-//                    Material, 0);
-//            }
+            Quaternion rotate = Rotation * transform.rotation;
+            Graphics.DrawMesh(mesh, Matrix4x4.TRS(Position, rotate, transform.localScale), material, 0);
         }
     }
 }

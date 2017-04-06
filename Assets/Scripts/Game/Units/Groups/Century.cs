@@ -101,7 +101,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
             // Backline with bows
             for (int i = 0; i < 3; ++i)
-                century.AddUnit(Contubernium.CreateLongbowUnit(faction));
+                century.AddUnit(Contubernium.CreateBowUnit(faction));
 
             century.IsCavalry = false;
 
@@ -114,7 +114,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
             for (int i = 0; i < 16; i++)
             {
-                century.AddUnit(Contubernium.CreateCavalryUnit(faction));
+                century.AddUnit(Contubernium.CreateSwordCavalryUnit(faction));
             }
 
             century.IsCavalry = true;

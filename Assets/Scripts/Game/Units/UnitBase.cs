@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units.Formation;
-using Assets.Scripts.Game.Units.Unit_Enums;
 using Assets.Scripts.Map;
 using UnityEngine;
 
@@ -70,7 +69,7 @@ namespace Assets.Scripts.Game.Units
                 int cavalryCount = 0;
                 foreach (MeshDrawableUnit meshDrawableUnit in AllUnits)
                 {
-                    if (meshDrawableUnit.SoldierType == Soldier.Mounted)
+                    if (meshDrawableUnit.IsCavalry)
                         cavalryCount++;
                     else
                         soldierCount++;

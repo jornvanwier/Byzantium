@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units.Formation;
-using Assets.Scripts.Game.Units.Unit_Enums;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
@@ -77,35 +76,43 @@ namespace Assets.Scripts.Game.Units.Groups
             return ((IEnumerable<MeshDrawableUnit>) this).GetEnumerator();
         }
 
-        public static Contubernium CreateCavalryUnit(Faction faction)
+        public static Contubernium CreateSpearCavalryUnit(Faction faction)
         {
-            return CreateCustomUnit(faction, Defense.LargeShield, Weapon.Pike, Soldier.Mounted);
+            return CreateCustomUnit(faction, SoldierType.HorseSpear);
+        }
+
+        public static Contubernium CreateSwordCavalryUnit(Faction faction)
+        {
+            return CreateCustomUnit(faction, SoldierType.HorseSword);
+        }
+
+        public static Contubernium CreateBowCavalryUnit(Faction faction)
+        {
+            return CreateCustomUnit(faction, SoldierType.HorseBow);
         }
 
         public static Contubernium CreateSwordUnit(Faction faction)
         {
-            return CreateCustomUnit(faction, Defense.SmallShield, Weapon.Sword, Soldier.Armored);
+            return CreateCustomUnit(faction, SoldierType.Sword);
         }
 
-        public static Contubernium CreateLongbowUnit(Faction faction)
+        public static Contubernium CreateBowUnit(Faction faction)
         {
-            return CreateCustomUnit(faction, Defense.None, Weapon.Longbow, Soldier.Unarmored);
+            return CreateCustomUnit(faction, SoldierType.Bow);
         }
 
         public static Contubernium CreatePikeUnit(Faction faction)
         {
-            return CreateCustomUnit(faction, Defense.LargeShield, Weapon.Pike, Soldier.Armored);
+            return CreateCustomUnit(faction, SoldierType.HorseSpear);
         }
 
-        public static Contubernium CreateCustomUnit(Faction faction, Defense defense, Weapon weapon, Soldier soldier)
+        public static Contubernium CreateCustomUnit(Faction faction, SoldierType unitType)
         {
             var contuberium = new Contubernium(faction) {Formation = new SetColumnFormation(2)};
 
             for (int i = 0; i < 8; ++i)
                 contuberium.AddUnit(new MeshDrawableUnit(
-                    defense,
-                    weapon,
-                    soldier
+                    unitType
                 ));
 
             contuberium.IsCavalry = contuberium.First().IsCavalry;

@@ -35,7 +35,7 @@ namespace Assets.Scripts.Game
         public GameObject MapRendererObject;
         protected MapRenderer MapRendererScript;
 
-        public MeshHolder MeshHolder;
+        public List<GameObject> PrefabMeshes;
 
         private bool middleMouseDown;
 
@@ -50,12 +50,12 @@ namespace Assets.Scripts.Game
         public Mesh TestMesh;
 
         private Canvas uiCanvas;
-        public Material UMatter;
 
         private UnitBase unit;
         private UnitController unitController;
+        
 
-        public static MeshHolder Meshes { get; private set; }
+
         private float CameraHeight => cameraObject?.transform.position.y ?? CameraStartPosition.y;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
         private float ZoomSpeed => InitialZoomSpeed * CameraHeight;
@@ -82,14 +82,10 @@ namespace Assets.Scripts.Game
         {
             uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
 
-            UnitMaterial = UMatter;
-            // Ugly hack to allow static retrieval of the attached meshes
-            MeshHolder.Initialize();
-            Meshes = MeshHolder;
-
+            MeshDrawableUnit.unitMeshes = PrefabMeshes;
             Faction faction = FactionManager.Factions[0];
 
-            unit = Cohort.CreateCavalryUnit(faction);
+            unit = Cohort.CreateUniformMixedUnit(faction);
             unit.Position = new Vector3(5, 0, 5);
 
             MapRendererObject = Instantiate(MapRendererObject);

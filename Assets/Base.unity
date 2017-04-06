@@ -633,22 +633,15 @@ MonoBehaviour:
   InitialZoomSpeed: 10
   MapRendererObject: {fileID: 1482278021882804, guid: ce1e59d011eb91f47aafc694c0a662c5,
     type: 2}
-  MeshHolder:
-    Defenses:
-      LargeShield: {fileID: 0}
-      SmallShield: {fileID: 0}
-    Soldiers:
-      Armored: {fileID: 4300000, guid: 91358c3cdda101e4d95058f5a982ba28, type: 3}
-      Mounted: {fileID: 4300000, guid: 91358c3cdda101e4d95058f5a982ba28, type: 3}
-      Unarmored: {fileID: 4300000, guid: 91358c3cdda101e4d95058f5a982ba28, type: 3}
-    Weapons:
-      Longbow: {fileID: 0}
-      Pike: {fileID: 0}
-      Shortbow: {fileID: 0}
-      Sword: {fileID: 0}
+  PrefabMeshes:
+  - {fileID: 1885542653387812, guid: df32b79a627f1f94ba81757fc9c4ee9c, type: 2}
+  - {fileID: 1135134826093284, guid: 31eb584e5490dc042bb5c2433c6fd0a3, type: 2}
+  - {fileID: 1454052776773502, guid: cb5a9fcbd0373d545b00e7cae58854f1, type: 2}
+  - {fileID: 1743250415104250, guid: a1634c8ca074fd1429e34e1b6c6b6dd1, type: 2}
+  - {fileID: 1729285678387412, guid: ec8d39f816a332a44a94c02b1f2f1dbb, type: 2}
+  - {fileID: 1866580240292292, guid: d1a8dfeb929b4134b837f4c433c25f9a, type: 2}
   TestMaterial: {fileID: 0}
   TestMesh: {fileID: 0}
-  UMatter: {fileID: 2100000, guid: f49ede822207b2f4eb7b0ffa6986bc6b, type: 2}
 --- !u!1 &1361681493
 GameObject:
   m_ObjectHideFlags: 0
@@ -3952,7 +3945,7 @@ GameObject:
   - component: {fileID: 1886766404}
   - component: {fileID: 1886766403}
   - component: {fileID: 1886766402}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MiniMapCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
