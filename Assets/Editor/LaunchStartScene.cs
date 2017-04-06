@@ -3,7 +3,6 @@
 
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEngine.SceneManagement;
 
 namespace Assets.Editor
 {
