@@ -6,7 +6,6 @@ namespace Assets.Scripts.Game.Units.Formation
     {
         void Order(Legion unit);
         void Order(Contubernium unit);
-        void Order(Cavalry unit);
         void Order(Cohort unit);
         void Order(Century unit);
     }

@@ -66,9 +66,6 @@ namespace Assets.Scripts.Game.Units
             UpdateHealthBar();
             AttachedUnit.Draw();
 
-            drawSize.transform.localScale = new Vector3(AttachedUnit.DrawSize.x, 0.01f, AttachedUnit.DrawSize.y);
-            drawSize.transform.position = ((IMultipleUnits<Contubernium>)AttachedUnit).First().Position;
-
             if (currentPathInfo?.Path != null)
                 foreach (CubicalCoordinate c in currentPathInfo.Path)
                     MapRenderer.MarkTileSelectedForNextFrame(c);

@@ -21,11 +21,6 @@ namespace Assets.Scripts.Game.Units.Formation
             SquareFormation.OrderAnySetRow<Contubernium, MeshDrawableUnit>(length, unit);
         }
 
-        public override void Order(Cavalry unit)
-        {
-            SquareFormation.OrderAnySetRow<Cavalry, MeshDrawableUnit>(length, unit);
-        }
-
         public override void Order(Cohort unit)
         {
             SquareFormation.OrderAnySetRow<Cohort, Century>(length, unit);

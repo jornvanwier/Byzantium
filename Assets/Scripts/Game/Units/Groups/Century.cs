@@ -103,6 +103,22 @@ namespace Assets.Scripts.Game.Units.Groups
             for (int i = 0; i < 3; ++i)
                 century.AddUnit(Contubernium.CreateLongbowUnit(faction));
 
+            century.IsCavalry = false;
+
+            return century;
+        }
+
+        public static Century CreateCavalryUnit(Faction faction)
+        {
+            var century = new Century(faction) {Formation = new SquareFormation()};
+
+            for (int i = 0; i < 16; i++)
+            {
+                century.AddUnit(Contubernium.CreateCavalryUnit(faction));
+            }
+
+            century.IsCavalry = true;
+
             return century;
         }
 

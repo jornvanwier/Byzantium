@@ -9,11 +9,6 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormations
             throw new FormationIncompatibleException(unit);
         }
 
-        public override void Order(Cavalry unit)
-        {
-            throw new FormationIncompatibleException(unit);
-        }
-
         public override void Order(Cohort unit)
         {
             throw new FormationIncompatibleException(unit);

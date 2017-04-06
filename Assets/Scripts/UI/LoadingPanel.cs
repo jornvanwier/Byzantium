@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Timers;
 using System.Collections;
 using System.Text;
+using Assets.Scripts.Game;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.UI
@@ -22,11 +23,15 @@ namespace Assets.Scripts.UI
         [UsedImplicitly]
         private void Start()
         {
-            faction1Text = GameObject.Find("Faction1")?.GetComponent<Text>();
-            faction2Text = GameObject.Find("Faction2")?.GetComponent<Text>();
+            loadProgress = StartLoadGame();
+
+            faction1Text = GameObject.Find("Faction1Text").GetComponent<Text>();
+            faction2Text = GameObject.Find("Faction2Text").GetComponent<Text>();
             statusText = GameObject.Find("StatusText").GetComponent<Text>();
 
-            loadProgress = StartLoadGame();
+            FactionManager.Init(2);
+            faction1Text.text = FactionManager.Factions[0].Name;
+            faction2Text.text = FactionManager.Factions[1].Name;
         }
 
         // Update is called once per frame
@@ -48,7 +53,7 @@ namespace Assets.Scripts.UI
         private static AsyncOperation StartLoadGame()
         {
             return SceneManager.LoadSceneAsync("Base");
-        }
+        }       
 
         public void Show()
         {

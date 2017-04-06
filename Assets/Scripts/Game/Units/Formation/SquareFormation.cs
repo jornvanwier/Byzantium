@@ -17,11 +17,6 @@ namespace Assets.Scripts.Game.Units.Formation
             OrderAny<Contubernium, MeshDrawableUnit>(unit);
         }
 
-        public override void Order(Cavalry unit)
-        {
-            OrderAny<Cavalry, MeshDrawableUnit>(unit);
-        }
-
         public override void Order(Cohort unit)
         {
             OrderAny<Cohort, Century>(unit);
@@ -30,7 +25,6 @@ namespace Assets.Scripts.Game.Units.Formation
         public override void Order(Century unit)
         {
             OrderAny<Century, Contubernium>(unit);
-            Debug.Log(unit.DrawSize);
         }
 
         public static void OrderAnySetRow<T, TChild>(int width, T unit) where T : UnitBase, IMultipleUnits<TChild>

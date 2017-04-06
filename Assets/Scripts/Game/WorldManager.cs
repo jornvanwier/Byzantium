@@ -87,11 +87,10 @@ namespace Assets.Scripts.Game
             MeshHolder.Initialize();
             Meshes = MeshHolder;
 
-            var faction = new Faction();
+            Faction faction = FactionManager.Factions[0];
 
-            unit = Century.CreateMixedUnit(faction);
+            unit = Cohort.CreateCavalryUnit(faction);
             unit.Position = new Vector3(5, 0, 5);
-
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";
@@ -144,6 +143,8 @@ namespace Assets.Scripts.Game
         {
             unitController.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
             UpdateCamera();
+
+            SelectedArmy = unitController;
         }
 
         private static Vector3 MultiplyVector(Vector3 v1, Vector3 v2)
