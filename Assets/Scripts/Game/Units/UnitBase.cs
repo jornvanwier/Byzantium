@@ -77,7 +77,7 @@ namespace Assets.Scripts.Game.Units
                 }
                 return UnitName +
                        "\nHealth:\t\t" + Health / 2f +
-                       "%\nSoldiers:\t" + soldierCount +
+                       "%\nSoldiers:\t\t" + soldierCount +
                        "\nCavalry:\t" + cavalryCount;
             }
         }
