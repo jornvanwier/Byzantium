@@ -8,10 +8,13 @@ namespace Assets.Scripts.Game
     {
         public static int Amount;
 
+        public static bool IsInitialized { get; private set; }
+
         public static Faction[] Factions { get; private set; }
 
         public static void Init(int numFactions)
         {
+            IsInitialized = true;
             Amount = numFactions;
             Factions = new Faction[Amount];
 

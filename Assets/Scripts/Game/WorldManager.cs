@@ -87,6 +87,10 @@ namespace Assets.Scripts.Game
             MeshHolder.Initialize();
             Meshes = MeshHolder;
 
+            if (!FactionManager.IsInitialized)
+            {
+                FactionManager.Init(2);
+            }
             Faction faction = FactionManager.Factions[0];
 
             unit = Cohort.CreateCavalryUnit(faction);
