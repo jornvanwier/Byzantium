@@ -114,6 +114,9 @@ namespace Assets.Scripts.UI
             border = GameObject.Find("MiniMapBorder").GetComponent<Image>();
             unitOverlay = GameObject.Find("UnitOverlay").GetComponent<RawImage>();
 
+            SizeX = 200;
+            SizeY = 200;
+
             UpdatePositionAndSize();
         }
 
@@ -121,9 +124,6 @@ namespace Assets.Scripts.UI
         {
             PosX = Screen.width - SizeX / 2;
             PosY = SizeY / 2;
-
-            SizeX = 200;
-            SizeY = 200;
         }
 
         // Update is called once per frame
