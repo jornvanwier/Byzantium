@@ -32,6 +32,8 @@ namespace Assets.Scripts.Game.Units
             DefenseType = defense;
             WeaponType = weapon;
             SoldierType = soldier;
+
+            IsCavalry = SoldierType == Soldier.Mounted;
         }
 
         public override int Health { get; set; } = StartHealth;
@@ -66,6 +68,8 @@ namespace Assets.Scripts.Game.Units
 
         public override void Draw()
         {
+            if (UnitMesh == null) return;
+
             Quaternion rotate = Rotation * Quaternion.Euler(0, 180, 0);
             Graphics.DrawMesh(UnitMesh, Matrix4x4.TRS(Position, rotate, new Vector3(0.1f, 0.1f, 0.1f)), Material, 0);
 

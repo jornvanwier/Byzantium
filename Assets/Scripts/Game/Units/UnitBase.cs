@@ -30,6 +30,8 @@ namespace Assets.Scripts.Game.Units
         public virtual Int2 ChildrenDimensions { get; set; }
         public abstract Vector2 DrawSize { get; }
 
+        public bool IsCavalry { get; protected set; }
+
         public Rect Hitbox
         {
             get

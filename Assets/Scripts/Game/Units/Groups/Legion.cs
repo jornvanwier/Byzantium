@@ -7,10 +7,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
-    public class Legion : UnitBase, IMultipleUnits<Cohort>, IMultipleUnits<Cavalry>
+    public class Legion : UnitBase, IMultipleUnits<Cohort>
     {
-        private readonly List<Cavalry> cavalries = new List<Cavalry>();
-
         private readonly List<Cohort> cohorts = new List<Cohort>();
 
         private Legion(Faction faction)
@@ -22,23 +20,15 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override int Health
         {
-            get
-            {
-                if (cohorts.Count > 0) return cohorts[0].Health;
-                return cavalries.Count > 0 ? cavalries[0].Health : 0;
-            }
+            get { return cohorts[0].Health; }
             set
             {
                 foreach (Cohort cohort in cohorts)
                     cohort.Health = value;
-                foreach (Cavalry cavalry in cavalries)
-                    cavalry.Health = value;
             }
         }
 
         public override float DefaultSpeed => 1.5f;
-        public IEnumerable<Cavalry> Cavalries => cavalries;
-        public IEnumerable<Cohort> Cohorts => cohorts;
 
         public override Quaternion Rotation
         {
@@ -60,22 +50,14 @@ namespace Assets.Scripts.Game.Units.Groups
             }
         }
 
-        public override int UnitCount => cavalries.Count + cohorts.Count;
-        public int CavalryCount => cavalries.Count;
-        public int CohortCount => cohorts.Count;
+        public override int UnitCount => cohorts.Count;
 
         public override Vector2 DrawSize => Vector2.Scale(cohorts[0].DrawSize, ChildrenDimensions);
-
-        public Int2 ChildrenDimensionsCohort { get; set; }
-        public Int2 ChildrenDimensionsCavalry { get; set; }
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
             get
             {
-                foreach (Cavalry cavalry in cavalries)
-                foreach (MeshDrawableUnit drawableUnit in cavalry.AllUnits)
-                    yield return drawableUnit;
                 foreach (Cohort cohort in cohorts)
                 foreach (MeshDrawableUnit drawableUnit in cohort.AllUnits)
                     yield return drawableUnit;
@@ -83,38 +65,6 @@ namespace Assets.Scripts.Game.Units.Groups
         }
 
         public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
-
-        IEnumerator<Cavalry> IEnumerable<Cavalry>.GetEnumerator()
-        {
-            return Cavalries.GetEnumerator();
-        }
-
-        public void AddUnit(Cavalry unit)
-        {
-            cavalries.Add(unit);
-        }
-
-        public void RemoveUnit(Cavalry unit)
-        {
-            int index = cavalries.IndexOf(unit);
-            cavalries.RemoveAt(index);
-        }
-
-        IEnumerator<Cohort> IEnumerable<Cohort>.GetEnumerator()
-        {
-            return Cohorts.GetEnumerator();
-        }
-
-        public IEnumerator GetEnumerator()
-        {
-            int position = 0;
-            while (position < cavalries.Count + cohorts.Count)
-            {
-                yield return
-                    position < cavalries.Count ? (UnitBase) cavalries[position] : cohorts[position - cavalries.Count];
-                position++;
-            }
-        }
 
         public void AddUnit(Cohort unit)
         {
@@ -135,18 +85,30 @@ namespace Assets.Scripts.Game.Units.Groups
             };
 
             for (int i = 0; i < 2; i++)
-                legion.AddUnit(Cavalry.CreatePikeUnit(faction));
+                legion.AddUnit(Cohort.CreateCavalryUnit(faction));
 
             for (int i = 0; i < 6; i++)
                 legion.AddUnit(Cohort.CreateUniformMixedUnit(faction));
+
+            legion.IsCavalry = false;
 
             return legion;
         }
 
         public override void Draw()
         {
-            foreach (UnitBase unit in this)
+            foreach (Cohort unit in this)
                 unit.Draw();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public IEnumerator<Cohort> GetEnumerator()
+        {
+            return cohorts.GetEnumerator();
         }
     }
 }

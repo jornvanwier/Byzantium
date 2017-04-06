@@ -101,6 +101,22 @@ namespace Assets.Scripts.Game.Units.Groups
             for (int i = 0; i < 6; ++i)
                 cohort.AddUnit(Century.CreateMixedUnit(faction));
 
+            cohort.IsCavalry = false;
+
+            return cohort;
+        }
+
+        public static Cohort CreateCavalryUnit(Faction faction)
+        {
+            var cohort = new Cohort(faction) {Formation = new SquareFormation()};
+
+            for (int i = 0; i < 6; i++)
+            {
+                cohort.AddUnit(Century.CreateCavalryUnit(faction));
+            }
+
+            cohort.IsCavalry = true;
+
             return cohort;
         }
 

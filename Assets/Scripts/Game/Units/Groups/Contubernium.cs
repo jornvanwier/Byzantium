@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Game.Units.Unit_Enums;
 using UnityEngine;
@@ -76,6 +77,11 @@ namespace Assets.Scripts.Game.Units.Groups
             return ((IEnumerable<MeshDrawableUnit>) this).GetEnumerator();
         }
 
+        public static Contubernium CreateCavalryUnit(Faction faction)
+        {
+            return CreateCustomUnit(faction, Defense.LargeShield, Weapon.Pike, Soldier.Mounted);
+        }
+
         public static Contubernium CreateSwordUnit(Faction faction)
         {
             return CreateCustomUnit(faction, Defense.SmallShield, Weapon.Sword, Soldier.Armored);
@@ -101,6 +107,8 @@ namespace Assets.Scripts.Game.Units.Groups
                     weapon,
                     soldier
                 ));
+
+            contuberium.IsCavalry = contuberium.First().IsCavalry;
 
             return contuberium;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
@@ -12,30 +13,26 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
         {
             var localPositions = new List<Vector3>();
 
-            float cavalrySize = unit.CavalryCount * unit.Cavalries.First().DrawSize.x;
-            float totalSizeY = cavalrySize + unit.CohortCount * unit.Cohorts.First().DrawSize.y;
+            Cohort[] sortedCohorts = SortCavalryFirst(unit);
 
+            float totalSize = 0;
             int i = 0;
 
-            foreach (Cavalry c in (IEnumerable<Cavalry>) unit)
-                localPositions.Add(new Vector3(0, 0, i++ * unit.Cavalries.First().DrawSize.y - totalSizeY / 2));
+            foreach (Cohort cohort in unit)
+            {
+                totalSize += cohort.DrawSize.x;
+                
+                localPositions.Add(new Vector3(i++ * cohort.DrawSize.x, 0, 0));
+            }
 
-            ProcessLocalOffsets<Legion, Cavalry>(localPositions, unit);
+            IList<Vector3> offsetPositions = localPositions.Select(l => {
+                l.x -= totalSize;
+                return l;
+            }).ToList();
 
-            unit.ChildrenDimensionsCavalry = new Int2(1, unit.CavalryCount);
+            ProcessLocalOffsets<Legion, Cohort>(offsetPositions, unit);
 
-            localPositions.Clear();
-
-            i = 0;
-
-            foreach (Cohort c in (IEnumerable<Cohort>) unit)
-                localPositions.Add(new Vector3(0, 0,
-                    cavalrySize + i++ * unit.Cohorts.First().DrawSize.y - totalSizeY / 2));
-
-            ProcessLocalOffsets<Legion, Cohort>(localPositions, unit);
-
-            unit.ChildrenDimensionsCohort = new Int2(1, unit.CohortCount);
-            unit.ChildrenDimensions = new Int2(1, unit.UnitCount);
+            unit.ChildrenDimensions = new Int2(unit.UnitCount, 1);
         }
     }
 }
