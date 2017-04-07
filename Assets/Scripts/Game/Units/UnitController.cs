@@ -41,6 +41,9 @@ namespace Assets.Scripts.Game.Units
 
         public void Start()
         {
+            Position = MapRenderer.WorldToCubicalCoordinate(transform.position);
+            previousPosition = Position;
+
             var obj = new GameObject("ArmyHealth");
             obj.transform.SetParent(GameObject.Find("uiCanvas").transform);
             HealthBar = obj.AddComponent<HealthBar>();
@@ -76,11 +79,13 @@ namespace Assets.Scripts.Game.Units
             SpawnObject.AddComponent<BoxCollider>();
             meshFilter.mesh = SpawnMesh;
             meshRenderer.material = SpawnMeshMaterial;
+
+            SetUnitWorldPos(buildingPos);
         }
 
         public void Update()
         {
-            if (SpawnObject != null && mapRenderer?.HexBoard != null)
+            if (SpawnObject == null && mapRenderer?.HexBoard != null)
             {
                 CreateBuilding();
             }

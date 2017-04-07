@@ -133,7 +133,6 @@ namespace Assets.Scripts.Game
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
 
             unitController.AttachMapRenderer(MapRendererScript);
-            unitController.CreateBuilding();
             unitController.SpawnMesh = SpawnMesh;
             unitController.SpawnMeshMaterial = SpawnMeshMaterial;
         }
