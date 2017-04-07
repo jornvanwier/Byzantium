@@ -1,23 +1,19 @@
-﻿using JetBrains.Annotations;
+﻿using Assets.Scripts.Game;
+using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Timers;
-using System.Collections;
-using System.Text;
-using Assets.Scripts.Game;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
     public class LoadingPanel : MonoBehaviour
     {
+        private string dots = ".";
         private Text faction1Text;
         private Text faction2Text;
-        private Text statusText;
-
-        private string dots = ".";
 
         private AsyncOperation loadProgress;
+        private Text statusText;
 
         // Use this for initialization
         [UsedImplicitly]
@@ -53,7 +49,7 @@ namespace Assets.Scripts.UI
         private static AsyncOperation StartLoadGame()
         {
             return SceneManager.LoadSceneAsync("Base");
-        }       
+        }
 
         public void Show()
         {

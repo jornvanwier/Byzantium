@@ -113,9 +113,7 @@ namespace Assets.Scripts.Game.Units.Groups
             var century = new Century(faction) {Formation = new SetColumnFormation(5)};
 
             for (int i = 0; i < 10; i++)
-            {
                 century.AddUnit(Contubernium.CreateSwordCavalryUnit(faction));
-            }
 
             century.IsCavalry = true;
 
