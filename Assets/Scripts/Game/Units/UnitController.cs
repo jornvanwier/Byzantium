@@ -16,8 +16,6 @@ namespace Assets.Scripts.Game.Units
 
         private PathfindingJobInfo currentPathInfo;
 
-        private GameObject drawSize;
-
         private Vector3 movementDrawOffset;
         private int nextPathId = -1;
         private CubicalCoordinate previousPosition;
@@ -46,8 +44,6 @@ namespace Assets.Scripts.Game.Units
             var obj = new GameObject("ArmyHealth");
             obj.transform.SetParent(GameObject.Find("uiCanvas").transform);
             HealthBar = obj.AddComponent<HealthBar>();
-
-            drawSize = GameObject.CreatePrimitive(PrimitiveType.Cube);
         }
 
         public void AttachCamera(Camera camera)

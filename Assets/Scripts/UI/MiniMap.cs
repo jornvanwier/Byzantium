@@ -131,7 +131,8 @@ namespace Assets.Scripts.UI
         private void Update()
         {
             //Mini map set position takes ~200 nanoseconds
-            UpdateCamera();
+            if(mainCamera!=null)
+                UpdateCamera();
             UpdatePositionAndSize();
             if (ShowUnits)
                 UpdateOverlayTexture();
