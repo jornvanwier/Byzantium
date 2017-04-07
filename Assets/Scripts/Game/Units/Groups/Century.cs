@@ -8,7 +8,6 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
-        private const float ChildSpacing = 1.2f;
         private readonly List<Contubernium> contubernia = new List<Contubernium>();
 
         private Century(Faction faction)
@@ -52,7 +51,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override int UnitCount => contubernia.Count;
 
-        public override Vector2 DrawSize => ChildSpacing * Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions);
+        public override Vector2 DrawSize => Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions);
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
