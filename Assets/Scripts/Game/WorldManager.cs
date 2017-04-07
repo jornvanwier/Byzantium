@@ -217,13 +217,12 @@ namespace Assets.Scripts.Game
                 CheckBounds(prevPos);
 
             //Middle mouse drag and right mouse rotate
-            if (Input.GetKeyDown(KeyCode.LeftAlt) && Input.GetMouseButtonDown(1))
+            if (Input.GetKey(KeyCode.LeftAlt) && Input.GetMouseButtonDown(1))
             {
                 prevPos = Clone(cameraObject.transform.position);
 
                 Vector3 position = new Vector2(Screen.width / 2, Screen.height / 2);
                 var plane = new Plane(Vector3.up, Vector3.zero);
-                var camera = cameraObject.GetComponent<Camera>();
                 Ray ray = camera.ScreenPointToRay(position);
                 if (plane.Raycast(ray, out float rayDistance))
                     startIntersect = ray.GetPoint(rayDistance);
