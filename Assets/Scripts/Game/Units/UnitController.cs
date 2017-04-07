@@ -97,7 +97,7 @@ namespace Assets.Scripts.Game.Units
 
             Position = MapRenderer.WorldToCubicalCoordinate(CreateWorldPos());
 
-            if (Goal == CubicalCoordinate.Zero || Position == Goal)
+            if (MapRenderer.HexBoard[Goal] == (byte)TileType.WaterDeep || Position == Goal)
                 return;
             if (IsPathValid())
             {
