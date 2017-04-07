@@ -76,6 +76,7 @@ namespace Assets.Scripts.Game.Units.Groups
         public void RemoveUnit(Cohort unit)
         {
             cohorts.Remove(unit);
+            set = MeshDrawableUnit.Prefetch(this);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
