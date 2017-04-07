@@ -15,18 +15,19 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 
             Cohort[] sortedCohorts = SortCavalryFirst(unit);
 
+            const float sizeMultiplier = 2.8f;
             float totalSize = 0;
             int i = 0;
 
-            foreach (Cohort cohort in unit)
+            foreach (Cohort cohort in sortedCohorts)
             {
-                totalSize += cohort.DrawSize.x;
+                totalSize += cohort.DrawSize.y * sizeMultiplier;
                 
-                localPositions.Add(new Vector3(i++ * cohort.DrawSize.x, 0, 0));
+                localPositions.Add(new Vector3(0, 0, i++ * cohort.DrawSize.y * sizeMultiplier));
             }
 
             IList<Vector3> offsetPositions = localPositions.Select(l => {
-                l.x -= totalSize;
+                l.z -= totalSize / 2;
                 return l;
             }).ToList();
 

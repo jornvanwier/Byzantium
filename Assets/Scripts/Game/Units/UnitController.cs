@@ -74,7 +74,7 @@ namespace Assets.Scripts.Game.Units
 
             Position = MapRenderer.WorldToCubicalCoordinate(CreateWorldPos());
 
-            if (Position == Goal)
+            if (Goal == CubicalCoordinate.Zero || Position == Goal)
                 return;
             if (IsPathValid())
             {

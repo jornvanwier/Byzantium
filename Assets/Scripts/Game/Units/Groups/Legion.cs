@@ -73,15 +73,14 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public void RemoveUnit(Cohort unit)
         {
-            int index = cohorts.IndexOf(unit);
-            cohorts.RemoveAt(index);
+            cohorts.Remove(unit);
         }
 
         public static Legion CreateStandardLegion(Faction faction)
         {
             var legion = new Legion(faction)
             {
-                Formation = new MarchingFormation()
+                Formation = new MarchingFormation() 
             };
 
             for (int i = 0; i < 2; i++)
