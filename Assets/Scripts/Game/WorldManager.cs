@@ -139,8 +139,6 @@ namespace Assets.Scripts.Game
         {
             unitController.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
             UpdateCamera();
-
-            SelectedArmy = unitController;
         }
 
         private static Vector3 MultiplyVector(Vector3 v1, Vector3 v2)
