@@ -8,13 +8,16 @@ namespace Assets.Scripts.UI
     public class InfoPanel : MonoBehaviour
     {
         private readonly Color transparent = new Color(0, 0, 0, 0);
+        private Text commanderText;
         private Image image;
         private Image miniMap;
 
         private GameObject panel;
         private float posX;
         private float posY;
-        
+
+        private RectTransform rectTransform;
+
         private float sizeX;
 
         private float sizeY;
@@ -66,6 +69,12 @@ namespace Assets.Scripts.UI
             set { titleText.text = value; }
         }
 
+        public string Commander
+        {
+            get { return commanderText.text; }
+            set { commanderText.text = value; }
+        }
+
         private void UpdatePositionAndSize()
         {
             PosX = SizeX / 2;
@@ -75,14 +84,6 @@ namespace Assets.Scripts.UI
             SizeY = miniMap.rectTransform.sizeDelta.y;
         }
 
-        public string Commander
-        {
-            get { return commanderText.text; }
-            set { commanderText.text = value; }
-        }
-
-        private RectTransform rectTransform;
-        private Text commanderText;
         // Use this for initialization
         [UsedImplicitly]
         private void Start()

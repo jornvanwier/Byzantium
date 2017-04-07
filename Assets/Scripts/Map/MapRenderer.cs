@@ -31,7 +31,6 @@ namespace Assets.Scripts.Map
 
         private TextureSet defaultTextureSet;
         private Texture2DArray glossyMaps;
-        public HexBoard HexBoard { get; private set; }
 
         public Material HexMaterial;
 
@@ -44,6 +43,7 @@ namespace Assets.Scripts.Map
         private Texture2DArray normalMaps;
 
         private List<TextureSet> textureSets;
+        public HexBoard HexBoard { get; private set; }
 
         [UsedImplicitly]
         private void Start()

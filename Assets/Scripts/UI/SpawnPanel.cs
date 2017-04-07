@@ -14,6 +14,10 @@ namespace Assets.Scripts.UI
         private float posX;
         private float posY;
 
+        private RectTransform rectTransform;
+
+        private UnitController selectedArmy;
+
         private float sizeX;
 
         private float sizeY;
@@ -67,7 +71,6 @@ namespace Assets.Scripts.UI
             SizeY = miniMap.rectTransform.sizeDelta.y;
         }
 
-        private RectTransform rectTransform;
         // Use this for initialization
         [UsedImplicitly]
         private void Start()
@@ -94,8 +97,6 @@ namespace Assets.Scripts.UI
             panel.SetActive(false);
             //image.color = transparent;
         }
-
-        private UnitController selectedArmy;
 
         public void Show(UnitController army)
         {

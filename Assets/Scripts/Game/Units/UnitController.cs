@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Assets.Scripts.Game.Units.Groups;
-using Assets.Scripts.Map;
+﻿using Assets.Scripts.Map;
 using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.UI;
 using Assets.Scripts.Util;
@@ -15,10 +13,13 @@ namespace Assets.Scripts.Game.Units
         private new Camera camera;
 
         private PathfindingJobInfo currentPathInfo;
+        private MapRenderer mapRenderer;
 
         private Vector3 movementDrawOffset;
         private int nextPathId = -1;
         private CubicalCoordinate previousPosition;
+        public Mesh SpawnMesh;
+        public Material SpawnMeshMaterial;
 
         public UnitBase AttachedUnit { get; set; }
 
@@ -30,9 +31,6 @@ namespace Assets.Scripts.Game.Units
 
         public Faction Faction => AttachedUnit.Commander.Faction;
         public GameObject SpawnObject { get; private set; }
-        public Mesh SpawnMesh;
-        public Material SpawnMeshMaterial;
-        private MapRenderer mapRenderer;
 
         public void AttachMapRenderer(MapRenderer renderer)
         {
@@ -41,6 +39,9 @@ namespace Assets.Scripts.Game.Units
 
         public void Start()
         {
+            Position = MapRenderer.WorldToCubicalCoordinate(transform.position);
+            previousPosition = Position;
+
             var obj = new GameObject("ArmyHealth");
             obj.transform.SetParent(GameObject.Find("uiCanvas").transform);
             HealthBar = obj.AddComponent<HealthBar>();
@@ -76,14 +77,14 @@ namespace Assets.Scripts.Game.Units
             SpawnObject.AddComponent<BoxCollider>();
             meshFilter.mesh = SpawnMesh;
             meshRenderer.material = SpawnMeshMaterial;
+
+            SetUnitWorldPos(buildingPos);
         }
 
         public void Update()
         {
-            if (SpawnObject != null && mapRenderer?.HexBoard != null)
-            {
+            if (SpawnObject == null && mapRenderer?.HexBoard != null)
                 CreateBuilding();
-            }
 
             UpdateHealthBar();
             AttachedUnit.Draw();

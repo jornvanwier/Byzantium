@@ -11,13 +11,6 @@ namespace Assets.Scripts.Game
 {
     public class WorldManager : MonoBehaviour
     {
-        public void AttachSpawnPanel(SpawnPanel panel)
-        {
-            spawnPanel = panel;
-            spawnPanel.Hide();
-        }
-
-        private SpawnPanel spawnPanel;
         public static Material UnitMaterial;
 
         private readonly List<UnitController> allArmies = new List<UnitController>();
@@ -41,15 +34,20 @@ namespace Assets.Scripts.Game
         public GameObject MapRendererObject;
         protected MapRenderer MapRendererScript;
 
-        public List<GameObject> PrefabMeshes;
-
         private bool middleMouseDown;
+
+        public List<GameObject> PrefabMeshes;
 
 
         private Vector2 prevMousePos = Vector2.zero;
         private bool rightMouseDown;
 
         private UnitController selectedArmy;
+
+        public Mesh SpawnMesh;
+        public Material SpawnMeshMaterial;
+
+        private SpawnPanel spawnPanel;
         private Vector3 startIntersect;
 
         private Canvas uiCanvas;
@@ -74,6 +72,12 @@ namespace Assets.Scripts.Game
             }
         }
 
+        public void AttachSpawnPanel(SpawnPanel panel)
+        {
+            spawnPanel = panel;
+            spawnPanel.Hide();
+        }
+
         [UsedImplicitly]
         private void OnApplicationFocus(bool hasFocus)
         {
@@ -86,10 +90,8 @@ namespace Assets.Scripts.Game
             uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
 
             MeshDrawableUnit.unitMeshes = PrefabMeshes;
-            if(!FactionManager.IsInitialized)
-            {
+            if (!FactionManager.IsInitialized)
                 FactionManager.Init(2);
-            }
             Faction faction = FactionManager.Factions[0];
 
             unit = Cohort.CreateUniformMixedUnit(faction);
@@ -106,7 +108,7 @@ namespace Assets.Scripts.Game
             camera.nearClipPlane = 0.01f;
 
             MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
-            
+
             var obj = new GameObject("Army");
             unitController = obj.AddComponent<UnitController>();
             unitController.AttachedUnit = unit;
@@ -133,7 +135,6 @@ namespace Assets.Scripts.Game
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
 
             unitController.AttachMapRenderer(MapRendererScript);
-            unitController.CreateBuilding();
             unitController.SpawnMesh = SpawnMesh;
             unitController.SpawnMeshMaterial = SpawnMeshMaterial;
         }
@@ -149,9 +150,7 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Update()
         {
-            
             if (selectedArmy != null)
-            {
                 if (Input.GetKeyDown(KeyCode.Mouse1))
                 {
                     var plane = new Plane(Vector3.up, Vector3.zero);
@@ -163,10 +162,6 @@ namespace Assets.Scripts.Game
 
                     selectedArmy.Goal = MapRendererScript.WorldToCubicalCoordinate(intersection);
                 }
-            } 
-
-
-
 
 
             UpdateCamera();
@@ -299,12 +294,8 @@ namespace Assets.Scripts.Game
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
                     foreach (UnitController army in allArmies)
-                    {
                         if (army.SpawnObject.transform == hit.transform)
-                        {
                             spawnPanel.Show(army);
-                        }
-                    }
                 }
                 else
                 {
@@ -322,9 +313,6 @@ namespace Assets.Scripts.Game
                 }
             }
         }
-
-        public Mesh SpawnMesh;
-        public Material SpawnMeshMaterial;
 
         private void Select(UnitController army)
         {

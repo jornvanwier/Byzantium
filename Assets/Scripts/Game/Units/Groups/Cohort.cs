@@ -47,7 +47,7 @@ namespace Assets.Scripts.Game.Units.Groups
         public override Vector2 DrawSize
             =>
 //                Vector2.Scale(new Vector2(ChildSpacingX, ChildSpacingY),
-                    Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions);//);
+                Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions); //);
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
@@ -111,9 +111,7 @@ namespace Assets.Scripts.Game.Units.Groups
             var cohort = new Cohort(faction) {Formation = new SquareFormation()};
 
             for (int i = 0; i < 6; i++)
-            {
                 cohort.AddUnit(Century.CreateCavalryUnit(faction));
-            }
 
             cohort.IsCavalry = true;
 
