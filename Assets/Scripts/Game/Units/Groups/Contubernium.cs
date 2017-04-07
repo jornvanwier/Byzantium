@@ -103,7 +103,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Contubernium CreatePikeUnit(Faction faction)
         {
-            return CreateCustomUnit(faction, SoldierType.HorseSpear);
+            return CreateCustomUnit(faction, SoldierType.Spear);
         }
 
         public static Contubernium CreateCustomUnit(Faction faction, SoldierType unitType)

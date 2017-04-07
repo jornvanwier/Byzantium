@@ -8,8 +8,8 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Cohort : UnitBase, IMultipleUnits<Century>
     {
-        private const float ChildSpacingX = 1.7f;
-        private const float ChildSpacingY = 1.15f;
+        private const float ChildSpacingX = 0.7f;
+        private const float ChildSpacingY = 2.5f;
 
         private readonly List<Century> centuries = new List<Century>();
 
@@ -46,8 +46,8 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override Vector2 DrawSize
             =>
-                Vector2.Scale(new Vector2(ChildSpacingX, ChildSpacingY),
-                    Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions));
+//                Vector2.Scale(new Vector2(ChildSpacingX, ChildSpacingY),
+                    Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions);//);
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {

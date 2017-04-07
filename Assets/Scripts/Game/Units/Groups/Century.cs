@@ -8,7 +8,7 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Century : UnitBase, IMultipleUnits<Contubernium>
     {
-        private const float ChildSpacing = 1.3f;
+        private const float ChildSpacing = 1.2f;
         private readonly List<Contubernium> contubernia = new List<Contubernium>();
 
         private Century(Faction faction)
@@ -110,9 +110,9 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Century CreateCavalryUnit(Faction faction)
         {
-            var century = new Century(faction) {Formation = new SquareFormation()};
+            var century = new Century(faction) {Formation = new SetColumnFormation(5)};
 
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 10; i++)
             {
                 century.AddUnit(Contubernium.CreateSwordCavalryUnit(faction));
             }

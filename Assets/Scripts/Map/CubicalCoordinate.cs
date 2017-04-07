@@ -78,5 +78,7 @@ namespace Assets.Scripts.Map
         {
             return $"X: {X}, Y: {Y}, Z: {Z}";
         }
+
+        public static CubicalCoordinate Zero => new CubicalCoordinate(0,0);
     }
 }

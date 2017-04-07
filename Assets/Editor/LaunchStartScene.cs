@@ -3,6 +3,7 @@
 
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Editor
 {
@@ -11,7 +12,7 @@ namespace Assets.Editor
         [MenuItem("Edit/Play-Stop, But From Prelaunch Scene %0")]
         public static void PlayFromPrelaunchScene()
         {
-            if (EditorApplication.isPlaying )
+            if (EditorApplication.isPlaying)
             {
                 EditorApplication.isPlaying = false;
                 return;
@@ -20,6 +21,5 @@ namespace Assets.Editor
             EditorSceneManager.OpenScene("Assets/SceneLoader.unity");
             EditorApplication.isPlaying = true;
         }
-
     }
 }

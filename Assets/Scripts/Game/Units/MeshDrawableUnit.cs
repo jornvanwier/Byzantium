@@ -36,7 +36,7 @@ namespace Assets.Scripts.Game.Units
             soldierType = type;
             if (type == SoldierType.HorseBow || type == SoldierType.HorseSpear || type == SoldierType.HorseSword)
             {
-                IsCavalry = true;
+                IsCavalry = false;
             }
 
             GameObject m = null;
@@ -60,7 +60,10 @@ namespace Assets.Scripts.Game.Units
                 case SoldierType.HorseBow:
                     m = unitMeshes[5];
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
+
             mesh = m.GetComponent<MeshFilter>().sharedMesh;
             material = m.GetComponent<MeshRenderer>().sharedMaterial;
             transform = m.transform;
@@ -75,7 +78,10 @@ namespace Assets.Scripts.Game.Units
             set { throw new MemberAccessException("Cannot set dimensions of this object."); }
         }
 
-        public override Vector2 DrawSize => new Vector2(0.22f, 0.16f);
+        private readonly Vector2 horseSize = new Vector2(0.22f, 0.2f);
+        private readonly Vector2 manSize = new Vector2(0.22f, 0.16f);
+
+        public override Vector2 DrawSize => IsCavalry ? manSize : manSize;
 
         public override float DefaultSpeed => 1.5f;
 
