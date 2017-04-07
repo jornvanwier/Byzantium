@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Util;
 using UnityEngine;
+using static Assets.Scripts.Game.Units.MeshDrawableUnit;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
@@ -10,6 +11,7 @@ namespace Assets.Scripts.Game.Units.Groups
     {
         private const float ChildSpacing = 1.3f;
         private readonly List<Contubernium> contubernia = new List<Contubernium>();
+        private DrawingSet set;
 
         private Century(Faction faction)
         {
@@ -69,12 +71,14 @@ namespace Assets.Scripts.Game.Units.Groups
         public void AddUnit(Contubernium unit)
         {
             contubernia.Add(unit);
+            set = Prefetch(this);
         }
 
         public void RemoveUnit(Contubernium unit)
         {
             int index = contubernia.IndexOf(unit);
             contubernia.RemoveAt(index);
+            set = Prefetch(this);
         }
 
         IEnumerator<Contubernium> IEnumerable<Contubernium>.GetEnumerator()
@@ -124,8 +128,8 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override void Draw()
         {
-            foreach (Contubernium unit in this)
-                unit.Draw();
+            if (set != null)
+                DrawAll(set);
         }
     }
 }

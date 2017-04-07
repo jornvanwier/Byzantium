@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units.Formation;
 using UnityEngine;
+using static Assets.Scripts.Game.Units.MeshDrawableUnit;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
     public class Contubernium : UnitBase, IMultipleUnits<MeshDrawableUnit>
     {
         private readonly List<MeshDrawableUnit> drawableUnits = new List<MeshDrawableUnit>();
+        private DrawingSet set;
 
         private Contubernium(Faction faction)
         {
@@ -58,12 +60,14 @@ namespace Assets.Scripts.Game.Units.Groups
         public void AddUnit(MeshDrawableUnit unit)
         {
             drawableUnits.Add(unit);
+            set = Prefetch(this);
         }
 
         public void RemoveUnit(MeshDrawableUnit unit)
         {
             int index = drawableUnits.IndexOf(unit);
             drawableUnits.RemoveAt(index);
+            set = Prefetch(this);
         }
 
         IEnumerator<MeshDrawableUnit> IEnumerable<MeshDrawableUnit>.GetEnumerator()
@@ -103,7 +107,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Contubernium CreatePikeUnit(Faction faction)
         {
-            return CreateCustomUnit(faction, SoldierType.HorseSpear);
+            return CreateCustomUnit(faction, SoldierType.Spear);
         }
 
         public static Contubernium CreateCustomUnit(Faction faction, SoldierType unitType)
@@ -116,7 +120,7 @@ namespace Assets.Scripts.Game.Units.Groups
                 ));
 
             contuberium.IsCavalry = contuberium.First().IsCavalry;
-
+            contuberium.set = Prefetch(contuberium);
             return contuberium;
         }
 
@@ -127,8 +131,8 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override void Draw()
         {
-            foreach (MeshDrawableUnit unit in this)
-                unit.Draw();
+            if (set != null)
+                DrawAll(set);
         }
     }
 }

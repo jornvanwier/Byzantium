@@ -4,12 +4,14 @@ using Assets.Scripts.Game.Units.Formation.LegionFormation;
 using Assets.Scripts.Map;
 using Assets.Scripts.Util;
 using UnityEngine;
+using static Assets.Scripts.Game.Units.MeshDrawableUnit;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
     public class Legion : UnitBase, IMultipleUnits<Cohort>
     {
         private readonly List<Cohort> cohorts = new List<Cohort>();
+        private DrawingSet set;
 
         private Legion(Faction faction)
         {
@@ -69,12 +71,14 @@ namespace Assets.Scripts.Game.Units.Groups
         public void AddUnit(Cohort unit)
         {
             cohorts.Add(unit);
+            set = MeshDrawableUnit.Prefetch(this);
         }
 
         public void RemoveUnit(Cohort unit)
         {
             int index = cohorts.IndexOf(unit);
             cohorts.RemoveAt(index);
+            set = Prefetch(this);
         }
 
         public static Legion CreateStandardLegion(Faction faction)
@@ -95,10 +99,12 @@ namespace Assets.Scripts.Game.Units.Groups
             return legion;
         }
 
+        
+
         public override void Draw()
         {
-            foreach (Cohort unit in this)
-                unit.Draw();
+            if (set != null)
+                DrawAll(set);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

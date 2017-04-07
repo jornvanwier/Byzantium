@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Util;
 using UnityEngine;
+using static Assets.Scripts.Game.Units.MeshDrawableUnit;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
@@ -12,6 +13,7 @@ namespace Assets.Scripts.Game.Units.Groups
         private const float ChildSpacingY = 1.15f;
 
         private readonly List<Century> centuries = new List<Century>();
+        private DrawingSet set;
 
         private Cohort(Faction faction)
         {
@@ -76,12 +78,14 @@ namespace Assets.Scripts.Game.Units.Groups
         public void AddUnit(Century unit)
         {
             centuries.Add(unit);
+            set = Prefetch(this);
         }
 
         public void RemoveUnit(Century unit)
         {
             int index = centuries.IndexOf(unit);
             centuries.RemoveAt(index);
+            set = Prefetch(this);
         }
 
         IEnumerator<Century> IEnumerable<Century>.GetEnumerator()
@@ -102,7 +106,6 @@ namespace Assets.Scripts.Game.Units.Groups
                 cohort.AddUnit(Century.CreateMixedUnit(faction));
 
             cohort.IsCavalry = false;
-
             return cohort;
         }
 
@@ -116,14 +119,14 @@ namespace Assets.Scripts.Game.Units.Groups
             }
 
             cohort.IsCavalry = true;
-
+            cohort.set = Prefetch(cohort);
             return cohort;
         }
 
         public override void Draw()
         {
-            foreach (Century unit in this)
-                unit.Draw();
+            if (set != null)
+                DrawAll(set);
         }
     }
 }
