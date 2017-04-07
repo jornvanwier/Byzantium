@@ -24,7 +24,6 @@ namespace Assets.Scripts.Game
         public float CameraZoomLowerLimit = 1;
 
         public float CameraZoomUpperLimit = 1000;
-        public GameObject Goal;
 
         private InfoPanel infoPanel;
         public float InitialCameraAngle = 35;
@@ -83,6 +82,10 @@ namespace Assets.Scripts.Game
             uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
 
             MeshDrawableUnit.unitMeshes = PrefabMeshes;
+            if(!FactionManager.IsInitialized)
+            {
+                FactionManager.Init(2);
+            }
             Faction faction = FactionManager.Factions[0];
 
             unit = Cohort.CreateUniformMixedUnit(faction);
@@ -104,7 +107,6 @@ namespace Assets.Scripts.Game
             unitController = obj.AddComponent<UnitController>();
             unitController.AttachedUnit = unit;
             unitController.MapRenderer = MapRendererScript;
-            unitController.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
 
             unitController.AttachCamera(camera);
 
@@ -137,7 +139,26 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Update()
         {
-            unitController.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
+            
+            if (selectedArmy != null)
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse1))
+                {
+                    var plane = new Plane(Vector3.up, Vector3.zero);
+                    var camera = cameraObject.GetComponent<Camera>();
+                    Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                    Vector3 intersection = Vector3.zero;
+                    if (plane.Raycast(ray, out float rayDistance))
+                        intersection = ray.GetPoint(rayDistance);
+
+                    selectedArmy.Goal = MapRendererScript.WorldToCubicalCoordinate(intersection);
+                }
+            } 
+
+
+
+
+
             UpdateCamera();
         }
 
@@ -191,7 +212,7 @@ namespace Assets.Scripts.Game
                 CheckBounds(prevPos);
 
             //Middle mouse drag and right mouse rotate
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetKeyDown(KeyCode.LeftAlt) && Input.GetMouseButtonDown(1))
             {
                 prevPos = Clone(cameraObject.transform.position);
 
