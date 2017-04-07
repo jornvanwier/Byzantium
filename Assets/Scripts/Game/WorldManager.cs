@@ -53,7 +53,6 @@ namespace Assets.Scripts.Game
 
         private UnitBase unit;
         private UnitController unitController;
-        
 
 
         private float CameraHeight => cameraObject?.transform.position.y ?? CameraStartPosition.y;
@@ -67,6 +66,7 @@ namespace Assets.Scripts.Game
             {
                 DeselectAll();
                 selectedArmy = value;
+                if (value == null) return;
                 Select(selectedArmy);
             }
         }
@@ -260,7 +260,7 @@ namespace Assets.Scripts.Game
             //Click units
             if (Input.GetMouseButtonUp(0))
             {
-                DeselectAll();
+                SelectedArmy = null;
                 Vector2 position = Input.mousePosition;
                 var plane = new Plane(Vector3.up, Vector3.zero);
                 Ray ray = camera.ScreenPointToRay(position);
