@@ -108,6 +108,74 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &737060
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 737061}
+  - component: {fileID: 737063}
+  - component: {fileID: 737062}
+  m_Layer: 5
+  m_Name: SpawnPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &737061
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 737060}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 622972162}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1172, y: 220}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &737062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 737060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 13e4554319dca8c47867506f16f45dfe, type: 3}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &737063
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 737060}
 --- !u!1 &30115493
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,6 +407,7 @@ GameObject:
   - component: {fileID: 622972159}
   - component: {fileID: 622972163}
   - component: {fileID: 622972164}
+  - component: {fileID: 622972165}
   m_Layer: 5
   m_Name: uiCanvas
   m_TagString: Untagged
@@ -417,6 +486,7 @@ RectTransform:
   - {fileID: 30115494}
   - {fileID: 1690215476}
   - {fileID: 2076701335}
+  - {fileID: 737061}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -451,6 +521,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fd4124dd0ff3564898fa944fc038bc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &622972165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 622972158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9490f9a8988b43b4f9e90e3768742f1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &912695125
@@ -640,8 +721,8 @@ MonoBehaviour:
   - {fileID: 1743250415104250, guid: a1634c8ca074fd1429e34e1b6c6b6dd1, type: 2}
   - {fileID: 1729285678387412, guid: ec8d39f816a332a44a94c02b1f2f1dbb, type: 2}
   - {fileID: 1866580240292292, guid: d1a8dfeb929b4134b837f4c433c25f9a, type: 2}
-  TestMaterial: {fileID: 0}
-  TestMesh: {fileID: 0}
+  SpawnMesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  SpawnMeshMaterial: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!1 &1361681493
 GameObject:
   m_ObjectHideFlags: 0

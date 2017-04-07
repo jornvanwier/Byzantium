@@ -31,12 +31,18 @@ namespace Assets.Scripts.Game.Units
         public HealthBar HealthBar { get; private set; }
 
         public Faction Faction => AttachedUnit.Commander.Faction;
+        public GameObject SpawnObject { get; private set; }
+        public Mesh SpawnMesh;
+        public Material SpawnMeshMaterial;
+        private MapRenderer mapRenderer;
+
+        public void AttachMapRenderer(MapRenderer renderer)
+        {
+            mapRenderer = renderer;
+        }
 
         public void Start()
         {
-            Position = MapRenderer.WorldToCubicalCoordinate(transform.position);
-            previousPosition = Position;
-
             var obj = new GameObject("ArmyHealth");
             obj.transform.SetParent(GameObject.Find("uiCanvas").transform);
             HealthBar = obj.AddComponent<HealthBar>();
@@ -61,8 +67,28 @@ namespace Assets.Scripts.Game.Units
             HealthBar.Value = AttachedUnit.Health;
         }
 
+        public void CreateBuilding()
+        {
+            SpawnObject = new GameObject("SpawnHouse");
+
+            CubicalCoordinate buildingCc = mapRenderer.HexBoard.RandomValidTile();
+            Vector3 buildingPos = mapRenderer.CubicalCoordinateToWorld(buildingCc);
+            SpawnObject.transform.position = buildingPos;
+
+            var meshFilter = SpawnObject.AddComponent<MeshFilter>();
+            var meshRenderer = SpawnObject.AddComponent<MeshRenderer>();
+            SpawnObject.AddComponent<BoxCollider>();
+            meshFilter.mesh = SpawnMesh;
+            meshRenderer.material = SpawnMeshMaterial;
+        }
+
         public void Update()
         {
+            if (SpawnObject != null && mapRenderer?.HexBoard != null)
+            {
+                CreateBuilding();
+            }
+
             UpdateHealthBar();
             AttachedUnit.Draw();
 
