@@ -1,15 +1,13 @@
 ﻿using Assets.Scripts.Game;
+using Assets.Scripts.Game.Units;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
-    public class InfoPanel : MonoBehaviour
+    public class SpawnPanel : MonoBehaviour
     {
-        private readonly Color transparent = new Color(0, 0, 0, 0);
-        private Text commanderText;
-        private Image image;
         private Image miniMap;
 
         private GameObject panel;
@@ -18,10 +16,11 @@ namespace Assets.Scripts.UI
 
         private RectTransform rectTransform;
 
+        private UnitController selectedArmy;
+
         private float sizeX;
 
         private float sizeY;
-        private Text titleText;
 
         public float PosX
         {
@@ -63,18 +62,6 @@ namespace Assets.Scripts.UI
             }
         }
 
-        public string Title
-        {
-            get { return titleText.text; }
-            set { titleText.text = value; }
-        }
-
-        public string Commander
-        {
-            get { return commanderText.text; }
-            set { commanderText.text = value; }
-        }
-
         private void UpdatePositionAndSize()
         {
             PosX = SizeX / 2;
@@ -88,14 +75,12 @@ namespace Assets.Scripts.UI
         [UsedImplicitly]
         private void Start()
         {
-            titleText = GameObject.Find("InfoText").GetComponent<Text>();
-            commanderText = GameObject.Find("CommanderText").GetComponent<Text>();
-            panel = GameObject.Find("InfoPanel");
+            panel = GameObject.Find("SpawnPanel");
             rectTransform = panel.GetComponent<RectTransform>();
-            image = panel.GetComponent<Image>();
+            panel.GetComponent<Image>();
             miniMap = GameObject.Find("MiniMapBorder").GetComponent<Image>();
 
-            GameObject.Find("WorldManager").GetComponent<WorldManager>().AttachInfoPanel(this);
+            GameObject.Find("WorldManager").GetComponent<WorldManager>().AttachSpawnPanel(this);
 
             UpdatePositionAndSize();
         }
@@ -113,9 +98,10 @@ namespace Assets.Scripts.UI
             //image.color = transparent;
         }
 
-        public void Show()
+        public void Show(UnitController army)
         {
             panel.SetActive(true);
+            selectedArmy = army;
             //image.color = Color.white;
         }
     }

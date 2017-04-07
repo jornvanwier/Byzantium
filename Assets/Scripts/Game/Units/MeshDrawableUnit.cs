@@ -17,7 +17,6 @@ namespace Assets.Scripts.Game.Units
     }
 
 
-
     public class MeshDrawableUnit : UnitBase
     {
         private const int StartHealth = 200;
@@ -28,16 +27,21 @@ namespace Assets.Scripts.Game.Units
         public Transform transform;
 
         private readonly Int2 dimensions = new Int2(1, 1);
-        public SoldierType soldierType;
+
+        private readonly Vector2 horseSize = new Vector2(0.22f, 0.2f);
+        private readonly Vector2 manSize = new Vector2(0.22f, 0.16f);
+        private readonly Material material;
+
+        private readonly Mesh mesh;
         private Vector3 oldPosition = Vector3.zero;
+        private readonly SoldierType soldierType;
+        private readonly Transform transform;
 
         public MeshDrawableUnit(SoldierType type)
         {
             soldierType = type;
             if (type == SoldierType.HorseBow || type == SoldierType.HorseSpear || type == SoldierType.HorseSword)
-            {
-                IsCavalry = true;
-            }
+                IsCavalry = false;
 
             GameObject m = null;
             switch (soldierType)
@@ -60,11 +64,13 @@ namespace Assets.Scripts.Game.Units
                 case SoldierType.HorseBow:
                     m = unitMeshes[5];
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
+
             mesh = m.GetComponent<MeshFilter>().sharedMesh;
             material = m.GetComponent<MeshRenderer>().sharedMaterial;
             transform = m.transform;
-
         }
 
         public override int Health { get; set; } = StartHealth;
@@ -75,7 +81,7 @@ namespace Assets.Scripts.Game.Units
             set { throw new MemberAccessException("Cannot set dimensions of this object."); }
         }
 
-        public override Vector2 DrawSize => new Vector2(0.22f, 0.16f);
+        public override Vector2 DrawSize => IsCavalry ? manSize : manSize;
 
         public override float DefaultSpeed => 1.5f;
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Map;
 using UnityEngine;
@@ -68,12 +67,10 @@ namespace Assets.Scripts.Game.Units
                 int soldierCount = 0;
                 int cavalryCount = 0;
                 foreach (MeshDrawableUnit meshDrawableUnit in AllUnits)
-                {
                     if (meshDrawableUnit.IsCavalry)
                         cavalryCount++;
                     else
                         soldierCount++;
-                }
                 return UnitName +
                        "\nHealth:\t\t" + Health / 2f +
                        "%\nSoldiers:\t\t" + soldierCount +

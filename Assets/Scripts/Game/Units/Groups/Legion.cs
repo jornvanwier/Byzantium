@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Formation.LegionFormation;
-using Assets.Scripts.Map;
 using Assets.Scripts.Util;
 using UnityEngine;
 using static Assets.Scripts.Game.Units.MeshDrawableUnit;
@@ -76,9 +75,17 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public void RemoveUnit(Cohort unit)
         {
-            int index = cohorts.IndexOf(unit);
-            cohorts.RemoveAt(index);
-            set = Prefetch(this);
+            cohorts.Remove(unit);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public IEnumerator<Cohort> GetEnumerator()
+        {
+            return cohorts.GetEnumerator();
         }
 
         public static Legion CreateStandardLegion(Faction faction)
@@ -105,16 +112,6 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             if (set != null)
                 DrawAll(set);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public IEnumerator<Cohort> GetEnumerator()
-        {
-            return cohorts.GetEnumerator();
         }
     }
 }

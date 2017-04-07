@@ -34,19 +34,21 @@ namespace Assets.Scripts.Game
         public GameObject MapRendererObject;
         protected MapRenderer MapRendererScript;
 
-        public List<GameObject> PrefabMeshes;
-
         private bool middleMouseDown;
+
+        public List<GameObject> PrefabMeshes;
 
 
         private Vector2 prevMousePos = Vector2.zero;
         private bool rightMouseDown;
 
         private UnitController selectedArmy;
-        private Vector3 startIntersect;
-        public Material TestMaterial;
 
-        public Mesh TestMesh;
+        public Mesh SpawnMesh;
+        public Material SpawnMeshMaterial;
+
+        private SpawnPanel spawnPanel;
+        private Vector3 startIntersect;
 
         private Canvas uiCanvas;
 
@@ -70,6 +72,12 @@ namespace Assets.Scripts.Game
             }
         }
 
+        public void AttachSpawnPanel(SpawnPanel panel)
+        {
+            spawnPanel = panel;
+            spawnPanel.Hide();
+        }
+
         [UsedImplicitly]
         private void OnApplicationFocus(bool hasFocus)
         {
@@ -82,10 +90,8 @@ namespace Assets.Scripts.Game
             uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
 
             MeshDrawableUnit.unitMeshes = PrefabMeshes;
-            if(!FactionManager.IsInitialized)
-            {
+            if (!FactionManager.IsInitialized)
                 FactionManager.Init(2);
-            }
             Faction faction = FactionManager.Factions[0];
 
             unit = Cohort.CreateUniformMixedUnit(faction);
@@ -127,7 +133,12 @@ namespace Assets.Scripts.Game
             var scale = new Vector3(size * 0.9296482412060302f, size, 1);
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
+
+            unitController.AttachMapRenderer(MapRendererScript);
+            unitController.SpawnMesh = SpawnMesh;
+            unitController.SpawnMeshMaterial = SpawnMeshMaterial;
         }
+
 
         public void AttachInfoPanel(InfoPanel panel)
         {
@@ -139,9 +150,7 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Update()
         {
-            
             if (selectedArmy != null)
-            {
                 if (Input.GetKeyDown(KeyCode.Mouse1))
                 {
                     var plane = new Plane(Vector3.up, Vector3.zero);
@@ -153,10 +162,6 @@ namespace Assets.Scripts.Game
 
                     selectedArmy.Goal = MapRendererScript.WorldToCubicalCoordinate(intersection);
                 }
-            } 
-
-
-
 
 
             UpdateCamera();
@@ -212,13 +217,12 @@ namespace Assets.Scripts.Game
                 CheckBounds(prevPos);
 
             //Middle mouse drag and right mouse rotate
-            if (Input.GetKeyDown(KeyCode.LeftAlt) && Input.GetMouseButtonDown(1))
+            if (Input.GetKey(KeyCode.LeftAlt) && Input.GetMouseButtonDown(1))
             {
                 prevPos = Clone(cameraObject.transform.position);
 
-                Vector3 position = new Vector2(Screen.width / 2, Screen.height / 2);
+                Vector3 position = new Vector2(Screen.width / 2f, Screen.height / 2f);
                 var plane = new Plane(Vector3.up, Vector3.zero);
-                var camera = cameraObject.GetComponent<Camera>();
                 Ray ray = camera.ScreenPointToRay(position);
                 if (plane.Raycast(ray, out float rayDistance))
                     startIntersect = ray.GetPoint(rayDistance);
@@ -282,15 +286,30 @@ namespace Assets.Scripts.Game
             if (Input.GetMouseButtonUp(0))
             {
                 SelectedArmy = null;
-                Vector2 position = Input.mousePosition;
-                var plane = new Plane(Vector3.up, Vector3.zero);
-                Ray ray = camera.ScreenPointToRay(position);
-                plane.Raycast(ray, out float rayDistance);
-                Vector3 intersectPoint = ray.GetPoint(rayDistance);
-                var intersect = new Vector2(intersectPoint.x, intersectPoint.z);
-                foreach (UnitController controller in allArmies)
-                    if (controller.AttachedUnit.Hitbox.Contains(intersect))
-                        SelectedArmy = controller;
+                spawnPanel.Hide();
+
+                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+                    foreach (UnitController army in allArmies)
+                        if (army.SpawnObject.transform == hit.transform)
+                            spawnPanel.Show(army);
+                }
+                else
+                {
+                    var plane = new Plane(Vector3.up, Vector3.zero);
+                    plane.Raycast(ray, out float rayDistance);
+                    Vector3 intersectPoint = ray.GetPoint(rayDistance);
+                    var intersect = new Vector2(intersectPoint.x, intersectPoint.z);
+
+                    foreach (UnitController controller in allArmies)
+                        if (controller.AttachedUnit.Hitbox.Contains(intersect))
+                        {
+                            SelectedArmy = controller;
+                            break;
+                        }
+                }
             }
         }
 

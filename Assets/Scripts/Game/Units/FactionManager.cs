@@ -1,6 +1,6 @@
-﻿using Assets.Scripts.Game.Units;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Game.Units;
 
 namespace Assets.Scripts.Game
 {
@@ -19,14 +19,12 @@ namespace Assets.Scripts.Game
             Factions = new Faction[Amount];
 
             for (int i = 0; i < Amount; i++)
-            {
                 Factions[i] = new Faction();
-            }
         }
 
         public static IEnumerable<Faction> GetOpponents(Faction faction)
         {
             return Factions.Where(f => f != faction).ToList();
-        } 
+        }
     }
 }

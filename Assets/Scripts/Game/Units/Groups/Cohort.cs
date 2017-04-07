@@ -9,9 +9,6 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Cohort : UnitBase, IMultipleUnits<Century>
     {
-        private const float ChildSpacingX = 1.7f;
-        private const float ChildSpacingY = 1.15f;
-
         private readonly List<Century> centuries = new List<Century>();
         private DrawingSet set;
 
@@ -46,10 +43,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override int UnitCount => centuries.Count;
 
-        public override Vector2 DrawSize
-            =>
-                Vector2.Scale(new Vector2(ChildSpacingX, ChildSpacingY),
-                    Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions));
+        public override Vector2 DrawSize => Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions);
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
@@ -114,9 +108,7 @@ namespace Assets.Scripts.Game.Units.Groups
             var cohort = new Cohort(faction) {Formation = new SquareFormation()};
 
             for (int i = 0; i < 6; i++)
-            {
                 cohort.AddUnit(Century.CreateCavalryUnit(faction));
-            }
 
             cohort.IsCavalry = true;
             cohort.set = Prefetch(cohort);

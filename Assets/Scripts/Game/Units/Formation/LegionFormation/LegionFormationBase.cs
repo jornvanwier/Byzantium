@@ -27,16 +27,10 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
             var cavalries = new List<Cohort>();
 
             foreach (Cohort cohort in legion)
-            {
                 if (cohort.IsCavalry)
-                {
                     cavalries.Add(cohort);
-                }
                 else
-                {
                     cohorts.Add(cohort);
-                }
-            }
 
             return cavalries.Concat(cohorts).ToArray();
         }

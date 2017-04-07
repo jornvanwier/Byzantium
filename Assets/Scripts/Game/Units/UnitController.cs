@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Assets.Scripts.Game.Units.Groups;
-using Assets.Scripts.Map;
+﻿using Assets.Scripts.Map;
 using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.UI;
 using Assets.Scripts.Util;
@@ -15,10 +13,13 @@ namespace Assets.Scripts.Game.Units
         private new Camera camera;
 
         private PathfindingJobInfo currentPathInfo;
+        private MapRenderer mapRenderer;
 
         private Vector3 movementDrawOffset;
         private int nextPathId = -1;
         private CubicalCoordinate previousPosition;
+        public Mesh SpawnMesh;
+        public Material SpawnMeshMaterial;
 
         public UnitBase AttachedUnit { get; set; }
 
@@ -29,6 +30,12 @@ namespace Assets.Scripts.Game.Units
         public HealthBar HealthBar { get; private set; }
 
         public Faction Faction => AttachedUnit.Commander.Faction;
+        public GameObject SpawnObject { get; private set; }
+
+        public void AttachMapRenderer(MapRenderer renderer)
+        {
+            mapRenderer = renderer;
+        }
 
         public void Start()
         {
@@ -57,8 +64,26 @@ namespace Assets.Scripts.Game.Units
             HealthBar.Value = AttachedUnit.Health;
         }
 
+        public void CreateBuilding()
+        {
+            SpawnObject = new GameObject("SpawnHouse");
+
+            CubicalCoordinate buildingCc = mapRenderer.HexBoard.RandomValidTile();
+            Vector3 buildingPos = mapRenderer.CubicalCoordinateToWorld(buildingCc);
+            SpawnObject.transform.position = buildingPos;
+
+            var meshFilter = SpawnObject.AddComponent<MeshFilter>();
+            var meshRenderer = SpawnObject.AddComponent<MeshRenderer>();
+            SpawnObject.AddComponent<BoxCollider>();
+            meshFilter.mesh = SpawnMesh;
+            meshRenderer.material = SpawnMeshMaterial;
+        }
+
         public void Update()
         {
+            if (SpawnObject == null && mapRenderer?.HexBoard != null)
+                CreateBuilding();
+
             UpdateHealthBar();
             AttachedUnit.Draw();
 
@@ -70,7 +95,7 @@ namespace Assets.Scripts.Game.Units
 
             Position = MapRenderer.WorldToCubicalCoordinate(CreateWorldPos());
 
-            if (Position == Goal)
+            if (MapRenderer.HexBoard[Goal] == (byte)TileType.WaterDeep || Position == Goal)
                 return;
             if (IsPathValid())
             {

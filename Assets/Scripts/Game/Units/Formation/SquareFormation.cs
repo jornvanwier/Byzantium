@@ -64,11 +64,11 @@ namespace Assets.Scripts.Game.Units.Formation
 
             foreach (TChild child in unit)
             {
-                float x = unit.Position.x + spacing.x * (i % rowWidth) - spacing.x / 2;
+                float x = spacing.x * (i % rowWidth) - spacing.x;
                 // ReSharper disable once PossibleLossOfFraction
-                float z = unit.Position.z + spacing.y * (i / rowWidth) - spacing.y / 2;
+                float z = spacing.y * (i / rowWidth) - spacing.y;
 
-                localPositions.Add(new Vector3(x, unit.Position.y, z) - unit.Position);
+                localPositions.Add(new Vector3(x, 0, z));
 
                 ++i;
             }
