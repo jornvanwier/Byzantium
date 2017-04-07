@@ -77,8 +77,6 @@ namespace Assets.Scripts.Game.Units
             SpawnObject.AddComponent<BoxCollider>();
             meshFilter.mesh = SpawnMesh;
             meshRenderer.material = SpawnMeshMaterial;
-
-            SetUnitWorldPos(buildingPos);
         }
 
         public void Update()

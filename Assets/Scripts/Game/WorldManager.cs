@@ -221,7 +221,7 @@ namespace Assets.Scripts.Game
             {
                 prevPos = Clone(cameraObject.transform.position);
 
-                Vector3 position = new Vector2(Screen.width / 2, Screen.height / 2);
+                Vector3 position = new Vector2(Screen.width / 2f, Screen.height / 2f);
                 var plane = new Plane(Vector3.up, Vector3.zero);
                 Ray ray = camera.ScreenPointToRay(position);
                 if (plane.Raycast(ray, out float rayDistance))
