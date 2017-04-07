@@ -11,6 +11,13 @@ namespace Assets.Scripts.Game
 {
     public class WorldManager : MonoBehaviour
     {
+        public void AttachSpawnPanel(SpawnPanel panel)
+        {
+            spawnPanel = panel;
+            spawnPanel.Hide();
+        }
+
+        private SpawnPanel spawnPanel;
         public static Material UnitMaterial;
 
         private readonly List<UnitController> allArmies = new List<UnitController>();
@@ -24,7 +31,6 @@ namespace Assets.Scripts.Game
         public float CameraZoomLowerLimit = 1;
 
         public float CameraZoomUpperLimit = 1000;
-        public GameObject Goal;
 
         private InfoPanel infoPanel;
         public float InitialCameraAngle = 35;
@@ -45,15 +51,11 @@ namespace Assets.Scripts.Game
 
         private UnitController selectedArmy;
         private Vector3 startIntersect;
-        public Material TestMaterial;
-
-        public Mesh TestMesh;
 
         private Canvas uiCanvas;
 
         private UnitBase unit;
         private UnitController unitController;
-        
 
 
         private float CameraHeight => cameraObject?.transform.position.y ?? CameraStartPosition.y;
@@ -67,6 +69,7 @@ namespace Assets.Scripts.Game
             {
                 DeselectAll();
                 selectedArmy = value;
+                if (value == null) return;
                 Select(selectedArmy);
             }
         }
@@ -83,6 +86,10 @@ namespace Assets.Scripts.Game
             uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
 
             MeshDrawableUnit.unitMeshes = PrefabMeshes;
+            if(!FactionManager.IsInitialized)
+            {
+                FactionManager.Init(2);
+            }
             Faction faction = FactionManager.Factions[0];
 
             unit = Cohort.CreateUniformMixedUnit(faction);
@@ -99,12 +106,11 @@ namespace Assets.Scripts.Game
             camera.nearClipPlane = 0.01f;
 
             MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
-
+            
             var obj = new GameObject("Army");
             unitController = obj.AddComponent<UnitController>();
             unitController.AttachedUnit = unit;
             unitController.MapRenderer = MapRendererScript;
-            unitController.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
 
             unitController.AttachCamera(camera);
 
@@ -125,7 +131,13 @@ namespace Assets.Scripts.Game
             var scale = new Vector3(size * 0.9296482412060302f, size, 1);
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
+
+            unitController.AttachMapRenderer(MapRendererScript);
+            unitController.CreateBuilding();
+            unitController.SpawnMesh = SpawnMesh;
+            unitController.SpawnMeshMaterial = SpawnMeshMaterial;
         }
+
 
         public void AttachInfoPanel(InfoPanel panel)
         {
@@ -137,7 +149,26 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Update()
         {
-            unitController.Goal = MapRendererScript.WorldToCubicalCoordinate(Goal.transform.position);
+            
+            if (selectedArmy != null)
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse1))
+                {
+                    var plane = new Plane(Vector3.up, Vector3.zero);
+                    var camera = cameraObject.GetComponent<Camera>();
+                    Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                    Vector3 intersection = Vector3.zero;
+                    if (plane.Raycast(ray, out float rayDistance))
+                        intersection = ray.GetPoint(rayDistance);
+
+                    selectedArmy.Goal = MapRendererScript.WorldToCubicalCoordinate(intersection);
+                }
+            } 
+
+
+
+
+
             UpdateCamera();
         }
 
@@ -191,7 +222,7 @@ namespace Assets.Scripts.Game
                 CheckBounds(prevPos);
 
             //Middle mouse drag and right mouse rotate
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetKeyDown(KeyCode.LeftAlt) && Input.GetMouseButtonDown(1))
             {
                 prevPos = Clone(cameraObject.transform.position);
 
@@ -260,18 +291,40 @@ namespace Assets.Scripts.Game
             //Click units
             if (Input.GetMouseButtonUp(0))
             {
-                DeselectAll();
-                Vector2 position = Input.mousePosition;
-                var plane = new Plane(Vector3.up, Vector3.zero);
-                Ray ray = camera.ScreenPointToRay(position);
-                plane.Raycast(ray, out float rayDistance);
-                Vector3 intersectPoint = ray.GetPoint(rayDistance);
-                var intersect = new Vector2(intersectPoint.x, intersectPoint.z);
-                foreach (UnitController controller in allArmies)
-                    if (controller.AttachedUnit.Hitbox.Contains(intersect))
-                        SelectedArmy = controller;
+                SelectedArmy = null;
+                spawnPanel.Hide();
+
+                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out RaycastHit hit))
+                {
+                    foreach (UnitController army in allArmies)
+                    {
+                        if (army.SpawnObject.transform == hit.transform)
+                        {
+                            spawnPanel.Show(army);
+                        }
+                    }
+                }
+                else
+                {
+                    var plane = new Plane(Vector3.up, Vector3.zero);
+                    plane.Raycast(ray, out float rayDistance);
+                    Vector3 intersectPoint = ray.GetPoint(rayDistance);
+                    var intersect = new Vector2(intersectPoint.x, intersectPoint.z);
+
+                    foreach (UnitController controller in allArmies)
+                        if (controller.AttachedUnit.Hitbox.Contains(intersect))
+                        {
+                            SelectedArmy = controller;
+                            break;
+                        }
+                }
             }
         }
+
+        public Mesh SpawnMesh;
+        public Material SpawnMeshMaterial;
 
         private void Select(UnitController army)
         {

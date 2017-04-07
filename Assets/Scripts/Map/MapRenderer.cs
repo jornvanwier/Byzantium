@@ -31,7 +31,7 @@ namespace Assets.Scripts.Map
 
         private TextureSet defaultTextureSet;
         private Texture2DArray glossyMaps;
-        private HexBoard hexBoard;
+        public HexBoard HexBoard { get; private set; }
 
         public Material HexMaterial;
 
@@ -81,10 +81,10 @@ namespace Assets.Scripts.Map
                 Graphics.CopyTexture(textureSets[i].NormalMap, 0, j, normalMaps, i, j);
             }
 
-            hexBoard = new HexBoard(MapSize) {Generator = new PerlinGenerator()};
-            hexBoard.GenerateMap();
+            HexBoard = new HexBoard(MapSize) {Generator = new PerlinGenerator()};
+            HexBoard.GenerateMap();
 
-            PathfindingJobManager.Instance.Map = hexBoard;
+            PathfindingJobManager.Instance.Map = HexBoard;
 
             SetupShader();
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
@@ -100,8 +100,8 @@ namespace Assets.Scripts.Map
             for (int x = 0; x < MapSize; ++x)
             for (int y = 0; y < MapSize; ++y)
             {
-                data[x, y] = hexBoard.Storage[x, y];
-                var t = new TileData((TileType) hexBoard.Storage[x, y], false);
+                data[x, y] = HexBoard.Storage[x, y];
+                var t = new TileData((TileType) HexBoard.Storage[x, y], false);
                 int k = t.GetAsInt();
                 data[x, y] = k;
             }
