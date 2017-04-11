@@ -73,12 +73,6 @@ namespace Assets.Scripts.Game.Units
             Transform = m.transform;
         }
 
-        public static List<GameObject> UnitMeshes { get; set; } = null;
-
-        public Mesh Mesh { get; set; }
-        public Material Material { get; set; }
-        public Transform Transform { get; set; }
-
         public override int Health { get; set; } = StartHealth;
 
         public override Int2 ChildrenDimensions

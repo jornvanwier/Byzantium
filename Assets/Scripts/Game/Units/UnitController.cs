@@ -37,14 +37,10 @@ namespace Assets.Scripts.Game.Units
         public void AttachUnit(UnitBase unit)
         {
             AttachedUnit = unit;
-            spawnPosition = GetSpawnPosition();
-            CreateBuilding(spawnPosition);
-            AttachedUnit.Position = spawnPosition;
         }
 
         private Vector3 GetSpawnPosition()
         {
-            if (mapRenderer.HexBoard == null) return Vector3.zero;
             CubicalCoordinate buildingCc = mapRenderer.HexBoard.RandomValidTile();
             return mapRenderer.CubicalCoordinateToWorld(buildingCc);
         }
@@ -93,7 +89,7 @@ namespace Assets.Scripts.Game.Units
             transform.position = loc;
             Position = MapRenderer.WorldToCubicalCoordinate(loc);
             previousPosition = Position;
-            movementDrawOffset = new Vector3(0, 0,0);
+            movementDrawOffset = new Vector3(0, 0, 0);
             AttachedUnit.SetPositionInstant(loc);
         }
 
@@ -123,6 +119,13 @@ namespace Assets.Scripts.Game.Units
                         Debug.Log("Attack!");
                     }
                 }
+            }
+
+            if (mapRenderer.HexBoard != null && AttachedUnit != null && spawnPosition == Vector3.zero)
+            {
+                spawnPosition = GetSpawnPosition();
+                CreateBuilding(spawnPosition);
+                Teleport(spawnPosition);
             }
 
             UpdateHealthBar();

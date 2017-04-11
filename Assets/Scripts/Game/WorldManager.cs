@@ -92,7 +92,7 @@ namespace Assets.Scripts.Game
                 FactionManager.Init(2);
             Faction faction = FactionManager.Factions[0];
 
-            unit = Cohort.CreateUniformMixedUnit(faction);
+            UnitBase unit = Cohort.CreateUniformMixedUnit(faction);
             unit.Position = new Vector3(5, 0, 5);
 
             MapRendererObject = Instantiate(MapRendererObject);
@@ -106,11 +106,6 @@ namespace Assets.Scripts.Game
             camera.nearClipPlane = 0.01f;
 
             MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
-
-
-            allArmies.Add(unitController);
-
-            unitController.Teleport(new Vector3(20, 0, 20));
 
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
             Rotate(objectRight, Space.Self, InitialCameraAngle);
@@ -160,7 +155,7 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Update()
         {
-            SelectedArmy = unitController;
+            SelectedArmy = Armies[0];
 
             if (selectedArmy != null)
                 if (Input.GetKeyDown(KeyCode.Mouse1))
