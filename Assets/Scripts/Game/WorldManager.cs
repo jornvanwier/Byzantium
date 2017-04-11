@@ -318,7 +318,7 @@ namespace Assets.Scripts.Game
         {
             army.HealthBar.Show();
             infoPanel.Title = army.AttachedUnit.Info;
-            infoPanel.Commander = army.AttachedUnit.Commander.Name + "\n" + army.Faction.Name;
+            infoPanel.Commander = army.AttachedUnit.Commander.Name + Environment.NewLine + army.Faction.Name;
             infoPanel.Show();
         }
 

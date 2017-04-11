@@ -81,10 +81,16 @@ namespace Assets.Scripts.Game.Units
             obj.transform.SetParent(GameObject.Find("uiCanvas").transform);
             HealthBar = obj.AddComponent<HealthBar>();
 
-            InvokeRepeating("Battle", 0, TimeBetweenEnemySearches);
+            InvokeRepeating("Battle", 1, TimeBetweenEnemySearches);
         }
 
         private const float TimeBetweenEnemySearches = 10;
+
+        [UsedImplicitly]
+        private void BattleTest()
+        {
+            var i = 0;
+        }
 
         [UsedImplicitly]
         private void Battle()
@@ -109,9 +115,10 @@ namespace Assets.Scripts.Game.Units
 
         private UnitController NearestEnemy()
         {
+            return null;
             if (enemies.Count == 0) return null;
             UnitController nearest = enemies[0];
-            float nearestDistance = float.PositiveInfinity;
+            float nearestDistance = Vector3.Distance(nearest.AttachedUnit.Position, AttachedUnit.Position);
             foreach (UnitController enemy in enemies)
             {
                 float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
@@ -150,10 +157,6 @@ namespace Assets.Scripts.Game.Units
                     if (distance < AttackRange)
                     {
                         Debug.Log("Attack!");
-                    }
-                    else
-                    {
-                        Debug.Log("out of range");
                     }
                 }
             }
