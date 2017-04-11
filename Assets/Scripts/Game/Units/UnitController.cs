@@ -44,7 +44,7 @@ namespace Assets.Scripts.Game.Units
 
         private Vector3 GetSpawnPosition()
         {
-            return Vector3.zero;
+            if (mapRenderer.HexBoard == null) return Vector3.zero;
             CubicalCoordinate buildingCc = mapRenderer.HexBoard.RandomValidTile();
             return mapRenderer.CubicalCoordinateToWorld(buildingCc);
         }
