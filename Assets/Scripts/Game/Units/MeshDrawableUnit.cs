@@ -30,6 +30,7 @@ namespace Assets.Scripts.Game.Units
         public Mesh Mesh { get; set; }
         public Material Material { get; set; }
         public Transform Transform { get; set; }
+        public UnitConfig Config { get; private set; }
 
         private readonly Int2 dimensions = new Int2(1, 1);
         private readonly Vector2 horseSize = new Vector2(0.22f, 0.2f);
@@ -41,28 +42,34 @@ namespace Assets.Scripts.Game.Units
         {
             soldierType = type;
             if (type == SoldierType.HorseBow || type == SoldierType.HorseSpear || type == SoldierType.HorseSword)
-                IsCavalry = false;
+                IsCavalry = true;
 
             GameObject m;
             switch (soldierType)
             {
                 case SoldierType.Sword:
                     m = UnitMeshes[0];
+                    Config = UnitConfig.Sword;
                     break;
                 case SoldierType.Spear:
                     m = UnitMeshes[1];
+                    Config = UnitConfig.Spear;
                     break;
                 case SoldierType.Bow:
                     m = UnitMeshes[2];
+                    Config = UnitConfig.Bow;
                     break;
                 case SoldierType.HorseSword:
                     m = UnitMeshes[3];
+                    Config = UnitConfig.HorseSword;
                     break;
                 case SoldierType.HorseSpear:
                     m = UnitMeshes[4];
+                    Config = UnitConfig.HorseSpear;
                     break;
                 case SoldierType.HorseBow:
                     m = UnitMeshes[5];
+                    Config = UnitConfig.HorseBow;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

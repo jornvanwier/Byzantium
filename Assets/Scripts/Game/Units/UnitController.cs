@@ -107,6 +107,11 @@ namespace Assets.Scripts.Game.Units
 
         private const float AttackRange = 3;
 
+        private void CombatTick()
+        {
+            // Check range
+        }
+
         public void Update()
         {
             if (enemies != null)
