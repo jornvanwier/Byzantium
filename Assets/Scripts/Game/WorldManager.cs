@@ -89,7 +89,7 @@ namespace Assets.Scripts.Game
         {
             uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
 
-            MeshDrawableUnit.unitMeshes = PrefabMeshes;
+            MeshDrawableUnit.UnitMeshes = PrefabMeshes;
             if (!FactionManager.IsInitialized)
                 FactionManager.Init(2);
             Faction faction = FactionManager.Factions[0];

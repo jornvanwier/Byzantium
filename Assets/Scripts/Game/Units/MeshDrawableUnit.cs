@@ -20,22 +20,19 @@ namespace Assets.Scripts.Game.Units
     public class MeshDrawableUnit : UnitBase
     {
         private const int StartHealth = 200;
-        public static List<GameObject> unitMeshes = null;
+        public static List<GameObject> UnitMeshes { get; set; } = null;
 
-        public Mesh mesh;
-        public Material material;
-        public Transform transform;
+        public Mesh Mesh { get; set; }
+        public Material Material { get; set; }
+        public Transform Transform { get; set; }
 
         private readonly Int2 dimensions = new Int2(1, 1);
 
         private readonly Vector2 horseSize = new Vector2(0.22f, 0.2f);
         private readonly Vector2 manSize = new Vector2(0.22f, 0.16f);
-        private readonly Material material;
-
-        private readonly Mesh mesh;
+        
         private Vector3 oldPosition = Vector3.zero;
         private readonly SoldierType soldierType;
-        private readonly Transform transform;
 
         public MeshDrawableUnit(SoldierType type)
         {
@@ -43,34 +40,34 @@ namespace Assets.Scripts.Game.Units
             if (type == SoldierType.HorseBow || type == SoldierType.HorseSpear || type == SoldierType.HorseSword)
                 IsCavalry = false;
 
-            GameObject m = null;
+            GameObject m;
             switch (soldierType)
             {
                 case SoldierType.Sword:
-                    m = unitMeshes[0];
+                    m = UnitMeshes[0];
                     break;
                 case SoldierType.Spear:
-                    m = unitMeshes[1];
+                    m = UnitMeshes[1];
                     break;
                 case SoldierType.Bow:
-                    m = unitMeshes[2];
+                    m = UnitMeshes[2];
                     break;
                 case SoldierType.HorseSword:
-                    m = unitMeshes[3];
+                    m = UnitMeshes[3];
                     break;
                 case SoldierType.HorseSpear:
-                    m = unitMeshes[4];
+                    m = UnitMeshes[4];
                     break;
                 case SoldierType.HorseBow:
-                    m = unitMeshes[5];
+                    m = UnitMeshes[5];
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            mesh = m.GetComponent<MeshFilter>().sharedMesh;
-            material = m.GetComponent<MeshRenderer>().sharedMaterial;
-            transform = m.transform;
+            Mesh = m.GetComponent<MeshFilter>().sharedMesh;
+            Material = m.GetComponent<MeshRenderer>().sharedMaterial;
+            Transform = m.transform;
         }
 
         public override int Health { get; set; } = StartHealth;
@@ -98,21 +95,23 @@ namespace Assets.Scripts.Game.Units
 
         public override void Draw()
         {
-            Quaternion rotate = Rotation * transform.rotation;
-            Graphics.DrawMesh(mesh, Matrix4x4.TRS(Position, rotate, transform.localScale), material, 0);
+            Quaternion rotate = Rotation * Transform.rotation;
+            Graphics.DrawMesh(Mesh, Matrix4x4.TRS(Position, rotate, Transform.localScale), Material, 0);
         }
 
         public class DrawingSet
         {
-            public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> swordMatricesSet = new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128);
-            public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> spearMatricesSet = new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128);
-            public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> bowMatricesSet = new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128);
-            public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> hSwordMatricesSet = new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128);
-            public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> hSpearMatricesSet = new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128);
-            public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> hBowMatricesSet = new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128);
+            public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> SwordMatricesSet = new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128);
+            public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> SpearMatricesSet = new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128);
+            public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> BowMatricesSet = new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128);
+            public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> HSwordMatricesSet = new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128);
+            public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> HSpearMatricesSet = new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128);
+            public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> HBowMatricesSet = new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128);
 
-            public Mesh sword = null, spear = null, bow = null, hsword = null, hspear = null, hbow = null;
-            public Material msw = null, msp = null, msb = null, mhsw = null, mhsp = null, mhb = null;
+            public Mesh Sword, Spear, Bow, Hsword, Hspear, Hbow;
+            // ReSharper disable InconsistentNaming
+            public Material msw, msp, msb, mhsw, mhsp, mhb;
+            // ReSharper enable InconsistentNaming
 
 
 
@@ -120,109 +119,109 @@ namespace Assets.Scripts.Game.Units
 
         public static DrawingSet Prefetch(UnitBase u)
         {
-            DrawingSet set = new DrawingSet();
+            var set = new DrawingSet();
 
-            Tuple<List<MeshDrawableUnit>, List<Matrix4x4>> swordMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
-            Tuple<List<MeshDrawableUnit>, List<Matrix4x4>> spearMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
-            Tuple<List<MeshDrawableUnit>, List<Matrix4x4>> bowMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
+            var swordMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
+            var spearMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
+            var bowMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
 
-            Tuple<List<MeshDrawableUnit>, List<Matrix4x4>> hSwordMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
-            Tuple<List<MeshDrawableUnit>, List<Matrix4x4>> hSpearMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
-            Tuple<List<MeshDrawableUnit>, List<Matrix4x4>> hBowMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
+            var hSwordMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
+            var hSpearMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
+            var hBowMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
 
             Mesh sword = null, spear = null, bow = null, hsword = null, hspear = null, hbow = null;
             Material msw = null, msp = null, msb = null, mhsw = null, mhsp = null, mhb = null;
 
             foreach (MeshDrawableUnit unit in u.AllUnits)
             {
-                Quaternion rotate = unit.Rotation * unit.transform.rotation;
-                Matrix4x4 m = Matrix4x4.TRS(unit.Position, rotate, unit.transform.localScale);
+                Quaternion rotate = unit.Rotation * unit.Transform.rotation;
+                Matrix4x4 m = Matrix4x4.TRS(unit.Position, rotate, unit.Transform.localScale);
                 switch (unit.soldierType)
                 {
                     case SoldierType.Sword:
-                        sword = unit.mesh;
-                        msw = unit.material;
+                        sword = unit.Mesh;
+                        msw = unit.Material;
                         swordMatrices.Item1.Add(unit);
                         swordMatrices.Item2.Add(m);
                         if (swordMatrices.Item1.Count >= 1000)
                         {
-                            set.swordMatricesSet.Add(swordMatrices);
+                            set.SwordMatricesSet.Add(swordMatrices);
                             swordMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
                         }
                         break;
                     case SoldierType.Spear:
-                        spear = unit.mesh;
-                        msp = unit.material;
+                        spear = unit.Mesh;
+                        msp = unit.Material;
                         spearMatrices.Item1.Add(unit);
                         spearMatrices.Item2.Add(m);
                         if (spearMatrices.Item1.Count >= 1000)
                         {
-                            set.spearMatricesSet.Add(spearMatrices);
+                            set.SpearMatricesSet.Add(spearMatrices);
                             spearMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
                         }
                         break;
                     case SoldierType.Bow:
-                        bow = unit.mesh;
-                        msb = unit.material;
+                        bow = unit.Mesh;
+                        msb = unit.Material;
                         bowMatrices.Item1.Add(unit);
                         bowMatrices.Item2.Add(m);
                         if (bowMatrices.Item1.Count >= 1000)
                         {
-                            set.bowMatricesSet.Add(bowMatrices);
+                            set.BowMatricesSet.Add(bowMatrices);
                             bowMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
                         }
                         break;
                     case SoldierType.HorseSword:
-                        hsword = unit.mesh;
-                        mhsw = unit.material;
+                        hsword = unit.Mesh;
+                        mhsw = unit.Material;
                         hSwordMatrices.Item1.Add(unit);
                         hSwordMatrices.Item2.Add(m);
                         if (hSwordMatrices.Item1.Count >= 1000)
                         {
-                            set.hSwordMatricesSet.Add(hSwordMatrices);
+                            set.HSwordMatricesSet.Add(hSwordMatrices);
                             hSwordMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
                         }
                         break;
                     case SoldierType.HorseSpear:
-                        hspear = unit.mesh;
-                        mhsp = unit.material;
+                        hspear = unit.Mesh;
+                        mhsp = unit.Material;
                         hSpearMatrices.Item1.Add(unit);
                         hSpearMatrices.Item2.Add(m);
                         if (hSpearMatrices.Item1.Count >= 1000)
                         {
-                            set.hSpearMatricesSet.Add(hSpearMatrices);
+                            set.HSpearMatricesSet.Add(hSpearMatrices);
                             hSpearMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
                         }
                         break;
                     case SoldierType.HorseBow:
-                        hbow = unit.mesh;
-                        mhb = unit.material;
+                        hbow = unit.Mesh;
+                        mhb = unit.Material;
                         hBowMatrices.Item1.Add(unit);
                         hBowMatrices.Item2.Add(m);
                         if (hBowMatrices.Item1.Count >= 1000)
                         {
-                            set.hBowMatricesSet.Add(hBowMatrices);
+                            set.HBowMatricesSet.Add(hBowMatrices);
                             hBowMatrices = new Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>(new List<MeshDrawableUnit>(1000), new List<Matrix4x4>(1000));
                         }
                         break;
                 }
             }
 
-            set.swordMatricesSet.Add(swordMatrices);
-            set.spearMatricesSet.Add(spearMatrices);
-            set.bowMatricesSet.Add(bowMatrices);
+            set.SwordMatricesSet.Add(swordMatrices);
+            set.SpearMatricesSet.Add(spearMatrices);
+            set.BowMatricesSet.Add(bowMatrices);
 
-            set.hSwordMatricesSet.Add(hSwordMatrices);
-            set.hSpearMatricesSet.Add(hSpearMatrices);
-            set.hBowMatricesSet.Add(hBowMatrices);
+            set.HSwordMatricesSet.Add(hSwordMatrices);
+            set.HSpearMatricesSet.Add(hSpearMatrices);
+            set.HBowMatricesSet.Add(hBowMatrices);
 
-            set.hbow = hbow;
-            set.hsword = hsword;
-            set.hspear = hspear;
+            set.Hbow = hbow;
+            set.Hsword = hsword;
+            set.Hspear = hspear;
 
-            set.spear = spear;
-            set.sword = sword;
-            set.bow = bow;
+            set.Spear = spear;
+            set.Sword = sword;
+            set.Bow = bow;
 
             set.msw = msw;
             set.msp = msp;
@@ -239,15 +238,15 @@ namespace Assets.Scripts.Game.Units
 
         public static void DrawAll(List<Tuple<List<MeshDrawableUnit>,List<Matrix4x4>>> list, Mesh mesh, Material mat)
         {
-            foreach (var s in list)
+            foreach (Tuple<List<MeshDrawableUnit>, List<Matrix4x4>> s in list)
             {
                 List<MeshDrawableUnit> units = s.Item1;
                 List<Matrix4x4> matrices = s.Item2;
 
                 for (int i = 0; i < units.Count; ++i)
                 {
-                    Quaternion rotate = units[i].Rotation * units[i].transform.rotation;
-                    Matrix4x4 m = Matrix4x4.TRS(units[i].Position, rotate, units[i].transform.localScale);
+                    Quaternion rotate = units[i].Rotation * units[i].Transform.rotation;
+                    Matrix4x4 m = Matrix4x4.TRS(units[i].Position, rotate, units[i].Transform.localScale);
                     matrices[i] = m;
                 }
 
@@ -259,31 +258,31 @@ namespace Assets.Scripts.Game.Units
         public static void DrawAll(DrawingSet set)
         {
 
-            List<Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh,Material>>> list = new List<Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>>>
+            var list = new List<Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>>>
             {
-                new Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>>(set.bowMatricesSet, new Tuple<Mesh, Material>(set.bow, set.msb)),
-                 new Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>>(set.spearMatricesSet, new Tuple<Mesh, Material>(set.spear, set.msp)),
-                  new Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>>(set.swordMatricesSet, new Tuple<Mesh, Material>(set.sword, set.msw)),
-                   new Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>>(set.hBowMatricesSet, new Tuple<Mesh, Material>(set.hbow, set.mhb)),
-                    new Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>>(set.hSpearMatricesSet, new Tuple<Mesh, Material>(set.hspear, set.mhsw)),
-                     new Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>>(set.hSwordMatricesSet, new Tuple<Mesh, Material>(set.hsword, set.mhsw)),
+                new Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>>(set.BowMatricesSet, new Tuple<Mesh, Material>(set.Bow, set.msb)),
+                 new Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>>(set.SpearMatricesSet, new Tuple<Mesh, Material>(set.Spear, set.msp)),
+                  new Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>>(set.SwordMatricesSet, new Tuple<Mesh, Material>(set.Sword, set.msw)),
+                   new Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>>(set.HBowMatricesSet, new Tuple<Mesh, Material>(set.Hbow, set.mhb)),
+                    new Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>>(set.HSpearMatricesSet, new Tuple<Mesh, Material>(set.Hspear, set.mhsw)),
+                     new Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>>(set.HSwordMatricesSet, new Tuple<Mesh, Material>(set.Hsword, set.mhsw))
             };
 
-            foreach (var lt in list)
+            foreach (Tuple<List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>, Tuple<Mesh, Material>> lt in list)
             {
                 List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> items = lt.Item1;
                 Material mat = lt.Item2.Item2;
                 Mesh mesh = lt.Item2.Item1;
 
-                foreach (var s in items)
+                foreach (Tuple<List<MeshDrawableUnit>, List<Matrix4x4>> s in items)
                 {
                     List<MeshDrawableUnit> units = s.Item1;
                     List<Matrix4x4> matrices = s.Item2;
 
                     for (int i = 0; i < units.Count; ++i)
                     {
-                        Quaternion rotate = units[i].Rotation * units[i].transform.rotation;
-                        Matrix4x4 m = Matrix4x4.TRS(units[i].Position, rotate, units[i].transform.localScale);
+                        Quaternion rotate = units[i].Rotation * units[i].Transform.rotation;
+                        Matrix4x4 m = Matrix4x4.TRS(units[i].Position, rotate, units[i].Transform.localScale);
                         matrices[i] = m;
                     }
 
