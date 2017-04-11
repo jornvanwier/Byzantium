@@ -4,17 +4,17 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormations
 {
     public abstract class ContuberniumFormationBase : FormationBase
     {
-        public override void Order(Legion unit)
+        public override void Order(Legion unit, bool instant = false)
         {
             throw new FormationIncompatibleException(unit);
         }
 
-        public override void Order(Cohort unit)
+        public override void Order(Cohort unit, bool instant = false)
         {
             throw new FormationIncompatibleException(unit);
         }
 
-        public override void Order(Century unit)
+        public override void Order(Century unit, bool instant = false)
         {
             throw new FormationIncompatibleException(unit);
         }

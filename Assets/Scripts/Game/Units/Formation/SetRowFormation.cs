@@ -11,24 +11,24 @@ namespace Assets.Scripts.Game.Units.Formation
             this.length = length;
         }
 
-        public override void Order(Legion unit)
+        public override void Order(Legion unit, bool instant = false)
         {
             throw new FormationIncompatibleException(unit);
         }
 
-        public override void Order(Contubernium unit)
+        public override void Order(Contubernium unit, bool instant = false)
         {
-            SquareFormation.OrderAnySetRow<Contubernium, MeshDrawableUnit>(length, unit);
+            SquareFormation.OrderAnySetRow<Contubernium, MeshDrawableUnit>(length, unit, instant);
         }
 
-        public override void Order(Cohort unit)
+        public override void Order(Cohort unit, bool instant = false)
         {
-            SquareFormation.OrderAnySetRow<Cohort, Century>(length, unit);
+            SquareFormation.OrderAnySetRow<Cohort, Century>(length, unit, instant);
         }
 
-        public override void Order(Century unit)
+        public override void Order(Century unit, bool instant = false)
         {
-            SquareFormation.OrderAnySetRow<Century, Contubernium>(length, unit);
+            SquareFormation.OrderAnySetRow<Century, Contubernium>(length, unit, instant);
         }
     }
 }

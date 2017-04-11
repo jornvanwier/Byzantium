@@ -7,52 +7,52 @@ namespace Assets.Scripts.Game.Units.Formation
 {
     public class SquareFormation : FormationBase
     {
-        public override void Order(Legion unit)
+        public override void Order(Legion unit, bool instant = false)
         {
             throw new FormationIncompatibleException(unit);
         }
 
-        public override void Order(Contubernium unit)
+        public override void Order(Contubernium unit, bool instant = false)
         {
-            OrderAny<Contubernium, MeshDrawableUnit>(unit);
+            OrderAny<Contubernium, MeshDrawableUnit>(unit, instant);
         }
 
-        public override void Order(Cohort unit)
+        public override void Order(Cohort unit, bool instant = false)
         {
-            OrderAny<Cohort, Century>(unit);
+            OrderAny<Cohort, Century>(unit, instant);
         }
 
-        public override void Order(Century unit)
+        public override void Order(Century unit, bool instant = false)
         {
-            OrderAny<Century, Contubernium>(unit);
+            OrderAny<Century, Contubernium>(unit, instant);
         }
 
-        public static void OrderAnySetRow<T, TChild>(int width, T unit) where T : UnitBase, IMultipleUnits<TChild>
+        public static void OrderAnySetRow<T, TChild>(int width, T unit, bool instant = false) where T : UnitBase, IMultipleUnits<TChild>
             where TChild : UnitBase
         {
             int columnHeight = unit.UnitCount / width;
 
-            OrderAny<T, TChild>(width, columnHeight, unit);
+            OrderAny<T, TChild>(width, columnHeight, unit, instant);
         }
 
-        public static void OrderAnySetColumn<T, TChild>(int height, T unit) where T : UnitBase, IMultipleUnits<TChild>
+        public static void OrderAnySetColumn<T, TChild>(int height, T unit, bool instant = false) where T : UnitBase, IMultipleUnits<TChild>
             where TChild : UnitBase
         {
             int rowWidth = unit.UnitCount / height;
 
-            OrderAny<T, TChild>(rowWidth, height, unit);
+            OrderAny<T, TChild>(rowWidth, height, unit, instant);
         }
 
-        public static void OrderAny<T, TChild>(T unit) where T : UnitBase, IMultipleUnits<TChild>
+        public static void OrderAny<T, TChild>(T unit, bool instant = false) where T : UnitBase, IMultipleUnits<TChild>
             where TChild : UnitBase
         {
             int rowWidth = (int) Mathf.Sqrt(unit.UnitCount);
             int columnHeight = unit.UnitCount / rowWidth;
 
-            OrderAny<T, TChild>(rowWidth, columnHeight, unit);
+            OrderAny<T, TChild>(rowWidth, columnHeight, unit, instant);
         }
 
-        private static void OrderAny<T, TChild>(int rowWidth, int columnHeight, T unit)
+        private static void OrderAny<T, TChild>(int rowWidth, int columnHeight, T unit, bool instant = false)
             where T : UnitBase, IMultipleUnits<TChild>
             where TChild : UnitBase
         {
@@ -73,7 +73,7 @@ namespace Assets.Scripts.Game.Units.Formation
                 ++i;
             }
 
-            ProcessLocalOffsets<T, TChild>(localPositions, unit);
+            ProcessLocalOffsets<T, TChild>(localPositions, unit, instant);
 
             unit.ChildrenDimensions = new Int2(columnHeight, rowWidth);
         }

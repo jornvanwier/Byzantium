@@ -51,6 +51,12 @@ namespace Assets.Scripts.Game.Units.Groups
             }
         }
 
+        public override void SetPositionInstant(Vector3 pos)
+        {
+            base.Position = pos;
+            Formation.Order(this, true);
+        }
+
         public override int UnitCount => contubernia.Count;
 
         public override Vector2 DrawSize => Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions);
@@ -92,19 +98,17 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Century CreateMixedUnit(Faction faction)
         {
-            var century = new Century(faction) {Formation = new SetColumnFormation(5)};
+            var century = new Century(faction) {Formation = new SetColumnFormation(2)};
 
             // Frontline with swords
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i < 2; ++i)
                 century.AddUnit(Contubernium.CreateSwordUnit(faction));
 
             // Mid with pikes
-            for (int i = 0; i < 3; ++i)
-                century.AddUnit(Contubernium.CreatePikeUnit(faction));
+            century.AddUnit(Contubernium.CreatePikeUnit(faction));
 
             // Backline with bows
-            for (int i = 0; i < 3; ++i)
-                century.AddUnit(Contubernium.CreateBowUnit(faction));
+            century.AddUnit(Contubernium.CreateBowUnit(faction));
 
             century.IsCavalry = false;
 
@@ -113,9 +117,9 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Century CreateCavalryUnit(Faction faction)
         {
-            var century = new Century(faction) {Formation = new SetColumnFormation(5)};
+            var century = new Century(faction) {Formation = new SetColumnFormation(2)};
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 4; i++)
                 century.AddUnit(Contubernium.CreateSwordCavalryUnit(faction));
 
             century.IsCavalry = true;

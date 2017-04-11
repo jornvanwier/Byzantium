@@ -20,6 +20,8 @@ namespace Assets.Scripts.Game.Units
         public abstract float DefaultSpeed { get; }
         public virtual Vector3 Position { get; set; } = Vector3.zero;
 
+        public abstract void SetPositionInstant(Vector3 pos);
+
         public virtual Quaternion Rotation { get; set; } = Quaternion.identity;
 
         public virtual IFormation Formation { get; set; }
@@ -41,6 +43,8 @@ namespace Assets.Scripts.Game.Units
                 return hitbox;
             }
         }
+
+        
 
         public abstract int UnitCount { get; }
         public abstract IEnumerable<MeshDrawableUnit> AllUnits { get; }

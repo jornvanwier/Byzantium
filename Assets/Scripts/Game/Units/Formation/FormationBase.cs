@@ -8,12 +8,12 @@ namespace Assets.Scripts.Game.Units.Formation
     {
         protected const float UnitSize = 0.15f;
 
-        public abstract void Order(Legion unit);
-        public abstract void Order(Contubernium unit);
-        public abstract void Order(Cohort unit);
-        public abstract void Order(Century unit);
+        public abstract void Order(Legion unit, bool instant = false);
+        public abstract void Order(Contubernium unit, bool instant = false);
+        public abstract void Order(Cohort unit, bool instant = false);
+        public abstract void Order(Century unit, bool instant = false);
 
-        protected static void ProcessLocalOffsets<T, TChild>(IList<Vector3> offsetPositions, T unit)
+        protected static void ProcessLocalOffsets<T, TChild>(IList<Vector3> offsetPositions, T unit, bool instant)
             where T : UnitBase, IMultipleUnits<TChild> where TChild : UnitBase
         {
             float maxDist = 0.0f;
@@ -22,15 +22,23 @@ namespace Assets.Scripts.Game.Units.Formation
 
             foreach (TChild child in unit)
             {
-                Vector3 oldPosition = child.Position;
                 Vector3 newPosition = unit.Rotation * offsetPositions[i];
                 Vector3 targetPosition = newPosition + position;
-                Vector3 definitivePosition = Vector3.MoveTowards(oldPosition, targetPosition, Time.deltaTime);
+                if (instant)
+                {
+                    child.SetPositionInstant(targetPosition);
+                }
+                else
+                {
+                    Vector3 oldPosition = child.Position;
 
-                child.Position = definitivePosition;
+                    Vector3 definitivePosition = Vector3.MoveTowards(oldPosition, targetPosition, Time.deltaTime);
 
-                float dist = Vector3.Distance(oldPosition, definitivePosition);
-                maxDist = dist > maxDist ? dist : maxDist;
+                    child.Position = definitivePosition;
+                    float dist = Vector3.Distance(oldPosition, definitivePosition);
+                    maxDist = dist > maxDist ? dist : maxDist;
+                }
+
                 ++i;
             }
 

@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Map;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.Map;
 using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.UI;
 using Assets.Scripts.Util;
@@ -20,8 +22,8 @@ namespace Assets.Scripts.Game.Units
         private CubicalCoordinate previousPosition;
         public Mesh SpawnMesh;
         public Material SpawnMeshMaterial;
-
-        public UnitBase AttachedUnit { get; set; }
+        private Vector3 spawnPosition;
+        public UnitBase AttachedUnit { get; private set; }
 
         public MapRenderer MapRenderer { get; set; }
 
@@ -31,6 +33,40 @@ namespace Assets.Scripts.Game.Units
 
         public Faction Faction => AttachedUnit.Commander.Faction;
         public GameObject SpawnObject { get; private set; }
+
+        public void AttachUnit(UnitBase unit)
+        {
+            AttachedUnit = unit;
+            spawnPosition = GetSpawnPosition();
+            CreateBuilding(spawnPosition);
+            AttachedUnit.Position = spawnPosition;
+        }
+
+        private Vector3 GetSpawnPosition()
+        {
+            if (mapRenderer.HexBoard == null) return Vector3.zero;
+            CubicalCoordinate buildingCc = mapRenderer.HexBoard.RandomValidTile();
+            return mapRenderer.CubicalCoordinateToWorld(buildingCc);
+        }
+
+        private List<UnitController> enemies;
+
+        public void AttachArmies(List<UnitController> armies)
+        {
+            enemies = armies.Where(controller => controller == this).ToList();
+        }
+
+        public void CreateBuilding(Vector3 position)
+        {
+            SpawnObject = new GameObject("SpawnHouse");
+
+            var meshFilter = SpawnObject.AddComponent<MeshFilter>();
+            var meshRenderer = SpawnObject.AddComponent<MeshRenderer>();
+            SpawnObject.AddComponent<BoxCollider>();
+            meshFilter.mesh = SpawnMesh;
+            meshRenderer.material = SpawnMeshMaterial;
+            SpawnObject.transform.position = position;
+        }
 
         public void AttachMapRenderer(MapRenderer renderer)
         {
@@ -52,6 +88,15 @@ namespace Assets.Scripts.Game.Units
             this.camera = camera;
         }
 
+        public void Teleport(Vector3 loc)
+        {
+            transform.position = loc;
+            Position = MapRenderer.WorldToCubicalCoordinate(loc);
+            previousPosition = Position;
+            movementDrawOffset = new Vector3(0, 0,0);
+            AttachedUnit.SetPositionInstant(loc);
+        }
+
 
         private void UpdateHealthBar()
         {
@@ -64,25 +109,21 @@ namespace Assets.Scripts.Game.Units
             HealthBar.Value = AttachedUnit.Health;
         }
 
-        public void CreateBuilding()
-        {
-            SpawnObject = new GameObject("SpawnHouse");
-
-            CubicalCoordinate buildingCc = mapRenderer.HexBoard.RandomValidTile();
-            Vector3 buildingPos = mapRenderer.CubicalCoordinateToWorld(buildingCc);
-            SpawnObject.transform.position = buildingPos;
-
-            var meshFilter = SpawnObject.AddComponent<MeshFilter>();
-            var meshRenderer = SpawnObject.AddComponent<MeshRenderer>();
-            SpawnObject.AddComponent<BoxCollider>();
-            meshFilter.mesh = SpawnMesh;
-            meshRenderer.material = SpawnMeshMaterial;
-        }
+        private const float AttackRange = 3;
 
         public void Update()
         {
-            if (SpawnObject == null && mapRenderer?.HexBoard != null)
-                CreateBuilding();
+            if (enemies != null)
+            {
+                foreach (UnitController enemy in enemies)
+                {
+                    float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
+                    if (distance < AttackRange)
+                    {
+                        Debug.Log("Attack!");
+                    }
+                }
+            }
 
             UpdateHealthBar();
             AttachedUnit.Draw();
@@ -95,7 +136,7 @@ namespace Assets.Scripts.Game.Units
 
             Position = MapRenderer.WorldToCubicalCoordinate(CreateWorldPos());
 
-            if (MapRenderer.HexBoard[Goal] == (byte)TileType.WaterDeep || Position == Goal)
+            if (MapRenderer.HexBoard[Goal] == (byte) TileType.WaterDeep || Position == Goal)
                 return;
             if (IsPathValid())
             {

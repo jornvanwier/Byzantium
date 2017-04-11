@@ -10,7 +10,7 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormations
         private const float Angle = 40;
         private const float Radius = 2f;
 
-        public override void Order(Contubernium unit)
+        public override void Order(Contubernium unit, bool instant = false)
         {
             var localPositions = new List<Vector3>();
 
@@ -30,7 +30,7 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormations
                 ++i;
             }
 
-            ProcessLocalOffsets<Contubernium, MeshDrawableUnit>(localPositions, unit);
+            ProcessLocalOffsets<Contubernium, MeshDrawableUnit>(localPositions, unit, instant);
 
             unit.ChildrenDimensions = new Int2(3, 3);
             unit.WalkSpeed = 0.3f;
