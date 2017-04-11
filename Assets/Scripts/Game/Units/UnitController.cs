@@ -20,8 +20,8 @@ namespace Assets.Scripts.Game.Units
         private CubicalCoordinate previousPosition;
         public Mesh SpawnMesh;
         public Material SpawnMeshMaterial;
-
-        public UnitBase AttachedUnit { get; set; }
+        private Vector3 spawnPosition;
+        public UnitBase AttachedUnit { get; private set; }
 
         public MapRenderer MapRenderer { get; set; }
 
@@ -31,6 +31,32 @@ namespace Assets.Scripts.Game.Units
 
         public Faction Faction => AttachedUnit.Commander.Faction;
         public GameObject SpawnObject { get; private set; }
+
+        public void AttachUnit(UnitBase unit)
+        {
+            AttachedUnit = unit;
+            spawnPosition = GetSpawnPosition();
+            SpawnObject.transform.position = spawnPosition;
+            AttachedUnit.Position = spawnPosition;
+            CreateBuilding();
+        }
+
+        private Vector3 GetSpawnPosition()
+        {
+            CubicalCoordinate buildingCc = mapRenderer.HexBoard.RandomValidTile();
+            return mapRenderer.CubicalCoordinateToWorld(buildingCc);
+        }
+
+        public void CreateBuilding()
+        {
+            SpawnObject = new GameObject("SpawnHouse");
+
+            var meshFilter = SpawnObject.AddComponent<MeshFilter>();
+            var meshRenderer = SpawnObject.AddComponent<MeshRenderer>();
+            SpawnObject.AddComponent<BoxCollider>();
+            meshFilter.mesh = SpawnMesh;
+            meshRenderer.material = SpawnMeshMaterial;
+        }
 
         public void AttachMapRenderer(MapRenderer renderer)
         {
@@ -64,26 +90,8 @@ namespace Assets.Scripts.Game.Units
             HealthBar.Value = AttachedUnit.Health;
         }
 
-        public void CreateBuilding()
-        {
-            SpawnObject = new GameObject("SpawnHouse");
-
-            CubicalCoordinate buildingCc = mapRenderer.HexBoard.RandomValidTile();
-            Vector3 buildingPos = mapRenderer.CubicalCoordinateToWorld(buildingCc);
-            SpawnObject.transform.position = buildingPos;
-
-            var meshFilter = SpawnObject.AddComponent<MeshFilter>();
-            var meshRenderer = SpawnObject.AddComponent<MeshRenderer>();
-            SpawnObject.AddComponent<BoxCollider>();
-            meshFilter.mesh = SpawnMesh;
-            meshRenderer.material = SpawnMeshMaterial;
-        }
-
         public void Update()
         {
-            if (SpawnObject == null && mapRenderer?.HexBoard != null)
-                CreateBuilding();
-
             UpdateHealthBar();
             AttachedUnit.Draw();
 
@@ -95,7 +103,7 @@ namespace Assets.Scripts.Game.Units
 
             Position = MapRenderer.WorldToCubicalCoordinate(CreateWorldPos());
 
-            if (MapRenderer.HexBoard[Goal] == (byte)TileType.WaterDeep || Position == Goal)
+            if (MapRenderer.HexBoard[Goal] == (byte) TileType.WaterDeep || Position == Goal)
                 return;
             if (IsPathValid())
             {

@@ -70,13 +70,13 @@ namespace Assets.Scripts.Game.Units.Groups
         public void AddUnit(Cohort unit)
         {
             cohorts.Add(unit);
-            set = MeshDrawableUnit.Prefetch(this);
+            set = Prefetch(this);
         }
 
         public void RemoveUnit(Cohort unit)
         {
             cohorts.Remove(unit);
-            set = MeshDrawableUnit.Prefetch(this);
+            set = Prefetch(this);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -107,7 +107,6 @@ namespace Assets.Scripts.Game.Units.Groups
             return legion;
         }
 
-        
 
         public override void Draw()
         {

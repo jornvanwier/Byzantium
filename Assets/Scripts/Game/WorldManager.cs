@@ -52,7 +52,6 @@ namespace Assets.Scripts.Game
 
         private Canvas uiCanvas;
 
-        private UnitBase unit;
         private UnitController unitController;
 
 
@@ -94,8 +93,6 @@ namespace Assets.Scripts.Game
                 FactionManager.Init(2);
             Faction faction = FactionManager.Factions[0];
 
-            unit = Cohort.CreateUniformMixedUnit(faction);
-            unit.Position = new Vector3(5, 0, 5);
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";
@@ -109,14 +106,6 @@ namespace Assets.Scripts.Game
 
             MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
 
-            var obj = new GameObject("Army");
-            unitController = obj.AddComponent<UnitController>();
-            unitController.AttachedUnit = unit;
-            unitController.MapRenderer = MapRendererScript;
-
-            unitController.AttachCamera(camera);
-
-            allArmies.Add(unitController);
 
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
             Rotate(objectRight, Space.Self, InitialCameraAngle);
@@ -134,11 +123,17 @@ namespace Assets.Scripts.Game
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
 
+            var obj = new GameObject("Army");
+            unitController = obj.AddComponent<UnitController>();
+            unitController.AttachCamera(camera);
+            unitController.MapRenderer = MapRendererScript;
             unitController.AttachMapRenderer(MapRendererScript);
             unitController.SpawnMesh = SpawnMesh;
             unitController.SpawnMeshMaterial = SpawnMeshMaterial;
-        }
 
+
+            allArmies.Add(unitController);
+        }
 
         public void AttachInfoPanel(InfoPanel panel)
         {
@@ -146,10 +141,18 @@ namespace Assets.Scripts.Game
             infoPanel.Hide();
         }
 
+        private void AddArmy()
+        {
+            UnitBase unit = Cohort.CreateUniformMixedUnit(FactionManager.Factions[0]);
+            unitController.AttachUnit(unit);
+        }
+
         // Update is called once per frame
         [UsedImplicitly]
         private void Update()
         {
+            if (MapRendererScript.HexBoard != null && unitController.AttachedUnit == null)
+                AddArmy();
             if (selectedArmy != null)
                 if (Input.GetKeyDown(KeyCode.Mouse1))
                 {
