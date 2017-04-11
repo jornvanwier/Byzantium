@@ -51,12 +51,6 @@ namespace Assets.Scripts.Game.Units.Groups
             }
         }
 
-        public override void SetPositionInstant(Vector3 pos)
-        {
-            base.Position = pos;
-            Formation.Order(this, true);
-        }
-
         public override int UnitCount => cohorts.Count;
 
         public override Vector2 DrawSize => Vector2.Scale(cohorts[0].DrawSize, ChildrenDimensions);
@@ -93,6 +87,12 @@ namespace Assets.Scripts.Game.Units.Groups
         public IEnumerator<Cohort> GetEnumerator()
         {
             return cohorts.GetEnumerator();
+        }
+
+        public override void SetPositionInstant(Vector3 pos)
+        {
+            base.Position = pos;
+            Formation.Order(this, true);
         }
 
         public static Legion CreateStandardLegion(Faction faction)

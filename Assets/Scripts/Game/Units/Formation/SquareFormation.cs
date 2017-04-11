@@ -27,7 +27,8 @@ namespace Assets.Scripts.Game.Units.Formation
             OrderAny<Century, Contubernium>(unit, instant);
         }
 
-        public static void OrderAnySetRow<T, TChild>(int width, T unit, bool instant = false) where T : UnitBase, IMultipleUnits<TChild>
+        public static void OrderAnySetRow<T, TChild>(int width, T unit, bool instant = false)
+            where T : UnitBase, IMultipleUnits<TChild>
             where TChild : UnitBase
         {
             int columnHeight = unit.UnitCount / width;
@@ -35,7 +36,8 @@ namespace Assets.Scripts.Game.Units.Formation
             OrderAny<T, TChild>(width, columnHeight, unit, instant);
         }
 
-        public static void OrderAnySetColumn<T, TChild>(int height, T unit, bool instant = false) where T : UnitBase, IMultipleUnits<TChild>
+        public static void OrderAnySetColumn<T, TChild>(int height, T unit, bool instant = false)
+            where T : UnitBase, IMultipleUnits<TChild>
             where TChild : UnitBase
         {
             int rowWidth = unit.UnitCount / height;

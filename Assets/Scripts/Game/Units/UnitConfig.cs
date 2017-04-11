@@ -2,12 +2,6 @@
 {
     public class UnitConfig
     {
-        public float Range {get; private set; }
-        public float Damage { get; private set; }
-        public float AttackSpeed { get; private set; }
-        public float Defense { get; private set; }
-        public float MovementSpeed { get; private set; }
-
         public static UnitConfig Sword = new UnitConfig
         {
             Range = 1,
@@ -61,5 +55,11 @@
             Defense = 1,
             MovementSpeed = 2f
         };
+
+        public float Range { get; private set; }
+        public float Damage { get; private set; }
+        public float AttackSpeed { get; private set; }
+        public float Defense { get; private set; }
+        public float MovementSpeed { get; private set; }
     }
 }

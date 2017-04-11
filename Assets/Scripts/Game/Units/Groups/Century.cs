@@ -51,12 +51,6 @@ namespace Assets.Scripts.Game.Units.Groups
             }
         }
 
-        public override void SetPositionInstant(Vector3 pos)
-        {
-            base.Position = pos;
-            Formation.Order(this, true);
-        }
-
         public override int UnitCount => contubernia.Count;
 
         public override Vector2 DrawSize => Vector2.Scale(contubernia[0].DrawSize, ChildrenDimensions);
@@ -94,6 +88,12 @@ namespace Assets.Scripts.Game.Units.Groups
         public IEnumerator GetEnumerator()
         {
             return ((IEnumerable<Contubernium>) this).GetEnumerator();
+        }
+
+        public override void SetPositionInstant(Vector3 pos)
+        {
+            base.Position = pos;
+            Formation.Order(this, true);
         }
 
         public static Century CreateMixedUnit(Faction faction)

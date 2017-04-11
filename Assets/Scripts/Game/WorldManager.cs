@@ -140,9 +140,7 @@ namespace Assets.Scripts.Game
 
             Armies.Add(unitController);
             foreach (UnitController army in Armies)
-            {
                 army.AttachArmies(Armies);
-            }
         }
 
         // Update is called once per frame

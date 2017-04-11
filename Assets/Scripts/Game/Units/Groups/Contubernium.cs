@@ -40,12 +40,6 @@ namespace Assets.Scripts.Game.Units.Groups
             }
         }
 
-        public override void SetPositionInstant(Vector3 pos)
-        {
-            base.Position = pos;
-            Formation.Order(this, true);
-        }
-
         public override Quaternion Rotation
         {
             get { return base.Rotation; }
@@ -84,6 +78,12 @@ namespace Assets.Scripts.Game.Units.Groups
         public IEnumerator GetEnumerator()
         {
             return ((IEnumerable<MeshDrawableUnit>) this).GetEnumerator();
+        }
+
+        public override void SetPositionInstant(Vector3 pos)
+        {
+            base.Position = pos;
+            Formation.Order(this, true);
         }
 
         public static Contubernium CreateSpearCavalryUnit(Faction faction)

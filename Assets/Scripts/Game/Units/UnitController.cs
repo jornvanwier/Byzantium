@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Map;
 using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.UI;
 using Assets.Scripts.Util;
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units
@@ -15,9 +12,15 @@ namespace Assets.Scripts.Game.Units
     {
         private const float RotationSpeed = 3.5f;
 
+        private const float AttackRange = 3;
+
+        private const float TimeBetweenEnemySearches = 5;
+
         private new Camera camera;
 
         private PathfindingJobInfo currentPathInfo;
+
+        private List<UnitController> enemies;
         private MapRenderer mapRenderer;
 
         private Vector3 movementDrawOffset;
@@ -47,8 +50,6 @@ namespace Assets.Scripts.Game.Units
             CubicalCoordinate buildingCc = mapRenderer.HexBoard.RandomValidTile();
             return mapRenderer.CubicalCoordinateToWorld(buildingCc);
         }
-
-        private List<UnitController> enemies;
 
         public void AttachArmies(List<UnitController> armies)
         {
@@ -80,24 +81,8 @@ namespace Assets.Scripts.Game.Units
             var obj = new GameObject("ArmyHealth");
             obj.transform.SetParent(GameObject.Find("uiCanvas").transform);
             HealthBar = obj.AddComponent<HealthBar>();
-
-            InvokeRepeating("Battle", 1, TimeBetweenEnemySearches);
         }
 
-        private const float TimeBetweenEnemySearches = 10;
-
-        [UsedImplicitly]
-        private void BattleTest()
-        {
-            var i = 0;
-        }
-
-        [UsedImplicitly]
-        private void Battle()
-        {
-            Goal = NearestEnemy().Position;
-            Debug.Log("Tick " + Goal);
-        }
 
         public void AttachCamera(Camera camera)
         {
@@ -113,22 +98,6 @@ namespace Assets.Scripts.Game.Units
             AttachedUnit.SetPositionInstant(loc);
         }
 
-        private UnitController NearestEnemy()
-        {
-            return null;
-            if (enemies.Count == 0) return null;
-            UnitController nearest = enemies[0];
-            float nearestDistance = Vector3.Distance(nearest.AttachedUnit.Position, AttachedUnit.Position);
-            foreach (UnitController enemy in enemies)
-            {
-                float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
-                if (!(distance < nearestDistance)) continue;
-                nearestDistance = distance;
-                nearest = enemy;
-            }
-            return nearest;
-        }
-
         private void UpdateHealthBar()
         {
             if (camera == null) return;
@@ -140,26 +109,48 @@ namespace Assets.Scripts.Game.Units
             HealthBar.Value = AttachedUnit.Health;
         }
 
-        private const float AttackRange = 3;
 
         private void CombatTick()
         {
             // Check range
         }
 
+
+        private UnitController NearestEnemy()
+        {
+            if (enemies.Count == 0) return null;
+            UnitController nearest = enemies[0];
+            float nearestDistance = Vector3.Distance(nearest.AttachedUnit.Position, AttachedUnit.Position);
+            for (int i = 1; i < enemies.Count; i++)
+            {
+                UnitController enemy = enemies[i];
+                float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
+                if (!(distance < nearestDistance)) continue;
+                nearestDistance = distance;
+                nearest = enemy;
+            }
+            return nearest;
+        }
+
+        private void Battle()
+        {
+            UnitController nearestEnemy = NearestEnemy();
+            Goal = nearestEnemy.Position;
+            Debug.Log("Tick " + Goal);
+        }
+
         public void Update()
         {
+            if (Time.realtimeSinceStartup % TimeBetweenEnemySearches < Time.deltaTime)
+                Battle();
+
             if (enemies != null)
-            {
                 foreach (UnitController enemy in enemies)
                 {
                     float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
                     if (distance < AttackRange)
-                    {
                         Debug.Log("Attack!");
-                    }
                 }
-            }
 
             if (mapRenderer.HexBoard != null && AttachedUnit != null && spawnPosition == Vector3.zero)
             {

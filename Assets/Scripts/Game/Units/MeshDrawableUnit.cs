@@ -20,18 +20,6 @@ namespace Assets.Scripts.Game.Units
     public class MeshDrawableUnit : UnitBase
     {
         private const int StartHealth = 200;
-        public static List<GameObject> UnitMeshes { get; set; } = null;
-
-        public override void SetPositionInstant(Vector3 pos)
-        {
-            Position = pos;
-        }
-
-        public Mesh Mesh { get; set; }
-        public Material Material { get; set; }
-        public Transform Transform { get; set; }
-        public UnitConfig Config { get; private set; }
-
         private readonly Int2 dimensions = new Int2(1, 1);
         private readonly Vector2 horseSize = new Vector2(0.22f, 0.2f);
         private readonly Vector2 manSize = new Vector2(0.22f, 0.16f);
@@ -80,6 +68,13 @@ namespace Assets.Scripts.Game.Units
             Transform = m.transform;
         }
 
+        public static List<GameObject> UnitMeshes { get; set; } = null;
+
+        public Mesh Mesh { get; set; }
+        public Material Material { get; set; }
+        public Transform Transform { get; set; }
+        public UnitConfig Config { get; private set; }
+
         public override int Health { get; set; } = StartHealth;
 
         public override Int2 ChildrenDimensions
@@ -102,6 +97,11 @@ namespace Assets.Scripts.Game.Units
         public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
 
         public override string UnitName => "Single Unit";
+
+        public override void SetPositionInstant(Vector3 pos)
+        {
+            Position = pos;
+        }
 
         public override void Draw()
         {
