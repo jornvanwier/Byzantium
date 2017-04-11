@@ -42,6 +42,8 @@ namespace Assets.Scripts.Game.Units
             }
         }
 
+        
+
         public abstract int UnitCount { get; }
         public abstract IEnumerable<MeshDrawableUnit> AllUnits { get; }
 

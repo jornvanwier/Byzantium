@@ -118,6 +118,7 @@ namespace Assets.Scripts.Game.Units
 
             public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> SwordMatricesSet =
                 new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128); // ReSharper disable InconsistentNaming
+
             public Material msw, msp, msb, mhsw, mhsp, mhb;
             // ReSharper enable InconsistentNaming
         }

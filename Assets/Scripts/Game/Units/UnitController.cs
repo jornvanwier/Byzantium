@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Map;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.Map;
 using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.UI;
 using Assets.Scripts.Util;
@@ -36,18 +38,25 @@ namespace Assets.Scripts.Game.Units
         {
             AttachedUnit = unit;
             spawnPosition = GetSpawnPosition();
-            SpawnObject.transform.position = spawnPosition;
+            CreateBuilding(spawnPosition);
             AttachedUnit.Position = spawnPosition;
-            CreateBuilding();
         }
 
         private Vector3 GetSpawnPosition()
         {
+            return Vector3.zero;
             CubicalCoordinate buildingCc = mapRenderer.HexBoard.RandomValidTile();
             return mapRenderer.CubicalCoordinateToWorld(buildingCc);
         }
 
-        public void CreateBuilding()
+        private List<UnitController> enemies;
+
+        public void AttachArmies(List<UnitController> armies)
+        {
+            enemies = armies.Where(controller => controller == this).ToList();
+        }
+
+        public void CreateBuilding(Vector3 position)
         {
             SpawnObject = new GameObject("SpawnHouse");
 
@@ -56,6 +65,7 @@ namespace Assets.Scripts.Game.Units
             SpawnObject.AddComponent<BoxCollider>();
             meshFilter.mesh = SpawnMesh;
             meshRenderer.material = SpawnMeshMaterial;
+            SpawnObject.transform.position = position;
         }
 
         public void AttachMapRenderer(MapRenderer renderer)
@@ -90,8 +100,22 @@ namespace Assets.Scripts.Game.Units
             HealthBar.Value = AttachedUnit.Health;
         }
 
+        private const float AttackRange = 3;
+
         public void Update()
         {
+            if (enemies != null)
+            {
+                foreach (UnitController enemy in enemies)
+                {
+                    float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
+                    if (distance < AttackRange)
+                    {
+                        Debug.Log("Attack!");
+                    }
+                }
+            }
+
             UpdateHealthBar();
             AttachedUnit.Draw();
 
