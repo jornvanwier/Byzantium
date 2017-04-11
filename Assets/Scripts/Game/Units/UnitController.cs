@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Map;
 using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.UI;
 using Assets.Scripts.Util;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units
@@ -49,12 +52,12 @@ namespace Assets.Scripts.Game.Units
 
         public void AttachArmies(List<UnitController> armies)
         {
-            enemies = armies.Where(controller => controller == this).ToList();
+            enemies = armies.Where(controller => controller != this).ToList();
         }
 
         public void CreateBuilding(Vector3 position)
         {
-            SpawnObject = new GameObject("SpawnHouse");
+            SpawnObject = new GameObject("SpawnHouse " + AttachedUnit.Commander.Faction.Name);
 
             var meshFilter = SpawnObject.AddComponent<MeshFilter>();
             var meshRenderer = SpawnObject.AddComponent<MeshRenderer>();
@@ -77,6 +80,17 @@ namespace Assets.Scripts.Game.Units
             var obj = new GameObject("ArmyHealth");
             obj.transform.SetParent(GameObject.Find("uiCanvas").transform);
             HealthBar = obj.AddComponent<HealthBar>();
+
+            InvokeRepeating("Battle", 0, TimeBetweenEnemySearches);
+        }
+
+        private const float TimeBetweenEnemySearches = 10;
+
+        [UsedImplicitly]
+        private void Battle()
+        {
+            Goal = NearestEnemy().Position;
+            Debug.Log("Tick " + Goal);
         }
 
         public void AttachCamera(Camera camera)
@@ -93,6 +107,20 @@ namespace Assets.Scripts.Game.Units
             AttachedUnit.SetPositionInstant(loc);
         }
 
+        private UnitController NearestEnemy()
+        {
+            if (enemies.Count == 0) return null;
+            UnitController nearest = enemies[0];
+            float nearestDistance = float.PositiveInfinity;
+            foreach (UnitController enemy in enemies)
+            {
+                float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
+                if (!(distance < nearestDistance)) continue;
+                nearestDistance = distance;
+                nearest = enemy;
+            }
+            return nearest;
+        }
 
         private void UpdateHealthBar()
         {
@@ -123,6 +151,10 @@ namespace Assets.Scripts.Game.Units
                     {
                         Debug.Log("Attack!");
                     }
+                    else
+                    {
+                        Debug.Log("out of range");
+                    }
                 }
             }
 
@@ -131,6 +163,8 @@ namespace Assets.Scripts.Game.Units
                 spawnPosition = GetSpawnPosition();
                 CreateBuilding(spawnPosition);
                 Teleport(spawnPosition);
+                camera.transform.position = spawnPosition + new Vector3(5, 10, 0);
+                camera.transform.LookAt(spawnPosition);
             }
 
             UpdateHealthBar();
@@ -140,9 +174,11 @@ namespace Assets.Scripts.Game.Units
                 foreach (CubicalCoordinate c in currentPathInfo.Path)
                     MapRenderer.MarkTileSelectedForNextFrame(c);
 
-            SetWorldPosition(CreateWorldPos());
 
-            Position = MapRenderer.WorldToCubicalCoordinate(CreateWorldPos());
+            Vector3 worldPos = CreateWorldPos();
+            SetWorldPosition(worldPos);
+
+            Position = MapRenderer.WorldToCubicalCoordinate(worldPos);
 
             if (MapRenderer.HexBoard[Goal] == (byte) TileType.WaterDeep || Position == Goal)
                 return;
