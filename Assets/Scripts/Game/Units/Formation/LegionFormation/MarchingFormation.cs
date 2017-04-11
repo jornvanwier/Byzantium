@@ -8,7 +8,7 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 {
     public class MarchingFormation : LegionFormationBase
     {
-        public override void Order(Legion unit)
+        public override void Order(Legion unit, bool instant = false)
         {
             var localPositions = new List<Vector3>();
 
@@ -31,7 +31,7 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
                 return l;
             }).ToList();
 
-            ProcessLocalOffsets<Legion, Cohort>(offsetPositions, unit);
+            ProcessLocalOffsets<Legion, Cohort>(offsetPositions, unit, instant);
 
             unit.ChildrenDimensions = new Int2(unit.UnitCount, 1);
         }

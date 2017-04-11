@@ -22,6 +22,11 @@ namespace Assets.Scripts.Game.Units
         private const int StartHealth = 200;
         public static List<GameObject> UnitMeshes { get; set; } = null;
 
+        public override void SetPositionInstant(Vector3 pos)
+        {
+            Position = pos;
+        }
+
         public Mesh Mesh { get; set; }
         public Material Material { get; set; }
         public Transform Transform { get; set; }

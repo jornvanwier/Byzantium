@@ -10,7 +10,7 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormations
         private const int RowWidth = 4;
         private const int ColumnHeight = 2;
 
-        public override void Order(Contubernium unit)
+        public override void Order(Contubernium unit, bool instant = false)
         {
             var localPositions = new List<Vector3>();
 
@@ -29,7 +29,7 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormations
                 ++i;
             }
 
-            ProcessLocalOffsets<Contubernium, MeshDrawableUnit>(localPositions, unit);
+            ProcessLocalOffsets<Contubernium, MeshDrawableUnit>(localPositions, unit, instant);
 
             unit.ChildrenDimensions = new Int2(RowWidth * 2, ColumnHeight * 2);
             unit.WalkSpeed = 2.2f;

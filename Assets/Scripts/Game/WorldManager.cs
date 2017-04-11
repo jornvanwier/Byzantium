@@ -91,11 +91,13 @@ namespace Assets.Scripts.Game
 
             MeshDrawableUnit.UnitMeshes = PrefabMeshes;
             if (!FactionManager.IsInitialized)
+            {
                 FactionManager.Init(2);
+            }
+
             Faction faction = FactionManager.Factions[0];
 
-            unit = Cohort.CreateUniformMixedUnit(faction);
-            unit.Position = new Vector3(5, 0, 5);
+            unit = Legion.CreateStandardLegion(faction);
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";
@@ -117,6 +119,8 @@ namespace Assets.Scripts.Game
             unitController.AttachCamera(camera);
 
             allArmies.Add(unitController);
+
+            unitController.Teleport(new Vector3(20, 0, 20));
 
             Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
             Rotate(objectRight, Space.Self, InitialCameraAngle);
@@ -150,17 +154,20 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Update()
         {
+            SelectedArmy = unitController;
+
             if (selectedArmy != null)
                 if (Input.GetKeyDown(KeyCode.Mouse1))
                 {
                     var plane = new Plane(Vector3.up, Vector3.zero);
                     var camera = cameraObject.GetComponent<Camera>();
                     Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-                    Vector3 intersection = Vector3.zero;
                     if (plane.Raycast(ray, out float rayDistance))
-                        intersection = ray.GetPoint(rayDistance);
+                    {
+                        Vector3 intersection = ray.GetPoint(rayDistance);
 
-                    selectedArmy.Goal = MapRendererScript.WorldToCubicalCoordinate(intersection);
+                        SelectedArmy.Goal = MapRendererScript.WorldToCubicalCoordinate(intersection);
+                    }
                 }
 
 

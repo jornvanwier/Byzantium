@@ -52,6 +52,15 @@ namespace Assets.Scripts.Game.Units
             this.camera = camera;
         }
 
+        public void Teleport(Vector3 loc)
+        {
+            transform.position = loc;
+            Position = MapRenderer.WorldToCubicalCoordinate(loc);
+            previousPosition = Position;
+            movementDrawOffset = new Vector3(0, 0,0);
+            AttachedUnit.SetPositionInstant(loc);
+        }
+
 
         private void UpdateHealthBar()
         {

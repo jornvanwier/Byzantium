@@ -4,9 +4,9 @@ namespace Assets.Scripts.Game.Units.Formation
 {
     public interface IFormation
     {
-        void Order(Legion unit);
-        void Order(Contubernium unit);
-        void Order(Cohort unit);
-        void Order(Century unit);
+        void Order(Legion unit, bool instant = false);
+        void Order(Contubernium unit, bool instant = false);
+        void Order(Cohort unit, bool instant = false);
+        void Order(Century unit, bool instant = false);
     }
 }

@@ -51,6 +51,12 @@ namespace Assets.Scripts.Game.Units.Groups
             }
         }
 
+        public override void SetPositionInstant(Vector3 pos)
+        {
+            base.Position = pos;
+            Formation.Order(this, true);
+        }
+
         public override int UnitCount => cohorts.Count;
 
         public override Vector2 DrawSize => Vector2.Scale(cohorts[0].DrawSize, ChildrenDimensions);
@@ -96,10 +102,9 @@ namespace Assets.Scripts.Game.Units.Groups
                 Formation = new MarchingFormation()
             };
 
-            for (int i = 0; i < 2; i++)
-                legion.AddUnit(Cohort.CreateCavalryUnit(faction));
+            legion.AddUnit(Cohort.CreateCavalryUnit(faction));
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 3; i++)
                 legion.AddUnit(Cohort.CreateUniformMixedUnit(faction));
 
             legion.IsCavalry = false;
@@ -107,7 +112,6 @@ namespace Assets.Scripts.Game.Units.Groups
             return legion;
         }
 
-        
 
         public override void Draw()
         {
