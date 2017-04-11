@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Map;
 using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.UI;
 using Assets.Scripts.Util;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units
@@ -78,6 +80,17 @@ namespace Assets.Scripts.Game.Units
             var obj = new GameObject("ArmyHealth");
             obj.transform.SetParent(GameObject.Find("uiCanvas").transform);
             HealthBar = obj.AddComponent<HealthBar>();
+
+            InvokeRepeating("Battle", 0, TimeBetweenEnemySearches);
+        }
+
+        private const float TimeBetweenEnemySearches = 10;
+
+        [UsedImplicitly]
+        private void Battle()
+        {
+            Goal = NearestEnemy().Position;
+            Debug.Log("Tick " + Goal);
         }
 
         public void AttachCamera(Camera camera)
@@ -92,11 +105,6 @@ namespace Assets.Scripts.Game.Units
             previousPosition = Position;
             movementDrawOffset = new Vector3(0, 0, 0);
             AttachedUnit.SetPositionInstant(loc);
-        }
-
-        public void Battle()
-        {
-            Goal = NearestEnemy().Position;
         }
 
         private UnitController NearestEnemy()
@@ -138,6 +146,10 @@ namespace Assets.Scripts.Game.Units
                     {
                         Debug.Log("Attack!");
                     }
+                    else
+                    {
+                        Debug.Log("out of range");
+                    }
                 }
             }
 
@@ -157,9 +169,11 @@ namespace Assets.Scripts.Game.Units
                 foreach (CubicalCoordinate c in currentPathInfo.Path)
                     MapRenderer.MarkTileSelectedForNextFrame(c);
 
-            SetWorldPosition(CreateWorldPos());
 
-            Position = MapRenderer.WorldToCubicalCoordinate(CreateWorldPos());
+            Vector3 worldPos = CreateWorldPos();
+            SetWorldPosition(worldPos);
+
+            Position = MapRenderer.WorldToCubicalCoordinate(worldPos);
 
             if (MapRenderer.HexBoard[Goal] == (byte) TileType.WaterDeep || Position == Goal)
                 return;
