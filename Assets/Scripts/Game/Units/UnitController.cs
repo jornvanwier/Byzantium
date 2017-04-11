@@ -54,7 +54,7 @@ namespace Assets.Scripts.Game.Units
 
         public void CreateBuilding(Vector3 position)
         {
-            SpawnObject = new GameObject("SpawnHouse");
+            SpawnObject = new GameObject("SpawnHouse " + AttachedUnit.Commander.Faction.Name);
 
             var meshFilter = SpawnObject.AddComponent<MeshFilter>();
             var meshRenderer = SpawnObject.AddComponent<MeshRenderer>();
