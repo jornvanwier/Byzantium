@@ -12,8 +12,6 @@ namespace Assets.Scripts.Game
     public class WorldManager : MonoBehaviour
     {
         public static Material UnitMaterial;
-
-        private readonly List<UnitController> allArmies = new List<UnitController>();
         private bool applicationHasFocus;
 
         private new Camera camera;
@@ -52,8 +50,7 @@ namespace Assets.Scripts.Game
 
         private Canvas uiCanvas;
 
-        private UnitBase unit;
-        private UnitController unitController;
+        private List<UnitController> Armies { get; } = new List<UnitController>();
 
 
         private float CameraHeight => cameraObject?.transform.position.y ?? CameraStartPosition.y;
@@ -90,14 +87,13 @@ namespace Assets.Scripts.Game
             uiCanvas = GameObject.Find("uiCanvas").GetComponent<Canvas>();
 
             MeshDrawableUnit.UnitMeshes = PrefabMeshes;
-            if (!FactionManager.IsInitialized)
-            {
-                FactionManager.Init(2);
-            }
 
+            if (!FactionManager.IsInitialized)
+                FactionManager.Init(2);
             Faction faction = FactionManager.Factions[0];
 
-            unit = Legion.CreateStandardLegion(faction);
+            unit = Cohort.CreateUniformMixedUnit(faction);
+            unit.Position = new Vector3(5, 0, 5);
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";
@@ -111,12 +107,6 @@ namespace Assets.Scripts.Game
 
             MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
 
-            var obj = new GameObject("Army");
-            unitController = obj.AddComponent<UnitController>();
-            unitController.AttachedUnit = unit;
-            unitController.MapRenderer = MapRendererScript;
-
-            unitController.AttachCamera(camera);
 
             allArmies.Add(unitController);
 
@@ -128,7 +118,7 @@ namespace Assets.Scripts.Game
             var miniMap = uiCanvas.GetComponent<MiniMap>();
             miniMap.AttachCamera(camera);
             miniMap.AttachMapObject(MapRendererObject);
-            miniMap.AttachArmies(allArmies);
+            miniMap.AttachArmies(Armies);
 
             miniMap.UpdateOverlayTexture();
 
@@ -138,16 +128,32 @@ namespace Assets.Scripts.Game
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
 
-            unitController.AttachMapRenderer(MapRendererScript);
-            unitController.SpawnMesh = SpawnMesh;
-            unitController.SpawnMeshMaterial = SpawnMeshMaterial;
+            SpawnArmy(Cohort.CreateUniformMixedUnit(FactionManager.Factions[0]));
+            SpawnArmy(Cohort.CreateUniformMixedUnit(FactionManager.Factions[1]));
         }
-
 
         public void AttachInfoPanel(InfoPanel panel)
         {
             infoPanel = panel;
             infoPanel.Hide();
+        }
+
+        private void SpawnArmy(UnitBase unit)
+        {
+            var obj = new GameObject("Army " + unit.Commander.Faction.Name);
+            var unitController = obj.AddComponent<UnitController>();
+            unitController.AttachCamera(camera);
+            unitController.MapRenderer = MapRendererScript;
+            unitController.AttachMapRenderer(MapRendererScript);
+            unitController.SpawnMesh = SpawnMesh;
+            unitController.SpawnMeshMaterial = SpawnMeshMaterial;
+            unitController.AttachUnit(unit);
+
+            Armies.Add(unitController);
+            foreach (UnitController army in Armies)
+            {
+                army.AttachArmies(Armies);
+            }
         }
 
         // Update is called once per frame
@@ -160,7 +166,6 @@ namespace Assets.Scripts.Game
                 if (Input.GetKeyDown(KeyCode.Mouse1))
                 {
                     var plane = new Plane(Vector3.up, Vector3.zero);
-                    var camera = cameraObject.GetComponent<Camera>();
                     Ray ray = camera.ScreenPointToRay(Input.mousePosition);
                     if (plane.Raycast(ray, out float rayDistance))
                     {
@@ -299,7 +304,7 @@ namespace Assets.Scripts.Game
 
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    foreach (UnitController army in allArmies)
+                    foreach (UnitController army in Armies)
                         if (army.SpawnObject.transform == hit.transform)
                             spawnPanel.Show(army);
                 }
@@ -310,7 +315,7 @@ namespace Assets.Scripts.Game
                     Vector3 intersectPoint = ray.GetPoint(rayDistance);
                     var intersect = new Vector2(intersectPoint.x, intersectPoint.z);
 
-                    foreach (UnitController controller in allArmies)
+                    foreach (UnitController controller in Armies)
                         if (controller.AttachedUnit.Hitbox.Contains(intersect))
                         {
                             SelectedArmy = controller;
@@ -336,7 +341,7 @@ namespace Assets.Scripts.Game
 
         private void DeselectAll()
         {
-            foreach (UnitController controller in allArmies)
+            foreach (UnitController controller in Armies)
                 Deselect(controller);
         }
 
