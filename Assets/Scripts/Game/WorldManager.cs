@@ -17,14 +17,12 @@ namespace Assets.Scripts.Game
         private new Camera camera;
         private GameObject cameraObject;
         public float CameraRotateSpeed = 50;
-        public Vector3 CameraStartPosition;
 
         public float CameraZoomLowerLimit = 1;
 
         public float CameraZoomUpperLimit = 1000;
 
         private InfoPanel infoPanel;
-        public float InitialCameraAngle = 35;
         public float InitialCameraMoveSpeed = 2;
         public float InitialZoomSpeed = 2;
 
@@ -53,7 +51,7 @@ namespace Assets.Scripts.Game
         private List<UnitController> Armies { get; } = new List<UnitController>();
 
 
-        private float CameraHeight => cameraObject?.transform.position.y ?? CameraStartPosition.y;
+        private float CameraHeight => cameraObject?.transform.position.y ?? 10;
         private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
         private float ZoomSpeed => InitialZoomSpeed * CameraHeight;
 
@@ -99,16 +97,12 @@ namespace Assets.Scripts.Game
             MapRendererObject.name = "Map";
             cameraObject = new GameObject("MainCamera");
             cameraObject.AddComponent<Camera>();
-            cameraObject.transform.position = new Vector3(CameraStartPosition.x, CameraStartPosition.y,
-                CameraStartPosition.z);
+            cameraObject.transform.position = Vector3.zero;
             camera = cameraObject.GetComponent<Camera>();
             camera.farClipPlane = CameraZoomUpperLimit + 100;
             camera.nearClipPlane = 0.01f;
 
             MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
-
-            Vector3 objectRight = cameraObject.transform.worldToLocalMatrix * cameraObject.transform.right;
-            Rotate(objectRight, Space.Self, InitialCameraAngle);
 
             var miniMap = uiCanvas.GetComponent<MiniMap>();
             miniMap.AttachCamera(camera);
@@ -158,7 +152,7 @@ namespace Assets.Scripts.Game
             SelectedArmy = Armies[0];
 
             if (selectedArmy != null)
-                if (Input.GetKeyDown(KeyCode.Mouse1))
+                if (Input.GetKeyDown(KeyCode.Mouse1) && !Input.GetKey(KeyCode.LeftAlt))
                 {
                     var plane = new Plane(Vector3.up, Vector3.zero);
                     Ray ray = camera.ScreenPointToRay(Input.mousePosition);

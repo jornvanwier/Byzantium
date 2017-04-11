@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Map;
 using Assets.Scripts.Map.Pathfinding;
@@ -49,7 +50,7 @@ namespace Assets.Scripts.Game.Units
 
         public void AttachArmies(List<UnitController> armies)
         {
-            enemies = armies.Where(controller => controller == this).ToList();
+            enemies = armies.Where(controller => controller != this).ToList();
         }
 
         public void CreateBuilding(Vector3 position)
@@ -93,6 +94,25 @@ namespace Assets.Scripts.Game.Units
             AttachedUnit.SetPositionInstant(loc);
         }
 
+        public void Battle()
+        {
+            Goal = NearestEnemy().Position;
+        }
+
+        private UnitController NearestEnemy()
+        {
+            if (enemies.Count == 0) return null;
+            UnitController nearest = enemies[0];
+            float nearestDistance = float.PositiveInfinity;
+            foreach (UnitController enemy in enemies)
+            {
+                float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
+                if (!(distance < nearestDistance)) continue;
+                nearestDistance = distance;
+                nearest = enemy;
+            }
+            return nearest;
+        }
 
         private void UpdateHealthBar()
         {
@@ -126,6 +146,8 @@ namespace Assets.Scripts.Game.Units
                 spawnPosition = GetSpawnPosition();
                 CreateBuilding(spawnPosition);
                 Teleport(spawnPosition);
+                camera.transform.position = spawnPosition + new Vector3(5, 10, 0);
+                camera.transform.LookAt(spawnPosition);
             }
 
             UpdateHealthBar();
