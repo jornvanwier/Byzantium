@@ -14,7 +14,7 @@ namespace Assets.Scripts.Game.Units.Formation
         public abstract void Order(Century unit, bool instant = false);
 
         protected static void ProcessLocalOffsets<T, TChild>(IList<Vector3> offsetPositions, T unit, bool instant)
-            where T : UnitBase, IMultipleUnits<TChild> where TChild : UnitBase
+            where T : UnitGroup<TChild> where TChild : UnitBase
         {
             float maxDist = 0.0f;
             int i = 0;
