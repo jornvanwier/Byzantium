@@ -57,7 +57,7 @@ namespace Assets.Scripts.Game.Units.Groups
             return century;
         }
 
-        public override void Draw()
+        protected override void Order(bool instant = false)
         {
             Formation.Order(this, instant);
         }
