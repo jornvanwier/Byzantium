@@ -7,6 +7,7 @@ namespace Assets.Scripts.Map
     {
         public int X { get; }
         public int Z { get; }
+
         public int Y
         {
             get { return -X - Z; }
