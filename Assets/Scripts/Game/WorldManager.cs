@@ -147,8 +147,6 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Update()
         {
-            SelectedArmy = Armies[0];
-
             if (selectedArmy != null)
                 if (Input.GetKeyDown(KeyCode.Mouse1) && !Input.GetKey(KeyCode.LeftAlt))
                 {
