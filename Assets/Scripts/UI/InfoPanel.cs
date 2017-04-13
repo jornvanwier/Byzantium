@@ -25,7 +25,7 @@ namespace Assets.Scripts.UI
 
         public float PosX
         {
-            get { return posX; }
+            get => posX;
             set
             {
                 posX = value;
@@ -35,7 +35,7 @@ namespace Assets.Scripts.UI
 
         public float PosY
         {
-            get { return posY; }
+            get => posY;
             set
             {
                 posY = value;
@@ -45,7 +45,7 @@ namespace Assets.Scripts.UI
 
         public float SizeX
         {
-            get { return sizeX; }
+            get => sizeX;
             set
             {
                 sizeX = value;
@@ -55,7 +55,7 @@ namespace Assets.Scripts.UI
 
         public float SizeY
         {
-            get { return sizeY; }
+            get => sizeY;
             set
             {
                 sizeY = value;
@@ -65,14 +65,14 @@ namespace Assets.Scripts.UI
 
         public string Title
         {
-            get { return titleText.text; }
-            set { titleText.text = value; }
+            get => titleText.text;
+            set => titleText.text = value;
         }
 
         public string Commander
         {
-            get { return commanderText.text; }
-            set { commanderText.text = value; }
+            get => commanderText.text;
+            set => commanderText.text = value;
         }
 
         private void UpdatePositionAndSize()

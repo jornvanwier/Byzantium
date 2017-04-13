@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Util;
 using UnityEngine;
@@ -21,7 +19,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override Quaternion Rotation
         {
-            get { return base.Rotation; }
+            get => base.Rotation;
             set
             {
                 base.Rotation = value;
@@ -131,7 +129,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Cohort CreateCustomUnit(Faction faction, SoldierType type)
         {
-            var cohort = new Cohort(faction) { Formation = new SquareFormation() };
+            var cohort = new Cohort(faction) {Formation = new SquareFormation()};
 
             for (int i = 0; i < 4; i++)
             {

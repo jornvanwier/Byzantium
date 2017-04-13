@@ -186,9 +186,7 @@ namespace Assets.Scripts.Game.Units
 
 
             if (currentPathInfo != null)
-            {
                 AdvanceOnPath();
-            }
 
             // If the path is valid there is no need to calculate a new one
             if (IsPathValid()) return;

@@ -57,7 +57,7 @@ namespace Assets.Scripts.Game
 
         public UnitController SelectedArmy
         {
-            get { return selectedArmy; }
+            get => selectedArmy;
             set
             {
                 DeselectAll();

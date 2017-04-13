@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Assets.Scripts.Game.Units.Formation.LegionFormation;
 using Assets.Scripts.Util;
 using UnityEngine;
@@ -20,7 +19,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override Quaternion Rotation
         {
-            get { return base.Rotation; }
+            get => base.Rotation;
             set
             {
                 base.Rotation = value;
@@ -123,7 +122,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Legion CreateCustomUnit(Faction faction, SoldierType type)
         {
-            var legion = new Legion(faction) { Formation = new MarchingFormation() };
+            var legion = new Legion(faction) {Formation = new MarchingFormation()};
 
             for (int i = 0; i < 4; i++)
             {

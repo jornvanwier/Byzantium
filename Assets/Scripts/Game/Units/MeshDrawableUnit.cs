@@ -62,14 +62,14 @@ namespace Assets.Scripts.Game.Units
         public Mesh Mesh { get; set; }
         public Material Material { get; set; }
         public Transform Transform { get; set; }
-        public UnitConfig Config { get; private set; }
+        public UnitConfig Config { get; }
 
         public override int Health { get; set; } = StartHealth;
 
         public override Int2 ChildrenDimensions
         {
-            get { return dimensions; }
-            set { throw new MemberAccessException("Cannot set dimensions of this object."); }
+            get => dimensions;
+            set => throw new MemberAccessException("Cannot set dimensions of this object.");
         }
 
         public override Vector2 DrawSize => IsCavalry ? manSize : manSize;

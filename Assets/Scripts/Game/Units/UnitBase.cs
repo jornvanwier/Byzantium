@@ -50,7 +50,7 @@ namespace Assets.Scripts.Game.Units
 
         public Commander Commander
         {
-            get { return commander; }
+            get => commander;
             set
             {
                 if (this is MeshDrawableUnit)

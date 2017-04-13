@@ -43,7 +43,7 @@ namespace Assets.Scripts.Game.Units.Formation
             OrderAny<T, TChild>(rowWidth, height, unit, instant);
         }
 
-        public static void OrderAny<T, TChild>(T unit, bool instant = false) 
+        public static void OrderAny<T, TChild>(T unit, bool instant = false)
             where T : UnitGroup<TChild> where TChild : UnitBase
         {
             int rowWidth = (int) Mathf.Sqrt(unit.UnitCount);

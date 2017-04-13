@@ -45,6 +45,11 @@ namespace Assets.Scripts.Map
         private List<TextureSet> textureSets;
         public HexBoard HexBoard { get; private set; }
 
+        public void Dispose()
+        {
+            computeBuffer?.Dispose();
+        }
+
         [UsedImplicitly]
         private void Start()
         {
@@ -240,11 +245,6 @@ namespace Assets.Scripts.Map
         public void MarkTileSelectedForNextFrame(OddRCoordinate oc)
         {
             selectedSet.Add(new Int2(oc.Q, oc.R));
-        }
-
-        public void Dispose()
-        {
-            computeBuffer?.Dispose();
         }
     }
 }

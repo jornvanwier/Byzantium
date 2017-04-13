@@ -26,10 +26,11 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
             }
 
             IList<Vector3> offsetPositions = localPositions.Select(l =>
-            {
-                l.z -= totalSize / 2;
-                return l;
-            }).ToList();
+                {
+                    l.z -= totalSize / 2;
+                    return l;
+                })
+                .ToList();
 
             ProcessLocalOffsets<Legion, Cohort>(offsetPositions, unit, instant);
 

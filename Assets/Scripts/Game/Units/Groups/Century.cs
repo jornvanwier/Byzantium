@@ -1,10 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Assets.Scripts.Game.Units.Formation;
-using Assets.Scripts.Util;
-using UnityEngine;
-using static Assets.Scripts.Game.Units.MeshDrawableUnit;
+﻿using Assets.Scripts.Game.Units.Formation;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
@@ -51,7 +45,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Century CreateCustomUnit(Faction faction, SoldierType type)
         {
-            var century = new Century(faction) { Formation = new SetColumnFormation(2) };
+            var century = new Century(faction) {Formation = new SetColumnFormation(2)};
 
             for (int i = 0; i < 4; i++)
             {
@@ -59,7 +53,7 @@ namespace Assets.Scripts.Game.Units.Groups
                 century.AddUnit(contubernium);
                 century.IsCavalry = contubernium.IsCavalry;
             }
-            
+
             return century;
         }
 
