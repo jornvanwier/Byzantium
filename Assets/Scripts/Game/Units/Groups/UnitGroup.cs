@@ -50,9 +50,15 @@ namespace Assets.Scripts.Game.Units.Groups
         protected abstract void Order(bool instant = false);
 
 
-        public override int UnitCount => storage.Count;
+        public override int UnitCount
+        {
+            get { return storage.Count; }
+        }
 
-        public override Vector2 DrawSize => Vector2.Scale(storage[0].DrawSize, ChildrenDimensions);
+        public override Vector2 DrawSize
+        {
+            get { return Vector2.Scale(storage[0].DrawSize, ChildrenDimensions); }
+        }
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
@@ -64,7 +70,10 @@ namespace Assets.Scripts.Game.Units.Groups
             }
         }
 
-        public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
+        public override IEnumerable<MeshDrawableUnit> AllUnits
+        {
+            get { return DrawableUnitsEnumerator.Iterate(); }
+        }
 
         public void AddUnit(T unit)
         {

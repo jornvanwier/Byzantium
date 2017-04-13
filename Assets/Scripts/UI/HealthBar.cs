@@ -39,7 +39,7 @@ namespace Assets.Scripts.UI
 
         public int Size
         {
-            get => size;
+            get { return size; }
             set
             {
                 size = value;
@@ -52,7 +52,7 @@ namespace Assets.Scripts.UI
 
         public float PosX
         {
-            get => posX;
+            get { return posX; }
             set
             {
                 posX = value;
@@ -62,7 +62,7 @@ namespace Assets.Scripts.UI
 
         public float PosY
         {
-            get => posY;
+            get { return posY; }
             set
             {
                 posY = value;

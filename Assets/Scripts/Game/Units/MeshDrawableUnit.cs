@@ -68,24 +68,39 @@ namespace Assets.Scripts.Game.Units
 
         public override Int2 ChildrenDimensions
         {
-            get => dimensions;
-            set => throw new MemberAccessException("Cannot set dimensions of this object.");
+            get { return dimensions; }
+            set { throw new MemberAccessException("Cannot set dimensions of this object."); }
         }
 
-        public override Vector2 DrawSize => IsCavalry ? manSize : manSize;
+        public override Vector2 DrawSize
+        {
+            get { return IsCavalry ? manSize : manSize; }
+        }
 
-        public override float DefaultSpeed => 1.5f;
+        public override float DefaultSpeed
+        {
+            get { return 1.5f; }
+        }
 
-        public override int UnitCount => 1;
+        public override int UnitCount
+        {
+            get { return 1; }
+        }
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
             get { yield return this; }
         }
 
-        public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
+        public override IEnumerable<MeshDrawableUnit> AllUnits
+        {
+            get { return DrawableUnitsEnumerator.Iterate(); }
+        }
 
-        public override string UnitName => "Single Unit";
+        public override string UnitName
+        {
+            get { return "Single Unit"; }
+        }
 
         public override void SetPositionInstant(Vector3 pos)
         {

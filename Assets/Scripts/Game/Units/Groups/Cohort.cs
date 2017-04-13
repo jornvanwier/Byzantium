@@ -13,13 +13,19 @@ namespace Assets.Scripts.Game.Units.Groups
         {
         }
 
-        public override string UnitName => "Cohort";
+        public override string UnitName
+        {
+            get { return "Cohort"; }
+        }
 
-        public override float DefaultSpeed => 1.5f;
+        public override float DefaultSpeed
+        {
+            get { return 1.5f; }
+        }
 
         public override Quaternion Rotation
         {
-            get => base.Rotation;
+            get { return base.Rotation; }
             set
             {
                 base.Rotation = value;
@@ -37,9 +43,15 @@ namespace Assets.Scripts.Game.Units.Groups
             }
         }
 
-        public override int UnitCount => centuries.Count;
+        public override int UnitCount
+        {
+            get { return centuries.Count; }
+        }
 
-        public override Vector2 DrawSize => Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions);
+        public override Vector2 DrawSize
+        {
+            get { return Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions); }
+        }
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
@@ -52,7 +64,10 @@ namespace Assets.Scripts.Game.Units.Groups
         }
 
 
-        public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
+        public override IEnumerable<MeshDrawableUnit> AllUnits
+        {
+            get { return DrawableUnitsEnumerator.Iterate(); }
+        }
 
 
         public override int Health

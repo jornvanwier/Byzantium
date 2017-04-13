@@ -51,13 +51,24 @@ namespace Assets.Scripts.Game
         private List<UnitController> Armies { get; } = new List<UnitController>();
 
 
-        private float CameraHeight => cameraObject?.transform.position.y ?? 10;
-        private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
-        private float ZoomSpeed => InitialZoomSpeed * CameraHeight;
+        private float CameraHeight
+        {
+            get { return cameraObject?.transform.position.y ?? 10; }
+        }
+
+        private float CameraMoveSpeed
+        {
+            get { return InitialCameraMoveSpeed * CameraHeight; }
+        }
+
+        private float ZoomSpeed
+        {
+            get { return InitialZoomSpeed * CameraHeight; }
+        }
 
         public UnitController SelectedArmy
         {
-            get => selectedArmy;
+            get { return selectedArmy; }
             set
             {
                 DeselectAll();
