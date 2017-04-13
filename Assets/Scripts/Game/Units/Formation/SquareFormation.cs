@@ -28,8 +28,7 @@ namespace Assets.Scripts.Game.Units.Formation
         }
 
         public static void OrderAnySetRow<T, TChild>(int width, T unit, bool instant = false)
-            where T : UnitBase, IMultipleUnits<TChild>
-            where TChild : UnitBase
+            where T : UnitGroup<TChild> where TChild : UnitBase
         {
             int columnHeight = unit.UnitCount / width;
 
@@ -37,16 +36,15 @@ namespace Assets.Scripts.Game.Units.Formation
         }
 
         public static void OrderAnySetColumn<T, TChild>(int height, T unit, bool instant = false)
-            where T : UnitBase, IMultipleUnits<TChild>
-            where TChild : UnitBase
+            where T : UnitGroup<TChild> where TChild : UnitBase
         {
             int rowWidth = unit.UnitCount / height;
 
             OrderAny<T, TChild>(rowWidth, height, unit, instant);
         }
 
-        public static void OrderAny<T, TChild>(T unit, bool instant = false) where T : UnitBase, IMultipleUnits<TChild>
-            where TChild : UnitBase
+        public static void OrderAny<T, TChild>(T unit, bool instant = false) 
+            where T : UnitGroup<TChild> where TChild : UnitBase
         {
             int rowWidth = (int) Mathf.Sqrt(unit.UnitCount);
             int columnHeight = unit.UnitCount / rowWidth;
@@ -55,8 +53,7 @@ namespace Assets.Scripts.Game.Units.Formation
         }
 
         private static void OrderAny<T, TChild>(int rowWidth, int columnHeight, T unit, bool instant = false)
-            where T : UnitBase, IMultipleUnits<TChild>
-            where TChild : UnitBase
+            where T : UnitGroup<TChild> where TChild : UnitBase
         {
             var localPositions = new List<Vector3>();
 

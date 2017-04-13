@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Map
 {
-    public class MapRenderer : MonoBehaviour
+    public class MapRenderer : MonoBehaviour, IDisposable
     {
         private const int TextureSize = 1024;
 
@@ -240,6 +240,11 @@ namespace Assets.Scripts.Map
         public void MarkTileSelectedForNextFrame(OddRCoordinate oc)
         {
             selectedSet.Add(new Int2(oc.Q, oc.R));
+        }
+
+        public void Dispose()
+        {
+            computeBuffer?.Dispose();
         }
     }
 }

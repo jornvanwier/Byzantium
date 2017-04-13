@@ -9,14 +9,10 @@ using static Assets.Scripts.Game.Units.MeshDrawableUnit;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
-    public class Cohort : UnitBase, IMultipleUnits<Century>
+    public class Cohort : UnitGroup<Century>
     {
-        private readonly List<Century> centuries = new List<Century>();
-        private DrawingSet set;
-
-        private Cohort(Faction faction)
+        public Cohort(Faction faction) : base(faction)
         {
-            Commander = new Commander(this, faction);
         }
 
         public override string UnitName => "Cohort";
@@ -79,7 +75,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public void AddUnit(Contubernium unit)
         {
-            centuries.Where(c => c.IsCavalry == unit.IsCavalry).ToList().PickRandom().AddUnit(unit);
+            centuries.Where(c => c.IsCavalry == unit.IsCavalry).ToList().random().AddUnit(unit);
         }
 
         public void RemoveUnit(Century unit)
@@ -129,7 +125,7 @@ namespace Assets.Scripts.Game.Units.Groups
                 cohort.AddUnit(Century.CreateSwordCavalryUnit(faction));
 
             cohort.IsCavalry = true;
-            cohort.set = Prefetch(cohort);
+            cohort.Set = Prefetch(cohort);
             return cohort;
         }
 
@@ -149,8 +145,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override void Draw()
         {
-            if (set != null)
-                DrawAll(set);
+            Formation.Order(this, instant);
         }
     }
 }

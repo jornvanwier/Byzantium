@@ -8,27 +8,13 @@ using static Assets.Scripts.Game.Units.MeshDrawableUnit;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
-    public class Legion : UnitBase, IMultipleUnits<Cohort>
+    public class Legion : UnitGroup<Cohort>
     {
-        private readonly List<Cohort> cohorts = new List<Cohort>();
-        private DrawingSet set;
-
-        private Legion(Faction faction)
+        public Legion(Faction faction) : base(faction)
         {
-            Commander = new Commander(this, faction);
         }
 
         public override string UnitName => "Legion";
-
-        public override int Health
-        {
-            get { return cohorts[0].Health; }
-            set
-            {
-                foreach (Cohort cohort in cohorts)
-                    cohort.Health = value;
-            }
-        }
 
         public override float DefaultSpeed => 1.5f;
 
@@ -38,7 +24,7 @@ namespace Assets.Scripts.Game.Units.Groups
             set
             {
                 base.Rotation = value;
-                foreach (Cohort child in this)
+                foreach (UnitBase child in this)
                     child.Rotation = value;
             }
         }
@@ -76,12 +62,12 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public void AddUnit(Contubernium unit)
         {
-            cohorts.Where(c => c.IsCavalry == unit.IsCavalry).ToList().PickRandom().AddUnit(unit);
+            cohorts.Where(c => c.IsCavalry == unit.IsCavalry).ToList().random().AddUnit(unit);
         }
 
         public void AddUnit(Century unit)
         {
-            cohorts.Where(c => c.IsCavalry == unit.IsCavalry).ToList().PickRandom().AddUnit(unit);
+            cohorts.Where(c => c.IsCavalry == unit.IsCavalry).ToList().random().AddUnit(unit);
         }
 
         public void RemoveUnit(Contubernium unit)
@@ -152,8 +138,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override void Draw()
         {
-            if (set != null)
-                DrawAll(set);
+            Formation.Order(this, instant);
         }
     }
 }
