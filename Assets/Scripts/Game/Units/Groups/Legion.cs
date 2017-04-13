@@ -13,46 +13,9 @@ namespace Assets.Scripts.Game.Units.Groups
         {
         }
 
-        public override string UnitName
-        {
-            get { return "Legion"; }
-        }
+        public override string UnitName => "Legion";
 
-        public override float DefaultSpeed
-        {
-            get { return 1.5f; }
-        }
-
-        public override Quaternion Rotation
-        {
-            get { return base.Rotation; }
-            set
-            {
-                base.Rotation = value;
-                foreach (UnitBase child in this)
-                    child.Rotation = value;
-            }
-        }
-
-        public override Vector3 Position
-        {
-            set
-            {
-                base.Position = value;
-                Formation.Order(this);
-            }
-        }
-
-        public override IEnumerable<MeshDrawableUnit> AllUnits
-        {
-            get { return DrawableUnitsEnumerator.Iterate(); }
-        }
-        
-        public override void SetPositionInstant(Vector3 pos)
-        {
-            base.Position = pos;
-            Formation.Order(this, true);
-        }
+        public override float DefaultSpeed => 1.5f;
 
         public static Legion CreateStandardLegion(Faction faction)
         {

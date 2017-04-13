@@ -9,15 +9,9 @@ namespace Assets.Scripts.Game.Units.Groups
         {
         }
 
-        public override string UnitName
-        {
-            get { return "Contubernium"; }
-        }
+        public override string UnitName => "Contubernium";
 
-        public override float DefaultSpeed
-        {
-            get { return 1.5f; }
-        }
+        public override float DefaultSpeed => 1.5f;
 
         public static Contubernium CreateSpearCavalryUnit(Faction faction)
         {
