@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Remoting;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Util;
 using UnityEngine;
@@ -75,11 +77,21 @@ namespace Assets.Scripts.Game.Units.Groups
             set = Prefetch(this);
         }
 
+        public void AddUnit(Contubernium unit)
+        {
+            centuries.Where(c => c.IsCavalry == unit.IsCavalry).ToList().random().AddUnit(unit);
+        }
+
         public void RemoveUnit(Century unit)
         {
-            int index = centuries.IndexOf(unit);
-            centuries.RemoveAt(index);
+            centuries.Remove(unit);
             set = Prefetch(this);
+        }
+
+        public void RemoveUnit(Contubernium unit)
+        {
+            foreach (Century century in centuries)
+                century.RemoveUnit(unit);
         }
 
         IEnumerator<Century> IEnumerable<Century>.GetEnumerator()

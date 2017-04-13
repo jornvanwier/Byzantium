@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Game.Units.Formation.LegionFormation;
 using Assets.Scripts.Util;
 using UnityEngine;
@@ -71,6 +72,28 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             cohorts.Add(unit);
             set = Prefetch(this);
+        }
+
+        public void AddUnit(Contubernium unit)
+        {
+            cohorts.Where(c => c.IsCavalry == unit.IsCavalry).ToList().random().AddUnit(unit);
+        }
+
+        public void AddUnit(Century unit)
+        {
+            cohorts.Where(c => c.IsCavalry == unit.IsCavalry).ToList().random().AddUnit(unit);
+        }
+
+        public void RemoveUnit(Contubernium unit)
+        {
+            foreach (Cohort cohort in cohorts)
+                cohort.RemoveUnit(unit);
+        }
+
+        public void RemoveUnit(Century unit)
+        {
+            foreach (Cohort cohort in cohorts)
+                cohort.RemoveUnit(unit);
         }
 
         public void RemoveUnit(Cohort unit)
