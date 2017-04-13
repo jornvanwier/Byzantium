@@ -43,75 +43,11 @@ namespace Assets.Scripts.Game.Units.Groups
             }
         }
 
-        public override int UnitCount
-        {
-            get { return cohorts.Count; }
-        }
-
-        public override Vector2 DrawSize
-        {
-            get { return Vector2.Scale(cohorts[0].DrawSize, ChildrenDimensions); }
-        }
-
-        public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
-        {
-            get
-            {
-                foreach (Cohort cohort in cohorts)
-                foreach (MeshDrawableUnit drawableUnit in cohort.AllUnits)
-                    yield return drawableUnit;
-            }
-        }
-
         public override IEnumerable<MeshDrawableUnit> AllUnits
         {
             get { return DrawableUnitsEnumerator.Iterate(); }
         }
-
-        public void AddUnit(Cohort unit)
-        {
-            cohorts.Add(unit);
-            set = Prefetch(this);
-        }
-
-        public void AddUnit(Contubernium unit)
-        {
-            cohorts.Where(c => c.IsCavalry == unit.IsCavalry).ToList().random().AddUnit(unit);
-        }
-
-        public void AddUnit(Century unit)
-        {
-            cohorts.Where(c => c.IsCavalry == unit.IsCavalry).ToList().random().AddUnit(unit);
-        }
-
-        public void RemoveUnit(Contubernium unit)
-        {
-            foreach (Cohort cohort in cohorts)
-                cohort.RemoveUnit(unit);
-        }
-
-        public void RemoveUnit(Century unit)
-        {
-            foreach (Cohort cohort in cohorts)
-                cohort.RemoveUnit(unit);
-        }
-
-        public void RemoveUnit(Cohort unit)
-        {
-            cohorts.Remove(unit);
-            set = Prefetch(this);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        public IEnumerator<Cohort> GetEnumerator()
-        {
-            return cohorts.GetEnumerator();
-        }
-
+        
         public override void SetPositionInstant(Vector3 pos)
         {
             base.Position = pos;
@@ -149,8 +85,7 @@ namespace Assets.Scripts.Game.Units.Groups
             return legion;
         }
 
-
-        public override void Draw()
+        protected override void Order(bool instant = false)
         {
             Formation.Order(this, instant);
         }

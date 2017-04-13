@@ -54,11 +54,12 @@ namespace Assets.Scripts.Game.Units.Groups
             var contuberium = new Contubernium(faction) {Formation = new SetColumnFormation(2)};
 
             for (int i = 0; i < 8; ++i)
-                contuberium.AddUnit(new MeshDrawableUnit(
-                    unitType
-                ));
+            {
+                var mdm = new MeshDrawableUnit(unitType);
+                contuberium.AddUnit(mdm);
+                contuberium.IsCavalry = mdm.IsCavalry;
+            }
 
-            contuberium.IsCavalry = contuberium.First().IsCavalry;
             contuberium.Set = Prefetch(contuberium);
             return contuberium;
         }

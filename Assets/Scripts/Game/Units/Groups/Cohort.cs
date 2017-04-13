@@ -43,71 +43,12 @@ namespace Assets.Scripts.Game.Units.Groups
             }
         }
 
-        public override int UnitCount
-        {
-            get { return centuries.Count; }
-        }
-
-        public override Vector2 DrawSize
-        {
-            get { return Vector2.Scale(centuries[0].DrawSize, ChildrenDimensions); }
-        }
-
-        public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
-        {
-            get
-            {
-                foreach (Century century in centuries)
-                foreach (MeshDrawableUnit drawableUnit in century.AllUnits)
-                    yield return drawableUnit;
-            }
-        }
-
 
         public override IEnumerable<MeshDrawableUnit> AllUnits
         {
             get { return DrawableUnitsEnumerator.Iterate(); }
         }
-
-
-        public override int Health
-        {
-            get { return centuries[0].Health; }
-            set
-            {
-                foreach (Century century in centuries)
-                    century.Health = value;
-            }
-        }
-
-        public void AddUnit(Century unit)
-        {
-            centuries.Add(unit);
-            set = Prefetch(this);
-        }
-
-        public void AddUnit(Contubernium unit)
-        {
-            centuries.Where(c => c.IsCavalry == unit.IsCavalry).ToList().random().AddUnit(unit);
-        }
-
-        public void RemoveUnit(Century unit)
-        {
-            centuries.Remove(unit);
-            set = Prefetch(this);
-        }
-
-        public void RemoveUnit(Contubernium unit)
-        {
-            foreach (Century century in centuries)
-                century.RemoveUnit(unit);
-        }
-
-        IEnumerator<Century> IEnumerable<Century>.GetEnumerator()
-        {
-            return centuries.GetEnumerator();
-        }
-
+        
         public IEnumerator GetEnumerator()
         {
             return ((IEnumerable<Century>) this).GetEnumerator();
@@ -156,7 +97,7 @@ namespace Assets.Scripts.Game.Units.Groups
             return cohort;
         }
 
-        public override void Draw()
+        protected override void Order(bool instant = false)
         {
             Formation.Order(this, instant);
         }
