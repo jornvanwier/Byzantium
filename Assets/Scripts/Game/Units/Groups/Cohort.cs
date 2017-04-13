@@ -48,7 +48,7 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             get { return DrawableUnitsEnumerator.Iterate(); }
         }
-        
+
         public IEnumerator GetEnumerator()
         {
             return ((IEnumerable<Century>) this).GetEnumerator();

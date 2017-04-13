@@ -47,8 +47,6 @@ namespace Assets.Scripts.Game.Units.Groups
             }
         }
 
-        protected abstract void Order(bool instant = false);
-
 
         public override int UnitCount
         {
@@ -75,6 +73,18 @@ namespace Assets.Scripts.Game.Units.Groups
             get { return DrawableUnitsEnumerator.Iterate(); }
         }
 
+        public IEnumerator<T> GetEnumerator()
+        {
+            return storage.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        protected abstract void Order(bool instant = false);
+
         public void AddUnit(T unit)
         {
             storage.Add(unit);
@@ -91,16 +101,6 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             base.Position = pos;
             Order(true);
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            return storage.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         public override void Draw()

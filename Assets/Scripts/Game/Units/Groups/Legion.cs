@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Formation.LegionFormation;
 using Assets.Scripts.Util;
 using UnityEngine;
-using static Assets.Scripts.Game.Units.MeshDrawableUnit;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
@@ -47,7 +45,7 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             get { return DrawableUnitsEnumerator.Iterate(); }
         }
-        
+
         public override void SetPositionInstant(Vector3 pos)
         {
             base.Position = pos;
