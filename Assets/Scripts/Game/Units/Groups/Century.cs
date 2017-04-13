@@ -75,8 +75,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public void RemoveUnit(Contubernium unit)
         {
-            int index = contubernia.IndexOf(unit);
-            contubernia.RemoveAt(index);
+            contubernia.Remove(unit);
             set = Prefetch(this);
         }
 
