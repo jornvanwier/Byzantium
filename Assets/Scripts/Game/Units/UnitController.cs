@@ -134,7 +134,14 @@ namespace Assets.Scripts.Game.Units
 
         private void Battle()
         {
+            Debug.Log(Time.realtimeSinceStartup);
             UnitController nearestEnemy = NearestEnemy();
+            if (nearestEnemy == null)
+            {
+                Debug.LogError("Nearest enemy is null");
+                return;
+            }
+
             Goal = nearestEnemy.Position;
             Debug.Log("Tick " + Goal);
         }
@@ -176,32 +183,34 @@ namespace Assets.Scripts.Game.Units
 
             if (MapRenderer.HexBoard[Goal] == (byte) TileType.WaterDeep || Position == Goal)
                 return;
-            if (IsPathValid())
+
+
+            if (currentPathInfo != null)
             {
                 AdvanceOnPath();
             }
+
+            // If the path is valid there is no need to calculate a new one
+            if (IsPathValid()) return;
+
+            if (nextPathId == -1)
+            {
+                RequestNewPath();
+            }
             else
             {
-                if (nextPathId == -1)
+                // Check on the state of the job
+                if (PathfindingJobManager.Instance.GetInfo(nextPathId).State == JobState.Failure)
                 {
+                    // Pathing has failed for some reason, lets try again
                     RequestNewPath();
                 }
-                else
+                else if (PathfindingJobManager.Instance.IsFinished(nextPathId))
                 {
-                    // Check on the state of the job
-                    if (PathfindingJobManager.Instance.GetInfo(nextPathId).State == JobState.Failure)
-                    {
-                        // Pathing has failed for some reason, lets try again
-                        RequestNewPath();
-                    }
-                    else if (PathfindingJobManager.Instance.IsFinished(nextPathId))
-                    {
-                        currentPathInfo = PathfindingJobManager.Instance.GetInfo(nextPathId);
-                        PathfindingJobManager.Instance.ClearJob(nextPathId);
+                    currentPathInfo = PathfindingJobManager.Instance.GetInfo(nextPathId);
+                    PathfindingJobManager.Instance.ClearJob(nextPathId);
 
-                        nextPathId = -1;
-                        AdvanceOnPath();
-                    }
+                    nextPathId = -1;
                 }
             }
         }
@@ -258,6 +267,7 @@ namespace Assets.Scripts.Game.Units
         protected void RequestNewPath()
         {
             nextPathId = PathfindingJobManager.Instance.CreateJob(Position, Goal);
+            Debug.Log($"{Faction.Name} requested new path with id {nextPathId}.");
         }
 
         protected bool IsPathValid()
