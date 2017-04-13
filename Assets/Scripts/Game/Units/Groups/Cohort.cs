@@ -79,7 +79,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public void AddUnit(Contubernium unit)
         {
-            centuries.Where(c => c.IsCavalry == unit.IsCavalry).ToList().random().AddUnit(unit);
+            centuries.Where(c => c.IsCavalry == unit.IsCavalry).ToList().PickRandom().AddUnit(unit);
         }
 
         public void RemoveUnit(Century unit)
@@ -126,10 +126,24 @@ namespace Assets.Scripts.Game.Units.Groups
             var cohort = new Cohort(faction) {Formation = new SquareFormation()};
 
             for (int i = 0; i < 6; i++)
-                cohort.AddUnit(Century.CreateCavalryUnit(faction));
+                cohort.AddUnit(Century.CreateSwordCavalryUnit(faction));
 
             cohort.IsCavalry = true;
             cohort.set = Prefetch(cohort);
+            return cohort;
+        }
+
+        public static Cohort CreateCustomUnit(Faction faction, SoldierType type)
+        {
+            var cohort = new Cohort(faction) { Formation = new SquareFormation() };
+
+            for (int i = 0; i < 4; i++)
+            {
+                Century century = Century.CreateCustomUnit(faction, type);
+                cohort.AddUnit(century);
+                cohort.IsCavalry = century.IsCavalry;
+            }
+
             return cohort;
         }
 

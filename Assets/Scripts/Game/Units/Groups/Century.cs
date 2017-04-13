@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Util;
 using UnityEngine;
@@ -104,7 +105,7 @@ namespace Assets.Scripts.Game.Units.Groups
                 century.AddUnit(Contubernium.CreateSwordUnit(faction));
 
             // Mid with pikes
-            century.AddUnit(Contubernium.CreatePikeUnit(faction));
+            century.AddUnit(Contubernium.CreateSpearUnit(faction));
 
             // Backline with bows
             century.AddUnit(Contubernium.CreateBowUnit(faction));
@@ -114,7 +115,7 @@ namespace Assets.Scripts.Game.Units.Groups
             return century;
         }
 
-        public static Century CreateCavalryUnit(Faction faction)
+        public static Century CreateSwordCavalryUnit(Faction faction)
         {
             var century = new Century(faction) {Formation = new SetColumnFormation(2)};
 
@@ -123,6 +124,20 @@ namespace Assets.Scripts.Game.Units.Groups
 
             century.IsCavalry = true;
 
+            return century;
+        }
+
+        public static Century CreateCustomUnit(Faction faction, SoldierType type)
+        {
+            var century = new Century(faction) { Formation = new SetColumnFormation(2) };
+
+            for (int i = 0; i < 4; i++)
+            {
+                Contubernium contubernium = Contubernium.CreateCustomUnit(faction, type);
+                century.AddUnit(contubernium);
+                century.IsCavalry = contubernium.IsCavalry;
+            }
+            
             return century;
         }
 

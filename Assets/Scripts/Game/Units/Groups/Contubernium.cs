@@ -111,7 +111,7 @@ namespace Assets.Scripts.Game.Units.Groups
             return CreateCustomUnit(faction, SoldierType.Bow);
         }
 
-        public static Contubernium CreatePikeUnit(Faction faction)
+        public static Contubernium CreateSpearUnit(Faction faction)
         {
             return CreateCustomUnit(faction, SoldierType.Spear);
         }

@@ -38,7 +38,7 @@ namespace Assets.Scripts.Game.Units.Groups
             set
             {
                 base.Rotation = value;
-                foreach (UnitBase child in this)
+                foreach (Cohort child in this)
                     child.Rotation = value;
             }
         }
@@ -76,12 +76,12 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public void AddUnit(Contubernium unit)
         {
-            cohorts.Where(c => c.IsCavalry == unit.IsCavalry).ToList().random().AddUnit(unit);
+            cohorts.Where(c => c.IsCavalry == unit.IsCavalry).ToList().PickRandom().AddUnit(unit);
         }
 
         public void AddUnit(Century unit)
         {
-            cohorts.Where(c => c.IsCavalry == unit.IsCavalry).ToList().random().AddUnit(unit);
+            cohorts.Where(c => c.IsCavalry == unit.IsCavalry).ToList().PickRandom().AddUnit(unit);
         }
 
         public void RemoveUnit(Contubernium unit)
@@ -131,6 +131,20 @@ namespace Assets.Scripts.Game.Units.Groups
                 legion.AddUnit(Cohort.CreateUniformMixedUnit(faction));
 
             legion.IsCavalry = false;
+
+            return legion;
+        }
+
+        public static Legion CreateCustomUnit(Faction faction, SoldierType type)
+        {
+            var legion = new Legion(faction) { Formation = new MarchingFormation() };
+
+            for (int i = 0; i < 4; i++)
+            {
+                Cohort cohort = Cohort.CreateCustomUnit(faction, type);
+                legion.AddUnit(cohort);
+                legion.IsCavalry = cohort.IsCavalry;
+            }
 
             return legion;
         }

@@ -1,0 +1,20 @@
+Legion:
+	Standard:
+		Cavalry (cohort)
+		Uniform mixed unit (cohort)
+	Custom unit
+
+Cohort:
+	Uniform mixed unit:
+		Mixed unit (century)
+	Custom unit
+
+Century:
+	Mixed unit:
+		Sword unit (contubernium)
+		Pike unit (contubernium)
+		Bow unit (contubernium)
+	Custom unit
+
+Contubernium:
+	Custom unit

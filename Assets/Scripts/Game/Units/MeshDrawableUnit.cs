@@ -6,17 +6,6 @@ using UnityEngine;
 
 namespace Assets.Scripts.Game.Units
 {
-    public enum SoldierType
-    {
-        Sword,
-        Spear,
-        Bow,
-        HorseSword,
-        HorseSpear,
-        HorseBow
-    }
-
-
     public class MeshDrawableUnit : UnitBase
     {
         private const int StartHealth = 200;
