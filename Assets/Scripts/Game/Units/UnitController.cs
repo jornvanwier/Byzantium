@@ -140,15 +140,15 @@ namespace Assets.Scripts.Game.Units
 
         private void Battle()
         {
-            UnitController nearestEnemy = NearestEnemy();
-            if (nearestEnemy == null)
-            {
-                Debug.LogError("Nearest enemy is null");
-                return;
-            }
+            //UnitController nearestEnemy = NearestEnemy();
+            //if (nearestEnemy == null)
+            //{
+            //    Debug.LogError("Nearest enemy is null");
+            //    return;
+            //}
 
-            SetGoal(nearestEnemy.Position);
-            Debug.Log("Tick " + GetGoal());
+            //SetGoal(nearestEnemy.Position);
+            //Debug.Log("Tick " + GetGoal());
         }
 
         public void Update()
