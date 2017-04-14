@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Map
 {
-    public class MapRenderer : MonoBehaviour
+    public class MapRenderer : MonoBehaviour, IDisposable
     {
         private const int TextureSize = 1024;
 
@@ -44,6 +44,11 @@ namespace Assets.Scripts.Map
 
         private List<TextureSet> textureSets;
         public HexBoard HexBoard { get; private set; }
+
+        public void Dispose()
+        {
+            computeBuffer?.Dispose();
+        }
 
         [UsedImplicitly]
         private void Start()

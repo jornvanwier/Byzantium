@@ -6,31 +6,9 @@ using UnityEngine;
 
 namespace Assets.Scripts.Game.Units
 {
-    public enum SoldierType
-    {
-        Sword,
-        Spear,
-        Bow,
-        HorseSword,
-        HorseSpear,
-        HorseBow
-    }
-
-
     public class MeshDrawableUnit : UnitBase
     {
         private const int StartHealth = 200;
-        public static List<GameObject> UnitMeshes { get; set; } = null;
-
-        public override void SetPositionInstant(Vector3 pos)
-        {
-            Position = pos;
-        }
-
-        public Mesh Mesh { get; set; }
-        public Material Material { get; set; }
-        public Transform Transform { get; set; }
-
         private readonly Int2 dimensions = new Int2(1, 1);
         private readonly Vector2 horseSize = new Vector2(0.22f, 0.2f);
         private readonly Vector2 manSize = new Vector2(0.22f, 0.16f);
@@ -41,28 +19,34 @@ namespace Assets.Scripts.Game.Units
         {
             soldierType = type;
             if (type == SoldierType.HorseBow || type == SoldierType.HorseSpear || type == SoldierType.HorseSword)
-                IsCavalry = false;
+                IsCavalry = true;
 
             GameObject m;
             switch (soldierType)
             {
                 case SoldierType.Sword:
                     m = UnitMeshes[0];
+                    Config = UnitConfig.Sword;
                     break;
                 case SoldierType.Spear:
                     m = UnitMeshes[1];
+                    Config = UnitConfig.Spear;
                     break;
                 case SoldierType.Bow:
                     m = UnitMeshes[2];
+                    Config = UnitConfig.Bow;
                     break;
                 case SoldierType.HorseSword:
                     m = UnitMeshes[3];
+                    Config = UnitConfig.HorseSword;
                     break;
                 case SoldierType.HorseSpear:
                     m = UnitMeshes[4];
+                    Config = UnitConfig.HorseSpear;
                     break;
                 case SoldierType.HorseBow:
                     m = UnitMeshes[5];
+                    Config = UnitConfig.HorseBow;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -73,6 +57,13 @@ namespace Assets.Scripts.Game.Units
             Transform = m.transform;
         }
 
+        public static List<GameObject> UnitMeshes { get; set; } = null;
+
+        public Mesh Mesh { get; set; }
+        public Material Material { get; set; }
+        public Transform Transform { get; set; }
+        public UnitConfig Config { get; }
+
         public override int Health { get; set; } = StartHealth;
 
         public override Int2 ChildrenDimensions
@@ -81,20 +72,40 @@ namespace Assets.Scripts.Game.Units
             set { throw new MemberAccessException("Cannot set dimensions of this object."); }
         }
 
-        public override Vector2 DrawSize => IsCavalry ? manSize : manSize;
+        public override Vector2 DrawSize
+        {
+            get { return IsCavalry ? manSize : manSize; }
+        }
 
-        public override float DefaultSpeed => 1.5f;
+        public override float DefaultSpeed
+        {
+            get { return 1.5f; }
+        }
 
-        public override int UnitCount => 1;
+        public override int UnitCount
+        {
+            get { return 1; }
+        }
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
             get { yield return this; }
         }
 
-        public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
+        public override IEnumerable<MeshDrawableUnit> AllUnits
+        {
+            get { return DrawableUnitsEnumerator.Iterate(); }
+        }
 
-        public override string UnitName => "Single Unit";
+        public override string UnitName
+        {
+            get { return "Single Unit"; }
+        }
+
+        public override void SetPositionInstant(Vector3 pos)
+        {
+            Position = pos;
+        }
 
         public override void Draw()
         {

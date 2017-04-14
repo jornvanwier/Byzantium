@@ -95,14 +95,12 @@ namespace Assets.Scripts.UI
         public void Hide()
         {
             panel.SetActive(false);
-            //image.color = transparent;
         }
 
         public void Show(UnitController army)
         {
             panel.SetActive(true);
             selectedArmy = army;
-            //image.color = Color.white;
         }
     }
 }

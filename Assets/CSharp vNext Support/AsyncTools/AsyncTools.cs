@@ -32,18 +32,27 @@ public static class AsyncTools
     /// <summary>
     /// Returns true if called from the Unity's main thread, and false otherwise.
     /// </summary>
-    public static bool IsMainThread() => Thread.CurrentThread.ManagedThreadId == UnityScheduler.MainThreadId;
+    public static bool IsMainThread()
+    {
+        return Thread.CurrentThread.ManagedThreadId == UnityScheduler.MainThreadId;
+    }
 
     /// <summary>
     /// Switches execution to a background thread.
     /// </summary>
-    public static Awaiter ToThreadPool() => threadPoolAwaiter;
+    public static Awaiter ToThreadPool()
+    {
+        return threadPoolAwaiter;
+    }
 
     /// <summary>
     /// Switches execution to the Update context of the main thread.
     /// </summary>
     [Obsolete("Use ToUpdate(), ToLateUpdate() or ToFixedUpdate() instead.")]
-    public static Awaiter ToMainThread() => ToUpdate();
+    public static Awaiter ToMainThread()
+    {
+        return ToUpdate();
+    }
 
     /// <summary>
 	/// Switches execution to the EditorUpdate context of the main thread.
@@ -142,12 +151,18 @@ public static class AsyncTools
     /// waits until next physics frame.
     /// </summary>
     /// <param name="seconds">If positive, number of seconds to wait</param>
-    public static Awaiter GetAwaiter(this int seconds) => GetAwaiter((float)seconds);
+    public static Awaiter GetAwaiter(this int seconds)
+    {
+        return GetAwaiter((float) seconds);
+    }
 
     /// <summary>
     /// Waits until all the tasks are completed.
     /// </summary>
-    public static TaskAwaiter GetAwaiter(this IEnumerable<Task> tasks) => TaskEx.WhenAll(tasks).GetAwaiter();
+    public static TaskAwaiter GetAwaiter(this IEnumerable<Task> tasks)
+    {
+        return TaskEx.WhenAll(tasks).GetAwaiter();
+    }
 
     /// <summary>
     /// Waits until the process exits.
@@ -167,7 +182,10 @@ public static class AsyncTools
     /// <summary>
     /// Waits for AsyncOperation completion
     /// </summary>
-    public static Awaiter GetAwaiter(this AsyncOperation asyncOp) => new AsyncOperationAwaiter(asyncOp);
+    public static Awaiter GetAwaiter(this AsyncOperation asyncOp)
+    {
+        return new AsyncOperationAwaiter(asyncOp);
+    }
 
     #region Different awaiters
 
@@ -175,7 +193,11 @@ public static class AsyncTools
     {
         public abstract bool IsCompleted { get; }
         public abstract void OnCompleted(Action action);
-        public Awaiter GetAwaiter() => this;
+        public Awaiter GetAwaiter()
+        {
+            return this;
+        }
+
         public void GetResult() { }
     }
 
@@ -190,7 +212,10 @@ public static class AsyncTools
             this.seconds = seconds;
         }
 
-        public override bool IsCompleted => (seconds <= 0f);
+        public override bool IsCompleted
+        {
+            get { return (seconds <= 0f); }
+        }
 
         public override void OnCompleted(Action action)
         {
@@ -218,7 +243,10 @@ public static class AsyncTools
             this.context = context;
         }
 
-        public override bool IsCompleted => false;
+        public override bool IsCompleted
+        {
+            get { return false; }
+        }
 
         public override void OnCompleted(Action action)
         {
@@ -242,15 +270,28 @@ public static class AsyncTools
             this.context = context;
         }
 
-        public override bool IsCompleted => context == null || context == SynchronizationContext.Current;
+        public override bool IsCompleted
+        {
+            get { return context == null || context == SynchronizationContext.Current; }
+        }
 
-        public override void OnCompleted(Action action) => context.Post(state => action(), null);
+        public override void OnCompleted(Action action)
+        {
+            context.Post(state => action(), null);
+        }
     }
 
     private class ThreadPoolContextAwaiter : Awaiter
     {
-        public override bool IsCompleted => IsMainThread() == false;
-        public override void OnCompleted(Action action) => ThreadPool.QueueUserWorkItem(state => action(), null);
+        public override bool IsCompleted
+        {
+            get { return IsMainThread() == false; }
+        }
+
+        public override void OnCompleted(Action action)
+        {
+            ThreadPool.QueueUserWorkItem(state => action(), null);
+        }
     }
 
     private class AsyncOperationAwaiter : Awaiter
@@ -261,7 +302,11 @@ public static class AsyncTools
             this.asyncOp = asyncOp;
         }
 
-        public override bool IsCompleted => asyncOp.isDone;
+        public override bool IsCompleted
+        {
+            get { return asyncOp.isDone; }
+        }
+
         public override void OnCompleted(Action action)
         {
             Task.Factory.StartNew(async () =>

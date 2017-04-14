@@ -11,9 +11,12 @@ public class UnityScheduler : MonoBehaviour
 	/// Use UpdateScheduler, LateUpdateScheduler or FixedUpdateScheduler instead.
 	/// </summary>
 	[Obsolete]
-	public static UnityTaskScheduler MainThreadScheduler => UpdateScheduler;
+	public static UnityTaskScheduler MainThreadScheduler
+	{
+	    get { return UpdateScheduler; }
+	}
 
-	/// <summary>
+    /// <summary>
 	/// Executes tasks in the main thread, Update context.
 	/// </summary>
 	public static UnityTaskScheduler UpdateScheduler { get; private set; }
@@ -33,9 +36,12 @@ public class UnityScheduler : MonoBehaviour
 	/// <summary>
 	/// Executes tasks in the thread pool. It's an alias for TaskScheduler.Default.
 	/// </summary>
-	public static TaskScheduler ThreadPoolScheduler => TaskScheduler.Default;
+	public static TaskScheduler ThreadPoolScheduler
+	{
+	    get { return TaskScheduler.Default; }
+	}
 
-	[RuntimeInitializeOnLoadMethod]
+    [RuntimeInitializeOnLoadMethod]
 	private static void Initialize()
 	{
 		MainThreadId = Thread.CurrentThread.ManagedThreadId;
@@ -58,11 +64,23 @@ public class UnityScheduler : MonoBehaviour
 		SynchronizationContext.SetSynchronizationContext(EditorUpdateScheduler.Context);
 	}
 
-	public static void ProcessEditorUpdate() => EditorUpdateScheduler.Activate();
+	public static void ProcessEditorUpdate()
+    {
+        EditorUpdateScheduler.Activate();
+    }
 
-	private void Update() => UpdateScheduler.Activate();
+    private void Update()
+    {
+        UpdateScheduler.Activate();
+    }
 
-	private void LateUpdate() => LateUpdateScheduler.Activate();
+    private void LateUpdate()
+    {
+        LateUpdateScheduler.Activate();
+    }
 
-	private void FixedUpdate() => FixedUpdateScheduler.Activate();
+    private void FixedUpdate()
+    {
+        FixedUpdateScheduler.Activate();
+    }
 }

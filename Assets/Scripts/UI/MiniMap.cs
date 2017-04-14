@@ -47,7 +47,9 @@ namespace Assets.Scripts.UI
         private RawImage unitOverlay;
 
         private float ZoomSpeed
-            => InitialZoomSpeed * (camera.transform.position.y - ZoomLowerLimit) / 100f;
+        {
+            get { return InitialZoomSpeed * (camera.transform.position.y - ZoomLowerLimit) / 100f; }
+        }
 
         public float PosX
         {

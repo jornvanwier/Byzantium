@@ -7,7 +7,11 @@ namespace Assets.Scripts.Map
     {
         public int X { get; }
         public int Z { get; }
-        public int Y => -X - Z;
+
+        public int Y
+        {
+            get { return -X - Z; }
+        }
 
         public CubicalCoordinate(int x, int z)
         {
@@ -79,6 +83,9 @@ namespace Assets.Scripts.Map
             return $"X: {X}, Y: {Y}, Z: {Z}";
         }
 
-        public static CubicalCoordinate Zero => new CubicalCoordinate(0, 0);
+        public static CubicalCoordinate Zero
+        {
+            get { return new CubicalCoordinate(0, 0); }
+        }
     }
 }

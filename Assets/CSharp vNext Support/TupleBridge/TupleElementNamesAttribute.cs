@@ -51,6 +51,9 @@ namespace System.Runtime.CompilerServices
         /// construction, which <see cref="System.ValueTuple"/> elements are
         /// meant to carry element names.
         /// </summary>
-        public IList<string> TransformNames => _transformNames;
+        public IList<string> TransformNames
+        {
+            get { return _transformNames; }
+        }
     }
 }
