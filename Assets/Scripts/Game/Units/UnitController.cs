@@ -57,6 +57,7 @@ namespace Assets.Scripts.Game.Units
 
         public void CreateBuilding(Vector3 position)
         {
+            SpawnObject.name = "Spawn " + Faction.Name;
             SpawnObject.AddComponent<BoxCollider>();
             SpawnObject.transform.position = position;
             Instantiate(SpawnObject);

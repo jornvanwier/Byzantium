@@ -267,7 +267,10 @@ namespace Assets.Scripts.Game
                             Space.World);
                     }
                     if (rightMouseDown)
+                    {
+                        cameraObject.transform.RotateAround(startIntersect, worldRight, movement.y);
                         cameraObject.transform.RotateAround(startIntersect, Vector3.up, -movement.x);
+                    }
                     CheckBounds(prevPos);
                 }
                 prevMousePos = position;
