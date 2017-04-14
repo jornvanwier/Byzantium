@@ -89,7 +89,7 @@ namespace Assets.Scripts.Map
             HexBoard = new HexBoard(MapSize) {Generator = new PerlinGenerator()};
             HexBoard.GenerateMap();
 
-            PathfindingJobManager.Instance.Map = HexBoard;
+            PathfindingJobManager.Map = HexBoard;
 
             SetupShader();
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);

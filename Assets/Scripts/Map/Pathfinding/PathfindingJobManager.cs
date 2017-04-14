@@ -22,18 +22,13 @@ namespace Assets.Scripts.Map.Pathfinding
         public int Id { get; }
     }
 
-    public class PathfindingJobManager : Singleton<PathfindingJobManager>
+    public static class PathfindingJobManager
     {
-        private readonly Dictionary<int, PathfindingJobInfo> storage;
+        private static readonly Dictionary<int, PathfindingJobInfo> Storage = new Dictionary<int, PathfindingJobInfo>();
 
-        public PathfindingJobManager()
-        {
-            storage = new Dictionary<int, PathfindingJobInfo>();
-        }
+        public static HexBoard Map { get; set; }
 
-        public HexBoard Map { get; set; }
-
-        public int CreateJob(CubicalCoordinate start, CubicalCoordinate goal)
+        public static int CreateJob(CubicalCoordinate start, CubicalCoordinate goal)
         {
             var jobInfo = new PathfindingJobInfo
             {
@@ -42,33 +37,33 @@ namespace Assets.Scripts.Map.Pathfinding
             };
             ThreadPool.QueueUserWorkItem(PathfindBetween, jobInfo);
 
-            storage.Add(jobInfo.Id, jobInfo);
+            Storage.Add(jobInfo.Id, jobInfo);
             return jobInfo.Id;
         }
 
-        public bool JobExists(int id)
+        public static bool JobExists(int id)
         {
-            return storage.ContainsKey(id);
+            return Storage.ContainsKey(id);
         }
 
-        public bool IsFinished(int id)
+        public static bool IsFinished(int id)
         {
-            if (storage.ContainsKey(id))
-                return storage[id].State != JobState.Working;
+            if (Storage.ContainsKey(id))
+                return Storage[id].State != JobState.Working;
             return false;
         }
 
-        public void ClearJob(int id)
+        public static void ClearJob(int id)
         {
-            storage.Remove(id);
+            Storage.Remove(id);
         }
 
-        public PathfindingJobInfo GetInfo(int id)
+        public static PathfindingJobInfo GetInfo(int id)
         {
-            return storage[id];
+            return Storage[id];
         }
 
-        public void PathfindBetween(object state)
+        public static void PathfindBetween(object state)
         {
             Utils.LogOperationTime("pathfind", () =>
             {
