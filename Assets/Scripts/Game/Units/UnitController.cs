@@ -32,7 +32,19 @@ namespace Assets.Scripts.Game.Units
         public MapRenderer MapRenderer { get; set; }
 
         public CubicalCoordinate Position { get; set; }
-        public CubicalCoordinate Goal { get; set; }
+
+        private CubicalCoordinate goal;
+
+        public CubicalCoordinate GetGoal()
+        {
+            return goal;
+        }
+
+        public void SetGoal(CubicalCoordinate value)
+        {
+            goal = value;
+        }
+
         public HealthBar HealthBar { get; private set; }
 
         public Faction Faction => AttachedUnit.Commander.Faction;
@@ -128,7 +140,6 @@ namespace Assets.Scripts.Game.Units
 
         private void Battle()
         {
-            Debug.Log(Time.realtimeSinceStartup);
             UnitController nearestEnemy = NearestEnemy();
             if (nearestEnemy == null)
             {
@@ -136,14 +147,22 @@ namespace Assets.Scripts.Game.Units
                 return;
             }
 
-            Goal = nearestEnemy.Position;
-            Debug.Log("Tick " + Goal);
+            SetGoal(nearestEnemy.Position);
+            Debug.Log("Tick " + GetGoal());
         }
 
         public void Update()
         {
             if (Time.realtimeSinceStartup % TimeBetweenEnemySearches < Time.deltaTime)
-                Battle();
+            {
+                UnitController nearestEnemy = NearestEnemy();
+                if (nearestEnemy == null)
+                {
+                    Debug.LogError("Nearest enemy is null");
+                    return;
+                }
+                Debug.Log("Tick " + GetGoal());
+            }
 
             if (enemies != null)
                 foreach (UnitController enemy in enemies)
@@ -175,7 +194,7 @@ namespace Assets.Scripts.Game.Units
 
             Position = MapRenderer.WorldToCubicalCoordinate(worldPos);
 
-            if (MapRenderer.HexBoard[Goal] == (byte) TileType.WaterDeep || Position == Goal)
+            if (MapRenderer.HexBoard[GetGoal()] == (byte) TileType.WaterDeep || Position == GetGoal())
                 return;
 
 
@@ -258,13 +277,13 @@ namespace Assets.Scripts.Game.Units
 
         protected void RequestNewPath()
         {
-            nextPathId = PathfindingJobManager.Instance.CreateJob(Position, Goal);
+            nextPathId = PathfindingJobManager.Instance.CreateJob(Position, GetGoal());
             Debug.Log($"{Faction.Name} requested new path with id {nextPathId}.");
         }
 
         protected bool IsPathValid()
         {
-            return currentPathInfo?.GoalPos == Goal;
+            return currentPathInfo?.GoalPos == GetGoal();
         }
     }
 }
