@@ -1,4 +1,3 @@
 Drawsize is verkeerd
-Spawn huis is niet klikbaar
 Crash soms bij compileren
 Armies lopen niet naar elkaar toe

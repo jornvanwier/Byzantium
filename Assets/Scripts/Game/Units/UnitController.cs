@@ -71,7 +71,6 @@ namespace Assets.Scripts.Game.Units
         {
             SpawnObject.AddComponent<BoxCollider>();
             SpawnObject.transform.position = position;
-            Instantiate(SpawnObject);
             SpawnObject.name = "Spawn " + Faction.Name;
         }
 

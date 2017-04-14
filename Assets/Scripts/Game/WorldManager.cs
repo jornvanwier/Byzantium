@@ -144,7 +144,7 @@ namespace Assets.Scripts.Game
             unitController.AttachCamera(camera);
             unitController.MapRenderer = MapRendererScript;
             unitController.AttachMapRenderer(MapRendererScript);
-            unitController.SpawnObject = SpawnObject;
+            unitController.SpawnObject = Instantiate(SpawnObject);
             unitController.AttachUnit(unit);
 
             Armies.Add(unitController);
