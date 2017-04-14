@@ -138,8 +138,8 @@ namespace Assets.Scripts.Game.Units
             //    return;
             //}
 
-            Goal = nearestEnemy.Position;
-            Debug.Log("Tick " + Goal);
+            //Goal = nearestEnemy.Position;
+            //Debug.Log("Tick " + Goal);
         }
 
         public void Update()
