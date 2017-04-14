@@ -18,3 +18,11 @@ Century:
 
 Contubernium:
 	Custom unit
+
+Custom Units:
+	Sword
+	Spear
+	Bow
+	HorseSword
+	HorseSpear
+	HorseBow
