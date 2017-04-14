@@ -1,3 +1,4 @@
 Drawsize is verkeerd
+//Spawn huis is niet klikbaar FIXED
 Crash soms bij compileren
-Armies lopen niet naar elkaar toe
+Army goals is update niet elke 10 seconden
