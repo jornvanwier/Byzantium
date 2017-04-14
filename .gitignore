@@ -6,6 +6,8 @@
 /Assets/AssetStoreTools*
 /bin
 
+log.txt
+
 .idea
 .vs
 
