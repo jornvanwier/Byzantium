@@ -25,7 +25,6 @@ namespace Assets.Scripts.Game.Units
         public virtual IFormation Formation { get; set; }
         public virtual float WalkSpeed { get; set; } = 1.0f;
 
-        public virtual Int2 ChildrenDimensions { get; set; }
         public abstract Vector2 DrawSize { get; }
 
         public bool IsCavalry { get; protected set; }

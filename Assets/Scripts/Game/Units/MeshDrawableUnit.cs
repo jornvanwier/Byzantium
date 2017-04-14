@@ -9,9 +9,6 @@ namespace Assets.Scripts.Game.Units
     public class MeshDrawableUnit : UnitBase
     {
         private const int StartHealth = 200;
-        private readonly Int2 dimensions = new Int2(1, 1);
-        private readonly Vector2 horseSize = new Vector2(0.22f, 0.2f);
-        private readonly Vector2 manSize = new Vector2(0.22f, 0.16f);
         private readonly SoldierType soldierType;
         private Vector3 oldPosition = Vector3.zero;
 
@@ -66,41 +63,20 @@ namespace Assets.Scripts.Game.Units
 
         public override int Health { get; set; } = StartHealth;
 
-        public override Int2 ChildrenDimensions
-        {
-            get { return dimensions; }
-            set { throw new MemberAccessException("Cannot set dimensions of this object."); }
-        }
+        public override Vector2 DrawSize { get; } = new Vector2(0.22f, 0.16f);
 
-        public override Vector2 DrawSize
-        {
-            get { return IsCavalry ? manSize : manSize; }
-        }
+        public override float DefaultSpeed => 1.5f;
 
-        public override float DefaultSpeed
-        {
-            get { return 1.5f; }
-        }
-
-        public override int UnitCount
-        {
-            get { return 1; }
-        }
+        public override int UnitCount => 1;
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
             get { yield return this; }
         }
 
-        public override IEnumerable<MeshDrawableUnit> AllUnits
-        {
-            get { return DrawableUnitsEnumerator.Iterate(); }
-        }
+        public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
 
-        public override string UnitName
-        {
-            get { return "Single Unit"; }
-        }
+        public override string UnitName => "Single Unit";
 
         public override void SetPositionInstant(Vector3 pos)
         {
@@ -133,8 +109,9 @@ namespace Assets.Scripts.Game.Units
             public Mesh Sword, Spear, Bow, Hsword, Hspear, Hbow;
 
             public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> SwordMatricesSet =
-                new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128); // ReSharper disable InconsistentNaming
-
+                new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128); 
+            
+            // ReSharper disable InconsistentNaming
             public Material msw, msp, msb, mhsw, mhsp, mhb;
             // ReSharper enable InconsistentNaming
         }
