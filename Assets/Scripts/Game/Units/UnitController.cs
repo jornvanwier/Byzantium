@@ -26,8 +26,6 @@ namespace Assets.Scripts.Game.Units
         private Vector3 movementDrawOffset;
         private int nextPathId = -1;
         private CubicalCoordinate previousPosition;
-        public Mesh SpawnMesh;
-        public Material SpawnMeshMaterial;
         private Vector3 spawnPosition;
         public UnitBase AttachedUnit { get; private set; }
 
@@ -39,7 +37,7 @@ namespace Assets.Scripts.Game.Units
 
         public Faction Faction => AttachedUnit.Commander.Faction;
 
-        public GameObject SpawnObject { get; private set; }
+        public GameObject SpawnObject { get; set; }
 
         public void AttachUnit(UnitBase unit)
         {
@@ -59,14 +57,9 @@ namespace Assets.Scripts.Game.Units
 
         public void CreateBuilding(Vector3 position)
         {
-            SpawnObject = new GameObject("SpawnHouse " + AttachedUnit.Commander.Faction.Name);
-
-            var meshFilter = SpawnObject.AddComponent<MeshFilter>();
-            var meshRenderer = SpawnObject.AddComponent<MeshRenderer>();
             SpawnObject.AddComponent<BoxCollider>();
-            meshFilter.mesh = SpawnMesh;
-            meshRenderer.material = SpawnMeshMaterial;
             SpawnObject.transform.position = position;
+            Instantiate(SpawnObject);
         }
 
         public void AttachMapRenderer(MapRenderer renderer)

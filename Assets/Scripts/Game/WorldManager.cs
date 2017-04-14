@@ -40,8 +40,7 @@ namespace Assets.Scripts.Game
 
         private UnitController selectedArmy;
 
-        public Mesh SpawnMesh;
-        public Material SpawnMeshMaterial;
+        public GameObject SpawnObject;
 
         private SpawnPanel spawnPanel;
         private Vector3 startIntersect;
@@ -145,8 +144,7 @@ namespace Assets.Scripts.Game
             unitController.AttachCamera(camera);
             unitController.MapRenderer = MapRendererScript;
             unitController.AttachMapRenderer(MapRendererScript);
-            unitController.SpawnMesh = SpawnMesh;
-            unitController.SpawnMeshMaterial = SpawnMeshMaterial;
+            unitController.SpawnObject = SpawnObject;
             unitController.AttachUnit(unit);
 
             Armies.Add(unitController);
