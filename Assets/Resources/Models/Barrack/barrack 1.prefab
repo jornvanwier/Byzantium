@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 65272463303748872}
   - component: {fileID: 65219709752150902}
   m_Layer: 0
-  m_Name: Spawn Chilly Seafarers
+  m_Name: barrack 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
