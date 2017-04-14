@@ -32,7 +32,18 @@ namespace Assets.Scripts.Game.Units
         public MapRenderer MapRenderer { get; set; }
 
         public CubicalCoordinate Position { get; set; }
-        public CubicalCoordinate Goal { get; set; }
+
+        private CubicalCoordinate goal;
+        
+        // ReSharper disable once ConvertToAutoProperty
+        public CubicalCoordinate Goal
+        {
+            // ReSharper disable ArrangeAccessorOwnerBody
+            get { return goal; }
+            set { goal = value; }
+            // ReSharper restore ArrangeAccessorOwnerBody
+        }
+
         public HealthBar HealthBar { get; private set; }
 
         public Faction Faction => AttachedUnit.Commander.Faction;
@@ -129,7 +140,6 @@ namespace Assets.Scripts.Game.Units
 
         private void Battle()
         {
-            Debug.Log(Time.realtimeSinceStartup);
             UnitController nearestEnemy = NearestEnemy();
             if (nearestEnemy == null)
             {
@@ -144,7 +154,9 @@ namespace Assets.Scripts.Game.Units
         public void Update()
         {
             if (Time.realtimeSinceStartup % TimeBetweenEnemySearches < Time.deltaTime)
+            {
                 Battle();
+            }
 
             if (enemies != null)
                 foreach (UnitController enemy in enemies)

@@ -66,9 +66,8 @@ namespace Assets.Scripts.Map
             CubicalCoordinate cc;
             do
             {
-                cc =
-                    new OddRCoordinate(Random.Range(0, Size), Random.Range(0, Size)).ToCubical();
-            } while (this[cc] == (byte) TileType.WaterDeep);
+                cc = new OddRCoordinate(Random.Range(0, Size), Random.Range(0, Size)).ToCubical();
+            } while (this[cc] == (byte) TileType.WaterDeep || !allowShallowWater && this[cc] == (byte) TileType.WaterShallow);
 
             return cc;
         }
