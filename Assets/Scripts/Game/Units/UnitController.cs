@@ -34,14 +34,15 @@ namespace Assets.Scripts.Game.Units
         public CubicalCoordinate Position { get; set; }
 
         private CubicalCoordinate goal;
-        
-        // ReSharper disable once ConvertToAutoProperty
-        public CubicalCoordinate Goal
+
+        public CubicalCoordinate GetGoal()
         {
-            // ReSharper disable ArrangeAccessorOwnerBody
-            get { return goal; }
-            set { goal = value; }
-            // ReSharper restore ArrangeAccessorOwnerBody
+            return goal;
+        }
+
+        public void SetGoal(CubicalCoordinate value)
+        {
+            goal = value;
         }
 
         public HealthBar HealthBar { get; private set; }
@@ -68,10 +69,10 @@ namespace Assets.Scripts.Game.Units
 
         public void CreateBuilding(Vector3 position)
         {
-            SpawnObject.name = "Spawn " + Faction.Name;
             SpawnObject.AddComponent<BoxCollider>();
             SpawnObject.transform.position = position;
             Instantiate(SpawnObject);
+            SpawnObject.name = "Spawn " + Faction.Name;
         }
 
         public void AttachMapRenderer(MapRenderer renderer)
@@ -147,8 +148,8 @@ namespace Assets.Scripts.Game.Units
                 return;
             }
 
-            Goal = nearestEnemy.Position;
-            Debug.Log("Tick " + Goal);
+            SetGoal(nearestEnemy.Position);
+            Debug.Log("Tick " + GetGoal());
         }
 
         public void Update()
@@ -188,7 +189,7 @@ namespace Assets.Scripts.Game.Units
 
             Position = MapRenderer.WorldToCubicalCoordinate(worldPos);
 
-            if (MapRenderer.HexBoard[Goal] == (byte) TileType.WaterDeep || Position == Goal)
+            if (MapRenderer.HexBoard[GetGoal()] == (byte) TileType.WaterDeep || Position == GetGoal())
                 return;
 
 
@@ -271,13 +272,13 @@ namespace Assets.Scripts.Game.Units
 
         protected void RequestNewPath()
         {
-            nextPathId = PathfindingJobManager.Instance.CreateJob(Position, Goal);
+            nextPathId = PathfindingJobManager.Instance.CreateJob(Position, GetGoal());
             Debug.Log($"{Faction.Name} requested new path with id {nextPathId}.");
         }
 
         protected bool IsPathValid()
         {
-            return currentPathInfo?.GoalPos == Goal;
+            return currentPathInfo?.GoalPos == GetGoal();
         }
     }
 }
