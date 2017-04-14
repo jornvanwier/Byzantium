@@ -165,7 +165,7 @@ namespace Assets.Scripts.Game
                     {
                         Vector3 intersection = ray.GetPoint(rayDistance);
 
-                        SelectedArmy.SetGoal(MapRendererScript.WorldToCubicalCoordinate(intersection));
+                        SelectedArmy.Goal = MapRendererScript.WorldToCubicalCoordinate(intersection);
                     }
                 }
 

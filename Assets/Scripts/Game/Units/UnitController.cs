@@ -33,17 +33,8 @@ namespace Assets.Scripts.Game.Units
 
         public CubicalCoordinate Position { get; set; }
 
-        private CubicalCoordinate goal;
 
-        public CubicalCoordinate GetGoal()
-        {
-            return goal;
-        }
-
-        public void SetGoal(CubicalCoordinate value)
-        {
-            goal = value;
-        }
+        public CubicalCoordinate Goal { get; set; }
 
         public HealthBar HealthBar { get; private set; }
 
@@ -147,8 +138,8 @@ namespace Assets.Scripts.Game.Units
             //    return;
             //}
 
-            //SetGoal(nearestEnemy.Position);
-            //Debug.Log("Tick " + GetGoal());
+            Goal = nearestEnemy.Position;
+            Debug.Log("Tick " + Goal);
         }
 
         public void Update()
@@ -188,7 +179,7 @@ namespace Assets.Scripts.Game.Units
 
             Position = MapRenderer.WorldToCubicalCoordinate(worldPos);
 
-            if (MapRenderer.HexBoard[GetGoal()] == (byte) TileType.WaterDeep || Position == GetGoal())
+            if (MapRenderer.HexBoard[Goal] == (byte) TileType.WaterDeep || Position == Goal)
                 return;
 
 
@@ -205,15 +196,15 @@ namespace Assets.Scripts.Game.Units
             else
             {
                 // Check on the state of the job
-                if (PathfindingJobManager.Instance.GetInfo(nextPathId).State == JobState.Failure)
+                if (PathfindingJobManager.GetInfo(nextPathId).State == JobState.Failure)
                 {
                     // Pathing has failed for some reason, lets try again
                     RequestNewPath();
                 }
-                else if (PathfindingJobManager.Instance.IsFinished(nextPathId))
+                else if (PathfindingJobManager.IsFinished(nextPathId))
                 {
-                    currentPathInfo = PathfindingJobManager.Instance.GetInfo(nextPathId);
-                    PathfindingJobManager.Instance.ClearJob(nextPathId);
+                    currentPathInfo = PathfindingJobManager.GetInfo(nextPathId);
+                    PathfindingJobManager.ClearJob(nextPathId);
 
                     nextPathId = -1;
                 }
@@ -271,13 +262,13 @@ namespace Assets.Scripts.Game.Units
 
         protected void RequestNewPath()
         {
-            nextPathId = PathfindingJobManager.Instance.CreateJob(Position, GetGoal());
-            Debug.Log($"{Faction.Name} requested new path with id {nextPathId}.");
+//            nextPathId = PathfindingJobManager.CreateJob(Position, Goal);
+//            Debug.Log($"{Faction.Name} requested new path with id {nextPathId}.");
         }
 
         protected bool IsPathValid()
         {
-            return currentPathInfo?.GoalPos == GetGoal();
+            return currentPathInfo?.GoalPos == Goal;
         }
     }
 }
