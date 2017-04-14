@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts.Map;
 using Assets.Scripts.Util;
 using UnityEngine;
 using static Assets.Scripts.Game.Units.MeshDrawableUnit;
@@ -11,6 +12,7 @@ namespace Assets.Scripts.Game.Units.Groups
     {
         private readonly List<T> storage = new List<T>();
         protected DrawingSet Set;
+        public virtual Int2 ChildrenDimensions { get; set; }
 
         protected UnitGroup(Faction faction)
         {
