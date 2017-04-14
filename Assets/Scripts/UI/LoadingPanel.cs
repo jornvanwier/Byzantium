@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Game;
+﻿using System;
+using System.IO;
+using Assets.Scripts.Game;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,6 +21,11 @@ namespace Assets.Scripts.UI
         [UsedImplicitly]
         private void Start()
         {
+            using (StreamWriter sw = File.AppendText("log.txt"))
+            {
+                sw.WriteLine($"Started game at {DateTime.Now:HH:mm:ss tt}");
+            }
+
             loadProgress = StartLoadGame();
 
             faction1Text = GameObject.Find("Faction1Text").GetComponent<Text>();

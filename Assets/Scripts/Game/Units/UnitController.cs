@@ -35,10 +35,7 @@ namespace Assets.Scripts.Game.Units
         public CubicalCoordinate Goal { get; set; }
         public HealthBar HealthBar { get; private set; }
 
-        public Faction Faction
-        {
-            get { return AttachedUnit.Commander.Faction; }
-        }
+        public Faction Faction => AttachedUnit.Commander.Faction;
 
         public GameObject SpawnObject { get; set; }
 

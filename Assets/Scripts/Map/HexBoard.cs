@@ -61,7 +61,7 @@ namespace Assets.Scripts.Map
             return CheckCoordinate(cc.ToOddR());
         }
 
-        public CubicalCoordinate RandomValidTile()
+        public CubicalCoordinate RandomValidTile(bool allowShallowWater = false)
         {
             CubicalCoordinate cc;
             do
