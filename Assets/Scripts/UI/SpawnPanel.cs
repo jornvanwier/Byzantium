@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Game;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Groups;
@@ -12,6 +13,30 @@ namespace Assets.Scripts.UI
 {
     public class SpawnPanel : MonoBehaviour, IPointerClickHandler
     {
+        private readonly Dictionary<string, Func<Faction, SoldierType, UnitBase>> typeToAction =
+            new Dictionary<string, Func<Faction, SoldierType, UnitBase>>
+            {
+                {"LegionSpawnerPanel", Legion.CreateCustomUnit},
+                {"CohortSpawnerPanel", Cohort.CreateCustomUnit},
+                {"CenturySpawnerPanel", Century.CreateCustomUnit},
+                {"ContuberniumSpawnerPanel", Contubernium.CreateCustomUnit}
+            };
+
+        private readonly Dictionary<string, SoldierType> typeToSoldier = new Dictionary<string, SoldierType>
+        {
+            {"BowHorse", SoldierType.HorseBow},
+            {"SpearHorse", SoldierType.HorseSpear},
+            {"SwordHorse", SoldierType.HorseSword},
+            {"BowSoldier", SoldierType.Bow},
+            {"SpearSoldier", SoldierType.Spear},
+            {"SwordSoldier", SoldierType.Sword}
+        };
+
+        private GameObject[] buttons = new GameObject[6 * 4];
+        private GameObject centurySpawnerPanel;
+        private GameObject cohortSpawnerPanel;
+        private GameObject contuberniumSpawnerPanel;
+        private GameObject legionSpawnerPanel;
         private Image miniMap;
 
         private GameObject panel;
@@ -66,6 +91,15 @@ namespace Assets.Scripts.UI
             }
         }
 
+        public bool IsVisible { get; private set; }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            GameObject button = eventData.rawPointerPress;
+            GameObject parent = button.transform.parent.gameObject;
+            Spawn(button.name, parent.name);
+        }
+
         private void UpdatePositionAndSize()
         {
             PosX = SizeX / 2;
@@ -74,14 +108,6 @@ namespace Assets.Scripts.UI
             SizeX = Screen.width - miniMap.rectTransform.sizeDelta.x;
             SizeY = miniMap.rectTransform.sizeDelta.y;
         }
-
-        public bool IsVisible { get; private set; }
-
-        private GameObject[] buttons = new GameObject[6 * 4];
-        private GameObject legionSpawnerPanel;
-        private GameObject cohortSpawnerPanel;
-        private GameObject centurySpawnerPanel;
-        private GameObject contuberniumSpawnerPanel;
 
         // Use this for initialization
         [UsedImplicitly]
@@ -113,6 +139,7 @@ namespace Assets.Scripts.UI
         [UsedImplicitly]
         private void Update()
         {
+            Debug.Log(selectedArmy?.AttachedUnit?.AllUnits?.Count());
             UpdatePositionAndSize();
         }
 
@@ -154,32 +181,6 @@ namespace Assets.Scripts.UI
                     break;
             }
         }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            GameObject button = eventData.rawPointerPress;
-            GameObject parent = button.transform.parent.gameObject;
-            Spawn(button.name, parent.name);
-        }
-
-        private readonly Dictionary<string, Func<Faction, SoldierType, UnitBase>> typeToAction =
-            new Dictionary<string, Func<Faction, SoldierType, UnitBase>>
-            {
-                {"LegionSpawnerPanel", Legion.CreateCustomUnit},
-                {"CohortSpawnerPanel", Cohort.CreateCustomUnit},
-                {"CenturySpawnerPanel", Century.CreateCustomUnit},
-                {"ContuberniumSpawnerPanel", Contubernium.CreateCustomUnit},
-            };
-
-        private readonly Dictionary<string, SoldierType> typeToSoldier = new Dictionary<string, SoldierType>
-        {
-            {"BowHorse", SoldierType.HorseBow},
-            {"SpearHorse", SoldierType.HorseSpear},
-            {"SwordHorse", SoldierType.HorseSword},
-            {"BowSoldier", SoldierType.Bow},
-            {"SpearSoldier", SoldierType.Spear},
-            {"SwordSoldier", SoldierType.Sword},
-        };
 
         private void Spawn(string soldierName, string groupName)
         {

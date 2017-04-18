@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
@@ -45,17 +44,28 @@ namespace Assets.Scripts.Game.Units
         public GameObject SpawnObject { get; set; }
 
 
-        public void AddUnit<T>(T unit) where T : UnitBase
+        public void AddUnit(Cohort unit)
         {
-            var group = AttachedUnit as UnitGroup<T>;
-            if (group == null)
-            {
+            if (AttachedUnit is Legion legion)
+                legion.AddUnit(unit);
+        }
 
-            }
-            else
-            {
-                group.AddUnit(unit);
-            }
+        public void AddUnit(Century unit)
+        {
+            if (AttachedUnit is Cohort cohort)
+                cohort.AddUnit(unit);
+            if (AttachedUnit is Legion legion)
+                legion.AddUnit(unit);
+        }
+
+        public void AddUnit(Contubernium unit)
+        {
+            if (AttachedUnit is Century century)
+                century.AddUnit(unit);
+            if (AttachedUnit is Cohort cohort)
+                cohort.AddUnit(unit);
+            if (AttachedUnit is Legion legion)
+                legion.AddUnit(unit);
         }
 
         public void AddUnit(UnitBase unit)
@@ -66,8 +76,8 @@ namespace Assets.Scripts.Game.Units
                 AddUnit(century);
             else if (unit is Cohort cohort)
                 AddUnit(cohort);
-            else if (unit is Legion legion)
-                AddUnit(legion);
+            //else if (unit is Legion legion)
+            //    AddUnit(legion);
         }
 
         public void AttachUnit(UnitBase unit)

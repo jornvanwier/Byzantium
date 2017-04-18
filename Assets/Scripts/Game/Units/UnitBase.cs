@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Formation;
-using Assets.Scripts.Map;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units

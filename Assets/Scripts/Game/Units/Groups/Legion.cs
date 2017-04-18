@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Assets.Scripts.Game.Units.Formation.LegionFormation;
-using Assets.Scripts.Util;
-using UnityEngine;
-using static Assets.Scripts.Game.Units.MeshDrawableUnit;
+﻿using Assets.Scripts.Game.Units.Formation.LegionFormation;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
