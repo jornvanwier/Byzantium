@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using Assets.Scripts.Util;
 
@@ -67,6 +68,14 @@ namespace Assets.Scripts.Map.Pathfinding
         {
             Utils.LogOperationTime("pathfind", () =>
             {
+                if (Map == null)
+                {
+                    using (StreamWriter sw = File.CreateText("log.txt"))
+                    {
+                        sw.WriteLine("map is null");
+                    }
+                    return;
+                }
                 var info = (PathfindingJobInfo) state;
                 info.Path = Map.FindPath(info.StartPos, info.GoalPos);
                 info.State = info.Path == null ? JobState.Failure : JobState.Success;
