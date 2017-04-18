@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
 using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.UI;
@@ -42,6 +44,32 @@ namespace Assets.Scripts.Game.Units
 
         public GameObject SpawnObject { get; set; }
 
+
+        public void AddUnit<T>(T unit) where T : UnitBase
+        {
+            var group = AttachedUnit as UnitGroup<T>;
+            if (group == null)
+            {
+
+            }
+            else
+            {
+                group.AddUnit(unit);
+            }
+        }
+
+        public void AddUnit(UnitBase unit)
+        {
+            if (unit is Contubernium contubernium)
+                AddUnit(contubernium);
+            else if (unit is Century century)
+                AddUnit(century);
+            else if (unit is Cohort cohort)
+                AddUnit(cohort);
+            else if (unit is Legion legion)
+                AddUnit(legion);
+        }
+
         public void AttachUnit(UnitBase unit)
         {
             AttachedUnit = unit;
@@ -53,7 +81,7 @@ namespace Assets.Scripts.Game.Units
             return mapRenderer.CubicalCoordinateToWorld(buildingCc);
         }
 
-        public void AttachArmies(List<UnitController> armies)
+        public void AttachEnemies(List<UnitController> armies)
         {
             enemies = armies.Where(controller => controller != this).ToList();
         }
@@ -145,9 +173,7 @@ namespace Assets.Scripts.Game.Units
         public void Update()
         {
             if (Time.realtimeSinceStartup % TimeBetweenEnemySearches < Time.deltaTime)
-            {
                 Battle();
-            }
 
             if (enemies != null)
                 foreach (UnitController enemy in enemies)

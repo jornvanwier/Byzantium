@@ -83,6 +83,12 @@ namespace Assets.Scripts.Game.Units.Groups
             storage.Add(unit);
             Set = Prefetch(this);
         }
+        public void AddUnit<TOther>(TOther unit) where TOther:UnitBase
+        {
+            T child = storage.PickRandom();
+            
+            Set = Prefetch(this);
+        }
 
         public void RemoveUnit(T unit)
         {

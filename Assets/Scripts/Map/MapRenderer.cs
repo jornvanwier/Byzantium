@@ -93,7 +93,6 @@ namespace Assets.Scripts.Map
 
             SetupShader();
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
-            Debug.Log("Created map");
         }
 
         private void SetupShader()

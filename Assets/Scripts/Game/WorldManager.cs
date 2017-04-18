@@ -80,7 +80,6 @@ namespace Assets.Scripts.Game
         public void AttachSpawnPanel(SpawnPanel panel)
         {
             spawnPanel = panel;
-            spawnPanel.Hide();
         }
 
         [UsedImplicitly]
@@ -109,7 +108,7 @@ namespace Assets.Scripts.Game
             cameraObject.AddComponent<Camera>();
             cameraObject.transform.position = Vector3.zero;
             camera = cameraObject.GetComponent<Camera>();
-            camera.farClipPlane = CameraZoomUpperLimit + 100;
+            camera.farClipPlane = 200000;
             camera.nearClipPlane = 0.01f;
 
             MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
@@ -127,7 +126,7 @@ namespace Assets.Scripts.Game
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
 
-            SpawnArmy(Legion.CreateStandardLegion(FactionManager.Factions[0]));
+            SpawnArmy(Century.CreateMixedUnit(FactionManager.Factions[0]));
             SpawnArmy(Legion.CreateStandardLegion(FactionManager.Factions[1]));
         }
 
@@ -149,7 +148,7 @@ namespace Assets.Scripts.Game
 
             Armies.Add(unitController);
             foreach (UnitController army in Armies)
-                army.AttachArmies(Armies);
+                army.AttachEnemies(Armies);
         }
 
         // Update is called once per frame
@@ -215,18 +214,20 @@ namespace Assets.Scripts.Game
                 Rotate(Vector3.up, Space.World, -1f);
 
             //Mouse scroll zoom
-            Vector3 prevPos = Clone(cameraObject.transform.position);
-
-            float zoom = Input.GetAxis("Mouse ScrollWheel");
-            Zoom(worldForward, zoom);
-            if (Math.Abs(zoom) > 0.001f)
-                CheckBounds(prevPos);
+            Vector3 prevPos;
+            if (!spawnPanel.Contains(Input.mousePosition))
+            {
+                prevPos = Clone(cameraObject.transform.position);
+                float zoom = Input.GetAxis("Mouse ScrollWheel");
+                Zoom(worldForward, zoom);
+                if (Math.Abs(zoom) > 0.001f)
+                    CheckBounds(prevPos);
+            }
 
             //Middle mouse drag and right mouse rotate
             if (Input.GetKey(KeyCode.LeftAlt) && Input.GetMouseButtonDown(1))
             {
                 prevPos = Clone(cameraObject.transform.position);
-
                 Vector3 position = new Vector2(Screen.width / 2f, Screen.height / 2f);
                 var plane = new Plane(Vector3.up, Vector3.zero);
                 Ray ray = camera.ScreenPointToRay(position);
@@ -292,7 +293,7 @@ namespace Assets.Scripts.Game
             }
 
             //Click units
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0) && !spawnPanel.Contains(Input.mousePosition))
             {
                 SelectedArmy = null;
                 spawnPanel.Hide();
