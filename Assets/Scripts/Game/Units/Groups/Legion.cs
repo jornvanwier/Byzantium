@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Game.Units.Formation.LegionFormation;
+using Assets.Scripts.Util;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
@@ -11,6 +12,16 @@ namespace Assets.Scripts.Game.Units.Groups
         public override string UnitName => "Legion";
 
         public override float DefaultSpeed => 1.5f;
+
+        public void AddUnit(Century unit)
+        {
+            storage.PickRandom().AddUnit(unit);
+        }
+
+        public void AddUnit(Contubernium unit)
+        {
+            storage.PickRandom().AddUnit(unit);
+        }
 
         public static Legion CreateStandardLegion(Faction faction)
         {

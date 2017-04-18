@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Game.Units.Formation;
+using Assets.Scripts.Util;
 using static Assets.Scripts.Game.Units.MeshDrawableUnit;
 
 namespace Assets.Scripts.Game.Units.Groups
@@ -12,6 +13,11 @@ namespace Assets.Scripts.Game.Units.Groups
         public override string UnitName => "Cohort";
 
         public override float DefaultSpeed => 1.5f;
+
+        public void AddUnit(Contubernium unit)
+        {
+            storage.PickRandom().AddUnit(unit);
+        }
 
         public static Cohort CreateUniformMixedUnit(Faction faction)
         {

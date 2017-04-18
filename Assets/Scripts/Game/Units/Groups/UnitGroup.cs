@@ -85,31 +85,10 @@ namespace Assets.Scripts.Game.Units.Groups
             Set = Prefetch(this);
         }
 
-        public void AddUnit<TOther>(TOther unit) where TOther : UnitBase
-        {
-            var unitGroup = storage.PickRandom() as UnitGroup<TOther>;
-            if (unitGroup == null)
-                (storage.PickRandom() as UnitGroup<Century>)?.AddUnit(unit);
-            else
-                unitGroup.AddUnit(unit);
-        }
-
         public void RemoveUnit(T unit)
         {
             storage.Remove(unit);
             Set = Prefetch(this);
-        }
-
-        public void RemoveUnit<TOther>(TOther unit) where TOther : UnitBase
-        {
-            foreach (T child in storage)
-            {
-                var unitGroup = child as UnitGroup<TOther>;
-                if (unitGroup == null)
-                    (child as UnitGroup<Century>)?.RemoveUnit(unit);
-                else
-                    unitGroup.RemoveUnit(unit);
-            }
         }
 
         public override void SetPositionInstant(Vector3 pos)
