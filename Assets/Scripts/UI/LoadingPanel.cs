@@ -21,11 +21,6 @@ namespace Assets.Scripts.UI
         [UsedImplicitly]
         private void Start()
         {
-            using (StreamWriter sw = File.AppendText("log.txt"))
-            {
-                sw.WriteLine($"Started game at {DateTime.Now:HH:mm:ss tt}");
-            }
-
             loadProgress = StartLoadGame();
 
             faction1Text = GameObject.Find("Faction1Text").GetComponent<Text>();

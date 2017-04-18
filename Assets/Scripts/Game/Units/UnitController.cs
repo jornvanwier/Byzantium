@@ -262,8 +262,8 @@ namespace Assets.Scripts.Game.Units
 
         protected void RequestNewPath()
         {
-//            nextPathId = PathfindingJobManager.CreateJob(Position, Goal);
-//            Debug.Log($"{Faction.Name} requested new path with id {nextPathId}.");
+            nextPathId = PathfindingJobManager.CreateJob(Position, Goal);
+            Debug.Log($"{Faction.Name} requested new path with id {nextPathId}.");
         }
 
         protected bool IsPathValid()
