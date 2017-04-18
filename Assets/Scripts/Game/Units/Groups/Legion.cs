@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Game.Units.Formation.LegionFormation;
 using Assets.Scripts.Util;
+using static Assets.Scripts.Game.Units.MeshDrawableUnit;
 
 namespace Assets.Scripts.Game.Units.Groups
 {
@@ -16,11 +17,13 @@ namespace Assets.Scripts.Game.Units.Groups
         public void AddUnit(Century unit)
         {
             storage.PickRandom().AddUnit(unit);
+            Set = Prefetch(this);
         }
 
         public void AddUnit(Contubernium unit)
         {
             storage.PickRandom().AddUnit(unit);
+            Set = Prefetch(this);
         }
 
         public static Legion CreateStandardLegion(Faction faction)

@@ -17,6 +17,7 @@ namespace Assets.Scripts.Game.Units.Groups
         public void AddUnit(Contubernium unit)
         {
             storage.PickRandom().AddUnit(unit);
+            Set = Prefetch(this);
         }
 
         public static Cohort CreateUniformMixedUnit(Faction faction)
