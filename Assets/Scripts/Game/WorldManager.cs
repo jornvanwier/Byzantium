@@ -97,10 +97,6 @@ namespace Assets.Scripts.Game
 
             if (!FactionManager.IsInitialized)
                 FactionManager.Init(2);
-            Faction faction = FactionManager.Factions[0];
-
-            UnitBase unit = Cohort.CreateUniformMixedUnit(faction);
-            unit.Position = new Vector3(5, 0, 5);
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";

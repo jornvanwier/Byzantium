@@ -186,7 +186,7 @@ namespace Assets.Scripts.UI
             UnitBase unit = typeToAction[groupName](selectedArmy.Faction, type);
             selectedArmy.AddUnit(unit);
 
-            UnitController.Teleport(selectedArmy.gameObject.transform.position, unit);
+            UnitController.Teleport(selectedArmy.AttachedUnit.Position, unit);
         }
     }
 }
