@@ -95,7 +95,7 @@ namespace Assets.Scripts.UI
             image = panel.GetComponent<Image>();
             miniMap = GameObject.Find("MiniMapBorder").GetComponent<Image>();
 
-            GameObject.Find("WorldManager").GetComponent<WorldManager>().AttachInfoPanel(this);
+            GameObject.Find("WorldManager")?.GetComponent<WorldManager>().AttachInfoPanel(this);
 
             UpdatePositionAndSize();
         }
