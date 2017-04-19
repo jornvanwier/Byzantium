@@ -10,14 +10,15 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public abstract class UnitGroup<T> : UnitBase, IEnumerable<T> where T : UnitBase
     {
-        private readonly List<T> storage = new List<T>();
+        protected readonly List<T> storage = new List<T>();
         protected DrawingSet Set;
-        public virtual Int2 ChildrenDimensions { get; set; }
 
         protected UnitGroup(Faction faction)
         {
             Commander = new Commander(this, faction);
         }
+
+        public virtual Int2 ChildrenDimensions { get; set; }
 
         public override int Health
         {

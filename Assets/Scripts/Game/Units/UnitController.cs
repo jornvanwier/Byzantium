@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
 using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.UI;
@@ -42,6 +44,43 @@ namespace Assets.Scripts.Game.Units
 
         public GameObject SpawnObject { get; set; }
 
+
+        public void AddUnit(Cohort unit)
+        {
+            if (AttachedUnit is Legion legion)
+                legion.AddUnit(unit);
+        }
+
+        public void AddUnit(Century unit)
+        {
+            if (AttachedUnit is Cohort cohort)
+                cohort.AddUnit(unit);
+            if (AttachedUnit is Legion legion)
+                legion.AddUnit(unit);
+        }
+
+        public void AddUnit(Contubernium unit)
+        {
+            if (AttachedUnit is Century century)
+                century.AddUnit(unit);
+            if (AttachedUnit is Cohort cohort)
+                cohort.AddUnit(unit);
+            if (AttachedUnit is Legion legion)
+                legion.AddUnit(unit);
+        }
+
+        public void AddUnit(UnitBase unit)
+        {
+            if (unit is Contubernium contubernium)
+                AddUnit(contubernium);
+            else if (unit is Century century)
+                AddUnit(century);
+            else if (unit is Cohort cohort)
+                AddUnit(cohort);
+            //else if (unit is Legion legion)
+            //    AddUnit(legion);
+        }
+
         public void AttachUnit(UnitBase unit)
         {
             AttachedUnit = unit;
@@ -53,7 +92,7 @@ namespace Assets.Scripts.Game.Units
             return mapRenderer.CubicalCoordinateToWorld(buildingCc);
         }
 
-        public void AttachArmies(List<UnitController> armies)
+        public void AttachEnemies(List<UnitController> armies)
         {
             enemies = armies.Where(controller => controller != this).ToList();
         }
@@ -86,13 +125,18 @@ namespace Assets.Scripts.Game.Units
             this.camera = camera;
         }
 
+        public static void Teleport(Vector3 loc, UnitBase unit)
+        {
+            unit.SetPositionInstant(loc);
+        }
+
         public void Teleport(Vector3 loc)
         {
             transform.position = loc;
             Position = MapRenderer.WorldToCubicalCoordinate(loc);
             previousPosition = Position;
             movementDrawOffset = new Vector3(0, 0, 0);
-            AttachedUnit.SetPositionInstant(loc);
+            Teleport(loc, AttachedUnit);
         }
 
         private void UpdateHealthBar()
@@ -145,9 +189,7 @@ namespace Assets.Scripts.Game.Units
         public void Update()
         {
             if (Time.realtimeSinceStartup % TimeBetweenEnemySearches < Time.deltaTime)
-            {
                 Battle();
-            }
 
             if (enemies != null)
                 foreach (UnitController enemy in enemies)
@@ -162,7 +204,7 @@ namespace Assets.Scripts.Game.Units
                 spawnPosition = GetSpawnPosition();
                 CreateBuilding(spawnPosition);
                 Teleport(spawnPosition);
-                camera.transform.position = spawnPosition + new Vector3(5, 10, 0);
+                camera.transform.position = spawnPosition + new Vector3(-30, 15, 0);
                 camera.transform.LookAt(spawnPosition);
             }
 

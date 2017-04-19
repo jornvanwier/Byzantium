@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.Scripts.Map;
 using Assets.Scripts.Util;
 using UnityEngine;
 
@@ -109,10 +108,10 @@ namespace Assets.Scripts.Game.Units
             public Mesh Sword, Spear, Bow, Hsword, Hspear, Hbow;
 
             public List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>> SwordMatricesSet =
-                new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128); 
-            
-            // ReSharper disable InconsistentNaming
+                new List<Tuple<List<MeshDrawableUnit>, List<Matrix4x4>>>(128); // ReSharper disable InconsistentNaming
+
             public Material msw, msp, msb, mhsw, mhsp, mhb;
+
             // ReSharper enable InconsistentNaming
         }
 

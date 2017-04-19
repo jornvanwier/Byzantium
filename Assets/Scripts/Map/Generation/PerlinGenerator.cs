@@ -59,19 +59,17 @@ namespace Assets.Scripts.Map.Generation
             byte[,] tileMap = null;
             Utils.LogOperationTime("Total map generation", () =>
             {
-                float[,] heightMap = Utils.LogOperationTime("Heightmap",
-                    () =>
-                        GenerateFloatMap(size, Scale, borderSize, SquareBorder, Octaves, Persistance, Lacunarity,
-                            new Vector2(), seed));
+                float[,] heightMap =
+                    GenerateFloatMap(size, Scale, borderSize, SquareBorder, Octaves, Persistance, Lacunarity,
+                        new Vector2(), seed);
 
-                bool[,] waterMap = Utils.LogOperationTime("Watermap", () => GetWaterMap(heightMap));
+                bool[,] waterMap = GetWaterMap(heightMap);
 
 //                Utils.LogOperationTime("Rivers", () => AddRivers(waterMap, heightMap, 3));
 
-                float[,] moistureMap = Utils.LogOperationTime("Moisturemap",
-                    () => GetMoistureMap(waterMap, moistureResolution));
+                float[,] moistureMap = GetMoistureMap(waterMap, moistureResolution);
 
-                tileMap = Utils.LogOperationTime("Tilemap", () => GetTileMap(heightMap, moistureMap));
+                tileMap = GetTileMap(heightMap, moistureMap);
             });
 
             return tileMap;

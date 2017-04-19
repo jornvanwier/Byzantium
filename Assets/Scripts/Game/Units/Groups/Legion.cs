@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Assets.Scripts.Game.Units.Formation.LegionFormation;
+﻿using Assets.Scripts.Game.Units.Formation.LegionFormation;
 using Assets.Scripts.Util;
-using UnityEngine;
 using static Assets.Scripts.Game.Units.MeshDrawableUnit;
 
 namespace Assets.Scripts.Game.Units.Groups
@@ -16,6 +13,18 @@ namespace Assets.Scripts.Game.Units.Groups
         public override string UnitName => "Legion";
 
         public override float DefaultSpeed => 1.5f;
+
+        public void AddUnit(Century unit)
+        {
+            storage.PickRandom().AddUnit(unit);
+            Set = Prefetch(this);
+        }
+
+        public void AddUnit(Contubernium unit)
+        {
+            storage.PickRandom().AddUnit(unit);
+            Set = Prefetch(this);
+        }
 
         public static Legion CreateStandardLegion(Faction faction)
         {

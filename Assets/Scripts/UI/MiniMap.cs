@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Assets.Scripts.Game.Units;
 using JetBrains.Annotations;
 using UnityEngine;
