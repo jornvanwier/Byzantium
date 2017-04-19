@@ -110,6 +110,7 @@ namespace Assets.Scripts.Game
             camera = cameraObject.GetComponent<Camera>();
             camera.farClipPlane = 200000;
             camera.nearClipPlane = 0.01f;
+            camera.fieldOfView = 25;
 
             MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
 

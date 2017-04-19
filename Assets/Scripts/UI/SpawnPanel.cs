@@ -4,6 +4,7 @@ using System.Linq;
 using Assets.Scripts.Game;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Groups;
+using Assets.Scripts.Map;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -32,7 +33,7 @@ namespace Assets.Scripts.UI
             {"SwordSoldier", SoldierType.Sword}
         };
 
-        private GameObject[] buttons = new GameObject[6 * 4];
+
         private GameObject centurySpawnerPanel;
         private GameObject cohortSpawnerPanel;
         private GameObject contuberniumSpawnerPanel;
@@ -143,11 +144,6 @@ namespace Assets.Scripts.UI
             UpdatePositionAndSize();
         }
 
-        private GameObject GetObjectByPosition()
-        {
-            return EventSystem.current.currentSelectedGameObject;
-        }
-
         public void Hide()
         {
             panel.SetActive(false);
@@ -189,6 +185,8 @@ namespace Assets.Scripts.UI
             SoldierType type = typeToSoldier[soldierName];
             UnitBase unit = typeToAction[groupName](selectedArmy.Faction, type);
             selectedArmy.AddUnit(unit);
+
+            UnitController.Teleport(selectedArmy.gameObject.transform.position, unit);
         }
     }
 }

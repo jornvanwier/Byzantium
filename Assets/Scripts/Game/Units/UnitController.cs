@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
@@ -124,13 +125,18 @@ namespace Assets.Scripts.Game.Units
             this.camera = camera;
         }
 
+        public static void Teleport(Vector3 loc, UnitBase unit)
+        {
+            unit.SetPositionInstant(loc);
+        }
+
         public void Teleport(Vector3 loc)
         {
             transform.position = loc;
             Position = MapRenderer.WorldToCubicalCoordinate(loc);
             previousPosition = Position;
             movementDrawOffset = new Vector3(0, 0, 0);
-            AttachedUnit.SetPositionInstant(loc);
+            Teleport(loc, AttachedUnit);
         }
 
         private void UpdateHealthBar()
@@ -198,7 +204,7 @@ namespace Assets.Scripts.Game.Units
                 spawnPosition = GetSpawnPosition();
                 CreateBuilding(spawnPosition);
                 Teleport(spawnPosition);
-                camera.transform.position = spawnPosition + new Vector3(5, 10, 0);
+                camera.transform.position = spawnPosition + new Vector3(-30, 15, 0);
                 camera.transform.LookAt(spawnPosition);
             }
 

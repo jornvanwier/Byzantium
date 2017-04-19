@@ -1419,7 +1419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BorderSize: 10
-  InitialZoom: 14
+  InitialZoom: 70
   InitialZoomSpeed: 2
   OffsetX: 28
   OffsetY: 27
