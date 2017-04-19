@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Util;
 using UnityEngine;
 
@@ -7,7 +8,6 @@ namespace Assets.Scripts.Game.Units
 {
     public class MeshDrawableUnit : UnitBase
     {
-        private const int StartHealth = 200;
         private readonly SoldierType soldierType;
         private Vector3 oldPosition = Vector3.zero;
 
@@ -52,6 +52,16 @@ namespace Assets.Scripts.Game.Units
             Material = m.GetComponent<MeshRenderer>().sharedMaterial;
             Transform = m.transform;
         }
+
+        public void Attack(UnitBase enemy)
+        {
+            if (enemy.AllUnits != null)
+                enemy.Health -= (int) (Config.Damage * enemy.AllUnits.First().Config.Defense);
+        }
+
+        private const int StartHealth = 200;
+
+        public override int MaxHealth => StartHealth;
 
         public static List<GameObject> UnitMeshes { get; set; } = null;
 

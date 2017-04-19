@@ -117,8 +117,8 @@ namespace Assets.Scripts.Game.Units
             var obj = new GameObject("ArmyHealth");
             obj.transform.SetParent(GameObject.Find("uiCanvas").transform);
             HealthBar = obj.AddComponent<HealthBar>();
+            HealthBar.AttachArmy(this);
         }
-
 
         public void AttachCamera(Camera camera)
         {
@@ -175,21 +175,26 @@ namespace Assets.Scripts.Game.Units
 
         private void Battle()
         {
-            UnitController nearestEnemy = NearestEnemy();
-            if (nearestEnemy == null)
-            {
-                Debug.LogError("Nearest enemy is null");
-                return;
-            }
+            //UnitController nearestEnemy = NearestEnemy();
+            //if (nearestEnemy == null)
+            //{
+            //    Debug.LogError("Nearest enemy is null");
+            //    return;
+            //}
 
-            Goal = nearestEnemy.Position;
-            Debug.Log("Tick " + Goal);
+            //Goal = nearestEnemy.Position;
+            //Debug.Log("Tick " + Goal);
         }
-       
+
 
         private void Attack(UnitController enemy)
         {
-            enemy.AttachedUnit.Health -= 1;
+            foreach (MeshDrawableUnit unit in AttachedUnit.AllUnits)
+            {
+                float distance = Vector3.Distance(enemy.AttachedUnit.Position, unit.Position);
+                if (distance < AttackRange)
+                    unit.Attack(enemy.AttachedUnit);
+            }
         }
 
         public void Update()
@@ -313,7 +318,7 @@ namespace Assets.Scripts.Game.Units
             nextPathId = PathfindingJobManager.CreateJob(Position, Goal);
             Debug.Log($"{Faction.Name} requested new path with id {nextPathId}.");
         }
-
+   
         protected bool IsPathValid()
         {
             return currentPathInfo?.GoalPos == Goal;

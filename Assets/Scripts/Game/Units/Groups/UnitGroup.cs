@@ -11,7 +11,10 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public abstract class UnitGroup<T> : UnitBase, IEnumerable<T> where T : UnitBase
     {
-        protected readonly List<T> storage = new List<T>();
+        protected readonly List<T> Storage = new List<T>();
+
+        private int health = -1;
+        private int maxHealth = -1;
         protected DrawingSet Set;
 
         protected UnitGroup(Faction faction)
@@ -21,16 +24,22 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public virtual Int2 ChildrenDimensions { get; set; }
 
-        private int health = -1;
+        public override int MaxHealth
+        {
+            get
+            {
+                if (maxHealth == -1)
+                    maxHealth = Storage.Select(u => u.MaxHealth).Aggregate((x, y) => x + y);
+                return maxHealth;
+            }
+        }
 
         public override int Health
         {
             get
             {
                 if (health == -1)
-                {
-                    health = storage.Select(u => u.Health).Aggregate((x, y) => x + y);
-                }
+                    health = Storage.Select(u => u.Health).Aggregate((x, y) => x + y);
                 return health;
             }
             set
@@ -38,10 +47,8 @@ namespace Assets.Scripts.Game.Units.Groups
                 int healthDifference = health - value;
                 health = value;
                 foreach (T child in this)
-                {
-                    if (healthDifference > 0)
+                    if (healthDifference > 0)//Take damage
                     {
-                        //give damage
                         if (child.Health > healthDifference)
                         {
                             child.Health -= healthDifference;
@@ -49,13 +56,18 @@ namespace Assets.Scripts.Game.Units.Groups
                         }
                         healthDifference -= child.Health;
                         child.Health = 0;
+                        RemoveUnit(child);
                     }
-                    else
+                    else//Give health
                     {
-                        //give health
-
+                        if (child.MaxHealth > -healthDifference)
+                        {
+                            child.Health -= healthDifference;
+                            break;
+                        }
+                        healthDifference += child.Health;
+                        child.Health = child.MaxHealth;
                     }
-                }
             }
         }
 
@@ -80,15 +92,15 @@ namespace Assets.Scripts.Game.Units.Groups
         }
 
 
-        public override int UnitCount => storage.Count;
+        public override int UnitCount => Storage.Count;
 
-        public override Vector2 DrawSize => Vector2.Scale(storage[0].DrawSize, ChildrenDimensions);
+        public override Vector2 DrawSize => Vector2.Scale(Storage[0].DrawSize, ChildrenDimensions);
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
             get
             {
-                foreach (T child in storage)
+                foreach (T child in Storage)
                 foreach (MeshDrawableUnit drawableUnit in child.AllUnits)
                     yield return drawableUnit;
             }
@@ -98,7 +110,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public IEnumerator<T> GetEnumerator()
         {
-            return storage.GetEnumerator();
+            return Storage.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -110,13 +122,13 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public void AddUnit(T unit)
         {
-            storage.Add(unit);
+            Storage.Add(unit);
             Set = Prefetch(this);
         }
 
         public void RemoveUnit(T unit)
         {
-            storage.Remove(unit);
+            Storage.Remove(unit);
             Set = Prefetch(this);
         }
 

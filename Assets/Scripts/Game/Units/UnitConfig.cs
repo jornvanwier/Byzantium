@@ -57,7 +57,7 @@
         };
 
         public float Range { get; private set; }
-        public float Damage { get; private set; }
+        public int Damage { get; private set; }
         public float AttackSpeed { get; private set; }
         public float Defense { get; private set; }
         public float MovementSpeed { get; private set; }

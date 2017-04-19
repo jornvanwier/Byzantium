@@ -44,6 +44,7 @@ namespace Assets.Scripts.Game.Units
         public abstract int UnitCount { get; }
         public abstract IEnumerable<MeshDrawableUnit> AllUnits { get; }
 
+        public abstract int MaxHealth { get; }
         public abstract int Health { get; set; }
 
         public Commander Commander
@@ -71,7 +72,7 @@ namespace Assets.Scripts.Game.Units
                     else
                         soldierCount++;
                 return UnitName +
-                       "\nHealth:\t\t" + Health / 2f +
+                       "\nHealth:\t\t" + (float) Health / MaxHealth * 100f +
                        "%\nSoldiers:\t\t" + soldierCount +
                        "\nCavalry:\t" + cavalryCount;
             }

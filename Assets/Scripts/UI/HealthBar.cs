@@ -1,11 +1,19 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Game.Units;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
     public class HealthBar : RawImage
     {
-        private const int MaxValue = 200;
+        public int MaxValue => army?.AttachedUnit.MaxHealth ?? -1;
+
+        private UnitController army;
+
+        public void AttachArmy(UnitController army)
+        {
+            this.army = army;
+        }
 
         private const float HeightWidthRatio = 0.1f;
 

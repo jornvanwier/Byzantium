@@ -106,7 +106,7 @@ namespace Assets.Scripts.Game
             camera = cameraObject.GetComponent<Camera>();
             camera.farClipPlane = 200000;
             camera.nearClipPlane = 0.01f;
-            camera.fieldOfView = 25;
+            camera.fieldOfView = 40;
 
             MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
 
@@ -161,9 +161,11 @@ namespace Assets.Scripts.Game
                     {
                         Vector3 intersection = ray.GetPoint(rayDistance);
 
-                        SelectedArmy.Goal = MapRendererScript.WorldToCubicalCoordinate(intersection);
+                        SelectedArmy.Teleport(intersection);
+                        //SelectedArmy.Goal = MapRendererScript.WorldToCubicalCoordinate(intersection);
                     }
                 }
+            SelectedArmy = Armies[1];
 
 
             UpdateCamera();
