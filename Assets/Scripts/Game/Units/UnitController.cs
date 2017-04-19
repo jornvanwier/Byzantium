@@ -185,18 +185,24 @@ namespace Assets.Scripts.Game.Units
             Goal = nearestEnemy.Position;
             Debug.Log("Tick " + Goal);
         }
+       
+
+        private void Attack(UnitController enemy)
+        {
+            enemy.AttachedUnit.Health -= 1;
+        }
 
         public void Update()
         {
             if (Time.realtimeSinceStartup % TimeBetweenEnemySearches < Time.deltaTime)
                 Battle();
 
-            if (enemies != null)
+            if (enemies != null && AttachedUnit.Position != Vector3.zero)
                 foreach (UnitController enemy in enemies)
                 {
                     float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
                     if (distance < AttackRange)
-                        Debug.Log("Attack!");
+                        Attack(enemy);
                 }
 
             if (mapRenderer.HexBoard != null && AttachedUnit != null && spawnPosition == Vector3.zero)

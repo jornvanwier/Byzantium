@@ -89,11 +89,8 @@ namespace Assets.Scripts.Game
 
             MeshDrawableUnit.UnitMeshes = PrefabMeshes;
 
-            if (!FactionManager.IsInitialized) FactionManager.Init(2);
-            Faction faction = FactionManager.Factions[0];
-
-            UnitBase unit = Cohort.CreateUniformMixedUnit(faction);
-            unit.Position = new Vector3(5, 0, 5);
+            if (!FactionManager.IsInitialized)
+                FactionManager.Init(2);
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Map;
 using Assets.Scripts.Util;
 using UnityEngine;
@@ -20,13 +21,41 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public virtual Int2 ChildrenDimensions { get; set; }
 
+        private int health = -1;
+
         public override int Health
         {
-            get { return storage[0].Health; }
+            get
+            {
+                if (health == -1)
+                {
+                    health = storage.Select(u => u.Health).Aggregate((x, y) => x + y);
+                }
+                return health;
+            }
             set
             {
+                int healthDifference = health - value;
+                health = value;
                 foreach (T child in this)
-                    child.Health = value;
+                {
+                    if (healthDifference > 0)
+                    {
+                        //give damage
+                        if (child.Health > healthDifference)
+                        {
+                            child.Health -= healthDifference;
+                            break;
+                        }
+                        healthDifference -= child.Health;
+                        child.Health = 0;
+                    }
+                    else
+                    {
+                        //give health
+
+                    }
+                }
             }
         }
 
