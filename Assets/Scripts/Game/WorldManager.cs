@@ -96,8 +96,7 @@ namespace Assets.Scripts.Game
 
             MeshDrawableUnit.UnitMeshes = PrefabMeshes;
 
-            if (!FactionManager.IsInitialized)
-                FactionManager.Init(2);
+            if (!FactionManager.IsInitialized) FactionManager.Init(2);
             Faction faction = FactionManager.Factions[0];
 
             UnitBase unit = Cohort.CreateUniformMixedUnit(faction);

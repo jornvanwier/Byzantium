@@ -159,6 +159,7 @@ namespace Assets.Scripts.UI
 
             texture2D.SetPixels(colors);
 
+            if (armies == null) return;
             foreach (UnitController army in armies)
             foreach (MeshDrawableUnit drawableUnit in army.AttachedUnit.AllUnits)
             {
