@@ -89,10 +89,10 @@ namespace Assets.Scripts.Map
             HexBoard = new HexBoard(MapSize) {Generator = new PerlinGenerator()};
             HexBoard.GenerateMap();
 
-            PathfindingJobManager.Map = HexBoard;
-
             SetupShader();
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
+
+            PathfindingJobManager.Map = HexBoard;
         }
 
         private void SetupShader()
