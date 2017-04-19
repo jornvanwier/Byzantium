@@ -97,10 +97,6 @@ namespace Assets.Scripts.Game
 
             if (!FactionManager.IsInitialized)
                 FactionManager.Init(2);
-            Faction faction = FactionManager.Factions[0];
-
-            UnitBase unit = Cohort.CreateUniformMixedUnit(faction);
-            unit.Position = new Vector3(5, 0, 5);
 
             MapRendererObject = Instantiate(MapRendererObject);
             MapRendererObject.name = "Map";
@@ -126,8 +122,8 @@ namespace Assets.Scripts.Game
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
 
-            SpawnArmy(Century.CreateMixedUnit(FactionManager.Factions[0]));
-            SpawnArmy(Legion.CreateStandardLegion(FactionManager.Factions[1]));
+            SpawnArmy(Contubernium.CreateSpearUnit(FactionManager.Factions[0]));
+            SpawnArmy(Contubernium.CreateSpearUnit(FactionManager.Factions[1]));
         }
 
         public void AttachInfoPanel(InfoPanel panel)

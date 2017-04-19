@@ -180,8 +180,19 @@ namespace Assets.Scripts.Game.Units
             //Debug.Log("Tick " + Goal);
         }
 
+        public void OnDrawGizmos()
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawCube(AttachedUnit.Position, new Vector3(AttachedUnit.DrawSize.y, 0, AttachedUnit.DrawSize.x));
+            Gizmos.color = Color.red;
+            Gizmos.DrawCube(AttachedUnit.Position, new Vector3(MeshDrawableUnit.manSize.y, 0, MeshDrawableUnit.manSize.x));
+        }
+
         public void Update()
         {
+            
+
+
             if (Time.realtimeSinceStartup % TimeBetweenEnemySearches < Time.deltaTime)
                 Battle();
 

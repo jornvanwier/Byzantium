@@ -63,9 +63,9 @@ namespace Assets.Scripts.Game.Units.Formation
 
             foreach (TChild child in unit)
             {
-                float x = spacing.x * (i % rowWidth) - spacing.x;
+                float x = spacing.x * (i % rowWidth);
                 // ReSharper disable once PossibleLossOfFraction
-                float z = spacing.y * (i / rowWidth) - spacing.y;
+                float z = spacing.y * (i / rowWidth);
 
                 localPositions.Add(new Vector3(x, 0, z));
 

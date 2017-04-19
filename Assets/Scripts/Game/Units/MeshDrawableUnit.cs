@@ -9,7 +9,6 @@ namespace Assets.Scripts.Game.Units
     {
         private const int StartHealth = 200;
         private readonly SoldierType soldierType;
-        private Vector3 oldPosition = Vector3.zero;
 
         public MeshDrawableUnit(SoldierType type)
         {
@@ -62,7 +61,10 @@ namespace Assets.Scripts.Game.Units
 
         public override int Health { get; set; } = StartHealth;
 
-        public override Vector2 DrawSize { get; } = new Vector2(0.22f, 0.16f);
+        public static readonly Vector2 horseSize = new Vector2(0.22f, 0.24f);
+        public static readonly Vector2 manSize = new Vector2(0.22f, 0.16f);
+
+        public override Vector2 DrawSize => IsCavalry ? horseSize : manSize;
 
         public override float DefaultSpeed => 1.5f;
 
@@ -264,8 +266,8 @@ namespace Assets.Scripts.Game.Units
                     Matrix4x4 m = Matrix4x4.TRS(units[i].Position, rotate, units[i].Transform.localScale);
                     matrices[i] = m;
                 }
-
-                Graphics.DrawMeshInstanced(mesh, 0, mat, matrices);
+                if (matrices.Count > 0)
+                    Graphics.DrawMeshInstanced(mesh, 0, mat, matrices.ToArray(), matrices.Count, null, UnityEngine.Rendering.ShadowCastingMode.Off, false);
             }
         }
 
@@ -306,7 +308,7 @@ namespace Assets.Scripts.Game.Units
                     }
 
                     if (matrices.Count > 0)
-                        Graphics.DrawMeshInstanced(mesh, 0, mat, matrices);
+                        Graphics.DrawMeshInstanced(mesh, 0, mat, matrices.ToArray(), matrices.Count, null, UnityEngine.Rendering.ShadowCastingMode.Off, false);
                 }
             }
         }
