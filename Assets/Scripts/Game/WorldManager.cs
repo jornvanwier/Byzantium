@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
@@ -50,24 +51,17 @@ namespace Assets.Scripts.Game
         private List<UnitController> Armies { get; } = new List<UnitController>();
 
 
-        private float CameraHeight
-        {
-            get { return cameraObject?.transform.position.y ?? 10; }
-        }
+        private float CameraHeight => cameraObject?.transform.position.y ?? 10;
 
-        private float CameraMoveSpeed
-        {
-            get { return InitialCameraMoveSpeed * CameraHeight; }
-        }
+        private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
 
-        private float ZoomSpeed
-        {
-            get { return InitialZoomSpeed * CameraHeight; }
-        }
+        private float ZoomSpeed => InitialZoomSpeed * CameraHeight;
 
         public UnitController SelectedArmy
         {
+            // ReSharper disable ArrangeAccessorOwnerBody
             get { return selectedArmy; }
+            // ReSharper restore ArrangeAccessorOwnerBody
             set
             {
                 DeselectAll();

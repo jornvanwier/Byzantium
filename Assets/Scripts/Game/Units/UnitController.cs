@@ -249,7 +249,7 @@ namespace Assets.Scripts.Game.Units
             else
             {
                 // Check on the state of the job
-                if (PathfindingJobManager.GetInfo(nextPathId).State == JobState.Failure)
+                if (PathfindingJobManager.GetInfo(nextPathId)?.State == JobState.Failure)
                 {
                     // Pathing has failed for some reason, lets try again
                     RequestNewPath();
