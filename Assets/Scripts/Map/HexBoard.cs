@@ -111,7 +111,7 @@ namespace Assets.Scripts.Map
         {
             if (!CheckCoordinate(start) && !CheckCoordinate(goal))
             {
-                Debug.Log("Start or end is outside of map!");
+                Debug.LogError("Start or end is outside of map!");
                 return null;
             }
 

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using Assets.Scripts.Util;
+using JetBrains.Annotations;
 
 namespace Assets.Scripts.Map.Pathfinding
 {
@@ -36,6 +37,7 @@ namespace Assets.Scripts.Map.Pathfinding
                 StartPos = start,
                 GoalPos = goal
             };
+
             ThreadPool.QueueUserWorkItem(PathfindBetween, jobInfo);
 
             Storage.Add(jobInfo.Id, jobInfo);
@@ -53,7 +55,7 @@ namespace Assets.Scripts.Map.Pathfinding
                 return Storage[id].State != JobState.Working;
             return false;
         }
-
+        
         public static void ClearJob(int id)
         {
             Storage.Remove(id);
@@ -61,23 +63,15 @@ namespace Assets.Scripts.Map.Pathfinding
 
         public static PathfindingJobInfo GetInfo(int id)
         {
-            return Storage[id];
+            return Storage.ContainsKey(id) ? Storage[id] : null;
         }
 
         public static void PathfindBetween(object state)
         {
             Utils.LogOperationTime("pathfind", () =>
             {
-                if (Map == null)
-                {
-                    using (StreamWriter sw = File.CreateText("log.txt"))
-                    {
-                        sw.WriteLine("map is null");
-                    }
-                    return;
-                }
                 var info = (PathfindingJobInfo) state;
-                info.Path = Map.FindPath(info.StartPos, info.GoalPos);
+                info.Path = Map?.FindPath(info.StartPos, info.GoalPos);
                 info.State = info.Path == null ? JobState.Failure : JobState.Success;
             });
         }

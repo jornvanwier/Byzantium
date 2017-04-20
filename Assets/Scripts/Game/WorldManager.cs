@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
@@ -50,24 +51,17 @@ namespace Assets.Scripts.Game
         private List<UnitController> Armies { get; } = new List<UnitController>();
 
 
-        private float CameraHeight
-        {
-            get { return cameraObject?.transform.position.y ?? 10; }
-        }
+        private float CameraHeight => cameraObject?.transform.position.y ?? 10;
 
-        private float CameraMoveSpeed
-        {
-            get { return InitialCameraMoveSpeed * CameraHeight; }
-        }
+        private float CameraMoveSpeed => InitialCameraMoveSpeed * CameraHeight;
 
-        private float ZoomSpeed
-        {
-            get { return InitialZoomSpeed * CameraHeight; }
-        }
+        private float ZoomSpeed => InitialZoomSpeed * CameraHeight;
 
         public UnitController SelectedArmy
         {
+            // ReSharper disable ArrangeAccessorOwnerBody
             get { return selectedArmy; }
+            // ReSharper restore ArrangeAccessorOwnerBody
             set
             {
                 DeselectAll();
@@ -106,6 +100,7 @@ namespace Assets.Scripts.Game
             camera = cameraObject.GetComponent<Camera>();
             camera.farClipPlane = 200000;
             camera.nearClipPlane = 0.01f;
+            camera.fieldOfView = 40;
 
             MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
 
@@ -135,6 +130,7 @@ namespace Assets.Scripts.Game
         private void SpawnArmy(UnitBase unit)
         {
             var obj = new GameObject("Army " + unit.Commander.Faction.Name);
+            obj.AddComponent<BoxCollider>();
             var unitController = obj.AddComponent<UnitController>();
             unitController.AttachCamera(camera);
             unitController.MapRenderer = MapRendererScript;
@@ -160,12 +156,19 @@ namespace Assets.Scripts.Game
                     {
                         Vector3 intersection = ray.GetPoint(rayDistance);
 
-                        SelectedArmy.Goal = MapRendererScript.WorldToCubicalCoordinate(intersection);
+                        if (Input.GetKey(KeyCode.LeftControl))
+                            SelectedArmy.Teleport(intersection);
+                        else
+                            SelectedArmy.Goal = MapRendererScript.WorldToCubicalCoordinate(intersection);
                     }
                 }
 
-
             UpdateCamera();
+
+            if (infoPanel.IsVisible)
+            {
+                infoPanel.Title = selectedArmy.AttachedUnit.Info;
+            }
         }
 
         private static Vector3 MultiplyVector(Vector3 v1, Vector3 v2)
@@ -298,23 +301,20 @@ namespace Assets.Scripts.Game
 
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
+                    bool spawnHit = false;
                     foreach (UnitController army in Armies)
+                    {
                         if (army.SpawnObject.transform == hit.transform)
-                            spawnPanel.Show(army);
-                }
-                else
-                {
-                    var plane = new Plane(Vector3.up, Vector3.zero);
-                    plane.Raycast(ray, out float rayDistance);
-                    Vector3 intersectPoint = ray.GetPoint(rayDistance);
-                    var intersect = new Vector2(intersectPoint.x, intersectPoint.z);
-
-                    foreach (UnitController controller in Armies)
-                        if (controller.AttachedUnit.Hitbox.Contains(intersect))
                         {
-                            SelectedArmy = controller;
+                            spawnPanel.Show(army);
+                            spawnHit = true;
                             break;
                         }
+                    }
+                    if (!spawnHit)
+                    {
+                        SelectedArmy = hit.transform.gameObject.GetComponent<UnitController>();
+                    }
                 }
             }
         }

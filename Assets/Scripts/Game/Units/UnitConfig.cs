@@ -6,7 +6,7 @@
         {
             Range = 1,
             Damage = 20,
-            AttackSpeed = 3,
+            AttackSpeed = 2,
             Defense = 0.9f,
             MovementSpeed = 1.2f
         };
@@ -15,7 +15,7 @@
         {
             Range = 2,
             Damage = 30,
-            AttackSpeed = 6,
+            AttackSpeed = 4,
             Defense = 0.6f,
             MovementSpeed = 1.5f
         };
@@ -24,7 +24,7 @@
         {
             Range = 5,
             Damage = 15,
-            AttackSpeed = 4,
+            AttackSpeed = 3,
             Defense = 1,
             MovementSpeed = 1.5f
         };
@@ -42,7 +42,7 @@
         {
             Range = 2.5f,
             Damage = 30,
-            AttackSpeed = 6,
+            AttackSpeed = 4,
             Defense = 0.7f,
             MovementSpeed = 2f
         };
@@ -51,13 +51,13 @@
         {
             Range = 5,
             Damage = 15,
-            AttackSpeed = 5,
+            AttackSpeed = 3,
             Defense = 1,
             MovementSpeed = 2f
         };
 
         public float Range { get; private set; }
-        public float Damage { get; private set; }
+        public int Damage { get; private set; }
         public float AttackSpeed { get; private set; }
         public float Defense { get; private set; }
         public float MovementSpeed { get; private set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Util;
 using UnityEngine;
 
@@ -7,7 +8,6 @@ namespace Assets.Scripts.Game.Units
 {
     public class MeshDrawableUnit : UnitBase
     {
-        private const int StartHealth = 200;
         private readonly SoldierType soldierType;
 
         public MeshDrawableUnit(SoldierType type)
@@ -51,6 +51,22 @@ namespace Assets.Scripts.Game.Units
             Material = m.GetComponent<MeshRenderer>().sharedMaterial;
             Transform = m.transform;
         }
+
+        private float lastAttack;
+
+        public void Attack(UnitBase enemy)
+        {
+            if (!(Time.realtimeSinceStartup - lastAttack > Config.AttackSpeed)) return;
+            if (enemy.AllUnits == null) return;
+
+            Debug.Log("Unit ATTACK!");
+            enemy.Health -= (int) (Config.Damage * enemy.AllUnits.First().Config.Defense);
+            lastAttack = Time.realtimeSinceStartup;
+        }
+
+        private const int StartHealth = 200;
+
+        public override int MaxHealth => StartHealth;
 
         public static List<GameObject> UnitMeshes { get; set; } = null;
 

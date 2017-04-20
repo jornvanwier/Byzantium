@@ -95,7 +95,7 @@ namespace Assets.Scripts.UI
             image = panel.GetComponent<Image>();
             miniMap = GameObject.Find("MiniMapBorder").GetComponent<Image>();
 
-            GameObject.Find("WorldManager").GetComponent<WorldManager>().AttachInfoPanel(this);
+            GameObject.Find("WorldManager")?.GetComponent<WorldManager>().AttachInfoPanel(this);
 
             UpdatePositionAndSize();
         }
@@ -110,13 +110,17 @@ namespace Assets.Scripts.UI
         public void Hide()
         {
             panel.SetActive(false);
+            IsVisible = false;
             //image.color = transparent;
         }
 
         public void Show()
         {
             panel.SetActive(true);
+            IsVisible = true;
             //image.color = Color.white;
         }
+
+        public bool IsVisible { get; private set; }
     }
 }

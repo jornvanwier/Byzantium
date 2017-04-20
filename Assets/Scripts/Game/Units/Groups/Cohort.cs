@@ -16,7 +16,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public void AddUnit(Contubernium unit)
         {
-            storage.PickRandom().AddUnit(unit);
+            Storage.PickRandom().AddUnit(unit);
             Set = Prefetch(this);
         }
 

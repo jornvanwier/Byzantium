@@ -4,6 +4,7 @@ using System.Linq;
 using Assets.Scripts.Game;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Groups;
+using Assets.Scripts.Map;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -32,7 +33,7 @@ namespace Assets.Scripts.UI
             {"SwordSoldier", SoldierType.Sword}
         };
 
-        private GameObject[] buttons = new GameObject[6 * 4];
+
         private GameObject centurySpawnerPanel;
         private GameObject cohortSpawnerPanel;
         private GameObject contuberniumSpawnerPanel;
@@ -118,7 +119,7 @@ namespace Assets.Scripts.UI
             panel.GetComponent<Image>();
             miniMap = GameObject.Find("MiniMapBorder").GetComponent<Image>();
 
-            GameObject.Find("WorldManager").GetComponent<WorldManager>().AttachSpawnPanel(this);
+            GameObject.Find("WorldManager")?.GetComponent<WorldManager>().AttachSpawnPanel(this);
 
             legionSpawnerPanel = GameObject.Find("LegionSpawnerPanel");
             cohortSpawnerPanel = GameObject.Find("CohortSpawnerPanel");
@@ -139,13 +140,7 @@ namespace Assets.Scripts.UI
         [UsedImplicitly]
         private void Update()
         {
-            //Debug.Log(selectedArmy?.AttachedUnit?.AllUnits?.Count());
             UpdatePositionAndSize();
-        }
-
-        private GameObject GetObjectByPosition()
-        {
-            return EventSystem.current.currentSelectedGameObject;
         }
 
         public void Hide()
@@ -189,6 +184,8 @@ namespace Assets.Scripts.UI
             SoldierType type = typeToSoldier[soldierName];
             UnitBase unit = typeToAction[groupName](selectedArmy.Faction, type);
             selectedArmy.AddUnit(unit);
+
+            UnitController.Teleport(selectedArmy.AttachedUnit.Position, unit);
         }
     }
 }

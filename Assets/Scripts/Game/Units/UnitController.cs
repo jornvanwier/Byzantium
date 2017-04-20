@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
@@ -6,6 +7,7 @@ using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.UI;
 using Assets.Scripts.Util;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Game.Units
 {
@@ -13,7 +15,7 @@ namespace Assets.Scripts.Game.Units
     {
         private const float RotationSpeed = 3.5f;
 
-        private const float AttackRange = 3;
+        private const float AttackRange = 8;
 
         private const float TimeBetweenEnemySearches = 5;
 
@@ -98,7 +100,6 @@ namespace Assets.Scripts.Game.Units
 
         public void CreateBuilding(Vector3 position)
         {
-            SpawnObject.AddComponent<BoxCollider>();
             SpawnObject.transform.position = position;
             SpawnObject.name = "Spawn " + Faction.Name;
         }
@@ -108,6 +109,8 @@ namespace Assets.Scripts.Game.Units
             mapRenderer = renderer;
         }
 
+        private new BoxCollider collider;
+
         public void Start()
         {
             Position = MapRenderer.WorldToCubicalCoordinate(transform.position);
@@ -116,12 +119,21 @@ namespace Assets.Scripts.Game.Units
             var obj = new GameObject("ArmyHealth");
             obj.transform.SetParent(GameObject.Find("uiCanvas").transform);
             HealthBar = obj.AddComponent<HealthBar>();
+            HealthBar.AttachArmy(this);
+            collider = GetComponent<BoxCollider>();
+            collider.size = new Vector3(4.84f, 1, 29.39f);
+            collider.center = new Vector3(-1.69f, 0.44f, -4.84f);
+            collider.center = new Vector3(0, 0.5f, 0);
         }
-
 
         public void AttachCamera(Camera camera)
         {
             this.camera = camera;
+        }
+
+        public static void Teleport(Vector3 loc, UnitBase unit)
+        {
+            unit.SetPositionInstant(loc);
         }
 
         public void Teleport(Vector3 loc)
@@ -130,7 +142,7 @@ namespace Assets.Scripts.Game.Units
             Position = MapRenderer.WorldToCubicalCoordinate(loc);
             previousPosition = Position;
             movementDrawOffset = new Vector3(0, 0, 0);
-            AttachedUnit.SetPositionInstant(loc);
+            Teleport(loc, AttachedUnit);
         }
 
         private void UpdateHealthBar()
@@ -142,12 +154,6 @@ namespace Assets.Scripts.Game.Units
             HealthBar.PosY = point.y;
 
             HealthBar.Value = AttachedUnit.Health;
-        }
-
-
-        private void CombatTick()
-        {
-            // Check range
         }
 
 
@@ -180,36 +186,38 @@ namespace Assets.Scripts.Game.Units
             //Debug.Log("Tick " + Goal);
         }
 
-        public void OnDrawGizmos()
+
+        private void Attack(UnitController enemy)
         {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawCube(AttachedUnit.Position, new Vector3(AttachedUnit.DrawSize.x, 0, AttachedUnit.DrawSize.y));
-            Gizmos.color = Color.red;
-            Gizmos.DrawCube(AttachedUnit.Position, new Vector3(MeshDrawableUnit.manSize.x, 0, MeshDrawableUnit.manSize.y));
+            foreach (MeshDrawableUnit unit in AttachedUnit.AllUnits)
+            {
+                float distance = Vector3.Distance(enemy.AttachedUnit.Position, unit.Position);
+                if (distance < AttackRange)
+                    unit.Attack(enemy.AttachedUnit);
+            }
         }
 
         public void Update()
         {
-            
-
+            collider.size = new Vector3(AttachedUnit.DrawSize.y * 2, 1, AttachedUnit.DrawSize.x * 3);
 
             if (Time.realtimeSinceStartup % TimeBetweenEnemySearches < Time.deltaTime)
                 Battle();
 
-            if (enemies != null)
+            if (enemies != null && AttachedUnit.Position != Vector3.zero)
                 foreach (UnitController enemy in enemies)
                 {
                     float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
                     if (distance < AttackRange)
-                        Debug.Log("Attack!");
+                        Attack(enemy);
                 }
 
             if (mapRenderer.HexBoard != null && AttachedUnit != null && spawnPosition == Vector3.zero)
             {
                 spawnPosition = GetSpawnPosition();
-                CreateBuilding(spawnPosition);
+                CreateBuilding(spawnPosition + new Vector3(7, 0, 0));
                 Teleport(spawnPosition);
-                camera.transform.position = spawnPosition + new Vector3(5, 10, 0);
+                camera.transform.position = spawnPosition + new Vector3(-30, 15, 0);
                 camera.transform.LookAt(spawnPosition);
             }
 
@@ -243,7 +251,7 @@ namespace Assets.Scripts.Game.Units
             else
             {
                 // Check on the state of the job
-                if (PathfindingJobManager.GetInfo(nextPathId).State == JobState.Failure)
+                if (PathfindingJobManager.GetInfo(nextPathId)?.State == JobState.Failure)
                 {
                     // Pathing has failed for some reason, lets try again
                     RequestNewPath();
