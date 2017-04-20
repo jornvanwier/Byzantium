@@ -92,7 +92,7 @@ namespace Assets.Scripts.Map
             SetupShader();
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
 
-            PathfindingJobManager.Map = HexBoard;
+            PathfindingJobManager.Init(HexBoard);
         }
 
         private void SetupShader()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units.Groups;
@@ -175,15 +176,15 @@ namespace Assets.Scripts.Game.Units
 
         private void Battle()
         {
-            //UnitController nearestEnemy = NearestEnemy();
-            //if (nearestEnemy == null)
-            //{
-            //    Debug.LogError("Nearest enemy is null");
-            //    return;
-            //}
+            UnitController nearestEnemy = NearestEnemy();
+            if (nearestEnemy == null)
+            {
+                Debug.LogError("Nearest enemy is null");
+                return;
+            }
 
-            //Goal = nearestEnemy.Position;
-            //Debug.Log("Tick " + Goal);
+            Goal = nearestEnemy.Position;
+            Debug.Log("Tick " + Goal);
         }
 
 
@@ -200,9 +201,11 @@ namespace Assets.Scripts.Game.Units
         public void Update()
         {
             collider.size = new Vector3(AttachedUnit.DrawSize.x, 1, AttachedUnit.DrawSize.y);
-
+            
             if (Time.realtimeSinceStartup % TimeBetweenEnemySearches < Time.deltaTime)
+            {
                 Battle();
+            }
 
             if (enemies != null && AttachedUnit.Position != Vector3.zero)
                 foreach (UnitController enemy in enemies)

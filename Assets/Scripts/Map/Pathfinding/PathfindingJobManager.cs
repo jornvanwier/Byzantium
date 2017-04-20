@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using Assets.Scripts.Util;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Assets.Scripts.Map.Pathfinding
 {
@@ -28,6 +29,31 @@ namespace Assets.Scripts.Map.Pathfinding
     {
         private static readonly Dictionary<int, PathfindingJobInfo> Storage = new Dictionary<int, PathfindingJobInfo>();
 
+        private static Thread Worker { get; set; }
+
+        private static Queue<PathfindingJobInfo> WorkQueue { get; } = new Queue<PathfindingJobInfo>(10);
+
+        private static EventWaitHandle Handle { get; } = new EventWaitHandle(false, EventResetMode.ManualReset);
+
+        public static void Init(HexBoard map)
+        {
+            Map = map;
+            Worker = new Thread(DoWork);
+            Worker.Start();
+        }
+
+        public static void DoWork()
+        {
+            for (;;)
+            {
+                if (WorkQueue.Count < 1)
+                {
+                    Handle.WaitOne();
+                }
+                PathfindBetween(WorkQueue.Dequeue());
+            }
+        }
+
         public static HexBoard Map { get; set; }
 
         public static int CreateJob(CubicalCoordinate start, CubicalCoordinate goal)
@@ -38,9 +64,19 @@ namespace Assets.Scripts.Map.Pathfinding
                 GoalPos = goal
             };
 
-            ThreadPool.QueueUserWorkItem(PathfindBetween, jobInfo);
+            if (Storage.ContainsKey(jobInfo.Id))
+            {
+                Debug.LogError("Duplicate job id");
+                return -1;
+            }
+
+//            ThreadPool.QueueUserWorkItem(PathfindBetween, jobInfo);
+//            PathfindBetween(jobInfo);
+//            Task.Factory.StartNew(() => PathfindBetween(jobInfo));
 
             Storage.Add(jobInfo.Id, jobInfo);
+            WorkQueue.Enqueue(jobInfo);
+            Handle.Set();
             return jobInfo.Id;
         }
 
