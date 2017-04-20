@@ -31,9 +31,7 @@ namespace Assets.Scripts.Map.Pathfinding
 
         private static Thread Worker { get; set; }
 
-        private static Queue<PathfindingJobInfo> WorkQueue { get; } = new Queue<PathfindingJobInfo>(10);
-
-        private static EventWaitHandle Handle { get; } = new EventWaitHandle(false, EventResetMode.ManualReset);
+        private static Queue<PathfindingJobInfo> WorkQueue { get; } = new Queue<PathfindingJobInfo>();
 
         public static void Init(HexBoard map)
         {
@@ -48,9 +46,18 @@ namespace Assets.Scripts.Map.Pathfinding
             {
                 if (WorkQueue.Count < 1)
                 {
-                    Handle.WaitOne();
+                    // Replace with less retarded thing
+                    Thread.Sleep(100);
+                    continue;
                 }
-                PathfindBetween(WorkQueue.Dequeue());
+
+                PathfindingJobInfo job;
+                lock (WorkQueue)
+                {
+                    job = WorkQueue.Dequeue();
+                }
+
+                PathfindBetween(job);
             }
         }
 
@@ -70,13 +77,13 @@ namespace Assets.Scripts.Map.Pathfinding
                 return -1;
             }
 
-//            ThreadPool.QueueUserWorkItem(PathfindBetween, jobInfo);
-//            PathfindBetween(jobInfo);
-//            Task.Factory.StartNew(() => PathfindBetween(jobInfo));
-
             Storage.Add(jobInfo.Id, jobInfo);
-            WorkQueue.Enqueue(jobInfo);
-            Handle.Set();
+            
+            lock (WorkQueue)
+            {
+                WorkQueue.Enqueue(jobInfo);
+            }
+
             return jobInfo.Id;
         }
 
@@ -91,7 +98,7 @@ namespace Assets.Scripts.Map.Pathfinding
                 return Storage[id].State != JobState.Working;
             return false;
         }
-        
+
         public static void ClearJob(int id)
         {
             Storage.Remove(id);
