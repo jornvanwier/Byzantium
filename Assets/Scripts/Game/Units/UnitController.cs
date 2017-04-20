@@ -15,7 +15,7 @@ namespace Assets.Scripts.Game.Units
     {
         private const float RotationSpeed = 3.5f;
 
-        private const float AttackRange = 3;
+        private const float AttackRange = 8;
 
         private const float TimeBetweenEnemySearches = 5;
 
