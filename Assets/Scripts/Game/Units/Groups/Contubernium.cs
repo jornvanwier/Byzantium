@@ -47,7 +47,7 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             var contuberium = new Contubernium(faction) {Formation = new SquareFormation()};
 
-            for (int i = 0; i < 10000; ++i)
+            for (int i = 0; i < 16; ++i)
             {
                 var mdm = new MeshDrawableUnit(unitType);
                 contuberium.AddUnit(mdm);
