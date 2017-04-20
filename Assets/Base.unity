@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
-    serializedVersion: 7
+    serializedVersion: 8
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -71,9 +71,10 @@ LightmapSettings:
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
-    m_StationaryBakeMode: 3
+    m_MixedBakeMode: 3
     m_BakeBackend: 0
     m_PVRSampling: 1
+    m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 500
     m_PVRBounces: 2
     m_PVRFiltering: 0
@@ -2449,7 +2450,7 @@ MonoBehaviour:
   - {fileID: 1743250415104250, guid: a1634c8ca074fd1429e34e1b6c6b6dd1, type: 2}
   - {fileID: 1729285678387412, guid: ec8d39f816a332a44a94c02b1f2f1dbb, type: 2}
   - {fileID: 1866580240292292, guid: d1a8dfeb929b4134b837f4c433c25f9a, type: 2}
-  SpawnObject: {fileID: 1618932876700980, guid: fd85142f2b8909f4c81e7cd16ed41660,
+  SpawnObject: {fileID: 1789233098254062, guid: 02539d35046cd8041b546709e55c8413,
     type: 2}
 --- !u!1 &1139447651
 GameObject:
@@ -6443,11 +6444,11 @@ Light:
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0
+    m_Strength: 0.385
+    m_Bias: 0.1
     m_NormalBias: 0.4
     m_NearPlane: 0.2
   m_Cookie: {fileID: 0}
@@ -6460,7 +6461,8 @@ Light:
   m_Lightmapping: 4
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_CCT: 6500
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &1818346143

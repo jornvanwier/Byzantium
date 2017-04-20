@@ -199,7 +199,7 @@ namespace Assets.Scripts.Game.Units
 
         public void Update()
         {
-            collider.size = new Vector3(AttachedUnit.DrawSize.y * 2, 1, AttachedUnit.DrawSize.x * 3);
+            collider.size = new Vector3(AttachedUnit.DrawSize.x, 1, AttachedUnit.DrawSize.y);
 
             if (Time.realtimeSinceStartup % TimeBetweenEnemySearches < Time.deltaTime)
                 Battle();
