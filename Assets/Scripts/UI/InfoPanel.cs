@@ -110,13 +110,17 @@ namespace Assets.Scripts.UI
         public void Hide()
         {
             panel.SetActive(false);
+            IsVisible = false;
             //image.color = transparent;
         }
 
         public void Show()
         {
             panel.SetActive(true);
+            IsVisible = true;
             //image.color = Color.white;
         }
+
+        public bool IsVisible { get; private set; }
     }
 }

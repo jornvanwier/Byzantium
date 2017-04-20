@@ -56,7 +56,7 @@ namespace Assets.Scripts.Game.Units.Groups
                         }
                         healthDifference -= child.Health;
                         child.Health = 0;
-                        RemoveUnit(child);
+                        //RemoveUnit(child);
                     }
                     else//Give health
                     {

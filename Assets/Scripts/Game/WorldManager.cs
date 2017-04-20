@@ -165,6 +165,11 @@ namespace Assets.Scripts.Game
                 }
 
             UpdateCamera();
+
+            if (infoPanel.IsVisible)
+            {
+                infoPanel.Title = selectedArmy.AttachedUnit.Info;
+            }
         }
 
         private static Vector3 MultiplyVector(Vector3 v1, Vector3 v2)

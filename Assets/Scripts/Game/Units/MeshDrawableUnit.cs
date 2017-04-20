@@ -53,10 +53,16 @@ namespace Assets.Scripts.Game.Units
             Transform = m.transform;
         }
 
+        private float lastAttack;
+
         public void Attack(UnitBase enemy)
         {
-            if (enemy.AllUnits != null)
-                enemy.Health -= (int) (Config.Damage * enemy.AllUnits.First().Config.Defense);
+            if (!(Time.realtimeSinceStartup - lastAttack > Config.AttackSpeed)) return;
+            if (enemy.AllUnits == null) return;
+
+            Debug.Log("Unit ATTACK!");
+            enemy.Health -= (int) (Config.Damage * enemy.AllUnits.First().Config.Defense);
+            lastAttack = Time.realtimeSinceStartup;
         }
 
         private const int StartHealth = 200;
