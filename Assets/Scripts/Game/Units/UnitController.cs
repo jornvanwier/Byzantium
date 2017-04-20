@@ -7,6 +7,7 @@ using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.UI;
 using Assets.Scripts.Util;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Game.Units
 {
@@ -99,7 +100,6 @@ namespace Assets.Scripts.Game.Units
 
         public void CreateBuilding(Vector3 position)
         {
-            SpawnObject.AddComponent<BoxCollider>();
             SpawnObject.transform.position = position;
             SpawnObject.name = "Spawn " + Faction.Name;
         }
@@ -108,6 +108,8 @@ namespace Assets.Scripts.Game.Units
         {
             mapRenderer = renderer;
         }
+
+        private new BoxCollider collider;
 
         public void Start()
         {
@@ -118,6 +120,10 @@ namespace Assets.Scripts.Game.Units
             obj.transform.SetParent(GameObject.Find("uiCanvas").transform);
             HealthBar = obj.AddComponent<HealthBar>();
             HealthBar.AttachArmy(this);
+            collider = GetComponent<BoxCollider>();
+            collider.size = new Vector3(4.84f, 1, 29.39f);
+            collider.center = new Vector3(-1.69f, 0.44f, -4.84f);
+            collider.center = new Vector3(0, 0.5f, 0);
         }
 
         public void AttachCamera(Camera camera)
@@ -148,12 +154,6 @@ namespace Assets.Scripts.Game.Units
             HealthBar.PosY = point.y;
 
             HealthBar.Value = AttachedUnit.Health;
-        }
-
-
-        private void CombatTick()
-        {
-            // Check range
         }
 
 
@@ -199,6 +199,8 @@ namespace Assets.Scripts.Game.Units
 
         public void Update()
         {
+            collider.size = new Vector3(AttachedUnit.DrawSize.y * 2, 1, AttachedUnit.DrawSize.x * 3);
+
             if (Time.realtimeSinceStartup % TimeBetweenEnemySearches < Time.deltaTime)
                 Battle();
 
@@ -213,7 +215,7 @@ namespace Assets.Scripts.Game.Units
             if (mapRenderer.HexBoard != null && AttachedUnit != null && spawnPosition == Vector3.zero)
             {
                 spawnPosition = GetSpawnPosition();
-                CreateBuilding(spawnPosition);
+                CreateBuilding(spawnPosition + new Vector3(7, 0, 0));
                 Teleport(spawnPosition);
                 camera.transform.position = spawnPosition + new Vector3(-30, 15, 0);
                 camera.transform.LookAt(spawnPosition);
@@ -318,7 +320,7 @@ namespace Assets.Scripts.Game.Units
             nextPathId = PathfindingJobManager.CreateJob(Position, Goal);
             Debug.Log($"{Faction.Name} requested new path with id {nextPathId}.");
         }
-   
+
         protected bool IsPathValid()
         {
             return currentPathInfo?.GoalPos == Goal;

@@ -117,7 +117,8 @@ namespace Assets.Scripts.Game
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
 
-            SpawnArmy(Century.CreateMixedUnit(FactionManager.Factions[0]));
+            //SpawnArmy(Century.CreateMixedUnit(FactionManager.Factions[0]));
+            SpawnArmy(Legion.CreateStandardLegion(FactionManager.Factions[0]));
             SpawnArmy(Legion.CreateStandardLegion(FactionManager.Factions[1]));
         }
 
@@ -130,6 +131,7 @@ namespace Assets.Scripts.Game
         private void SpawnArmy(UnitBase unit)
         {
             var obj = new GameObject("Army " + unit.Commander.Faction.Name);
+            obj.AddComponent<BoxCollider>();
             var unitController = obj.AddComponent<UnitController>();
             unitController.AttachCamera(camera);
             unitController.MapRenderer = MapRendererScript;
@@ -155,12 +157,12 @@ namespace Assets.Scripts.Game
                     {
                         Vector3 intersection = ray.GetPoint(rayDistance);
 
-                        SelectedArmy.Teleport(intersection);
-                        //SelectedArmy.Goal = MapRendererScript.WorldToCubicalCoordinate(intersection);
+                        if (Input.GetKey(KeyCode.LeftControl))
+                            SelectedArmy.Teleport(intersection);
+                        else
+                            SelectedArmy.Goal = MapRendererScript.WorldToCubicalCoordinate(intersection);
                     }
                 }
-            SelectedArmy = Armies[1];
-
 
             UpdateCamera();
         }
@@ -295,23 +297,20 @@ namespace Assets.Scripts.Game
 
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
+                    bool spawnHit = false;
                     foreach (UnitController army in Armies)
+                    {
                         if (army.SpawnObject.transform == hit.transform)
-                            spawnPanel.Show(army);
-                }
-                else
-                {
-                    var plane = new Plane(Vector3.up, Vector3.zero);
-                    plane.Raycast(ray, out float rayDistance);
-                    Vector3 intersectPoint = ray.GetPoint(rayDistance);
-                    var intersect = new Vector2(intersectPoint.x, intersectPoint.z);
-
-                    foreach (UnitController controller in Armies)
-                        if (controller.AttachedUnit.Hitbox.Contains(intersect))
                         {
-                            SelectedArmy = controller;
+                            spawnPanel.Show(army);
+                            spawnHit = true;
                             break;
                         }
+                    }
+                    if (!spawnHit)
+                    {
+                        SelectedArmy = hit.transform.gameObject.GetComponent<UnitController>();
+                    }
                 }
             }
         }
