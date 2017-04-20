@@ -45,9 +45,9 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Contubernium CreateCustomUnit(Faction faction, SoldierType unitType)
         {
-            var contuberium = new Contubernium(faction) {Formation = new SetColumnFormation(2)};
+            var contuberium = new Contubernium(faction) {Formation = new SquareFormation()};
 
-            for (int i = 0; i < 2; ++i)
+            for (int i = 0; i < 10000; ++i)
             {
                 var mdm = new MeshDrawableUnit(unitType);
                 contuberium.AddUnit(mdm);

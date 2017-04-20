@@ -61,8 +61,8 @@ namespace Assets.Scripts.Game.Units
 
         public override int Health { get; set; } = StartHealth;
 
-        public static readonly Vector2 horseSize = new Vector2(0.22f, 0.24f);
-        public static readonly Vector2 manSize = new Vector2(0.22f, 0.16f);
+        public static readonly Vector2 horseSize = new Vector2(0.4f, 1.0f);
+        public static readonly Vector2 manSize = new Vector2(0.4f, 0.5f);
 
         public override Vector2 DrawSize => IsCavalry ? horseSize : manSize;
 

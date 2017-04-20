@@ -2,6 +2,7 @@
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
 using UnityEngine;
+using System.Linq;
 
 namespace Assets.Scripts.Game.Units.Formation
 {
@@ -57,21 +58,35 @@ namespace Assets.Scripts.Game.Units.Formation
         {
             var localPositions = new List<Vector3>();
 
-            int i = 0;
+            int unitCount = unit.UnitCount;
 
-            Vector2 spacing = unit.DrawSize;
 
+            Vector2 spacing = unit.First().DrawSize;
+            Vector2 offsets;
+
+            offsets.x = (columnHeight / 2.0f) * spacing.x - (spacing.x / 2.0f);
+            offsets.y = (rowWidth / 2.0f) * spacing.y - (spacing.y / 2.0f);
+
+            offsets *= -1;
+
+            int inRowCounter = 0;
+            int inColumnCounter = 0;
             foreach (TChild child in unit)
             {
-                float x = spacing.x * (i % rowWidth);
-                // ReSharper disable once PossibleLossOfFraction
-                float z = spacing.y * (i / rowWidth);
+                float x = offsets.x + inColumnCounter * spacing.x;
+                float y = offsets.y + inRowCounter * spacing.y;
 
-                localPositions.Add(new Vector3(x, 0, z));
+                localPositions.Add(new Vector3(x,0,y));
 
-                ++i;
+                ++inColumnCounter;
+                if (inColumnCounter >= columnHeight)
+                {
+                    inColumnCounter = 0;
+                    inRowCounter++;
+                }
+
             }
-
+            
             ProcessLocalOffsets<T, TChild>(localPositions, unit, instant);
 
             unit.ChildrenDimensions = new Int2(columnHeight, rowWidth);

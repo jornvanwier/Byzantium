@@ -14,7 +14,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Century CreateMixedUnit(Faction faction)
         {
-            var century = new Century(faction) {Formation = new SetColumnFormation(2)};
+            var century = new Century(faction) {Formation = new SquareFormation()};
 
             // Frontline with swords
             for (int i = 0; i < 2; ++i)
@@ -33,7 +33,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Century CreateSwordCavalryUnit(Faction faction)
         {
-            var century = new Century(faction) {Formation = new SetColumnFormation(2)};
+            var century = new Century(faction) {Formation = new SquareFormation()};
 
             for (int i = 0; i < 4; i++)
                 century.AddUnit(Contubernium.CreateSwordCavalryUnit(faction));
@@ -45,7 +45,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Century CreateCustomUnit(Faction faction, SoldierType type)
         {
-            var century = new Century(faction) {Formation = new SetColumnFormation(2)};
+            var century = new Century(faction) {Formation = new SquareFormation()};
 
             for (int i = 0; i < 4; i++)
             {

@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Game.Units.Formation.LegionFormation;
+﻿using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Util;
 using static Assets.Scripts.Game.Units.MeshDrawableUnit;
 
@@ -30,7 +30,7 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             var legion = new Legion(faction)
             {
-                Formation = new MarchingFormation()
+                Formation = new SquareFormation()
             };
 
             legion.AddUnit(Cohort.CreateCavalryUnit(faction));
@@ -45,7 +45,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Legion CreateCustomUnit(Faction faction, SoldierType type)
         {
-            var legion = new Legion(faction) {Formation = new MarchingFormation()};
+            var legion = new Legion(faction) {Formation = new SquareFormation()};
 
             for (int i = 0; i < 4; i++)
             {

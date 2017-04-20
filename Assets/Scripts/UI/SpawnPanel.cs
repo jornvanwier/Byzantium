@@ -139,7 +139,7 @@ namespace Assets.Scripts.UI
         [UsedImplicitly]
         private void Update()
         {
-            Debug.Log(selectedArmy?.AttachedUnit?.AllUnits?.Count());
+            //Debug.Log(selectedArmy?.AttachedUnit?.AllUnits?.Count());
             UpdatePositionAndSize();
         }
 

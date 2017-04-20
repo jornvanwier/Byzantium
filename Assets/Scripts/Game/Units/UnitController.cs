@@ -183,9 +183,9 @@ namespace Assets.Scripts.Game.Units
         public void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawCube(AttachedUnit.Position, new Vector3(AttachedUnit.DrawSize.y, 0, AttachedUnit.DrawSize.x));
+            Gizmos.DrawCube(AttachedUnit.Position, new Vector3(AttachedUnit.DrawSize.x, 0, AttachedUnit.DrawSize.y));
             Gizmos.color = Color.red;
-            Gizmos.DrawCube(AttachedUnit.Position, new Vector3(MeshDrawableUnit.manSize.y, 0, MeshDrawableUnit.manSize.x));
+            Gizmos.DrawCube(AttachedUnit.Position, new Vector3(MeshDrawableUnit.manSize.x, 0, MeshDrawableUnit.manSize.y));
         }
 
         public void Update()
