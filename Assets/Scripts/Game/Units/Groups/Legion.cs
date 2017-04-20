@@ -1,5 +1,7 @@
-﻿using Assets.Scripts.Game.Units.Formation;
+﻿using System;
+using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Util;
+using UnityEngine;
 using static Assets.Scripts.Game.Units.MeshDrawableUnit;
 
 namespace Assets.Scripts.Game.Units.Groups
@@ -13,6 +15,8 @@ namespace Assets.Scripts.Game.Units.Groups
         public override string UnitName => "Legion";
 
         public override float DefaultSpeed => 1.5f;
+
+        public override Vector2 GroupSpacing => new Vector2(1.0f, 1.0f);
 
         public void AddUnit(Century unit)
         {

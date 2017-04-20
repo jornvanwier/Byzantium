@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Game.Units.Formation;
+﻿using System;
+using Assets.Scripts.Game.Units.Formation;
+using UnityEngine;
 using static Assets.Scripts.Game.Units.MeshDrawableUnit;
 
 namespace Assets.Scripts.Game.Units.Groups
@@ -12,6 +14,8 @@ namespace Assets.Scripts.Game.Units.Groups
         public override string UnitName => "Contubernium";
 
         public override float DefaultSpeed => 1.5f;
+
+        public override Vector2 GroupSpacing => new Vector2(0.1f, 0.1f);
 
         public static Contubernium CreateSpearCavalryUnit(Faction faction)
         {

@@ -90,11 +90,12 @@ namespace Assets.Scripts.Game.Units.Groups
                 Order();
             }
         }
-
+        
+        public abstract Vector2 GroupSpacing { get; }
 
         public override int UnitCount => Storage.Count;
 
-        public override Vector2 DrawSize => Vector2.Scale(Storage[0].DrawSize, ChildrenDimensions) + new  Vector2(0.2f, 0.2f);
+        public override Vector2 DrawSize => Vector2.Scale(Storage[0].DrawSize, ChildrenDimensions) + GroupSpacing;
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {
