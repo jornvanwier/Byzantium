@@ -46,6 +46,8 @@ namespace Assets.Scripts.Game.Units
 
         public GameObject SpawnObject { get; set; }
 
+        public HashSet<CubicalCoordinate> WalkedAfterRequest { get; set; }
+
 
         public void AddUnit(Cohort unit)
         {
@@ -264,6 +266,8 @@ namespace Assets.Scripts.Game.Units
                     currentPathInfo = PathfindingJobManager.GetInfo(nextPathId);
                     PathfindingJobManager.ClearJob(nextPathId);
 
+                    RemoveWalkedPath();
+
                     nextPathId = -1;
                 }
             }
@@ -275,6 +279,8 @@ namespace Assets.Scripts.Game.Units
 
             if (currentPathInfo.Path[0] == Position)
             {
+                WalkedAfterRequest?.Add(Position);
+
                 currentPathInfo.Path.RemoveAt(0);
                 previousPosition = Position;
                 movementDrawOffset = currentPos - MapRenderer.CubicalCoordinateToWorld(previousPosition);
@@ -289,6 +295,16 @@ namespace Assets.Scripts.Game.Units
                 Quaternion.LookRotation(nextPos - MapRenderer.CubicalCoordinateToWorld(currentPathInfo.Path[0])),
                 Time.deltaTime * RotationSpeed)
             );
+        }
+
+        protected void RemoveWalkedPath()
+        {
+            while (WalkedAfterRequest.Contains(currentPathInfo.Path[0]))
+            {
+                currentPathInfo.Path.RemoveAt(0);
+            }
+
+            WalkedAfterRequest = null;
         }
 
         protected void SetUnitWorldPos(Vector3 position)
@@ -322,6 +338,7 @@ namespace Assets.Scripts.Game.Units
         {
             nextPathId = PathfindingJobManager.CreateJob(Position, Goal);
             Debug.Log($"{Faction.Name} requested new path with id {nextPathId}.");
+            WalkedAfterRequest = new HashSet<CubicalCoordinate> {Position};
         }
 
         protected bool IsPathValid()
