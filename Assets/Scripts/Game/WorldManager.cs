@@ -117,8 +117,8 @@ namespace Assets.Scripts.Game
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
 
-            SpawnArmy(Cohort.CreateCavalryUnit(FactionManager.Factions[0]));
-            SpawnArmy(Cohort.CreateUniformMixedUnit(FactionManager.Factions[1]));
+            SpawnArmy(Contubernium.CreateSpearUnit(FactionManager.Factions[0]));
+            SpawnArmy(Contubernium.CreateBowCavalryUnit(FactionManager.Factions[1]));
         }
 
         public void AttachInfoPanel(InfoPanel panel)

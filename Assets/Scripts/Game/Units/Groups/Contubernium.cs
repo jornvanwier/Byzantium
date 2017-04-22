@@ -1,5 +1,6 @@
 ﻿using System;
 using Assets.Scripts.Game.Units.Formation;
+using Assets.Scripts.Game.Units.Formation.ContuberniumFormation;
 using UnityEngine;
 using static Assets.Scripts.Game.Units.MeshDrawableUnit;
 
@@ -49,9 +50,9 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Contubernium CreateCustomUnit(Faction faction, SoldierType unitType)
         {
-            var contuberium = new Contubernium(faction) {Formation = new SquareFormation()};
+            var contuberium = new Contubernium(faction) {Formation = new OrbFormation()};
 
-            for (int i = 0; i < 16; ++i)
+            for (int i = 0; i < 8; ++i)
             {
                 var mdm = new MeshDrawableUnit(unitType);
                 contuberium.AddUnit(mdm);

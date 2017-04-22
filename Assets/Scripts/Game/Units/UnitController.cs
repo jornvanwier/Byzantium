@@ -129,6 +129,14 @@ namespace Assets.Scripts.Game.Units
             collider.center = new Vector3(0, 0.5f, 0);
         }
 
+        public void OnDrawGizmos()
+        {
+            Color c = Color.cyan;
+            c.a = 0.4f;
+            Gizmos.color = c;
+            Gizmos.DrawCube(AttachedUnit.Position, new Vector3(AttachedUnit.DrawSize.x, 0, AttachedUnit.DrawSize.y));
+        }
+
         public void AttachCamera(Camera camera)
         {
             this.camera = camera;

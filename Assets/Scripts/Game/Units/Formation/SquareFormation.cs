@@ -71,7 +71,7 @@ namespace Assets.Scripts.Game.Units.Formation
 
             int inRowCounter = 0;
             int inColumnCounter = 0;
-            foreach (TChild child in unit)
+            for (int i = 0; i < unitCount; i++)
             {
                 float x = offsets.x + inColumnCounter * spacing.x;
                 float y = offsets.y + inRowCounter * spacing.y;
@@ -79,6 +79,7 @@ namespace Assets.Scripts.Game.Units.Formation
                 localPositions.Add(new Vector3(x,0,y));
 
                 ++inColumnCounter;
+
                 if (inColumnCounter >= columnHeight)
                 {
                     inColumnCounter = 0;
