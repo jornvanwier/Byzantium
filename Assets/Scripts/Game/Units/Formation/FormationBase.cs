@@ -16,11 +16,18 @@ namespace Assets.Scripts.Game.Units.Formation
         protected static void ProcessLocalOffsets<T, TChild>(IList<Vector3> offsetPositions, T unit, bool instant)
             where T : UnitGroup<TChild> where TChild : UnitBase
         {
+            ProcessLocalOffsets(offsetPositions, unit, unit, instant);
+        }
+
+
+        protected static void ProcessLocalOffsets<T, TChild>(IList<Vector3> offsetPositions, T unit, IEnumerable<TChild> children, bool instant)
+            where T : UnitGroup<TChild> where TChild : UnitBase
+        {
             float maxDist = 0.0f;
             int i = 0;
             Vector3 position = unit.Position;
 
-            foreach (TChild child in unit)
+            foreach (TChild child in children)
             {
                 Vector3 newPosition = unit.Rotation * offsetPositions[i];
                 Vector3 targetPosition = newPosition + position;

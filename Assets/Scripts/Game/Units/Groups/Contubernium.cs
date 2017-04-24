@@ -50,7 +50,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Contubernium CreateCustomUnit(Faction faction, SoldierType unitType)
         {
-            var contuberium = new Contubernium(faction) {Formation = new OrbFormation()};
+            var contuberium = new Contubernium(faction) {Formation = new SquareFormation()};
 
             for (int i = 0; i < 8; ++i)
             {
