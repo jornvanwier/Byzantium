@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Assets.Scripts.Game.Units.Controllers;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Util;
@@ -31,6 +30,8 @@ namespace Assets.Scripts.Game.Units.Groups
         public override Vector2 GroupSpacing => new Vector2(0.1f, 0.1f);
 
         public UnitConfig Config { get; private set; }
+
+        public Contubernium CurrentEnemy { get; set; }
 
         public static Contubernium CreateSpearCavalryUnit(Faction faction)
         {
@@ -101,8 +102,6 @@ namespace Assets.Scripts.Game.Units.Groups
             return contuberium;
         }
 
-        public Contubernium CurrentEnemy { get; set; }
-
         public Contubernium ClosestEnemy(UnitController enemyArmy)
         {
             float closest = float.PositiveInfinity;
@@ -125,11 +124,7 @@ namespace Assets.Scripts.Game.Units.Groups
             if (isInRange)
             {
                 if (Config.Range - enemyDistance > Config.Range / 2)
-                {
-                    //Stay at optimal distance from enemy;
-                    //Distance between enemy and me should stay between Range and Range/2
                     Position = Vector3.MoveTowards(Position, enemy.Position, -Config.MovementSpeed / 2);
-                }
 
                 if (canAttack)
                 {

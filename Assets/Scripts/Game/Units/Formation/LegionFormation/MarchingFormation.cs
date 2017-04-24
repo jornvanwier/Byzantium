@@ -15,7 +15,8 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
             int height = unit.UnitCount;
 
             // Put cavalry first
-            IEnumerable<Cohort> sortedUnits = EnumerableHelper.Glue(unit.ChildrenAreCavalry(true), unit.ChildrenAreCavalry(false));
+            IEnumerable<Cohort> sortedUnits =
+                EnumerableHelper.Glue(unit.ChildrenAreCavalry(true), unit.ChildrenAreCavalry(false));
 
             // Use the drawsize of cavalry since its the largest
             Vector2 spacing = unit.ChildrenAreCavalry(true).First().DrawSize;
