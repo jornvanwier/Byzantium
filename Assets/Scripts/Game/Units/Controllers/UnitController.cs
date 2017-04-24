@@ -255,6 +255,11 @@ namespace Assets.Scripts.Game.Units.Controllers
 
         protected void AdvanceOnPath()
         {
+            if (currentPathInfo.Path.Count < 1)
+            {
+                return;
+            }
+
             Vector3 currentPos = CreateWorldPos();
 
             if (currentPathInfo.Path[0] == Position)
