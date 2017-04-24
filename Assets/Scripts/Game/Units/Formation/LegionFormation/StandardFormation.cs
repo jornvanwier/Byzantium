@@ -2,7 +2,6 @@
 using System.Linq;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
-using Assets.Scripts.Util;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Formation.LegionFormation
@@ -15,7 +14,7 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 
             PlaceCavalry(unit, PlaceCohorts(unit, instant) / 2, instant);
 
-            int height = (int)Mathf.Sqrt(unit.UnitCount);
+            int height = (int) Mathf.Sqrt(unit.UnitCount);
             int width = unit.UnitCount / height;
             unit.ChildrenDimensions = new Int2(width + 2, height - 1);
         }
@@ -34,8 +33,8 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 
             Vector2 offsets;
 
-            offsets.x = (width / 2.0f) * spacing.x - (spacing.x / 2.0f);
-            offsets.y = (height / 2.0f) * spacing.y - (spacing.y / 2.0f);
+            offsets.x = width / 2.0f * spacing.x - spacing.x / 2.0f;
+            offsets.y = height / 2.0f * spacing.y - spacing.y / 2.0f;
 
             offsets *= -1;
 
@@ -88,6 +87,6 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
             }
 
             ProcessLocalOffsets(localPositions, unit, cavalry, instant);
-        } 
+        }
     }
 }
