@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
@@ -23,8 +22,8 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 
             Vector2 offsets;
 
-            offsets.x = (width / 2.0f) * spacing.x - (spacing.x / 2.0f);
-            offsets.y = (height / 2.0f) * spacing.y - (spacing.y / 2.0f);
+            offsets.x = width / 2.0f * spacing.x - spacing.x / 2.0f;
+            offsets.y = height / 2.0f * spacing.y - spacing.y / 2.0f;
 
             offsets *= -1;
 

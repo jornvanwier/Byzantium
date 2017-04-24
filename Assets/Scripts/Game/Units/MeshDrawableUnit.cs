@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Util;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Assets.Scripts.Game.Units
 {
     public class MeshDrawableUnit : UnitBase
     {
+        private const int StartHealth = 200;
+        public static readonly Vector2 horseSize = new Vector2(0.4f, 1.0f);
+        public static readonly Vector2 manSize = new Vector2(0.4f, 0.5f);
         private readonly SoldierType soldierType;
 
         public MeshDrawableUnit(SoldierType type)
@@ -21,27 +25,21 @@ namespace Assets.Scripts.Game.Units
             {
                 case SoldierType.Sword:
                     m = UnitMeshes[0];
-                    Config = UnitConfig.Sword;
                     break;
                 case SoldierType.Spear:
                     m = UnitMeshes[1];
-                    Config = UnitConfig.Spear;
                     break;
                 case SoldierType.Bow:
                     m = UnitMeshes[2];
-                    Config = UnitConfig.Bow;
                     break;
                 case SoldierType.HorseSword:
                     m = UnitMeshes[3];
-                    Config = UnitConfig.HorseSword;
                     break;
                 case SoldierType.HorseSpear:
                     m = UnitMeshes[4];
-                    Config = UnitConfig.HorseSpear;
                     break;
                 case SoldierType.HorseBow:
                     m = UnitMeshes[5];
-                    Config = UnitConfig.HorseBow;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -52,20 +50,6 @@ namespace Assets.Scripts.Game.Units
             Transform = m.transform;
         }
 
-        private float lastAttack;
-
-        public void Attack(UnitBase enemy)
-        {
-            if (!(Time.realtimeSinceStartup - lastAttack > Config.AttackSpeed)) return;
-            if (enemy.AllUnits == null) return;
-
-            Debug.Log("Unit ATTACK!");
-            enemy.Health -= (int) (Config.Damage * enemy.AllUnits.First().Config.Defense);
-            lastAttack = Time.realtimeSinceStartup;
-        }
-
-        private const int StartHealth = 200;
-
         public override int MaxHealth => StartHealth;
 
         public static List<GameObject> UnitMeshes { get; set; } = null;
@@ -73,12 +57,8 @@ namespace Assets.Scripts.Game.Units
         public Mesh Mesh { get; set; }
         public Material Material { get; set; }
         public Transform Transform { get; set; }
-        public UnitConfig Config { get; }
 
         public override int Health { get; set; } = StartHealth;
-
-        public static readonly Vector2 horseSize = new Vector2(0.4f, 1.0f);
-        public static readonly Vector2 manSize = new Vector2(0.4f, 0.5f);
 
         public override Vector2 DrawSize => IsCavalry ? horseSize : manSize;
 
@@ -94,6 +74,11 @@ namespace Assets.Scripts.Game.Units
         public override IEnumerable<MeshDrawableUnit> AllUnits => DrawableUnitsEnumerator.Iterate();
 
         public override string UnitName => "Single Unit";
+
+        public override IEnumerable<Contubernium> Contubernia
+        {
+            get { throw new Exception("This unit does not contain children of type contubernia"); }
+        }
 
         public override void SetPositionInstant(Vector3 pos)
         {
@@ -283,7 +268,8 @@ namespace Assets.Scripts.Game.Units
                     matrices[i] = m;
                 }
                 if (matrices.Count > 0)
-                    Graphics.DrawMeshInstanced(mesh, 0, mat, matrices.ToArray(), matrices.Count, null, UnityEngine.Rendering.ShadowCastingMode.Off, false);
+                    Graphics.DrawMeshInstanced(mesh, 0, mat, matrices.ToArray(), matrices.Count, null,
+                        ShadowCastingMode.Off, false);
             }
         }
 
@@ -324,7 +310,8 @@ namespace Assets.Scripts.Game.Units
                     }
 
                     if (matrices.Count > 0)
-                        Graphics.DrawMeshInstanced(mesh, 0, mat, matrices.ToArray(), matrices.Count, null, UnityEngine.Rendering.ShadowCastingMode.Off, false);
+                        Graphics.DrawMeshInstanced(mesh, 0, mat, matrices.ToArray(), matrices.Count, null,
+                            ShadowCastingMode.Off, false);
                 }
             }
         }

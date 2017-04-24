@@ -11,14 +11,18 @@ namespace Assets.Scripts.Game.Units.Controllers
 {
     public abstract class UnitController : MonoBehaviour
     {
-        protected WorldManager Manager;
         private const float RotationSpeed = 3.5f;
 
+        private const float AttackRange = 8;
+
         protected Camera Camera;
+
+        private new BoxCollider collider;
 
         private PathfindingJobInfo currentPathInfo;
 
         protected List<UnitController> Enemies;
+        protected WorldManager Manager;
         private MapRenderer mapRenderer;
 
         private Vector3 movementDrawOffset;
@@ -41,6 +45,8 @@ namespace Assets.Scripts.Game.Units.Controllers
         public GameObject SpawnObject { get; set; }
 
         public HashSet<CubicalCoordinate> WalkedAfterRequest { get; set; }
+
+        public abstract bool IsAi { get; }
 
         public void AddUnit(Cohort unit)
         {
@@ -110,8 +116,6 @@ namespace Assets.Scripts.Game.Units.Controllers
             mapRenderer = renderer;
         }
 
-        private new BoxCollider collider;
-
         public void Start()
         {
             Position = MapRenderer.WorldToCubicalCoordinate(transform.position);
@@ -165,19 +169,16 @@ namespace Assets.Scripts.Game.Units.Controllers
             HealthBar.Value = AttachedUnit.Health;
         }
 
-        private const float AttackRange = 8;
-
         private void Attack(UnitController enemy)
         {
-            foreach (MeshDrawableUnit unit in AttachedUnit.AllUnits)
+            foreach (Contubernium unit in AttachedUnit.Contubernia)
             {
-                float distance = Vector3.Distance(enemy.AttachedUnit.Position, unit.Position);
-                if (distance < AttackRange)
-                    unit.Attack(enemy.AttachedUnit);
+                if (unit.CurrentEnemy == null)
+                    unit.CurrentEnemy = unit.ClosestEnemy(enemy);
+                unit.Attack(unit.CurrentEnemy);
             }
         }
 
-        public abstract bool IsAi { get; }
         protected abstract void ControllerTick();
 
         public void Update()
@@ -285,9 +286,7 @@ namespace Assets.Scripts.Game.Units.Controllers
         protected void RemoveWalkedPath()
         {
             while (WalkedAfterRequest.Contains(currentPathInfo.Path[0]))
-            {
                 currentPathInfo.Path.RemoveAt(0);
-            }
 
             WalkedAfterRequest = null;
         }

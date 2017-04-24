@@ -7,10 +7,8 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormation
 {
     public class OrbFormation : ContuberniumFormationBase
     {
-
         public override void Order(Contubernium unit, bool instant = false)
         {
-
             var localPositions = new List<Vector3>();
 
             int i = 0;

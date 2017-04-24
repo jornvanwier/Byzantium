@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Game.Units;
-using Assets.Scripts.Game.Units.Controllers;
+﻿using Assets.Scripts.Game.Units.Controllers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,15 +6,6 @@ namespace Assets.Scripts.UI
 {
     public class HealthBar : RawImage
     {
-        public int MaxValue => army?.AttachedUnit.MaxHealth ?? -1;
-
-        private UnitController army;
-
-        public void AttachArmy(UnitController army)
-        {
-            this.army = army;
-        }
-
         private const float HeightWidthRatio = 0.1f;
 
         private static readonly Color HealthyColor = Color.green;
@@ -23,12 +13,15 @@ namespace Assets.Scripts.UI
 
         private readonly Color transparent = new Color(0, 0, 0, 0);
 
+        private UnitController army;
+
         private Color[] pixels;
 
         private float posX, posY;
 
         private int size;
         private Texture2D texture2D;
+        public int MaxValue => army?.AttachedUnit.MaxHealth ?? -1;
 
         public int Value
         {
@@ -77,6 +70,11 @@ namespace Assets.Scripts.UI
                 posY = value;
                 transform.position = new Vector3(PosX, PosY);
             }
+        }
+
+        public void AttachArmy(UnitController army)
+        {
+            this.army = army;
         }
 
         public void Hide()

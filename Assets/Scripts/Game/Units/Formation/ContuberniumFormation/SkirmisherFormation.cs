@@ -10,7 +10,7 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormation
     {
         public override void Order(Contubernium unit, bool instant = false)
         {
-            int rowWidth = (int)Mathf.Sqrt(unit.UnitCount);
+            int rowWidth = (int) Mathf.Sqrt(unit.UnitCount);
             int columnHeight = unit.UnitCount / rowWidth * 2;
 
             var localPositions = new List<Vector3>();
@@ -21,8 +21,8 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormation
             Vector2 spacing = unit.First().DrawSize;
             Vector2 offsets;
 
-            offsets.x = (columnHeight / 2.0f) * spacing.x - (spacing.x / 2.0f);
-            offsets.y = (rowWidth / 2.0f) * spacing.y - (spacing.y / 2.0f);
+            offsets.x = columnHeight / 2.0f * spacing.x - spacing.x / 2.0f;
+            offsets.y = rowWidth / 2.0f * spacing.y - spacing.y / 2.0f;
 
             offsets *= -1;
 
@@ -48,13 +48,11 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormation
                     inColumnCounter = 0;
                     inRowCounter++;
                 }
-
             }
 
             ProcessLocalOffsets<Contubernium, MeshDrawableUnit>(localPositions, unit, instant);
 
             unit.ChildrenDimensions = new Int2(columnHeight, rowWidth);
-
         }
     }
 }

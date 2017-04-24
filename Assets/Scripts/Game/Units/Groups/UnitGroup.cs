@@ -47,7 +47,7 @@ namespace Assets.Scripts.Game.Units.Groups
                 int healthDifference = health - value;
                 health = value;
                 foreach (T child in this)
-                    if (healthDifference > 0)//Take damage
+                    if (healthDifference > 0) //Take damage
                     {
                         if (child.Health > healthDifference)
                         {
@@ -58,7 +58,7 @@ namespace Assets.Scripts.Game.Units.Groups
                         child.Health = 0;
                         //RemoveUnit(child);
                     }
-                    else//Give health
+                    else //Give health
                     {
                         if (child.MaxHealth > -healthDifference)
                         {
@@ -90,7 +90,7 @@ namespace Assets.Scripts.Game.Units.Groups
                 Order();
             }
         }
-        
+
         public abstract Vector2 GroupSpacing { get; }
 
         public override int UnitCount => Storage.Count;

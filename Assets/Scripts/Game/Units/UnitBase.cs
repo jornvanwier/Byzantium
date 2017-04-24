@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Units.Formation;
+using Assets.Scripts.Game.Units.Groups;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units
@@ -79,6 +80,9 @@ namespace Assets.Scripts.Game.Units
                        "\nCavalry:\t" + cavalryCount;
             }
         }
+
+        public abstract IEnumerable<Contubernium> Contubernia { get; }
+
 
         public abstract void SetPositionInstant(Vector3 pos);
 
