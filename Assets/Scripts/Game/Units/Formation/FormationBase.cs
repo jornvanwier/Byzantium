@@ -29,6 +29,11 @@ namespace Assets.Scripts.Game.Units.Formation
 
             foreach (TChild child in children)
             {
+                if (!child.RespectFormation)
+                {
+                    continue;
+                }
+
                 Vector3 newPosition = unit.Rotation * offsetPositions[i];
                 Vector3 targetPosition = newPosition + position;
                 if (instant)

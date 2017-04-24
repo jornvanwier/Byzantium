@@ -28,6 +28,8 @@ namespace Assets.Scripts.Game.Units
 
         public bool IsCavalry { get; protected set; }
 
+        public bool RespectFormation { get; set; } = true;
+
         public Rect Hitbox
         {
             get
