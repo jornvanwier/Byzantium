@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using Assets.Scripts.Util;
-using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Assets.Scripts.Map.Pathfinding
@@ -33,6 +31,8 @@ namespace Assets.Scripts.Map.Pathfinding
 
         private static Queue<PathfindingJobInfo> WorkQueue { get; } = new Queue<PathfindingJobInfo>();
 
+        public static HexBoard Map { get; set; }
+
         public static void Init(HexBoard map)
         {
             Map = map;
@@ -61,8 +61,6 @@ namespace Assets.Scripts.Map.Pathfinding
             }
         }
 
-        public static HexBoard Map { get; set; }
-
         public static int CreateJob(CubicalCoordinate start, CubicalCoordinate goal)
         {
             var jobInfo = new PathfindingJobInfo
@@ -78,7 +76,7 @@ namespace Assets.Scripts.Map.Pathfinding
             }
 
             Storage.Add(jobInfo.Id, jobInfo);
-            
+
             lock (WorkQueue)
             {
                 WorkQueue.Enqueue(jobInfo);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Controllers;
 using Assets.Scripts.Game.Units.Groups;
@@ -135,13 +134,9 @@ namespace Assets.Scripts.Game
 
             UnitController unitController;
             if (ai)
-            {
                 unitController = obj.AddComponent<AiController>();
-            }
             else
-            {
                 unitController = obj.AddComponent<InputController>();
-            }
             unitController.AttachCamera(camera);
             unitController.MapRenderer = MapRendererScript;
             unitController.AttachMapRenderer(MapRendererScript);
@@ -160,9 +155,7 @@ namespace Assets.Scripts.Game
             UpdateCamera();
 
             if (infoPanel.IsVisible)
-            {
                 infoPanel.Title = selectedArmy.AttachedUnit.Info;
-            }
         }
 
         private static Vector3 MultiplyVector(Vector3 v1, Vector3 v2)
@@ -303,16 +296,13 @@ namespace Assets.Scripts.Game
                     break;
                 }
                 if (!spawnHit)
-                {
                     SelectedArmy = hit.transform.gameObject.GetComponent<UnitController>();
-                }
             }
         }
 
         private void Select(UnitController army)
         {
             army.HealthBar.Show();
-            infoPanel.Title = army.AttachedUnit.Info;
             infoPanel.Commander = army.AttachedUnit.Commander.Name + Environment.NewLine + army.Faction.Name;
             infoPanel.Show();
         }

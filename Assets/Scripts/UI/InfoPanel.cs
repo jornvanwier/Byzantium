@@ -7,9 +7,7 @@ namespace Assets.Scripts.UI
 {
     public class InfoPanel : MonoBehaviour
     {
-        private readonly Color transparent = new Color(0, 0, 0, 0);
         private Text commanderText;
-        private Image image;
         private Image miniMap;
 
         private GameObject panel;
@@ -75,6 +73,8 @@ namespace Assets.Scripts.UI
             set { commanderText.text = value; }
         }
 
+        public bool IsVisible { get; private set; }
+
         private void UpdatePositionAndSize()
         {
             PosX = SizeX / 2;
@@ -92,7 +92,6 @@ namespace Assets.Scripts.UI
             commanderText = GameObject.Find("CommanderText").GetComponent<Text>();
             panel = GameObject.Find("InfoPanel");
             rectTransform = panel.GetComponent<RectTransform>();
-            image = panel.GetComponent<Image>();
             miniMap = GameObject.Find("MiniMapBorder").GetComponent<Image>();
 
             GameObject.Find("WorldManager")?.GetComponent<WorldManager>().AttachInfoPanel(this);
@@ -111,16 +110,12 @@ namespace Assets.Scripts.UI
         {
             panel.SetActive(false);
             IsVisible = false;
-            //image.color = transparent;
         }
 
         public void Show()
         {
             panel.SetActive(true);
             IsVisible = true;
-            //image.color = Color.white;
         }
-
-        public bool IsVisible { get; private set; }
     }
 }

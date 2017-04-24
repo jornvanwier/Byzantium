@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Assets.Scripts.Game;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Controllers;
 using Assets.Scripts.Game.Units.Groups;
-using Assets.Scripts.Map;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.EventSystems;

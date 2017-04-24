@@ -4,6 +4,10 @@ namespace Assets.Scripts.Game.Units.Controllers
 {
     public class AiController : UnitController
     {
+        private const float TimeBetweenEnemySearches = 5;
+
+        public override bool IsAi { get; } = true;
+
         protected UnitController NearestEnemy()
         {
             if (Enemies.Count == 0) return null;
@@ -32,10 +36,6 @@ namespace Assets.Scripts.Game.Units.Controllers
             Goal = nearestEnemy.Position;
             Debug.Log("Tick " + Goal);
         }
-
-        private const float TimeBetweenEnemySearches = 5;
-
-        public override bool IsAi { get; } = true;
 
         protected override void ControllerTick()
         {

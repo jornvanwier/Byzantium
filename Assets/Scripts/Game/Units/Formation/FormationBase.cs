@@ -20,7 +20,8 @@ namespace Assets.Scripts.Game.Units.Formation
         }
 
 
-        protected static void ProcessLocalOffsets<T, TChild>(IList<Vector3> offsetPositions, T unit, IEnumerable<TChild> children, bool instant)
+        protected static void ProcessLocalOffsets<T, TChild>(IList<Vector3> offsetPositions, T unit,
+            IEnumerable<TChild> children, bool instant)
             where T : UnitGroup<TChild> where TChild : UnitBase
         {
             float maxDist = 0.0f;

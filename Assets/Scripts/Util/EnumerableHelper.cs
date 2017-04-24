@@ -24,14 +24,10 @@ namespace Assets.Scripts.Util
         public static IEnumerable<T> Glue<T>(IEnumerable<T> a, IEnumerable<T> b)
         {
             foreach (T ac in a)
-            {
                 yield return ac;
-            }
 
             foreach (T bc in b)
-            {
                 yield return bc;
-            }
         }
     }
 }

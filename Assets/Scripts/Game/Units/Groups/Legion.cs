@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Game.Units.Formation.LegionFormation;
 using Assets.Scripts.Util;
 using UnityEngine;
@@ -14,6 +12,18 @@ namespace Assets.Scripts.Game.Units.Groups
         public Legion(Faction faction) : base(faction)
         {
         }
+
+        private IEnumerator<Contubernium> ContuberniumEnumerator
+        {
+            get
+            {
+                foreach (Cohort child in Storage)
+                foreach (Contubernium contubernium in child.Contubernia)
+                    yield return contubernium;
+            }
+        }
+
+        public override IEnumerable<Contubernium> Contubernia => ContuberniumEnumerator.Iterate();
 
         public override string UnitName => "Legion";
 
