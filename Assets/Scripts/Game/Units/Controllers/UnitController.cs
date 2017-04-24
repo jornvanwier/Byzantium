@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
@@ -8,23 +6,19 @@ using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.UI;
 using Assets.Scripts.Util;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-namespace Assets.Scripts.Game.Units
+namespace Assets.Scripts.Game.Units.Controllers
 {
-    public class UnitController : MonoBehaviour
+    public abstract class UnitController : MonoBehaviour
     {
+        protected WorldManager Manager;
         private const float RotationSpeed = 3.5f;
 
-        private const float AttackRange = 8;
-
-        private const float TimeBetweenEnemySearches = 5;
-
-        private new Camera camera;
+        protected Camera Camera;
 
         private PathfindingJobInfo currentPathInfo;
 
-        private List<UnitController> enemies;
+        protected List<UnitController> Enemies;
         private MapRenderer mapRenderer;
 
         private Vector3 movementDrawOffset;
@@ -48,11 +42,15 @@ namespace Assets.Scripts.Game.Units
 
         public HashSet<CubicalCoordinate> WalkedAfterRequest { get; set; }
 
-
         public void AddUnit(Cohort unit)
         {
             if (AttachedUnit is Legion legion)
                 legion.AddUnit(unit);
+        }
+
+        public void AttachWorldManager(WorldManager manager)
+        {
+            Manager = manager;
         }
 
         public void AddUnit(Century unit)
@@ -98,7 +96,7 @@ namespace Assets.Scripts.Game.Units
 
         public void AttachEnemies(List<UnitController> armies)
         {
-            enemies = armies.Where(controller => controller != this).ToList();
+            Enemies = armies.Where(controller => controller != this).ToList();
         }
 
         public void CreateBuilding(Vector3 position)
@@ -139,7 +137,7 @@ namespace Assets.Scripts.Game.Units
 
         public void AttachCamera(Camera camera)
         {
-            this.camera = camera;
+            Camera = camera;
         }
 
         public static void Teleport(Vector3 loc, UnitBase unit)
@@ -158,45 +156,16 @@ namespace Assets.Scripts.Game.Units
 
         private void UpdateHealthBar()
         {
-            if (camera == null) return;
+            if (Camera == null) return;
             Vector3 healthBarPosition = transform.position + Vector3.up;
-            Vector3 point = camera.WorldToScreenPoint(healthBarPosition);
+            Vector3 point = Camera.WorldToScreenPoint(healthBarPosition);
             HealthBar.PosX = point.x;
             HealthBar.PosY = point.y;
 
             HealthBar.Value = AttachedUnit.Health;
         }
 
-
-        private UnitController NearestEnemy()
-        {
-            if (enemies.Count == 0) return null;
-            UnitController nearest = enemies[0];
-            float nearestDistance = Vector3.Distance(nearest.AttachedUnit.Position, AttachedUnit.Position);
-            for (int i = 1; i < enemies.Count; i++)
-            {
-                UnitController enemy = enemies[i];
-                float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
-                if (!(distance < nearestDistance)) continue;
-                nearestDistance = distance;
-                nearest = enemy;
-            }
-            return nearest;
-        }
-
-        private void Battle()
-        {
-            UnitController nearestEnemy = NearestEnemy();
-            if (nearestEnemy == null)
-            {
-                Debug.LogError("Nearest enemy is null");
-                return;
-            }
-
-            Goal = nearestEnemy.Position;
-            Debug.Log("Tick " + Goal);
-        }
-
+        private const float AttackRange = 8;
 
         private void Attack(UnitController enemy)
         {
@@ -208,17 +177,17 @@ namespace Assets.Scripts.Game.Units
             }
         }
 
+        public abstract bool IsAi { get; }
+        protected abstract void ControllerTick();
+
         public void Update()
         {
-            collider.size = new Vector3(AttachedUnit.DrawSize.x, 1, AttachedUnit.DrawSize.y);
-            
-            if (Time.realtimeSinceStartup % TimeBetweenEnemySearches < Time.deltaTime)
-            {
-//                Battle();
-            }
+            ControllerTick();
 
-            if (enemies != null && AttachedUnit.Position != Vector3.zero)
-                foreach (UnitController enemy in enemies)
+            collider.size = new Vector3(AttachedUnit.DrawSize.x, 1, AttachedUnit.DrawSize.y);
+
+            if (Enemies != null && AttachedUnit.Position != Vector3.zero)
+                foreach (UnitController enemy in Enemies)
                 {
                     float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
                     if (distance < AttackRange)
@@ -230,8 +199,11 @@ namespace Assets.Scripts.Game.Units
                 spawnPosition = GetSpawnPosition();
                 CreateBuilding(spawnPosition + new Vector3(7, 0, 0));
                 Teleport(spawnPosition);
-                camera.transform.position = spawnPosition + new Vector3(-30, 15, 0);
-                camera.transform.LookAt(spawnPosition);
+                if (!IsAi)
+                {
+                    Camera.transform.position = spawnPosition + new Vector3(-30, 15, 0);
+                    Camera.transform.LookAt(spawnPosition);
+                }
             }
 
             UpdateHealthBar();

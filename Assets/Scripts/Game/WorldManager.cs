@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Controllers;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
 using Assets.Scripts.UI;
@@ -117,8 +118,8 @@ namespace Assets.Scripts.Game
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
 
-            SpawnArmy(Legion.CreateStandardLegion(FactionManager.Factions[0]));
-            SpawnArmy(Legion.CreateStandardLegion(FactionManager.Factions[1]));
+            SpawnArmy(Cohort.CreateCavalryUnit(FactionManager.Factions[0]), false);
+            SpawnArmy(Cohort.CreateCavalryUnit(FactionManager.Factions[1]), true);
         }
 
         public void AttachInfoPanel(InfoPanel panel)
@@ -127,11 +128,20 @@ namespace Assets.Scripts.Game
             infoPanel.Hide();
         }
 
-        private void SpawnArmy(UnitBase unit)
+        private void SpawnArmy(UnitBase unit, bool ai)
         {
             var obj = new GameObject("Army " + unit.Commander.Faction.Name);
             obj.AddComponent<BoxCollider>();
-            var unitController = obj.AddComponent<UnitController>();
+
+            UnitController unitController;
+            if (ai)
+            {
+                unitController = obj.AddComponent<AiController>();
+            }
+            else
+            {
+                unitController = obj.AddComponent<InputController>();
+            }
             unitController.AttachCamera(camera);
             unitController.MapRenderer = MapRendererScript;
             unitController.AttachMapRenderer(MapRendererScript);
@@ -147,22 +157,6 @@ namespace Assets.Scripts.Game
         [UsedImplicitly]
         private void Update()
         {
-            if (selectedArmy != null)
-                if (Input.GetKeyDown(KeyCode.Mouse1) && !Input.GetKey(KeyCode.LeftAlt))
-                {
-                    var plane = new Plane(Vector3.up, Vector3.zero);
-                    Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-                    if (plane.Raycast(ray, out float rayDistance))
-                    {
-                        Vector3 intersection = ray.GetPoint(rayDistance);
-
-                        if (Input.GetKey(KeyCode.LeftControl))
-                            SelectedArmy.Teleport(intersection);
-                        else
-                            SelectedArmy.Goal = MapRendererScript.WorldToCubicalCoordinate(intersection);
-                    }
-                }
-
             UpdateCamera();
 
             if (infoPanel.IsVisible)
@@ -299,22 +293,18 @@ namespace Assets.Scripts.Game
 
                 Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 
-                if (Physics.Raycast(ray, out RaycastHit hit))
+                if (!Physics.Raycast(ray, out RaycastHit hit)) return;
+                bool spawnHit = false;
+                foreach (UnitController army in Armies)
                 {
-                    bool spawnHit = false;
-                    foreach (UnitController army in Armies)
-                    {
-                        if (army.SpawnObject.transform == hit.transform)
-                        {
-                            spawnPanel.Show(army);
-                            spawnHit = true;
-                            break;
-                        }
-                    }
-                    if (!spawnHit)
-                    {
-                        SelectedArmy = hit.transform.gameObject.GetComponent<UnitController>();
-                    }
+                    if (army.SpawnObject.transform != hit.transform) continue;
+                    spawnPanel.Show(army);
+                    spawnHit = true;
+                    break;
+                }
+                if (!spawnHit)
+                {
+                    SelectedArmy = hit.transform.gameObject.GetComponent<UnitController>();
                 }
             }
         }
