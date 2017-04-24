@@ -20,5 +20,18 @@ namespace Assets.Scripts.Util
         {
             return source.OrderBy(x => Guid.NewGuid());
         }
+
+        public static IEnumerable<T> Glue<T>(IEnumerable<T> a, IEnumerable<T> b)
+        {
+            foreach (T ac in a)
+            {
+                yield return ac;
+            }
+
+            foreach (T bc in b)
+            {
+                yield return bc;
+            }
+        }
     }
 }

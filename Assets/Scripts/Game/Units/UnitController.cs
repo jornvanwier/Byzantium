@@ -214,7 +214,7 @@ namespace Assets.Scripts.Game.Units
             
             if (Time.realtimeSinceStartup % TimeBetweenEnemySearches < Time.deltaTime)
             {
-                Battle();
+//                Battle();
             }
 
             if (enemies != null && AttachedUnit.Position != Vector3.zero)

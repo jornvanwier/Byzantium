@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Game.Units.Formation;
+using Assets.Scripts.Game.Units.Formation.LegionFormation;
 using Assets.Scripts.Util;
 using UnityEngine;
 using static Assets.Scripts.Game.Units.MeshDrawableUnit;
@@ -30,11 +33,16 @@ namespace Assets.Scripts.Game.Units.Groups
             Set = Prefetch(this);
         }
 
+        public IEnumerable<Cohort> ChildrenAreCavalry(bool cavalryChoice)
+        {
+            return this.Where(c => c.IsCavalry == cavalryChoice).GetEnumerator().Iterate();
+        }
+
         public static Legion CreateStandardLegion(Faction faction)
         {
             var legion = new Legion(faction)
             {
-                Formation = new SquareFormation()
+                Formation = new MarchingFormation()
             };
 
             legion.AddUnit(Cohort.CreateCavalryUnit(faction));
@@ -49,7 +57,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Legion CreateCustomUnit(Faction faction, SoldierType type)
         {
-            var legion = new Legion(faction) {Formation = new SquareFormation()};
+            var legion = new Legion(faction) {Formation = new MarchingFormation()};
 
             for (int i = 0; i < 4; i++)
             {
