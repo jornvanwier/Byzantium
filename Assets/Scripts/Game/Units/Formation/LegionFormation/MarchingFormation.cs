@@ -38,7 +38,7 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
                 localPositions.Add(new Vector3(x, 0, y));
             }
 
-            ProcessLocalOffsets(localPositions, unit, sortedUnits, true);
+            ProcessLocalOffsets(localPositions, unit, sortedUnits, instant);
 
             unit.ChildrenDimensions = new Int2(width, height);
         }
