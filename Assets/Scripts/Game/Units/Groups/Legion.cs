@@ -52,10 +52,11 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             var legion = new Legion(faction)
             {
-                Formation = new MarchingFormation()
+                Formation = new StandardFormation()
             };
 
-            legion.AddUnit(Cohort.CreateCavalryUnit(faction));
+            for (int i = 0; i < 6; i++)
+                legion.AddUnit(Cohort.CreateCavalryUnit(faction));
 
             for (int i = 0; i < 3; i++)
                 legion.AddUnit(Cohort.CreateUniformMixedUnit(faction));
@@ -67,9 +68,9 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Legion CreateCustomUnit(Faction faction, SoldierType type)
         {
-            var legion = new Legion(faction) {Formation = new MarchingFormation()};
+            var legion = new Legion(faction) {Formation = new StandardFormation()};
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 6; i++)
             {
                 Cohort cohort = Cohort.CreateCustomUnit(faction, type);
                 legion.AddUnit(cohort);
