@@ -63,6 +63,8 @@ namespace Assets.Scripts.Game.Units
 
         public abstract string UnitName { get; }
 
+        public bool IsDead => Health <= 0;
+
         public string Info
         {
             get

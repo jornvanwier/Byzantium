@@ -38,14 +38,15 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             get
             {
-                if (health == -1)
+                //if (health == -1)
                     health = Storage.Select(u => u.Health).Aggregate((x, y) => x + y);
                 return health;
             }
             set
             {
                 int healthDifference = health - value;
-                health = value;
+                health = value < 0 ? 0 : value;
+
                 foreach (T child in this)
                     if (healthDifference > 0) //Take damage
                     {

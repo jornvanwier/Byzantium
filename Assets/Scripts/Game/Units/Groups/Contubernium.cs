@@ -114,6 +114,8 @@ namespace Assets.Scripts.Game.Units.Groups
             Contubernium closestEnemy = null;
             foreach (Contubernium enemy in enemyArmy.AttachedUnit.Contubernia)
             {
+                if (enemy.IsDead) continue;
+
                 float distance = Vector3.Distance(enemy.Position, Position);
                 if (!(distance < closest)) continue;
                 closest = distance;
@@ -124,8 +126,11 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public void Attack(Contubernium enemy)
         {
+            Vector3 towardsEnemy = Vector3.MoveTowards(Position, enemy.Position, Config.MovementSpeed);
+            Rotation = Quaternion.LookRotation(towardsEnemy);
+
             float enemyDistance = Vector3.Distance(Position, enemy.Position);
-            bool isInRange = enemyDistance < Config.Range ;
+            bool isInRange = enemyDistance < Config.Range;
             bool canAttack = Time.realtimeSinceStartup - lastAttack > Config.AttackSpeed;
             if (isInRange)
             {
@@ -136,14 +141,19 @@ namespace Assets.Scripts.Game.Units.Groups
                 {
                     Debug.Log("Unit ATTACK!");
                     float multiplierVsEnemy = Config.VersusMultipliers[enemy.Type];
-                    enemy.Health -= (int) (Config.Damage * multiplierVsEnemy * enemy.Config.Defense);
+                    float damageDone = Config.Damage * multiplierVsEnemy * enemy.Config.Defense;
+
+                    enemy.Health -= (int) damageDone;
+                    if (enemy.IsDead)
+                        CurrentEnemy = null;
+
                     lastAttack = Time.realtimeSinceStartup;
                 }
             }
             else
             {
                 //walk towards enemy;
-                Position = Vector3.MoveTowards(Position, enemy.Position, Config.MovementSpeed);
+                Position = towardsEnemy;
             }
         }
 

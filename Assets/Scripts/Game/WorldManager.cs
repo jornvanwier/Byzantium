@@ -119,7 +119,7 @@ namespace Assets.Scripts.Game
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
 
-            SpawnArmy(Cohort.CreateUniformMixedUnit(FactionManager.Factions[0]), false);
+            SpawnArmy(Cohort.CreateCustomUnit(FactionManager.Factions[0], SoldierType.Spear), false);
             SpawnArmy(Cohort.CreateCavalryUnit(FactionManager.Factions[1]), true);
         }
 

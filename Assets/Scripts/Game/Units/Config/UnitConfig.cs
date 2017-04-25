@@ -7,7 +7,7 @@ namespace Assets.Scripts.Game.Units.Config
         public static UnitConfig Sword = new UnitConfig
         {
             Range = 1,
-            Damage = 20,
+            Damage = 160,
             AttackSpeed = 2,
             Defense = 0.9f,
             MovementSpeed = 1.2f,
@@ -25,7 +25,7 @@ namespace Assets.Scripts.Game.Units.Config
         public static UnitConfig Spear = new UnitConfig
         {
             Range = 1.5f,
-            Damage = 30,
+            Damage = 240,
             AttackSpeed = 4,
             Defense = 0.6f,
             MovementSpeed = 1.5f,
@@ -43,7 +43,7 @@ namespace Assets.Scripts.Game.Units.Config
         public static UnitConfig Bow = new UnitConfig
         {
             Range = 5,
-            Damage = 15,
+            Damage = 120,
             AttackSpeed = 3,
             Defense = 1,
             MovementSpeed = 1.5f,
@@ -61,7 +61,7 @@ namespace Assets.Scripts.Game.Units.Config
         public static UnitConfig HorseSword = new UnitConfig
         {
             Range = 1f,
-            Damage = 20,
+            Damage = 160,
             AttackSpeed = 3,
             Defense = 0.93f,
             MovementSpeed = 2f,
@@ -79,7 +79,7 @@ namespace Assets.Scripts.Game.Units.Config
         public static UnitConfig HorseSpear = new UnitConfig
         {
             Range = 1.5f,
-            Damage = 30,
+            Damage = 240,
             AttackSpeed = 4,
             Defense = 0.7f,
             MovementSpeed = 2f,
@@ -97,7 +97,7 @@ namespace Assets.Scripts.Game.Units.Config
         public static UnitConfig HorseBow = new UnitConfig
         {
             Range = 4,
-            Damage = 15,
+            Damage = 120,
             AttackSpeed = 3,
             Defense = 1,
             MovementSpeed = 2f,
