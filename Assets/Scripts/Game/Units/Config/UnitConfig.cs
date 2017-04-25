@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 
-namespace Assets.Scripts.Game.Units
+namespace Assets.Scripts.Game.Units.Config
 {
     public class UnitConfig
     {
         public static UnitConfig Sword = new UnitConfig
         {
             Range = 1,
-            Damage = 20,
+            Damage = 160,
             AttackSpeed = 2,
             Defense = 0.9f,
             MovementSpeed = 1.2f,
@@ -24,8 +24,8 @@ namespace Assets.Scripts.Game.Units
 
         public static UnitConfig Spear = new UnitConfig
         {
-            Range = 2,
-            Damage = 30,
+            Range = 1.5f,
+            Damage = 240,
             AttackSpeed = 4,
             Defense = 0.6f,
             MovementSpeed = 1.5f,
@@ -43,7 +43,7 @@ namespace Assets.Scripts.Game.Units
         public static UnitConfig Bow = new UnitConfig
         {
             Range = 5,
-            Damage = 15,
+            Damage = 120,
             AttackSpeed = 3,
             Defense = 1,
             MovementSpeed = 1.5f,
@@ -60,8 +60,8 @@ namespace Assets.Scripts.Game.Units
 
         public static UnitConfig HorseSword = new UnitConfig
         {
-            Range = 1.5f,
-            Damage = 20,
+            Range = 1f,
+            Damage = 160,
             AttackSpeed = 3,
             Defense = 0.93f,
             MovementSpeed = 2f,
@@ -78,8 +78,8 @@ namespace Assets.Scripts.Game.Units
 
         public static UnitConfig HorseSpear = new UnitConfig
         {
-            Range = 2.5f,
-            Damage = 30,
+            Range = 1.5f,
+            Damage = 240,
             AttackSpeed = 4,
             Defense = 0.7f,
             MovementSpeed = 2f,
@@ -96,8 +96,8 @@ namespace Assets.Scripts.Game.Units
 
         public static UnitConfig HorseBow = new UnitConfig
         {
-            Range = 5,
-            Damage = 15,
+            Range = 4,
+            Damage = 120,
             AttackSpeed = 3,
             Defense = 1,
             MovementSpeed = 2f,
@@ -112,7 +112,16 @@ namespace Assets.Scripts.Game.Units
             }
         };
 
-        public float Range { get; private set; }
+        private const float RangeModifier = 0.5f;
+
+        private float range;
+
+        public float Range
+        {
+            get { return range * RangeModifier; }
+            private set { range = value; }
+        }
+
         public int Damage { get; private set; }
         public float AttackSpeed { get; private set; }
         public float Defense { get; private set; }

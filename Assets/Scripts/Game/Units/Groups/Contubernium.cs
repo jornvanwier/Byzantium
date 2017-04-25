@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.Game.Units.Config;
 using Assets.Scripts.Game.Units.Controllers;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Util;
@@ -63,6 +65,8 @@ namespace Assets.Scripts.Game.Units.Groups
             return CreateCustomUnit(faction, SoldierType.Spear);
         }
 
+        public SoldierType Type { get; private set; }
+
         public static Contubernium CreateCustomUnit(Faction faction, SoldierType unitType)
         {
             var contuberium = new Contubernium(faction) {Formation = new SquareFormation()};
@@ -73,6 +77,8 @@ namespace Assets.Scripts.Game.Units.Groups
                 contuberium.AddUnit(mdm);
                 contuberium.IsCavalry = mdm.IsCavalry;
             }
+
+            contuberium.Type = unitType;
 
             switch (unitType)
             {
@@ -108,6 +114,8 @@ namespace Assets.Scripts.Game.Units.Groups
             Contubernium closestEnemy = null;
             foreach (Contubernium enemy in enemyArmy.AttachedUnit.Contubernia)
             {
+                if (enemy.IsDead) continue;
+
                 float distance = Vector3.Distance(enemy.Position, Position);
                 if (!(distance < closest)) continue;
                 closest = distance;
@@ -118,25 +126,34 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public void Attack(Contubernium enemy)
         {
+            Vector3 towardsEnemy = Vector3.MoveTowards(Position, enemy.Position, Config.MovementSpeed);
+            Rotation = Quaternion.LookRotation(towardsEnemy);
+
             float enemyDistance = Vector3.Distance(Position, enemy.Position);
             bool isInRange = enemyDistance < Config.Range;
             bool canAttack = Time.realtimeSinceStartup - lastAttack > Config.AttackSpeed;
             if (isInRange)
             {
                 if (Config.Range - enemyDistance > Config.Range / 2)
-                    Position = Vector3.MoveTowards(Position, enemy.Position, -Config.MovementSpeed / 2);
+                    Position = Vector3.MoveTowards(enemy.Position, Position, Config.MovementSpeed);
 
                 if (canAttack)
                 {
                     Debug.Log("Unit ATTACK!");
-                    enemy.Health -= (int) (Config.Damage * enemy.Config.Defense);
+                    float multiplierVsEnemy = Config.VersusMultipliers[enemy.Type];
+                    float damageDone = Config.Damage * multiplierVsEnemy * enemy.Config.Defense;
+
+                    enemy.Health -= (int) damageDone;
+                    if (enemy.IsDead)
+                        CurrentEnemy = null;
+
                     lastAttack = Time.realtimeSinceStartup;
                 }
             }
             else
             {
                 //walk towards enemy;
-                Position = Vector3.MoveTowards(Position, enemy.Position, Config.MovementSpeed);
+                Position = towardsEnemy;
             }
         }
 
