@@ -13,7 +13,7 @@ namespace Assets.Scripts.Game.Units.Controllers
     {
         private const float RotationSpeed = 3.5f;
 
-        private const float AttackRange = 8;
+        private static readonly float AttackRange = 8 * WorldManager.UnitScale;
 
         protected Camera Camera;
 
@@ -171,6 +171,7 @@ namespace Assets.Scripts.Game.Units.Controllers
 
         private void Attack(UnitController enemy)
         {
+            AttachedUnit.RespectFormation = false;
             foreach (Contubernium unit in AttachedUnit.Contubernia)
             {
                 if (unit.CurrentEnemy == null)

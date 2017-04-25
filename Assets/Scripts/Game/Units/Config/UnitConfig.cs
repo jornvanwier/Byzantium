@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Assets.Scripts.Game.Units
+namespace Assets.Scripts.Game.Units.Config
 {
     public class UnitConfig
     {
@@ -24,7 +24,7 @@ namespace Assets.Scripts.Game.Units
 
         public static UnitConfig Spear = new UnitConfig
         {
-            Range = 2,
+            Range = 1.5f,
             Damage = 30,
             AttackSpeed = 4,
             Defense = 0.6f,
@@ -60,7 +60,7 @@ namespace Assets.Scripts.Game.Units
 
         public static UnitConfig HorseSword = new UnitConfig
         {
-            Range = 1.5f,
+            Range = 1f,
             Damage = 20,
             AttackSpeed = 3,
             Defense = 0.93f,
@@ -78,7 +78,7 @@ namespace Assets.Scripts.Game.Units
 
         public static UnitConfig HorseSpear = new UnitConfig
         {
-            Range = 2.5f,
+            Range = 1.5f,
             Damage = 30,
             AttackSpeed = 4,
             Defense = 0.7f,
@@ -96,7 +96,7 @@ namespace Assets.Scripts.Game.Units
 
         public static UnitConfig HorseBow = new UnitConfig
         {
-            Range = 5,
+            Range = 4,
             Damage = 15,
             AttackSpeed = 3,
             Defense = 1,
@@ -112,7 +112,16 @@ namespace Assets.Scripts.Game.Units
             }
         };
 
-        public float Range { get; private set; }
+        private const float RangeModifier = 0.5f;
+
+        private float range;
+
+        public float Range
+        {
+            get { return range * RangeModifier; }
+            private set { range = value; }
+        }
+
         public int Damage { get; private set; }
         public float AttackSpeed { get; private set; }
         public float Defense { get; private set; }
