@@ -16,7 +16,7 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 
             int height = (int) Mathf.Sqrt(unit.UnitCount);
             int width = unit.UnitCount / height;
-            unit.ChildrenDimensions = new Int2(width + 2, height - 1);
+            unit.ChildrenDimensions = new Int2(width + 2, height + 2);
         }
 
 
@@ -27,7 +27,7 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
             Cohort[] cohorts = enumerable as Cohort[] ?? enumerable.ToArray();
             int cohortCount = cohorts.Length;
             int width = Mathf.CeilToInt(Mathf.Sqrt(cohortCount));
-            int height = cohortCount / width;
+            int height = Mathf.CeilToInt(cohortCount / (float)width);
 
             Vector2 spacing = cohorts.First().DrawSize;
 
@@ -72,7 +72,7 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
             Vector2 spacing = cavalry.First().DrawSize;
 
 
-            float offsetY = -Mathf.CeilToInt(cavalryCount / 2f) * spacing.y / 2;
+            float offsetY = -Mathf.CeilToInt(cavalryCount / 2f) * spacing.y / 2f - spacing.y / 2f;
 
 
             var localPositions = new List<Vector3>();
@@ -80,7 +80,7 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
             {
                 int xOffsetMultiply = i % 2 == 0 ? 1 : -3;
 
-                float x = spacing.x + cohortWidth * xOffsetMultiply;
+                float x = cohortWidth + spacing.x * xOffsetMultiply;
                 float y = offsetY + spacing.y * (i - i % 2);
 
                 localPositions.Add(new Vector3(x, 0, y));

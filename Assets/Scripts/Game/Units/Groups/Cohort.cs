@@ -63,7 +63,7 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             var cohort = new Cohort(faction) {Formation = new SquareFormation()};
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 6; i++)
             {
                 Century century = Century.CreateCustomUnit(faction, type);
                 cohort.AddUnit(century);

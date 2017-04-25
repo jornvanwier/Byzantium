@@ -29,6 +29,8 @@ namespace Assets.Scripts.Game.Units.Controllers
         private int nextPathId = -1;
         private CubicalCoordinate previousPosition;
         private Vector3 spawnPosition;
+        private ParticleSystem battleSmokeSystem;
+
         public UnitBase AttachedUnit { get; private set; }
 
         public MapRenderer MapRenderer { get; set; }
@@ -129,6 +131,21 @@ namespace Assets.Scripts.Game.Units.Controllers
             collider.size = new Vector3(4.84f, 1, 29.39f);
             collider.center = new Vector3(-1.69f, 0.44f, -4.84f);
             collider.center = new Vector3(0, 0.5f, 0);
+
+            InitParticleSystem();
+        }
+
+        private void InitParticleSystem()
+        {
+            battleSmokeSystem = gameObject.AddComponent<ParticleSystem>();
+            SetSmokeEmission(0);
+        }
+
+        private void SetSmokeEmission(float rate)
+        {
+
+            ParticleSystem.EmissionModule emissionModule = battleSmokeSystem.emission;
+            emissionModule.rateOverTime = rate;
         }
 
         public void OnDrawGizmos()
@@ -192,7 +209,14 @@ namespace Assets.Scripts.Game.Units.Controllers
                 {
                     float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
                     if (distance < AttackRange)
+                    {
                         Attack(enemy);
+                        SetSmokeEmission(200);
+                    }
+                    else
+                    {
+                        SetSmokeEmission(0);
+                    }
                 }
 
             if (mapRenderer.HexBoard != null && AttachedUnit != null && spawnPosition == Vector3.zero)
