@@ -16,6 +16,7 @@ namespace Assets.Scripts.Game.Units
         {
             WalkSpeed = DefaultSpeed;
         }
+
         public abstract float DefaultSpeed { get; }
         public virtual Vector3 Position { get; set; } = Vector3.zero;
 

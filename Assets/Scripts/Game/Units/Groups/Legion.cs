@@ -55,12 +55,14 @@ namespace Assets.Scripts.Game.Units.Groups
             return this.Where(c => c.IsCavalry == cavalryChoice).GetEnumerator().Iterate();
         }
 
-        public override Vector2 DrawSize => Vector2.Scale(
-                                                ChildrenAreCavalry(true)
-                                                    .DefaultIfEmpty(null)
-                                                    .FirstOrDefault()
-                                                    ?.DrawSize ?? Storage[0].DrawSize, ChildrenDimensions) +
-                                            GroupSpacing;
+        public override Vector2 DrawSize => Storage.Count > 0
+            ? Vector2.Scale(
+                  ChildrenAreCavalry(true)
+                      .DefaultIfEmpty(null)
+                      .FirstOrDefault()
+                      ?.DrawSize ?? Storage[0].DrawSize, ChildrenDimensions) +
+              GroupSpacing
+            : Vector2.one;
 
         public static Legion CreateStandardLegion(Faction faction)
         {

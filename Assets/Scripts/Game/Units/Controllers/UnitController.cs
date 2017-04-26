@@ -196,7 +196,8 @@ namespace Assets.Scripts.Game.Units.Controllers
                 AttachedUnit.RespectFormation = true;
                 SetSmokeEmission(0);
                 Debug.Log("Battle is over, " + Faction.Name + " won!");
-            }else if (AttachedUnit.Health <= 0)
+            }
+            else if (AttachedUnit.Health <= 0)
             {
                 SetSmokeEmission(0);
                 Debug.Log("Battle is over, " + Faction.Name + " lost!");
@@ -220,6 +221,8 @@ namespace Assets.Scripts.Game.Units.Controllers
 
         public void Update()
         {
+            //if (AttachedUnit.IsDead) return;
+
             ControllerTick();
 
             collider.size = new Vector3(AttachedUnit.DrawSize.x, 1, AttachedUnit.DrawSize.y);
