@@ -154,8 +154,6 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             if (IsDead || enemy == null) return;
 
-            Debug.Log(enemy);
-
             Vector3 towardsEnemy = Vector3.MoveTowards(Position, enemy.Position, Config.MovementSpeed);
             Rotation = Quaternion.LookRotation(towardsEnemy);
 
@@ -169,8 +167,6 @@ namespace Assets.Scripts.Game.Units.Groups
 
                 if (canAttack)
                 {
-                    Debug.Log("Unit ATTACK!");
-
                     HashSet<FormationStats> statses = AllFormationStatses();
                     float formationDamageMultiplier = AttackDamageMultiplier(statses);
                     float formationDefenseMultiplier = DefenseMultiplier(statses);
