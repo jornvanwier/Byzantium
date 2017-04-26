@@ -69,6 +69,8 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
             Cohort[] cavalry = enumerable as Cohort[] ?? enumerable.ToArray();
             int cavalryCount = cavalry.Length;
 
+            if (cavalryCount == 0) return;
+
             Vector2 spacing = cavalry.First().DrawSize;
 
 
@@ -78,9 +80,11 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
             var localPositions = new List<Vector3>();
             for (int i = 0; i < cavalryCount; i++)
             {
-                int xOffsetMultiply = i % 2 == 0 ? 1 : -3;
+                int side = i % 2 == 0 ? 1 : -1;
 
-                float x = cohortWidth + spacing.x * xOffsetMultiply;
+                float flippedSpacing = spacing.x * side;
+
+                float x = cohortWidth * side + 0.75f * flippedSpacing;
                 float y = offsetY + spacing.y * (i - i % 2);
 
                 localPositions.Add(new Vector3(x, 0, y));

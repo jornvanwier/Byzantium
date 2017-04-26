@@ -110,6 +110,7 @@ namespace Assets.Scripts.Game.Units.Controllers
         public void CreateBuilding(Vector3 position)
         {
             SpawnObject.transform.position = position;
+            SpawnObject.transform.localScale = new Vector3(0.2f, 0.4f, 0.2f);
             SpawnObject.name = "Spawn " + Faction.Name;
         }
 
@@ -139,6 +140,9 @@ namespace Assets.Scripts.Game.Units.Controllers
         {
             battleSmokeSystem = gameObject.AddComponent<ParticleSystem>();
             SetSmokeEmission(0);
+
+            ParticleSystem.ShapeModule shapeModule = battleSmokeSystem.shape;
+            shapeModule.box = new Vector3(AttachedUnit.DrawSize.x, 1, AttachedUnit.DrawSize.y);
         }
 
         private void SetSmokeEmission(float rate)

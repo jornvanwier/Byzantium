@@ -48,7 +48,12 @@ namespace Assets.Scripts.Game.Units.Groups
             return this.Where(c => c.IsCavalry == cavalryChoice).GetEnumerator().Iterate();
         }
 
-        public override Vector2 DrawSize => Vector2.Scale(ChildrenAreCavalry(true).First().DrawSize, ChildrenDimensions) + GroupSpacing;
+        public override Vector2 DrawSize => Vector2.Scale(
+                                                ChildrenAreCavalry(true)
+                                                    .DefaultIfEmpty(null)
+                                                    .FirstOrDefault()
+                                                    ?.DrawSize ?? Storage[0].DrawSize, ChildrenDimensions) +
+                                            GroupSpacing;
 
         public static Legion CreateStandardLegion(Faction faction)
         {
@@ -57,11 +62,11 @@ namespace Assets.Scripts.Game.Units.Groups
                 Formation = new StandardFormation()
             };
 
-            for (int i = 0; i < 6; i++)
-                legion.AddUnit(Cohort.CreateCavalryUnit(faction));
+//            for (int i = 0; i < 6; i++)
+//                legion.AddUnit(Cohort.CreateCavalryUnit(faction));
 
-            for (int i = 0; i < 3; i++)
-                legion.AddUnit(Cohort.CreateUniformMixedUnit(faction));
+//            for (int i = 0; i < 3; i++)
+            legion.AddUnit(Cohort.CreateUniformMixedUnit(faction));
 
             legion.IsCavalry = false;
 
