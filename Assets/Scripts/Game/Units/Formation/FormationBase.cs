@@ -13,14 +13,16 @@ namespace Assets.Scripts.Game.Units.Formation
         public abstract void Order(Cohort unit, bool instant = false);
         public abstract void Order(Century unit, bool instant = false);
 
-        protected static void ProcessLocalOffsets<T, TChild>(IList<Vector3> offsetPositions, T unit, bool instant)
+        public abstract FormationStats Stats { get; }
+
+        protected void ProcessLocalOffsets<T, TChild>(IList<Vector3> offsetPositions, T unit, bool instant)
             where T : UnitGroup<TChild> where TChild : UnitBase
         {
             ProcessLocalOffsets(offsetPositions, unit, unit, instant);
         }
 
 
-        protected static void ProcessLocalOffsets<T, TChild>(IList<Vector3> offsetPositions, T unit,
+        protected void ProcessLocalOffsets<T, TChild>(IList<Vector3> offsetPositions, T unit,
             IEnumerable<TChild> children, bool instant)
             where T : UnitGroup<TChild> where TChild : UnitBase
         {
@@ -58,7 +60,7 @@ namespace Assets.Scripts.Game.Units.Formation
             if (speed < unit.WalkSpeed)
                 unit.WalkSpeed = speed / 10;
             else
-                unit.WalkSpeed = unit.DefaultSpeed;
+                unit.WalkSpeed = Stats.WalkSpeed;
         }
     }
 }

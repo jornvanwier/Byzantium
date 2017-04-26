@@ -54,5 +54,12 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormation
 
             unit.ChildrenDimensions = new Int2(columnHeight, rowWidth);
         }
+
+        public override FormationStats Stats { get; } = new FormationStats
+        {
+            WalkSpeed = FormationStats.DefaultWalkSpeed,
+            AttackDamageMultiplier = 1.5f,
+            DefenseMultiplier = 0.6f
+        };
     }
 }

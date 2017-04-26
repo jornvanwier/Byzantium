@@ -27,8 +27,6 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override string UnitName => "Legion";
 
-        public override float DefaultSpeed => 1.5f;
-
         public override Vector2 GroupSpacing => new Vector2(1.0f, 1.0f);
 
         public void AddUnit(Century unit)
@@ -62,11 +60,11 @@ namespace Assets.Scripts.Game.Units.Groups
                 Formation = new StandardFormation()
             };
 
-//            for (int i = 0; i < 6; i++)
-//                legion.AddUnit(Cohort.CreateCavalryUnit(faction));
+            for (int i = 0; i < 6; i++)
+                legion.AddUnit(Cohort.CreateCavalryUnit(faction));
 
-//            for (int i = 0; i < 3; i++)
-            legion.AddUnit(Cohort.CreateUniformMixedUnit(faction));
+            for (int i = 0; i < 3; i++)
+                legion.AddUnit(Cohort.CreateUniformMixedUnit(faction));
 
             legion.IsCavalry = false;
 

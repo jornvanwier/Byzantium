@@ -26,8 +26,6 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override string UnitName => "Cohort";
 
-        public override float DefaultSpeed => 1.5f;
-
         public override Vector2 GroupSpacing => new Vector2(0.75f, 0.75f);
 
         public void AddUnit(Contubernium unit)

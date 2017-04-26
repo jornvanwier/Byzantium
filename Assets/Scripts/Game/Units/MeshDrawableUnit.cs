@@ -62,8 +62,6 @@ namespace Assets.Scripts.Game.Units
 
         public override Vector2 DrawSize => IsCavalry ? horseSize : manSize;
 
-        public override float DefaultSpeed => 1.5f;
-
         public override int UnitCount => 1;
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator

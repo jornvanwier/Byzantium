@@ -13,8 +13,6 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override string UnitName => "Century";
 
-        public override float DefaultSpeed => 1.5f;
-
         public override Vector2 GroupSpacing => new Vector2(0.4f, 0.4f);
 
         public override IEnumerable<Contubernium> Contubernia => Storage.AsEnumerable();

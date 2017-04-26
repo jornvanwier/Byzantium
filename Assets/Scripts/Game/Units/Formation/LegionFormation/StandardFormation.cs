@@ -19,7 +19,7 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 
 
         // Returns width
-        private static float PlaceCohorts(Legion unit, bool instant)
+        private float PlaceCohorts(Legion unit, bool instant)
         {
             IEnumerable<Cohort> enumerable = unit.ChildrenAreCavalry(false);
             Cohort[] cohorts = enumerable as Cohort[] ?? enumerable.ToArray();
@@ -61,7 +61,7 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
             return spacing.x * width;
         }
 
-        private static void PlaceCavalry(Legion unit, float cohortWidth, bool instant)
+        private void PlaceCavalry(Legion unit, float cohortWidth, bool instant)
         {
             IEnumerable<Cohort> enumerable = unit.ChildrenAreCavalry(true);
             Cohort[] cavalry = enumerable as Cohort[] ?? enumerable.ToArray();
@@ -90,5 +90,12 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 
             ProcessLocalOffsets(localPositions, unit, cavalry, instant);
         }
+
+        public override FormationStats Stats { get; } = new FormationStats
+        {
+            WalkSpeed = FormationStats.DefaultWalkSpeed,
+            AttackDamageMultiplier = 1f,
+            DefenseMultiplier = 1f
+        };
     }
 }

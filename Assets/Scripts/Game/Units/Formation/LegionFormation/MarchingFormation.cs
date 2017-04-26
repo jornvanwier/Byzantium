@@ -42,5 +42,12 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 
             unit.ChildrenDimensions = new Int2(width, height);
         }
+
+        public override FormationStats Stats { get; } = new FormationStats
+        {
+            WalkSpeed = 2f,
+            AttackDamageMultiplier = 0.8f,
+            DefenseMultiplier = 0.5f
+        };
     }
 }

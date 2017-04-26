@@ -27,8 +27,6 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override string UnitName => "Contubernium";
 
-        public override float DefaultSpeed => 1.5f;
-
         public override Vector2 GroupSpacing => new Vector2(0.1f, 0.1f);
 
         public UnitConfig Config { get; private set; }

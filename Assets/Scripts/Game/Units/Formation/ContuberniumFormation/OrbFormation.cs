@@ -34,7 +34,13 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormation
 
             int rows = Mathf.CeilToInt(Mathf.Sqrt(unit.UnitCount)) + 2;
             unit.ChildrenDimensions = new Int2(rows, rows);
-            unit.WalkSpeed = 0.3f;
         }
+
+        public override FormationStats Stats { get; } = new FormationStats
+        {
+            WalkSpeed = 0.4f,
+            AttackDamageMultiplier = 1,
+            DefenseMultiplier = 2
+        };
     }
 }

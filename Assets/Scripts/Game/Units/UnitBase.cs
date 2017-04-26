@@ -12,12 +12,6 @@ namespace Assets.Scripts.Game.Units
 
         private Rect hitbox;
 
-        protected UnitBase()
-        {
-            WalkSpeed = DefaultSpeed;
-        }
-
-        public abstract float DefaultSpeed { get; }
         public virtual Vector3 Position { get; set; } = Vector3.zero;
 
         public virtual Quaternion Rotation { get; set; } = Quaternion.identity;
@@ -49,6 +43,8 @@ namespace Assets.Scripts.Game.Units
 
         public abstract int MaxHealth { get; }
         public abstract int Health { get; set; }
+
+        public static float CavalrySpeedMultiplier { get; } = 1.6f;
 
         public Commander Commander
         {

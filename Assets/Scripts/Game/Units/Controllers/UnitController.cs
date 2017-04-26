@@ -301,7 +301,7 @@ namespace Assets.Scripts.Game.Units.Controllers
 
             Vector3 nextPos = Vector3.MoveTowards(currentPos,
                 MapRenderer.CubicalCoordinateToWorld(currentPathInfo.Path[0]),
-                AttachedUnit.WalkSpeed * Time.deltaTime);
+                AttachedUnit.WalkSpeed * UnitBase.CavalrySpeedMultiplier * Time.deltaTime);
             movementDrawOffset = nextPos - MapRenderer.CubicalCoordinateToWorld(previousPosition);
 
             SetWorldRotation(Quaternion.Slerp(transform.rotation,
