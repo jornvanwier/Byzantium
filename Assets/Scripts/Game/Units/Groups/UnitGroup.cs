@@ -28,8 +28,9 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             get
             {
-                if (maxHealth == -1)
-                    maxHealth = Storage.Select(u => u.MaxHealth).Aggregate((x, y) => x + y);
+                if (Storage.Count == 0)
+                    return 1;
+                maxHealth = Storage.Select(u => u.MaxHealth).Aggregate((x, y) => x + y);
                 return maxHealth;
             }
         }
@@ -97,7 +98,10 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override int UnitCount => Storage.Count;
 
-        public override Vector2 DrawSize => Vector2.Scale(Storage[0].DrawSize, ChildrenDimensions) + GroupSpacing;
+        public override Vector2 DrawSize => Storage.Count > 0
+            ? Vector2.Scale(Storage[0].DrawSize, ChildrenDimensions) + GroupSpacing
+            : Vector2.one;
+
 
         public IEnumerator<MeshDrawableUnit> DrawableUnitsEnumerator
         {

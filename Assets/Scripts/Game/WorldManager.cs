@@ -305,7 +305,8 @@ namespace Assets.Scripts.Game
         private void Select(UnitController army)
         {
             army.HealthBar.Show();
-            infoPanel.Commander = army.AttachedUnit.Commander.Name + Environment.NewLine + army.Faction.Name;
+            infoPanel.Commander = army.AttachedUnit.Commander.Name + (army.IsAi ? " (AI)" : " (User)") +
+                                  Environment.NewLine + army.Faction.Name;
             infoPanel.Show();
         }
 
