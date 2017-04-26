@@ -10,8 +10,6 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
     {
         public override void Order(Legion unit, bool instant = false)
         {
-            instant = true;
-
             PlaceCavalry(unit, PlaceCohorts(unit, instant) / 2, instant);
 
             int height = (int) Mathf.Sqrt(unit.UnitCount);
