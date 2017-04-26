@@ -90,7 +90,7 @@ namespace Assets.Scripts.Game.Units.Groups
             set
             {
                 base.Position = value;
-                Order();
+                if(UnitCount > 0) Order();
             }
         }
 
