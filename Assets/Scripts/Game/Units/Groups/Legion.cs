@@ -29,6 +29,13 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override Vector2 GroupSpacing => new Vector2(1.0f, 1.0f);
 
+        public new void AddUnit(Cohort unit)
+        {
+            unit.Parent = this;
+            Storage.Add(unit);
+            Set = Prefetch(this);
+        }
+
         public void AddUnit(Century unit)
         {
             Storage.PickRandom().AddUnit(unit);

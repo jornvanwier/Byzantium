@@ -147,7 +147,6 @@ namespace Assets.Scripts.Game.Units.Controllers
 
         private void SetSmokeEmission(float rate)
         {
-
             ParticleSystem.EmissionModule emissionModule = battleSmokeSystem.emission;
             emissionModule.rateOverTime = rate;
         }
@@ -192,12 +191,28 @@ namespace Assets.Scripts.Game.Units.Controllers
 
         private void Attack(UnitController enemy)
         {
-            AttachedUnit.RespectFormation = false;
-            foreach (Contubernium unit in AttachedUnit.Contubernia)
+            if (enemy.AttachedUnit.Health <= 0)
             {
-                if (unit.CurrentEnemy == null)
-                    unit.CurrentEnemy = unit.ClosestEnemy(enemy);
-                unit.Attack(unit.CurrentEnemy);
+                AttachedUnit.RespectFormation = true;
+                SetSmokeEmission(0);
+                Debug.Log("Battle is over, " + Faction.Name + " won!");
+            }else if (AttachedUnit.Health <= 0)
+            {
+                SetSmokeEmission(0);
+                Debug.Log("Battle is over, " + Faction.Name + " lost!");
+            }
+            else
+            {
+                AttachedUnit.RespectFormation = false;
+                SetSmokeEmission(200);
+                foreach (Contubernium unit in AttachedUnit.Contubernia)
+                {
+                    if (unit.CurrentEnemy == null)
+                    {
+                        unit.CurrentEnemy = unit.ClosestEnemy(enemy);
+                    }
+                    unit.Attack(unit.CurrentEnemy);
+                }
             }
         }
 
@@ -216,11 +231,6 @@ namespace Assets.Scripts.Game.Units.Controllers
                     if (distance < AttackRange)
                     {
                         Attack(enemy);
-                        SetSmokeEmission(200);
-                    }
-                    else
-                    {
-                        SetSmokeEmission(0);
                     }
                 }
 

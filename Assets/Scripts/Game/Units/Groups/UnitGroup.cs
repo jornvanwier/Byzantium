@@ -39,7 +39,9 @@ namespace Assets.Scripts.Game.Units.Groups
             get
             {
                 //if (health == -1)
-                    health = Storage.Select(u => u.Health).Aggregate((x, y) => x + y);
+                if (Storage.Count == 0)
+                    return 0;
+                health = Storage.Select(u => u.Health).Aggregate((x, y) => x + y);
                 return health;
             }
             set
@@ -57,7 +59,6 @@ namespace Assets.Scripts.Game.Units.Groups
                         }
                         healthDifference -= child.Health;
                         child.Health = 0;
-                        //RemoveUnit(child);
                     }
                     else //Give health
                     {
