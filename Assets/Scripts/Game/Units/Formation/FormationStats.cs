@@ -8,5 +8,4 @@
 
         public static float DefaultWalkSpeed { get; } = 1.5f;
     }
-
 }

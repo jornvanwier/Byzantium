@@ -14,6 +14,7 @@ namespace Assets.Scripts.Game.Units.Controllers
         private const float RotationSpeed = 3.5f;
 
         private static readonly float AttackRange = 8 * WorldManager.UnitScale;
+        private ParticleSystem battleSmokeSystem;
 
         protected Camera Camera;
 
@@ -29,7 +30,6 @@ namespace Assets.Scripts.Game.Units.Controllers
         private int nextPathId = -1;
         private CubicalCoordinate previousPosition;
         private Vector3 spawnPosition;
-        private ParticleSystem battleSmokeSystem;
 
         public UnitBase AttachedUnit { get; private set; }
 
@@ -209,9 +209,7 @@ namespace Assets.Scripts.Game.Units.Controllers
                 foreach (Contubernium unit in AttachedUnit.Contubernia)
                 {
                     if (unit.CurrentEnemy == null)
-                    {
                         unit.CurrentEnemy = unit.ClosestEnemy(enemy);
-                    }
                     unit.Attack(unit.CurrentEnemy);
                 }
             }
@@ -232,9 +230,7 @@ namespace Assets.Scripts.Game.Units.Controllers
                 {
                     float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
                     if (distance < AttackRange)
-                    {
                         Attack(enemy);
-                    }
                 }
 
             if (mapRenderer.HexBoard != null && AttachedUnit != null && spawnPosition == Vector3.zero)

@@ -29,6 +29,15 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public override Vector2 GroupSpacing => new Vector2(1.0f, 1.0f);
 
+        public override Vector2 DrawSize => Storage.Count > 0
+            ? Vector2.Scale(
+                  ChildrenAreCavalry(true)
+                      .DefaultIfEmpty(null)
+                      .FirstOrDefault()
+                      ?.DrawSize ?? Storage[0].DrawSize, ChildrenDimensions) +
+              GroupSpacing
+            : Vector2.one;
+
         public new void AddUnit(Cohort unit)
         {
             unit.Parent = this;
@@ -52,15 +61,6 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             return this.Where(c => c.IsCavalry == cavalryChoice).GetEnumerator().Iterate();
         }
-
-        public override Vector2 DrawSize => Storage.Count > 0
-            ? Vector2.Scale(
-                  ChildrenAreCavalry(true)
-                      .DefaultIfEmpty(null)
-                      .FirstOrDefault()
-                      ?.DrawSize ?? Storage[0].DrawSize, ChildrenDimensions) +
-              GroupSpacing
-            : Vector2.one;
 
         public static Legion CreateStandardLegion(Faction faction)
         {

@@ -33,6 +33,8 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public Contubernium CurrentEnemy { get; set; }
 
+        public SoldierType Type { get; private set; }
+
         public static Contubernium CreateSpearCavalryUnit(Faction faction)
         {
             return CreateCustomUnit(faction, SoldierType.HorseSpear);
@@ -62,8 +64,6 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             return CreateCustomUnit(faction, SoldierType.Spear);
         }
-
-        public SoldierType Type { get; private set; }
 
         public static Contubernium CreateCustomUnit(Faction faction, SoldierType unitType)
         {
@@ -176,7 +176,8 @@ namespace Assets.Scripts.Game.Units.Groups
                     float formationDefenseMultiplier = DefenseMultiplier(statses);
 
                     float multiplierVsEnemy = Config.VersusMultipliers[enemy.Type] * formationDamageMultiplier;
-                    float damageDone = Config.Damage * multiplierVsEnemy * enemy.Config.Defense * formationDefenseMultiplier;
+                    float damageDone = Config.Damage * multiplierVsEnemy * enemy.Config.Defense *
+                                       formationDefenseMultiplier;
 
                     enemy.Health -= (int) damageDone;
                     if (enemy.IsDead)

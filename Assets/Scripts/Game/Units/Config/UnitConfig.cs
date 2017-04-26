@@ -4,6 +4,8 @@ namespace Assets.Scripts.Game.Units.Config
 {
     public class UnitConfig
     {
+        private const float RangeModifier = 0.5f;
+
         public static UnitConfig Sword = new UnitConfig
         {
             Range = 1,
@@ -111,8 +113,6 @@ namespace Assets.Scripts.Game.Units.Config
                 {SoldierType.HorseSpear, 0.5f}
             }
         };
-
-        private const float RangeModifier = 0.5f;
 
         private float range;
 

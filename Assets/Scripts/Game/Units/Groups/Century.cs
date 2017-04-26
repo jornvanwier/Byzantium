@@ -12,17 +12,18 @@ namespace Assets.Scripts.Game.Units.Groups
         {
         }
 
+        public override string UnitName => "Century";
+
+        public override Vector2 GroupSpacing => new Vector2(0.4f, 0.4f);
+
+        public override IEnumerable<Contubernium> Contubernia => Storage.AsEnumerable();
+
         public new void AddUnit(Contubernium unit)
         {
             unit.Parent = this;
             Storage.Add(unit);
             Set = Prefetch(this);
         }
-        public override string UnitName => "Century";
-
-        public override Vector2 GroupSpacing => new Vector2(0.4f, 0.4f);
-
-        public override IEnumerable<Contubernium> Contubernia => Storage.AsEnumerable();
 
         public static Century CreateMixedUnit(Faction faction)
         {

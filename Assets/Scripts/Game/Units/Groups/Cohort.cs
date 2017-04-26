@@ -21,18 +21,19 @@ namespace Assets.Scripts.Game.Units.Groups
                     yield return contubernium;
             }
         }
-        public new void AddUnit(Century unit)
-        {
-            unit.Parent = this;
-            Storage.Add(unit);
-            Set = Prefetch(this);
-        }
 
         public override IEnumerable<Contubernium> Contubernia => ContuberniumEnumerator.Iterate();
 
         public override string UnitName => "Cohort";
 
         public override Vector2 GroupSpacing => new Vector2(0.75f, 0.75f);
+
+        public new void AddUnit(Century unit)
+        {
+            unit.Parent = this;
+            Storage.Add(unit);
+            Set = Prefetch(this);
+        }
 
         public void AddUnit(Contubernium unit)
         {

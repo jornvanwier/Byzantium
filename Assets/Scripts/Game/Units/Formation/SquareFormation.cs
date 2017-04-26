@@ -8,6 +8,13 @@ namespace Assets.Scripts.Game.Units.Formation
 {
     public class SquareFormation : FormationBase
     {
+        public override FormationStats Stats { get; } = new FormationStats
+        {
+            WalkSpeed = FormationStats.DefaultWalkSpeed,
+            AttackDamageMultiplier = 1f,
+            DefenseMultiplier = 1f
+        };
+
         public override void Order(Legion unit, bool instant = false)
         {
             throw new FormationIncompatibleException(unit);
@@ -91,12 +98,5 @@ namespace Assets.Scripts.Game.Units.Formation
 
             unit.ChildrenDimensions = new Int2(columnHeight, rowWidth);
         }
-
-        public override FormationStats Stats { get; } = new FormationStats
-        {
-            WalkSpeed = FormationStats.DefaultWalkSpeed,
-            AttackDamageMultiplier = 1f,
-            DefenseMultiplier = 1f
-        };
     }
 }

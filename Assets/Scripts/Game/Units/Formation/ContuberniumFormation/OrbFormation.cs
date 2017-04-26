@@ -7,6 +7,13 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormation
 {
     public class OrbFormation : ContuberniumFormationBase
     {
+        public override FormationStats Stats { get; } = new FormationStats
+        {
+            WalkSpeed = 0.4f,
+            AttackDamageMultiplier = 1,
+            DefenseMultiplier = 2
+        };
+
         public override void Order(Contubernium unit, bool instant = false)
         {
             var localPositions = new List<Vector3>();
@@ -35,12 +42,5 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormation
             int rows = Mathf.CeilToInt(Mathf.Sqrt(unit.UnitCount)) + 2;
             unit.ChildrenDimensions = new Int2(rows, rows);
         }
-
-        public override FormationStats Stats { get; } = new FormationStats
-        {
-            WalkSpeed = 0.4f,
-            AttackDamageMultiplier = 1,
-            DefenseMultiplier = 2
-        };
     }
 }

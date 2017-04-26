@@ -8,6 +8,13 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 {
     public class StandardFormation : LegionFormationBase
     {
+        public override FormationStats Stats { get; } = new FormationStats
+        {
+            WalkSpeed = FormationStats.DefaultWalkSpeed,
+            AttackDamageMultiplier = 1f,
+            DefenseMultiplier = 1f
+        };
+
         public override void Order(Legion unit, bool instant = false)
         {
             PlaceCavalry(unit, PlaceCohorts(unit, instant) / 2, instant);
@@ -25,7 +32,7 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
             Cohort[] cohorts = enumerable as Cohort[] ?? enumerable.ToArray();
             int cohortCount = cohorts.Length;
             int width = Mathf.CeilToInt(Mathf.Sqrt(cohortCount));
-            int height = Mathf.CeilToInt(cohortCount / (float)width);
+            int height = Mathf.CeilToInt(cohortCount / (float) width);
 
             Vector2 spacing = cohorts.First().DrawSize;
 
@@ -90,12 +97,5 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 
             ProcessLocalOffsets(localPositions, unit, cavalry, instant);
         }
-
-        public override FormationStats Stats { get; } = new FormationStats
-        {
-            WalkSpeed = FormationStats.DefaultWalkSpeed,
-            AttackDamageMultiplier = 1f,
-            DefenseMultiplier = 1f
-        };
     }
 }

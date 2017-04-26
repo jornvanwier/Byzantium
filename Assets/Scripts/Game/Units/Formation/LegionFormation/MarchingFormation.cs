@@ -9,6 +9,13 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 {
     public class MarchingFormation : LegionFormationBase
     {
+        public override FormationStats Stats { get; } = new FormationStats
+        {
+            WalkSpeed = 20f,
+            AttackDamageMultiplier = 0.8f,
+            DefenseMultiplier = 0.5f
+        };
+
         public override void Order(Legion unit, bool instant = false)
         {
             const int width = 1;
@@ -42,12 +49,5 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
 
             unit.ChildrenDimensions = new Int2(width, height);
         }
-
-        public override FormationStats Stats { get; } = new FormationStats
-        {
-            WalkSpeed = 20f,
-            AttackDamageMultiplier = 0.8f,
-            DefenseMultiplier = 0.5f
-        };
     }
 }
