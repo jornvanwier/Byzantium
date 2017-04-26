@@ -25,6 +25,8 @@ namespace Assets.Scripts.Game.Units
 
         public bool RespectFormation { get; set; } = true;
 
+        public UnitBase Parent { get; set; }
+
         public Rect Hitbox
         {
             get

@@ -12,7 +12,6 @@ namespace Assets.Scripts.Game.Units.Formation
         public abstract void Order(Contubernium unit, bool instant = false);
         public abstract void Order(Cohort unit, bool instant = false);
         public abstract void Order(Century unit, bool instant = false);
-
         public abstract FormationStats Stats { get; }
 
         protected void ProcessLocalOffsets<T, TChild>(IList<Vector3> offsetPositions, T unit, bool instant)

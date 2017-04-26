@@ -8,5 +8,6 @@ namespace Assets.Scripts.Game.Units.Formation
         void Order(Contubernium unit, bool instant = false);
         void Order(Cohort unit, bool instant = false);
         void Order(Century unit, bool instant = false);
+        FormationStats Stats { get; }
     }
 }

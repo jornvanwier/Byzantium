@@ -8,7 +8,6 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Cohort : UnitGroup<Century>
     {
-        public Legion Parent { get; set; }
         public Cohort(Faction faction) : base(faction)
         {
         }

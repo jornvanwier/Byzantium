@@ -307,6 +307,9 @@ namespace Assets.Scripts.Game.Units.Controllers
                 currentPathInfo.Path.RemoveAt(0);
                 previousPosition = Position;
                 movementDrawOffset = currentPos - MapRenderer.CubicalCoordinateToWorld(previousPosition);
+
+                if (currentPathInfo.Path.Count < 1)
+                    return;
             }
 
             Vector3 nextPos = Vector3.MoveTowards(currentPos,

@@ -8,7 +8,6 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Century : UnitGroup<Contubernium>
     {
-        public Cohort Parent { get; set; }
         public Century(Faction faction) : base(faction)
         {
         }

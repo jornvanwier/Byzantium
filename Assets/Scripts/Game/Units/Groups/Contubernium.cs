@@ -13,7 +13,6 @@ namespace Assets.Scripts.Game.Units.Groups
     public class Contubernium : UnitGroup<MeshDrawableUnit>
     {
         private float lastAttack;
-        public Century Parent { get; set; }
 
         public Contubernium(Faction faction) : base(faction)
         {
@@ -126,7 +125,29 @@ namespace Assets.Scripts.Game.Units.Groups
         public void Kill()
         {
             Health = 0;
-            Parent.RemoveUnit(this);
+            (Parent as UnitGroup<Contubernium>)?.RemoveUnit(this);
+        }
+
+        private HashSet<FormationStats> AllFormationStatses()
+        {
+            var result = new HashSet<FormationStats>();
+            UnitBase currentParent = this;
+            while (currentParent.Parent != null)
+            {
+                result.Add(currentParent.Formation.Stats);
+                currentParent = currentParent.Parent;
+            }
+            return result;
+        }
+
+        private float AttackDamageMultiplier(IEnumerable<FormationStats> statses)
+        {
+            return statses.Select(s => s.AttackDamageMultiplier).Aggregate(1f, (a, b) => a * b);
+        }
+
+        private float DefenseMultiplier(IEnumerable<FormationStats> statses)
+        {
+            return statses.Select(s => s.DefenseMultiplier).Aggregate(1f, (a, b) => a * b);
         }
 
         public void Attack(Contubernium enemy)
@@ -149,8 +170,13 @@ namespace Assets.Scripts.Game.Units.Groups
                 if (canAttack)
                 {
                     Debug.Log("Unit ATTACK!");
-                    float multiplierVsEnemy = Config.VersusMultipliers[enemy.Type];
-                    float damageDone = Config.Damage * multiplierVsEnemy * enemy.Config.Defense;
+
+                    HashSet<FormationStats> statses = AllFormationStatses();
+                    float formationDamageMultiplier = AttackDamageMultiplier(statses);
+                    float formationDefenseMultiplier = DefenseMultiplier(statses);
+
+                    float multiplierVsEnemy = Config.VersusMultipliers[enemy.Type] * formationDamageMultiplier;
+                    float damageDone = Config.Damage * multiplierVsEnemy * enemy.Config.Defense * formationDefenseMultiplier;
 
                     enemy.Health -= (int) damageDone;
                     if (enemy.IsDead)
