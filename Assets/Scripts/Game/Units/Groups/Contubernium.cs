@@ -13,6 +13,7 @@ namespace Assets.Scripts.Game.Units.Groups
     public class Contubernium : UnitGroup<MeshDrawableUnit>
     {
         private float lastAttack;
+        public Century Parent { get; set; }
 
         public Contubernium(Faction faction) : base(faction)
         {
@@ -124,14 +125,24 @@ namespace Assets.Scripts.Game.Units.Groups
             return closestEnemy;
         }
 
+        public void Kill()
+        {
+            Health = 0;
+            Parent.RemoveUnit(this);
+        }
+
         public void Attack(Contubernium enemy)
         {
+            if (IsDead || enemy == null) return;
+
+            Debug.Log(enemy);
+
             Vector3 towardsEnemy = Vector3.MoveTowards(Position, enemy.Position, Config.MovementSpeed);
             Rotation = Quaternion.LookRotation(towardsEnemy);
 
             float enemyDistance = Vector3.Distance(Position, enemy.Position);
             bool isInRange = enemyDistance < Config.Range;
-            bool canAttack = Time.realtimeSinceStartup - lastAttack > Config.AttackSpeed;
+            bool canAttack = Time.realtimeSinceStartup - lastAttack > 1 / Config.AttackSpeed;
             if (isInRange)
             {
                 if (Config.Range - enemyDistance > Config.Range / 2)
@@ -145,7 +156,10 @@ namespace Assets.Scripts.Game.Units.Groups
 
                     enemy.Health -= (int) damageDone;
                     if (enemy.IsDead)
+                    {
                         CurrentEnemy = null;
+                        enemy.Kill();
+                    }
 
                     lastAttack = Time.realtimeSinceStartup;
                 }

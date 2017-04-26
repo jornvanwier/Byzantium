@@ -8,7 +8,7 @@ namespace Assets.Scripts.Game.Units.Config
         {
             Range = 1,
             Damage = 160,
-            AttackSpeed = 2,
+            AttackSpeed = 3,
             Defense = 0.9f,
             MovementSpeed = 1.2f,
             VersusMultipliers = new Dictionary<SoldierType, float>
@@ -26,7 +26,7 @@ namespace Assets.Scripts.Game.Units.Config
         {
             Range = 1.5f,
             Damage = 240,
-            AttackSpeed = 4,
+            AttackSpeed = 2,
             Defense = 0.6f,
             MovementSpeed = 1.5f,
             VersusMultipliers = new Dictionary<SoldierType, float>
@@ -44,7 +44,7 @@ namespace Assets.Scripts.Game.Units.Config
         {
             Range = 5,
             Damage = 120,
-            AttackSpeed = 3,
+            AttackSpeed = 0.75f,
             Defense = 1,
             MovementSpeed = 1.5f,
             VersusMultipliers = new Dictionary<SoldierType, float>
@@ -80,7 +80,7 @@ namespace Assets.Scripts.Game.Units.Config
         {
             Range = 1.5f,
             Damage = 240,
-            AttackSpeed = 4,
+            AttackSpeed = 2,
             Defense = 0.7f,
             MovementSpeed = 2f,
             VersusMultipliers = new Dictionary<SoldierType, float>
@@ -98,7 +98,7 @@ namespace Assets.Scripts.Game.Units.Config
         {
             Range = 4,
             Damage = 120,
-            AttackSpeed = 3,
+            AttackSpeed = 0.75f,
             Defense = 1,
             MovementSpeed = 2f,
             VersusMultipliers = new Dictionary<SoldierType, float>

@@ -8,6 +8,7 @@ namespace Assets.Scripts.Game.Units.Groups
 {
     public class Cohort : UnitGroup<Century>
     {
+        public Legion Parent { get; set; }
         public Cohort(Faction faction) : base(faction)
         {
         }
@@ -20,6 +21,12 @@ namespace Assets.Scripts.Game.Units.Groups
                 foreach (Contubernium contubernium in child.Contubernia)
                     yield return contubernium;
             }
+        }
+        public new void AddUnit(Century unit)
+        {
+            unit.Parent = this;
+            Storage.Add(unit);
+            Set = Prefetch(this);
         }
 
         public override IEnumerable<Contubernium> Contubernia => ContuberniumEnumerator.Iterate();

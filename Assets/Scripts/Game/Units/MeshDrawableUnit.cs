@@ -141,6 +141,8 @@ namespace Assets.Scripts.Game.Units
 
             foreach (MeshDrawableUnit unit in u.AllUnits)
             {
+                if (unit.IsDead) continue;
+
                 Quaternion rotate = unit.Rotation * unit.Transform.rotation;
                 Matrix4x4 m = Matrix4x4.TRS(unit.Position, rotate, unit.Transform.localScale);
                 switch (unit.soldierType)
