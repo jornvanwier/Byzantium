@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9def48cdbc62d034e9ee691a58864346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Foliage: {fileID: 1898116360293754, guid: 6208ba566a4aeb44c87c070afd596a98, type: 2}
   AlbedoMaps:
   - {fileID: 2800000, guid: 6caa29389ba306849a62a7168c097c1e, type: 3}
   - {fileID: 2800000, guid: 5ecc8ff5e11eece4e89b6948252c6094, type: 3}
@@ -78,24 +79,3 @@ MonoBehaviour:
   HexMaterial: {fileID: 2100000, guid: fe0831c8b5f572041ace39327b77a4d2, type: 2}
   MapSize: 1024
   Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
-  OneTreePer: 100
-  PineTree:
-  - {fileID: 100000, guid: 5463c855c66b2f740b4bc4c6379e0f97, type: 3}
-  - {fileID: 100000, guid: 232a1ed44805e2d4eb99372b65201d9a, type: 3}
-  - {fileID: 100000, guid: d2afb700ab12fcc4db5b9567f3a698dd, type: 3}
-  - {fileID: 100000, guid: 6a08450e9ce0dde4a8c7594f7297582a, type: 3}
-  OliveTree:
-  - {fileID: 138356, guid: fe204993f83ea534c99e733c6ff995a8, type: 2}
-  Fern:
-  - {fileID: 100000, guid: dad0b53bfba5bf148b12cdfa48770c8a, type: 3}
-  PalmTree:
-  - {fileID: 100000, guid: 94005be276160534dbb7ee6b9bd932a0, type: 2}
-  - {fileID: 100000, guid: 28df92b683e358240b9e0d6b437440f2, type: 2}
-  - {fileID: 100000, guid: ff478098a23b7d549825a3f57e0b7fd3, type: 2}
-  - {fileID: 100000, guid: 63af7620a7774ad41ac07f785bb77b0a, type: 2}
-  - {fileID: 100000, guid: fe355d768b1d5c646b855b66e0d1671a, type: 2}
-  Rock:
-  - {fileID: 1436433639622742, guid: 66a1bb312414cdd4fb59d56f7f5e8225, type: 2}
-  - {fileID: 1807101039048426, guid: 2eccc5652aeada14580b45d4922ab7f7, type: 2}
-  - {fileID: 1335322749562678, guid: c38df915aac7dac47933e866df1be51f, type: 2}
-  - {fileID: 1383614408900354, guid: 6e68289d20ccf1141b0e02520a63ce0d, type: 2}

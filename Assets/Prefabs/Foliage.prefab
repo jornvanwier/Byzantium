@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1898116360293754}
+  m_IsPrefabParent: 1
+--- !u!1 &1898116360293754
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4426265468515662}
+  - component: {fileID: 114772468704124658}
+  m_Layer: 0
+  m_Name: Foliage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4426265468515662
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1898116360293754}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114772468704124658
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1898116360293754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e3f507b54098e4ba86cbd88229feef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Fern:
+  - {fileID: 100000, guid: dad0b53bfba5bf148b12cdfa48770c8a, type: 3}
+  OakTree:
+  - {fileID: 137706, guid: ba3104f5f654c534993663b7d01f459c, type: 2}
+  - {fileID: 101338, guid: ba4e41428fde198418a7b99cf6afba5b, type: 2}
+  - {fileID: 163338, guid: cd3416a6da16716418740d59e9e827f2, type: 2}
+  - {fileID: 151576, guid: 914bf7eddcbff78449ce6e73ecde14ec, type: 2}
+  - {fileID: 150114, guid: dd2e96d8efa1151408c7df15d9cc0eba, type: 2}
+  - {fileID: 100000, guid: d115f689b42a8d14a9ae3e7e708f6cc5, type: 3}
+  - {fileID: 100000, guid: 046789a3ba9174b4bbbcf143f6596958, type: 3}
+  - {fileID: 100000, guid: 57cfa17230bf99046b3286979947dbda, type: 3}
+  - {fileID: 100000, guid: 6b8aa908bd028d245bae73805cc7b7cb, type: 3}
+  - {fileID: 139582, guid: ac78ecb533d06e2469684ffaa8788765, type: 2}
+  PalmTree:
+  - {fileID: 100000, guid: 94005be276160534dbb7ee6b9bd932a0, type: 2}
+  - {fileID: 100000, guid: 28df92b683e358240b9e0d6b437440f2, type: 2}
+  - {fileID: 100000, guid: ff478098a23b7d549825a3f57e0b7fd3, type: 2}
+  - {fileID: 100000, guid: 63af7620a7774ad41ac07f785bb77b0a, type: 2}
+  - {fileID: 100000, guid: fe355d768b1d5c646b855b66e0d1671a, type: 2}
+  PineTree:
+  - {fileID: 100000, guid: 5463c855c66b2f740b4bc4c6379e0f97, type: 3}
+  - {fileID: 100000, guid: 232a1ed44805e2d4eb99372b65201d9a, type: 3}
+  - {fileID: 100000, guid: d2afb700ab12fcc4db5b9567f3a698dd, type: 3}
+  - {fileID: 100000, guid: 6a08450e9ce0dde4a8c7594f7297582a, type: 3}
+  Rock:
+  - {fileID: 1436433639622742, guid: 66a1bb312414cdd4fb59d56f7f5e8225, type: 2}
+  - {fileID: 1807101039048426, guid: 2eccc5652aeada14580b45d4922ab7f7, type: 2}
+  - {fileID: 1335322749562678, guid: c38df915aac7dac47933e866df1be51f, type: 2}
+  - {fileID: 1383614408900354, guid: 6e68289d20ccf1141b0e02520a63ce0d, type: 2}
+  OneTreePer: 50
