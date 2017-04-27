@@ -50,6 +50,9 @@ namespace Assets.Scripts.Game.Units.Controllers
 
         public abstract bool IsAi { get; }
 
+        public int EmissionRateHigh = 200;
+        public int EmissionRateLow = 0;
+
         public void AddUnit(Cohort unit)
         {
             if (AttachedUnit is Legion legion)
@@ -139,10 +142,26 @@ namespace Assets.Scripts.Game.Units.Controllers
         private void InitParticleSystem()
         {
             battleSmokeSystem = gameObject.AddComponent<ParticleSystem>();
-            SetSmokeEmission(0);
+            SetSmokeEmission(false);
+
+            ParticleSystem.MainModule mainModule = battleSmokeSystem.main;
+            mainModule.simulationSpace = ParticleSystemSimulationSpace.Local;
+            mainModule.startColor = new Color(0, 0, 0, 120);
+
+            ParticleSystem.LimitVelocityOverLifetimeModule limitVelocityOverLifetimeModule =
+                battleSmokeSystem.limitVelocityOverLifetime;
+            limitVelocityOverLifetimeModule.enabled = true;
+            limitVelocityOverLifetimeModule.separateAxes = true;
+            limitVelocityOverLifetimeModule.limitY = 0;
 
             ParticleSystem.ShapeModule shapeModule = battleSmokeSystem.shape;
-            shapeModule.box = new Vector3(AttachedUnit.DrawSize.x, 1, AttachedUnit.DrawSize.y);
+            shapeModule.shapeType = ParticleSystemShapeType.Sphere;
+            shapeModule.radius = Mathf.Max(AttachedUnit.DrawSize.x, AttachedUnit.DrawSize.y) * 2;
+
+            var pRenderer = GetComponent<ParticleSystemRenderer>();
+            pRenderer.renderMode = ParticleSystemRenderMode.HorizontalBillboard;
+            pRenderer.material = Resources.Load<Material>("Default-Particle");
+
         }
 
         private void SetSmokeEmission(float rate)
@@ -150,6 +169,12 @@ namespace Assets.Scripts.Game.Units.Controllers
             ParticleSystem.EmissionModule emissionModule = battleSmokeSystem.emission;
             emissionModule.rateOverTime = rate;
         }
+
+        private void SetSmokeEmission(bool on)
+        {
+            SetSmokeEmission(on ? EmissionRateHigh : EmissionRateLow);
+        }
+
 
         public void OnDrawGizmos()
         {
@@ -194,18 +219,18 @@ namespace Assets.Scripts.Game.Units.Controllers
             if (enemy.AttachedUnit.Health <= 0)
             {
                 AttachedUnit.RespectFormation = true;
-                SetSmokeEmission(0);
+                SetSmokeEmission(false);
                 Debug.Log("Battle is over, " + Faction.Name + " won!");
             }
             else if (AttachedUnit.Health <= 0)
             {
-                SetSmokeEmission(0);
+                SetSmokeEmission(false);
                 Debug.Log("Battle is over, " + Faction.Name + " lost!");
             }
             else
             {
                 AttachedUnit.RespectFormation = false;
-                SetSmokeEmission(200);
+                SetSmokeEmission(true);
                 foreach (Contubernium unit in AttachedUnit.Contubernia)
                 {
                     if (unit.CurrentEnemy == null)
