@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using Assets.Scripts.Map.Generation;
 using Assets.Scripts.Map.Pathfinding;
+using Assets.Scripts.Util;
 using JetBrains.Annotations;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Map
 {
@@ -93,7 +95,53 @@ namespace Assets.Scripts.Map
             gameObject.transform.localScale = new Vector3(MapSize, MapSize, 0);
 
             PathfindingJobManager.Init(HexBoard);
+
+            for (int x = 0; x < MapSize; ++x)
+            for (int y = 0; y < MapSize; ++y)
+            {
+                var tileType = (TileType) HexBoard.Storage[x, y];
+                if (!(Random.Range(0, OneTreePer) < 1)) continue;
+                Vector3 worldPos = CubicalCoordinateToWorld(new OddRCoordinate(y, x).ToCubical());
+                GameObject tree = null;
+                // ReSharper disable once SwitchStatementMissingSomeCases
+                switch (tileType)
+                {
+                    case TileType.Taiga:
+                        tree = Instantiate(PineTree.PickRandom());
+                        break;
+                    case TileType.TemperateDeciduousForest:
+                        tree = Instantiate(OliveTree.PickRandom());
+                        break;
+                    case TileType.Bare:
+                        tree = Instantiate(Rock.PickRandom());
+                        break;
+                    case TileType.Scorched:
+                        tree = Instantiate(Rock.PickRandom());
+                        break;
+                    case TileType.GrassLand:
+                        tree = Instantiate(Fern.PickRandom());
+                        break;
+                    case TileType.TropicalRainForest:
+                        tree = Instantiate(PalmTree.PickRandom());
+                        break;
+                    case TileType.TropicalSeasonalForest:
+                        tree = Instantiate(PalmTree.PickRandom());
+                        break;
+                    case TileType.SubTropicalDesert:
+                        tree = Instantiate(PalmTree.PickRandom());
+                        break;
+                }
+                if (tree != null)
+                    tree.transform.position = worldPos;
+            }
         }
+
+        public float OneTreePer = 100;
+        public List<GameObject> PineTree;
+        public List<GameObject> OliveTree;
+        public List<GameObject> Fern;
+        public List<GameObject> PalmTree;
+        public List<GameObject> Rock;
 
         private void SetupShader()
         {

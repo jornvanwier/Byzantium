@@ -52,23 +52,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AlbedoMaps:
-  - {fileID: 2800000, guid: c56bc7b16986c4c4f9b40790779bc49a, type: 3}
-  - {fileID: 2800000, guid: 8fda10975a489b4499bb214f519f2ca0, type: 3}
+  - {fileID: 2800000, guid: 6caa29389ba306849a62a7168c097c1e, type: 3}
+  - {fileID: 2800000, guid: 5ecc8ff5e11eece4e89b6948252c6094, type: 3}
   - {fileID: 2800000, guid: 3ecd03094a833ae4dacdad5de3f3eeb2, type: 3}
-  - {fileID: 2800000, guid: 6425abaa4f0dc1a4580278f5b3626bf7, type: 3}
-  - {fileID: 2800000, guid: 301304881d1f9c6418e7689cf1d0e277, type: 3}
-  - {fileID: 2800000, guid: 79abba6907004f5418a0e70eb36c42a8, type: 3}
-  - {fileID: 2800000, guid: 91abe4fd09c8cf14db1e293125616dd0, type: 3}
-  - {fileID: 2800000, guid: fa042e70872161548a1b1efe5df43a5f, type: 3}
-  - {fileID: 2800000, guid: 49d0ecac6881bb04890a7c51ba3257af, type: 3}
-  - {fileID: 2800000, guid: ceaced1b6c9465e449fbb016bd0564c1, type: 3}
-  - {fileID: 2800000, guid: 8409007b725dd6a4496ca7d2f83210de, type: 3}
-  - {fileID: 2800000, guid: 4661ede25f680a142bb9b0e4527daa59, type: 3}
-  - {fileID: 2800000, guid: ad5f968c5d203f34e8e88507f8f04bf1, type: 3}
-  - {fileID: 2800000, guid: 1f3e0e8813ba4c242bbbf432b8f7ea83, type: 3}
-  - {fileID: 2800000, guid: b26c6067a4168ca4a9c48ce943645eb7, type: 3}
-  - {fileID: 2800000, guid: f32a98a94515a5d4b85cd138b184e509, type: 3}
-  - {fileID: 2800000, guid: 0c504c7825bad9b46bf30662b9020569, type: 3}
+  - {fileID: 2800000, guid: abc3009e787511c4aba0efe32ad770dc, type: 3}
+  - {fileID: 2800000, guid: 6895a4ef3dae2a344840142cc345501a, type: 3}
+  - {fileID: 2800000, guid: 6ad3ad394590a8046ab445451f0118f2, type: 3}
+  - {fileID: 2800000, guid: b983ca3540b0f2e4ab7a6952a93ce77d, type: 3}
+  - {fileID: 2800000, guid: b7d64ee967f08e141a398cf9b1c17eee, type: 3}
+  - {fileID: 2800000, guid: 45bcb02f197bb5b4090bb47fc08c017a, type: 3}
+  - {fileID: 2800000, guid: 66b8d40c04f3ed549bc921c152615ef0, type: 3}
+  - {fileID: 2800000, guid: edffa9a0bc586574f93ce4ae780c5fd8, type: 3}
+  - {fileID: 2800000, guid: f57f650c273b1104299aa8d9739f9008, type: 3}
+  - {fileID: 2800000, guid: 965548b527997ae4e9d0a6472528bb50, type: 3}
+  - {fileID: 2800000, guid: efd4b32cefd47f844921da987d178d52, type: 3}
+  - {fileID: 2800000, guid: 871c3b3e9c2e2a3498288a8cc66ccf38, type: 3}
+  - {fileID: 2800000, guid: 354d79ea4b7e8a54ca3abe70ceaa3706, type: 3}
+  - {fileID: 2800000, guid: cec9b719e70bb0544891fabe103eff13, type: 3}
   DefaultAlbedoMap: {fileID: 2800000, guid: f904b8ca9dec7e445bc88825f294b7fd, type: 3}
   DefaultAmbOccMap: {fileID: 2800000, guid: c3e7dd9b34c570540aa04ede50e44326, type: 3}
   DefaultGlossyMap: {fileID: 2800000, guid: a76af0cf038726f45992b8aa7ec2ad55, type: 3}
@@ -78,3 +78,24 @@ MonoBehaviour:
   HexMaterial: {fileID: 2100000, guid: fe0831c8b5f572041ace39327b77a4d2, type: 2}
   MapSize: 1024
   Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  OneTreePer: 100
+  PineTree:
+  - {fileID: 100000, guid: 5463c855c66b2f740b4bc4c6379e0f97, type: 3}
+  - {fileID: 100000, guid: 232a1ed44805e2d4eb99372b65201d9a, type: 3}
+  - {fileID: 100000, guid: d2afb700ab12fcc4db5b9567f3a698dd, type: 3}
+  - {fileID: 100000, guid: 6a08450e9ce0dde4a8c7594f7297582a, type: 3}
+  OliveTree:
+  - {fileID: 138356, guid: fe204993f83ea534c99e733c6ff995a8, type: 2}
+  Fern:
+  - {fileID: 100000, guid: dad0b53bfba5bf148b12cdfa48770c8a, type: 3}
+  PalmTree:
+  - {fileID: 100000, guid: 94005be276160534dbb7ee6b9bd932a0, type: 2}
+  - {fileID: 100000, guid: 28df92b683e358240b9e0d6b437440f2, type: 2}
+  - {fileID: 100000, guid: ff478098a23b7d549825a3f57e0b7fd3, type: 2}
+  - {fileID: 100000, guid: 63af7620a7774ad41ac07f785bb77b0a, type: 2}
+  - {fileID: 100000, guid: fe355d768b1d5c646b855b66e0d1671a, type: 2}
+  Rock:
+  - {fileID: 1436433639622742, guid: 66a1bb312414cdd4fb59d56f7f5e8225, type: 2}
+  - {fileID: 1807101039048426, guid: 2eccc5652aeada14580b45d4922ab7f7, type: 2}
+  - {fileID: 1335322749562678, guid: c38df915aac7dac47933e866df1be51f, type: 2}
+  - {fileID: 1383614408900354, guid: 6e68289d20ccf1141b0e02520a63ce0d, type: 2}

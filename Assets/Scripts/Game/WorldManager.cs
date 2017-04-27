@@ -114,7 +114,7 @@ namespace Assets.Scripts.Game
             miniMap.UpdateOverlayTexture();
 
             Vector3 pos = MapRendererObject.transform.position;
-            int size = MapRendererObject.GetComponent<MapRenderer>().MapSize;
+            int size = MapRendererScript.MapSize;
             var scale = new Vector3(size * 0.9296482412060302f, size, 1);
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);

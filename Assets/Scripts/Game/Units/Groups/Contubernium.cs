@@ -140,12 +140,12 @@ namespace Assets.Scripts.Game.Units.Groups
             return result;
         }
 
-        private float AttackDamageMultiplier(IEnumerable<FormationStats> statses)
+        private static float AttackDamageMultiplier(IEnumerable<FormationStats> statses)
         {
             return statses.Select(s => s.AttackDamageMultiplier).Aggregate(1f, (a, b) => a * b);
         }
 
-        private float DefenseMultiplier(IEnumerable<FormationStats> statses)
+        private static float DefenseMultiplier(IEnumerable<FormationStats> statses)
         {
             return statses.Select(s => s.DefenseMultiplier).Aggregate(1f, (a, b) => a * b);
         }
