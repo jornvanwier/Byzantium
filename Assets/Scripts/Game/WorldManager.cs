@@ -203,12 +203,12 @@ namespace Assets.Scripts.Game
                 Rotate(Vector3.up);
             if (Input.GetKey(KeyCode.LeftArrow))
                 Rotate(Vector3.up, Space.World, -1f);
-            if(Input.GetKey(KeyCode.Escape)) 
+            if (Input.GetKey(KeyCode.Escape))
                 DeselectAll();
 
             //Mouse scroll zoom
             Vector3 prevPos;
-            if (!spawnPanel.Contains(Input.mousePosition))
+            if (!spawnPanel.Contains(Input.mousePosition) && !infoPanel.Contains(Input.mousePosition))
             {
                 prevPos = Clone(cameraObject.transform.position);
                 float zoom = Input.GetAxis("Mouse ScrollWheel");
@@ -286,7 +286,8 @@ namespace Assets.Scripts.Game
             }
 
             //Click units
-            if (Input.GetMouseButtonUp(0) && !spawnPanel.Contains(Input.mousePosition))
+            if (Input.GetMouseButtonUp(0) && !spawnPanel.Contains(Input.mousePosition) &&
+                !infoPanel.Contains(Input.mousePosition))
             {
                 SelectedArmy = null;
                 spawnPanel.Hide();

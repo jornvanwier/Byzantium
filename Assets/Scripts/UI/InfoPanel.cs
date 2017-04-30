@@ -178,6 +178,11 @@ namespace Assets.Scripts.UI
             panel.SetActive(false);
             IsVisible = false;
         }
+        public bool Contains(Vector2 position)
+        {
+            var spawnPanelHitBox = new Rect(0, 0, SizeX, SizeY);
+            return IsVisible && spawnPanelHitBox.Contains(position);
+        }
 
         private GameObject contuberniumFormation;
         private GameObject legionFormation;
