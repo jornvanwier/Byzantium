@@ -139,10 +139,17 @@ namespace Assets.Scripts.UI
             SizeY = miniMap.rectTransform.sizeDelta.y;
         }
 
+        private GameObject legionFormation;
+
+        private GameObject contuberniumFormation;
+
         // Use this for initialization
         [UsedImplicitly]
         private void Start()
         {
+            legionFormation = GameObject.Find("LegioenFormatie");
+            contuberniumFormation = GameObject.Find("ContuberniumFormatie");
+
             titleText = GameObject.Find("InfoText").GetComponent<Text>();
             commanderText = GameObject.Find("CommanderText").GetComponent<Text>();
             panel = GameObject.Find("InfoPanel");
@@ -167,6 +174,12 @@ namespace Assets.Scripts.UI
             IsVisible = false;
         }
 
+        private void SetFormationPanelActive(bool flag)
+        {
+            contuberniumFormation.SetActive(flag);
+            legionFormation.SetActive(flag);
+        }
+
         public void Show(UnitController army)
         {
             this.army = army;
@@ -174,6 +187,15 @@ namespace Assets.Scripts.UI
                 $"{army.AttachedUnit.Commander.Name} ({(army.IsAi ? "AI" : "Player")}){Environment.NewLine}{army.Faction.Name}";
             panel.SetActive(true);
             IsVisible = true;
+
+            if (army is InputController)
+            {
+                SetFormationPanelActive(true);
+            }
+            else
+            {
+                SetFormationPanelActive(false);
+            }
         }
     }
 }
