@@ -10,7 +10,7 @@ namespace Assets.Scripts.Game.Units.Formation.LegionFormation
     {
         public override FormationStats Stats { get; } = new FormationStats
         {
-            WalkSpeed = FormationStats.DefaultWalkSpeed,
+            WalkSpeed = 1.5f,
             AttackDamageMultiplier = 1f,
             DefenseMultiplier = 1f
         };

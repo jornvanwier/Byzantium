@@ -11,13 +11,21 @@ namespace Assets.Scripts.Game.Units
         private Commander commander;
 
         private Rect hitbox;
+        private float walkSpeed = 1.0f;
 
         public virtual Vector3 Position { get; set; } = Vector3.zero;
 
         public virtual Quaternion Rotation { get; set; } = Quaternion.identity;
 
         public virtual IFormation Formation { get; set; }
-        public virtual float WalkSpeed { get; set; } = 1.0f;
+
+        public float WalkSpeed
+        {
+            // ReSharper disable ArrangeAccessorOwnerBody
+            get { return walkSpeed * (IsCavalry ? CavalrySpeedMultiplier : 1); }
+            set { walkSpeed = value; }
+            // ReSharper restore ArrangeAccessorOwnerBody
+        }
 
         public abstract Vector2 DrawSize { get; }
 
