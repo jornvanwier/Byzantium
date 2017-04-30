@@ -307,22 +307,20 @@ namespace Assets.Scripts.Game
 
         private void Select(UnitController army)
         {
-//            army.HealthBar.Show();
-            infoPanel.Commander = army.AttachedUnit.Commander.Name + (army.IsAi ? " (AI)" : " (User)") +
-                                  Environment.NewLine + army.Faction.Name;
+            infoPanel.Commander =
+                $"{army.AttachedUnit.Commander.Name} ({(army.IsAi ? "AI" : "Player")}){Environment.NewLine}{army.Faction.Name}";
             infoPanel.Show();
         }
 
-        private void Deselect(UnitController army)
+        private void Deselect()
         {
-//            army.HealthBar.Hide();
             infoPanel.Hide();
         }
 
         private void DeselectAll()
         {
             foreach (UnitController controller in Armies)
-                Deselect(controller);
+                Deselect();
         }
 
 
