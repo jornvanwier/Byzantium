@@ -141,7 +141,7 @@ namespace Assets.Scripts.Game.Units.Controllers
             text.alignment = TextAnchor.UpperCenter;
             text.GetComponent<RectTransform>().sizeDelta = new Vector2(250, 80);
 
-            var outline=textObj.AddComponent<Outline>();
+            var outline = textObj.AddComponent<Outline>();
             outline.effectColor = Color.black;
 
             HealthBar.AttachArmy(this);
@@ -262,12 +262,12 @@ namespace Assets.Scripts.Game.Units.Controllers
         public void DestroyArmy()
         {
             Destroy(gameObject);
-            Destroy(HealthBar.gameObject);
+            HealthBar.Destroy();
         }
 
         public void Update()
         {
-            if(AttachedUnit.IsDead)
+            if (AttachedUnit.IsDead)
                 DestroyArmy();
             //if (AttachedUnit.IsDead) return;
 
