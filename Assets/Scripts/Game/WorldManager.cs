@@ -322,7 +322,7 @@ namespace Assets.Scripts.Game
             army.IsSelected = false;
         }
 
-        private void DeselectAll()
+        public void DeselectAll()
         {
             foreach (UnitController controller in Armies)
                 Deselect(controller);
