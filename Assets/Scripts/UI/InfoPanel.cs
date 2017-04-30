@@ -14,7 +14,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
-    public class InfoPanel : MonoBehaviour, IPointerClickHandler
+    public class InfoPanel : MonoBehaviour
     {
         private Text commanderText;
         private Image miniMap;
@@ -85,13 +85,6 @@ namespace Assets.Scripts.UI
         public bool IsVisible { get; private set; }
 
 
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            GameObject button = eventData.rawPointerPress;
-            GameObject parent = button.transform.parent.gameObject;
-            SetFormation(button.name, parent.name);
-        }
-
         private UnitController army;
 
         public void AttachArmy(UnitController army)
@@ -108,27 +101,6 @@ namespace Assets.Scripts.UI
             {"Vierkant", new SquareFormation()},
         };
 
-        private void SetFormation(string button, string parent)
-        {
-            Debug.Log($"{button} {parent}");
-            switch (parent)
-            {
-                case "LegioenFormatie":
-                    if (army.AttachedUnit is Legion)
-                    {
-                        army.AttachedUnit.Formation = buttonToFormation[button];
-                    }
-                    break;
-                case "ContuberniumFormatie":
-                    FormationBase formation = buttonToFormation[button];
-
-                    foreach (Contubernium contubernium in army.AttachedUnit.Contubernia)
-                    {
-                        contubernium.Formation = formation;
-                    }
-                    break;
-            }
-        }
 
         private void UpdatePositionAndSize()
         {
@@ -139,9 +111,21 @@ namespace Assets.Scripts.UI
             SizeY = miniMap.rectTransform.sizeDelta.y;
         }
 
-        private GameObject legionFormation;
+        private void SetLegionFormation(FormationBase formation)
+        {
+            if (army.AttachedUnit is Legion)
+            {
+                army.AttachedUnit.Formation = formation;
+            }
+        }
 
-        private GameObject contuberniumFormation;
+        private void SetContuberniumFormation(IFormation formation)
+        {
+            foreach (Contubernium contubernium in army.AttachedUnit.Contubernia)
+            {
+                contubernium.Formation = formation;
+            }
+        }
 
         // Use this for initialization
         [UsedImplicitly]
@@ -149,6 +133,27 @@ namespace Assets.Scripts.UI
         {
             legionFormation = GameObject.Find("LegioenFormatie");
             contuberniumFormation = GameObject.Find("ContuberniumFormatie");
+
+            GameObject.Find("Mars")
+                ?
+                .GetComponent<Button>()
+                .onClick.AddListener(() => SetLegionFormation(new MarchingFormation()));
+            GameObject.Find("Standard")
+                ?
+                .GetComponent<Button>()
+                .onClick.AddListener(() => SetLegionFormation(new StandardFormation()));
+            GameObject.Find("Square")
+                ?
+                .GetComponent<Button>()
+                .onClick.AddListener(() => SetContuberniumFormation(new SquareFormation()));
+            GameObject.Find("Orb")
+                ?
+                .GetComponent<Button>()
+                .onClick.AddListener(() => SetContuberniumFormation(new OrbFormation()));
+            GameObject.Find("Skirmish")
+                ?
+                .GetComponent<Button>()
+                .onClick.AddListener(() => SetContuberniumFormation(new SkirmisherFormation()));
 
             titleText = GameObject.Find("InfoText").GetComponent<Text>();
             commanderText = GameObject.Find("CommanderText").GetComponent<Text>();
@@ -173,6 +178,9 @@ namespace Assets.Scripts.UI
             panel.SetActive(false);
             IsVisible = false;
         }
+
+        private GameObject contuberniumFormation;
+        private GameObject legionFormation;
 
         private void SetFormationPanelActive(bool flag)
         {
