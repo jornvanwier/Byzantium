@@ -12,7 +12,10 @@ namespace Assets.Scripts.Game.Units
         private const int StartHealth = 200;
         public static readonly Vector2 horseSize = new Vector2(0.4f, 1.0f);
         public static readonly Vector2 manSize = new Vector2(0.4f, 0.5f);
+        private readonly float gravity = -Physics.gravity.y / 1000;
         private readonly SoldierType soldierType;
+        private float jumpSpeed;
+        private float nextJumpHeight;
 
         public MeshDrawableUnit(SoldierType type)
         {
@@ -83,9 +86,6 @@ namespace Assets.Scripts.Game.Units
             Position = pos;
         }
 
-        private float jumpSpeed;
-        private float nextJumpHeight;
-
         public void Jump(float height = 1)
         {
             jumpSpeed = height;
@@ -96,19 +96,13 @@ namespace Assets.Scripts.Game.Units
             nextJumpHeight = height;
         }
 
-        private readonly float gravity = -Physics.gravity.y / 1000;
-
         public void JumpUpdate()
         {
             Position += new Vector3(0, jumpSpeed, 0);
             if (Position.y > 0)
-            {
                 jumpSpeed -= Math.Min(gravity, Position.y);
-            }
             else if (nextJumpHeight > 0)
-            {
                 Jump(nextJumpHeight);
-            }
         }
 
         public override void Draw()

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
@@ -24,7 +23,12 @@ namespace Assets.Scripts.Game.Units.Controllers
 
         private PathfindingJobInfo currentPathInfo;
 
+        public int EmissionRateHigh = 200;
+        public int EmissionRateLow = 0;
+
         protected List<UnitController> Enemies;
+
+        private bool hasWon;
         protected WorldManager Manager;
         private MapRenderer mapRenderer;
 
@@ -53,9 +57,6 @@ namespace Assets.Scripts.Game.Units.Controllers
         public bool IsSelected { get; set; } = false;
 
         public abstract bool IsAi { get; }
-
-        public int EmissionRateHigh = 200;
-        public int EmissionRateLow = 0;
 
         public void AddUnit(Cohort unit)
         {
@@ -255,9 +256,7 @@ namespace Assets.Scripts.Game.Units.Controllers
                 SetSmokeEmission(false);
                 Debug.Log("Battle is over, " + Faction.Name + " won!");
                 if (NearestEnemy() == null)
-                {
                     Win();
-                }
             }
             else if (AttachedUnit.Health <= 0)
             {
@@ -278,17 +277,13 @@ namespace Assets.Scripts.Game.Units.Controllers
             }
         }
 
-        private bool hasWon;
-
         public void Win()
         {
             if (hasWon) return;
             hasWon = true;
 
             foreach (MeshDrawableUnit unit in AttachedUnit.AllUnits)
-            {
                 unit.Bounce(Random.Range(50, 150) / 1000f);
-            }
         }
 
         protected abstract void ConsiderFormation(Contubernium unit);
@@ -304,12 +299,8 @@ namespace Assets.Scripts.Game.Units.Controllers
         public void Update()
         {
             if (hasWon)
-            {
                 foreach (MeshDrawableUnit unit in AttachedUnit.AllUnits)
-                {
                     unit.JumpUpdate();
-                }
-            }
 
             if (AttachedUnit.IsDead)
                 DestroyArmy();

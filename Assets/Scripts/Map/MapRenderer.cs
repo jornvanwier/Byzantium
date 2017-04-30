@@ -9,8 +9,6 @@ namespace Assets.Scripts.Map
 {
     public class MapRenderer : MonoBehaviour, IDisposable
     {
-        public GameObject Foliage;
-        private FoliageRenderer foliageRenderer;
         private const int TextureSize = 1024;
 
         private readonly List<Int2> selectedSet = new List<Int2>();
@@ -32,6 +30,8 @@ namespace Assets.Scripts.Map
 
 
         private TextureSet defaultTextureSet;
+        public GameObject Foliage;
+        private FoliageRenderer foliageRenderer;
         private Texture2DArray glossyMaps;
 
         public Material HexMaterial;

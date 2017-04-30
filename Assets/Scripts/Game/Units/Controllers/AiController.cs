@@ -33,9 +33,7 @@ namespace Assets.Scripts.Game.Units.Controllers
         {
             UnitController nearestEnemy = NearestEnemy();
             if (nearestEnemy == null)
-            {
                 return;
-            }
 
             Goal = nearestEnemy.Position;
             Debug.Log("Tick " + Goal);
@@ -50,23 +48,17 @@ namespace Assets.Scripts.Game.Units.Controllers
             if (IsLowHealth(unit))
             {
                 if (formationType != typeof(OrbFormation))
-                {
                     unit.Formation = new OrbFormation();
-                }
             }
             else if (enemy != null && IsLowHealth(enemy))
             {
                 if (formationType != typeof(SkirmisherFormation))
-                {
                     unit.Formation = new SkirmisherFormation();
-                }
             }
             else
             {
                 if (formationType != typeof(SquareFormation))
-                {
                     unit.Formation = new SquareFormation();
-                }
             }
         }
 

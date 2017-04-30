@@ -16,6 +16,7 @@ namespace Assets.Scripts.Game
 
         public static Material UnitMaterial;
         private bool applicationHasFocus;
+        public Material BattleSmoke;
 
         private new Camera camera;
         private GameObject cameraObject;
@@ -49,7 +50,6 @@ namespace Assets.Scripts.Game
         private Vector3 startIntersect;
 
         private Canvas uiCanvas;
-        public Material BattleSmoke;
 
         private List<UnitController> Armies { get; } = new List<UnitController>();
 
@@ -303,7 +303,6 @@ namespace Assets.Scripts.Game
                 if (!spawnHit)
                 {
                     SelectedArmy = hit.transform.gameObject.GetComponent<UnitController>();
-                    SelectedArmy.Win();
                 }
             }
         }

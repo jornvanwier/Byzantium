@@ -14,7 +14,7 @@ namespace Assets.Scripts.Game.Units.Controllers
 
         protected override void ControllerTick()
         {
-            if (!IsSelected || (!Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKey(KeyCode.LeftAlt))) return;
+            if (!IsSelected || !Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKey(KeyCode.LeftAlt)) return;
 
             var plane = new Plane(Vector3.up, Vector3.zero);
             Ray ray = Camera.ScreenPointToRay(Input.mousePosition);

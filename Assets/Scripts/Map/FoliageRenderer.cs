@@ -14,11 +14,11 @@ namespace Assets.Scripts.Map
 
         public List<GameObject> Fern;
         public List<GameObject> OakTree;
+
+        public float OneTreePer = 100;
         public List<GameObject> PalmTree;
         public List<GameObject> PineTree;
         public List<GameObject> Rock;
-
-        public float OneTreePer = 100;
 
         public void Start()
         {
@@ -51,16 +51,12 @@ namespace Assets.Scripts.Map
                 Mesh mesh = meshFilter.sharedMesh;
                 Material[] materials = meshRenderer.sharedMaterials;
                 foreach (Material material in materials)
-                {
                     DrawMeshInstanced(mesh, material, sourceMatrices);
-                }
             }
             else
             {
                 foreach (Transform childTransform in gameObject.transform)
-                {
                     DrawGameObjectRecursively(childTransform.gameObject, sourceMatrices, maxDepth--);
-                }
             }
         }
 
