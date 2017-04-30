@@ -61,7 +61,8 @@ namespace Assets.Scripts.Game.Units
         public Material Material { get; set; }
         public Transform Transform { get; set; }
 
-        public override int Health { get; set; } = StartHealth;
+        private int health = StartHealth;
+        public override int Health { get { return health; } set { health = value; if (health <= 0) { Rotation = IsCavalry ? Quaternion.Euler(-90,0,90) : Quaternion.Euler(-90,0,0); } } }
 
         public override Vector2 DrawSize => IsCavalry ? horseSize : manSize;
 
