@@ -1,6 +1,7 @@
 ﻿using System;
 using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Game.Units.Formation.ContuberniumFormation;
+using Assets.Scripts.Game.Units.Formation.LegionFormation;
 using Assets.Scripts.Game.Units.Groups;
 using UnityEngine;
 
@@ -21,6 +22,17 @@ namespace Assets.Scripts.Game.Units.Controllers
 
             Goal = nearestEnemy.Position;
             Debug.Log("Tick " + Goal);
+        }
+
+        protected override void ControllerAttack()
+        {
+            if (AttachedUnit.GetType() == typeof(Legion) &&
+                AttachedUnit.Formation.GetType() != typeof(StandardFormation))
+            {
+                // Unit is marching, change
+                Debug.Log("henlo i switch");
+                AttachedUnit.Formation = new StandardFormation();
+            }
         }
 
         protected override void ConsiderFormation(Contubernium unit)

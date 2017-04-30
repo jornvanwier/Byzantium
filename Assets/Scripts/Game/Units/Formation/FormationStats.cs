@@ -6,6 +6,6 @@
         public float AttackDamageMultiplier { get; set; }
         public float DefenseMultiplier { get; set; }
 
-        public static float DefaultWalkSpeed { get; } = 2.5f;
+        public const float DefaultWalkSpeed = 2.5f;
     }
 }

@@ -7,6 +7,11 @@ namespace Assets.Scripts.Game.Units.Controllers
     {
         public override bool IsAi { get; } = false;
 
+        protected override void ControllerAttack()
+        {
+            // Don't do anything, formation can only be changed manually
+        }
+
         protected override void ConsiderFormation(Contubernium unit)
         {
             // Don't do anything, formation can only be changed manually
