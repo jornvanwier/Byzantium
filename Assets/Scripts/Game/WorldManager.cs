@@ -310,17 +310,19 @@ namespace Assets.Scripts.Game
             infoPanel.Commander =
                 $"{army.AttachedUnit.Commander.Name} ({(army.IsAi ? "AI" : "Player")}){Environment.NewLine}{army.Faction.Name}";
             infoPanel.Show();
+            army.IsSelected = true;
         }
 
-        private void Deselect()
+        private void Deselect(UnitController army)
         {
             infoPanel.Hide();
+            army.IsSelected = false;
         }
 
         private void DeselectAll()
         {
             foreach (UnitController controller in Armies)
-                Deselect();
+                Deselect(controller);
         }
 
 
