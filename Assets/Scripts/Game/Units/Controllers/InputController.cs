@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Game.Units.Groups;
+using Assets.Scripts.Map;
 using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Controllers
@@ -31,7 +32,12 @@ namespace Assets.Scripts.Game.Units.Controllers
             if (Input.GetKey(KeyCode.LeftControl))
                 Teleport(intersection);
             else
-                Goal = MapRenderer.WorldToCubicalCoordinate(intersection);
+            {
+                CubicalCoordinate cc = MapRenderer.WorldToCubicalCoordinate(intersection);
+                if (MapRenderer.HexBoard.CheckCoordinate(cc))
+                    Goal = cc;
+
+            }
         }
     }
 }
