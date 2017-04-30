@@ -39,6 +39,7 @@ namespace Assets.Scripts.UI
             }
         }
 
+        // ReSharper disable ArrangeAccessorOwnerBody
         public int Size
         {
             get { return size; }
@@ -71,6 +72,7 @@ namespace Assets.Scripts.UI
                 transform.position = new Vector3(PosX, PosY);
             }
         }
+        // ReSharper restore ArrangeAccessorOwnerBody
 
         public void AttachArmy(UnitController army)
         {

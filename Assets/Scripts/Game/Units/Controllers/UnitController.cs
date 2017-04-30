@@ -236,9 +236,12 @@ namespace Assets.Scripts.Game.Units.Controllers
                     if (unit.CurrentEnemy == null)
                         unit.CurrentEnemy = unit.ClosestEnemy(enemy);
                     unit.Attack(unit.CurrentEnemy);
+                    ConsiderFormation(unit);
                 }
             }
         }
+
+        protected abstract void ConsiderFormation(Contubernium unit);
 
         protected abstract void ControllerTick();
 
