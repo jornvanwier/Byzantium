@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Game.Units.Groups;
 using Assets.Scripts.Map;
@@ -48,6 +49,8 @@ namespace Assets.Scripts.Game.Units.Controllers
         public GameObject SpawnObject { get; set; }
 
         public HashSet<CubicalCoordinate> WalkedAfterRequest { get; set; }
+
+        public bool IsSelected { get; set; } = false;
 
         public abstract bool IsAi { get; }
 
