@@ -309,9 +309,7 @@ namespace Assets.Scripts.Game
 
         private void Select(UnitController army)
         {
-            infoPanel.Commander =
-                $"{army.AttachedUnit.Commander.Name} ({(army.IsAi ? "AI" : "Player")}){Environment.NewLine}{army.Faction.Name}";
-            infoPanel.Show();
+            infoPanel.Show(army);
             army.IsSelected = true;
         }
 

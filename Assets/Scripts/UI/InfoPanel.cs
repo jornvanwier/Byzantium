@@ -1,11 +1,20 @@
-﻿using Assets.Scripts.Game;
+﻿using System;
+using System.Collections.Generic;
+using Assets.Scripts.Game;
+using Assets.Scripts.Game.Units;
+using Assets.Scripts.Game.Units.Controllers;
+using Assets.Scripts.Game.Units.Formation;
+using Assets.Scripts.Game.Units.Formation.ContuberniumFormation;
+using Assets.Scripts.Game.Units.Formation.LegionFormation;
+using Assets.Scripts.Game.Units.Groups;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
-    public class InfoPanel : MonoBehaviour
+    public class InfoPanel : MonoBehaviour, IPointerClickHandler
     {
         private Text commanderText;
         private Image miniMap;
@@ -75,6 +84,52 @@ namespace Assets.Scripts.UI
 
         public bool IsVisible { get; private set; }
 
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            GameObject button = eventData.rawPointerPress;
+            GameObject parent = button.transform.parent.gameObject;
+            SetFormation(button.name, parent.name);
+        }
+
+        private UnitController army;
+
+        public void AttachArmy(UnitController army)
+        {
+            this.army = army;
+        }
+
+        private readonly Dictionary<string, FormationBase> buttonToFormation = new Dictionary<string, FormationBase>()
+        {
+            {"Mars", new MarchingFormation()},
+            {"Standaard", new StandardFormation()},
+            {"Orb", new OrbFormation()},
+            {"Skirmish", new SkirmisherFormation()},
+            {"Vierkant", new SquareFormation()},
+        };
+
+        private void SetFormation(string button, string parent)
+        {
+            Debug.Log($"{button} {parent}");
+            switch (parent)
+            {
+                case "LegioenFormatie":
+                    if (army.AttachedUnit is Legion)
+                    {
+                        army.AttachedUnit.Formation = buttonToFormation[button];
+                    }
+                    break;
+                case "ContuberniumFormatie":
+                    FormationBase formation = buttonToFormation[button];
+
+                    foreach (Contubernium contubernium in army.AttachedUnit.Contubernia)
+                    {
+                        contubernium.Formation = formation;
+                    }
+                    break;
+            }
+        }
+
         private void UpdatePositionAndSize()
         {
             PosX = SizeX / 2;
@@ -112,8 +167,11 @@ namespace Assets.Scripts.UI
             IsVisible = false;
         }
 
-        public void Show()
+        public void Show(UnitController army)
         {
+            this.army = army;
+            Commander =
+                $"{army.AttachedUnit.Commander.Name} ({(army.IsAi ? "AI" : "Player")}){Environment.NewLine}{army.Faction.Name}";
             panel.SetActive(true);
             IsVisible = true;
         }
