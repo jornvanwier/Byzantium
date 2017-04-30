@@ -274,8 +274,11 @@ namespace Assets.Scripts.Game.Units.Controllers
                     unit.Attack(unit.CurrentEnemy);
                     ConsiderFormation(unit);
                 }
+                ControllerAttack();
             }
         }
+
+        protected abstract void ControllerAttack();
 
         public void Win()
         {

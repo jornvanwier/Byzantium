@@ -66,7 +66,7 @@ namespace Assets.Scripts.Game.Units.Groups
         {
             var legion = new Legion(faction)
             {
-                Formation = new StandardFormation()
+                Formation = new MarchingFormation()
             };
 
             for (int i = 0; i < 6; i++)
@@ -82,7 +82,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Legion CreateCustomUnit(Faction faction, SoldierType type)
         {
-            var legion = new Legion(faction) {Formation = new StandardFormation()};
+            var legion = new Legion(faction) {Formation = new MarchingFormation()};
 
             for (int i = 0; i < 6; i++)
             {
