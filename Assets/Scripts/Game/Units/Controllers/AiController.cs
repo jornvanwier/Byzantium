@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Game.Units.Formation;
+﻿using System;
+using Assets.Scripts.Game.Units.Formation;
 using Assets.Scripts.Game.Units.Formation.ContuberniumFormation;
 using Assets.Scripts.Game.Units.Groups;
 using UnityEngine;
@@ -28,12 +29,11 @@ namespace Assets.Scripts.Game.Units.Controllers
             return nearest;
         }
 
-        private void MoveToEnemey()
+        private void MoveToEnemy()
         {
             UnitController nearestEnemy = NearestEnemy();
             if (nearestEnemy == null)
             {
-                Debug.LogError("Nearest enemy is null");
                 return;
             }
 
@@ -46,28 +46,26 @@ namespace Assets.Scripts.Game.Units.Controllers
             // Is null at beginning and after killing a enemy (for a single frame)
             Contubernium enemy = unit.CurrentEnemy;
 
+            Type formationType = unit.Formation.GetType();
             if (IsLowHealth(unit))
             {
-                if (!(unit.Formation is OrbFormation))
+                if (formationType != typeof(OrbFormation))
                 {
                     unit.Formation = new OrbFormation();
-                    Debug.Log("Changed to formatino defense");
                 }
             }
             else if (enemy != null && IsLowHealth(enemy))
             {
-                if (!(unit.Formation is SkirmisherFormation))
+                if (formationType != typeof(SkirmisherFormation))
                 {
                     unit.Formation = new SkirmisherFormation();
-                    Debug.Log("Changed to formatino atack");
                 }
             }
             else
             {
-                if (!(unit.Formation is SquareFormation))
+                if (formationType != typeof(SquareFormation))
                 {
                     unit.Formation = new SquareFormation();
-                    Debug.Log("Changed to formatino normo");
                 }
             }
         }
@@ -80,7 +78,7 @@ namespace Assets.Scripts.Game.Units.Controllers
         protected override void ControllerTick()
         {
             if (Time.realtimeSinceStartup % TimeBetweenEnemySearches < Time.deltaTime)
-                MoveToEnemey();
+                MoveToEnemy();
         }
     }
 }
