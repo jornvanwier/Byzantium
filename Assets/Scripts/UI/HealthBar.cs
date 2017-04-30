@@ -6,6 +6,8 @@ namespace Assets.Scripts.UI
 {
     public class HealthBar : RawImage
     {
+        public Text HealthText { get; set; }
+
         private const float HeightWidthRatio = 0.1f;
 
         private static readonly Color HealthyColor = Color.green;
@@ -28,6 +30,12 @@ namespace Assets.Scripts.UI
             set
             {
                 if (pixels == null) return;
+
+                if (HealthText != null)
+                {
+                    HealthText.text = $"{army.Faction.Name}\n{value} hp";
+                }
+
                 float filledPercentage = (float) value / MaxValue;
                 int pixelsToFill = (int) (filledPercentage * Size);
                 for (int i = 0; i < pixels.Length; i++)
@@ -79,12 +87,12 @@ namespace Assets.Scripts.UI
 
         public void Hide()
         {
-            color = transparent;
+            gameObject.SetActive(false);
         }
 
         public void Show()
         {
-            color = Color.white;
+            gameObject.SetActive(true);
         }
 
         private void UpdateTexture()
