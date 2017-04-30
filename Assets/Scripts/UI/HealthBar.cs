@@ -50,6 +50,7 @@ namespace Assets.Scripts.UI
             }
         }
 
+        // ReSharper disable ArrangeAccessorOwnerBody
         public int Size
         {
             get { return size; }
@@ -87,6 +88,7 @@ namespace Assets.Scripts.UI
                 transform.position = new Vector2(PosX, PosY);
             }
         }
+        // ReSharper restore ArrangeAccessorOwnerBody
 
         private bool OverlapsAny(Vector2 pos)
         {

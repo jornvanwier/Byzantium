@@ -1,10 +1,16 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Game.Units.Groups;
+using UnityEngine;
 
 namespace Assets.Scripts.Game.Units.Controllers
 {
     public class InputController : UnitController
     {
         public override bool IsAi { get; } = false;
+
+        protected override void ConsiderFormation(Contubernium unit)
+        {
+            // Don't do anything, formation can only be changed manually
+        }
 
         protected override void ControllerTick()
         {
