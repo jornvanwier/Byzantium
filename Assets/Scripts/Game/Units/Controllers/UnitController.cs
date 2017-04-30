@@ -6,6 +6,7 @@ using Assets.Scripts.Map.Pathfinding;
 using Assets.Scripts.UI;
 using Assets.Scripts.Util;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Game.Units.Controllers
 {
@@ -127,13 +128,26 @@ namespace Assets.Scripts.Game.Units.Controllers
             Position = MapRenderer.WorldToCubicalCoordinate(transform.position);
             previousPosition = Position;
 
-            var obj = new GameObject("ArmyHealth");
-            obj.transform.SetParent(GameObject.Find("uiCanvas").transform);
-            HealthBar = obj.AddComponent<HealthBar>();
+            var healthObj = new GameObject("Health " + Faction.Name);
+            var textObj = new GameObject("HealthText");
+            healthObj.transform.SetParent(GameObject.Find("uiCanvas").transform);
+            textObj.transform.SetParent(healthObj.transform);
+
+            HealthBar = healthObj.AddComponent<HealthBar>();
+            var text = textObj.AddComponent<Text>();
+            HealthBar.HealthText = text;
+
+            text.font = Font.CreateDynamicFontFromOSFont("AUGUSTUS", 14);
+            text.alignment = TextAnchor.UpperCenter;
+            text.GetComponent<RectTransform>().sizeDelta = new Vector2(250, 80);
+
+            var outline=textObj.AddComponent<Outline>();
+            outline.effectColor = Color.black;
+
             HealthBar.AttachArmy(this);
+
             collider = GetComponent<BoxCollider>();
             collider.size = new Vector3(4.84f, 1, 29.39f);
-            collider.center = new Vector3(-1.69f, 0.44f, -4.84f);
             collider.center = new Vector3(0, 0.5f, 0);
         }
 
@@ -245,8 +259,16 @@ namespace Assets.Scripts.Game.Units.Controllers
 
         protected abstract void ControllerTick();
 
+        public void DestroyArmy()
+        {
+            Destroy(gameObject);
+            Destroy(HealthBar.gameObject);
+        }
+
         public void Update()
         {
+            if(AttachedUnit.IsDead)
+                DestroyArmy();
             //if (AttachedUnit.IsDead) return;
 
             ControllerTick();

@@ -83,8 +83,8 @@ namespace Assets.Scripts.Game.Units
                     else
                         soldierCount++;
                 return UnitName +
-                       "\nHealth:\t\t" + (float) Health / MaxHealth * 100f +
-                       "%\nSoldiers:\t\t" + soldierCount +
+                       "\nHealth:\t\t" + (float) Health +
+                       "hp\nSoldiers:\t\t" + soldierCount +
                        "\nCavalry:\t" + cavalryCount;
             }
         }
