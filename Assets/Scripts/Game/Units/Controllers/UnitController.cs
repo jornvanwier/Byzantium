@@ -285,6 +285,8 @@ namespace Assets.Scripts.Game.Units.Controllers
             if (hasWon) return;
             hasWon = true;
 
+            GameObject.Find("WinText").GetComponent<Text>().text = $"{Faction.Name} Have won!";
+
             foreach (MeshDrawableUnit unit in AttachedUnit.AllUnits)
                 unit.Bounce(Random.Range(50, 150) / 1000f);
         }
