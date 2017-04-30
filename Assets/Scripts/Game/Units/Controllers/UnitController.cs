@@ -146,32 +146,33 @@ namespace Assets.Scripts.Game.Units.Controllers
             collider = GetComponent<BoxCollider>();
             collider.size = new Vector3(4.84f, 1, 29.39f);
             collider.center = new Vector3(0, 0.5f, 0);
-
-            InitParticleSystem();
         }
 
-        private void InitParticleSystem()
+        public void InitParticleSystem(Material smokeMaterial)
         {
             battleSmokeSystem = gameObject.AddComponent<ParticleSystem>();
             SetSmokeEmission(false);
 
             ParticleSystem.MainModule mainModule = battleSmokeSystem.main;
             mainModule.simulationSpace = ParticleSystemSimulationSpace.Local;
-            mainModule.startColor = new Color(0, 0, 0, 120);
+            mainModule.startColor = new Color(.6f, .6f, .6f, .3f);
+            mainModule.startSize = 13;
 
             ParticleSystem.LimitVelocityOverLifetimeModule limitVelocityOverLifetimeModule =
                 battleSmokeSystem.limitVelocityOverLifetime;
             limitVelocityOverLifetimeModule.enabled = true;
             limitVelocityOverLifetimeModule.separateAxes = true;
+            limitVelocityOverLifetimeModule.limitX = float.MaxValue;
             limitVelocityOverLifetimeModule.limitY = 0;
+            limitVelocityOverLifetimeModule.limitZ = float.MaxValue;
 
             ParticleSystem.ShapeModule shapeModule = battleSmokeSystem.shape;
             shapeModule.shapeType = ParticleSystemShapeType.Sphere;
             shapeModule.radius = Mathf.Max(AttachedUnit.DrawSize.x, AttachedUnit.DrawSize.y) * 2;
 
             var pRenderer = GetComponent<ParticleSystemRenderer>();
-            pRenderer.renderMode = ParticleSystemRenderMode.HorizontalBillboard;
-            pRenderer.material = Resources.Load<Material>("Default-Particle");
+            pRenderer.renderMode = ParticleSystemRenderMode.Billboard;
+            pRenderer.material = smokeMaterial;
         }
 
         private void SetSmokeEmission(float rate)
@@ -348,7 +349,7 @@ namespace Assets.Scripts.Game.Units.Controllers
 
             Vector3 nextPos = Vector3.MoveTowards(currentPos,
                 MapRenderer.CubicalCoordinateToWorld(currentPathInfo.Path[0]),
-                AttachedUnit.WalkSpeed * UnitBase.CavalrySpeedMultiplier * Time.deltaTime);
+                AttachedUnit.WalkSpeed * Time.deltaTime);
             movementDrawOffset = nextPos - MapRenderer.CubicalCoordinateToWorld(previousPosition);
 
             SetWorldRotation(Quaternion.Slerp(transform.rotation,

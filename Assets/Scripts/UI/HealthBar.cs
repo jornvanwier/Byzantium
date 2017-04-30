@@ -106,7 +106,8 @@ namespace Assets.Scripts.UI
         {
             base.Start();
             Size = 100;
-            Hide();
+//            Hide();
+        Show();
         }
     }
 }

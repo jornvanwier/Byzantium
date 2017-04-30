@@ -49,6 +49,7 @@ namespace Assets.Scripts.Game
         private Vector3 startIntersect;
 
         private Canvas uiCanvas;
+        public Material BattleSmoke;
 
         private List<UnitController> Armies { get; } = new List<UnitController>();
 
@@ -119,8 +120,8 @@ namespace Assets.Scripts.Game
             pos = pos - scale / 2;
             mapBounds = new Rect(pos.x, pos.y, scale.x, scale.y);
 
-            SpawnArmy(Legion.CreateStandardLegion(FactionManager.Factions[0]), true);
-            SpawnArmy(Legion.CreateStandardLegion(FactionManager.Factions[1]), false);
+            SpawnArmy(Legion.CreateStandardLegion(FactionManager.Factions[0]), true).InitParticleSystem(BattleSmoke);
+            SpawnArmy(Legion.CreateStandardLegion(FactionManager.Factions[1]), false).InitParticleSystem(BattleSmoke);
         }
 
         public void AttachInfoPanel(InfoPanel panel)
@@ -129,7 +130,7 @@ namespace Assets.Scripts.Game
             infoPanel.Hide();
         }
 
-        private void SpawnArmy(UnitBase unit, bool ai)
+        private UnitController SpawnArmy(UnitBase unit, bool ai)
         {
             var obj = new GameObject("Army " + unit.Commander.Faction.Name);
             obj.AddComponent<BoxCollider>();
@@ -148,6 +149,8 @@ namespace Assets.Scripts.Game
             Armies.Add(unitController);
             foreach (UnitController army in Armies)
                 army.AttachEnemies(Armies);
+
+            return unitController;
         }
 
         // Update is called once per frame
@@ -304,7 +307,7 @@ namespace Assets.Scripts.Game
 
         private void Select(UnitController army)
         {
-            army.HealthBar.Show();
+//            army.HealthBar.Show();
             infoPanel.Commander = army.AttachedUnit.Commander.Name + (army.IsAi ? " (AI)" : " (User)") +
                                   Environment.NewLine + army.Faction.Name;
             infoPanel.Show();
@@ -312,7 +315,7 @@ namespace Assets.Scripts.Game
 
         private void Deselect(UnitController army)
         {
-            army.HealthBar.Hide();
+//            army.HealthBar.Hide();
             infoPanel.Hide();
         }
 
