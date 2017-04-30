@@ -10,7 +10,7 @@ namespace Assets.Scripts.Game.Units.Formation
     {
         public override FormationStats Stats { get; } = new FormationStats
         {
-            WalkSpeed = FormationStats.DefaultWalkSpeed,
+            WalkSpeed = FormationStats.DefaultWalkSpeed * 0.7f,
             AttackDamageMultiplier = 1f,
             DefenseMultiplier = 1f
         };

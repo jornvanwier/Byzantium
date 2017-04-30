@@ -4,6 +4,7 @@ using System.Linq;
 using Assets.Scripts.Game.Units.Config;
 using Assets.Scripts.Game.Units.Controllers;
 using Assets.Scripts.Game.Units.Formation;
+using Assets.Scripts.Game.Units.Formation.ContuberniumFormation;
 using Assets.Scripts.Util;
 using UnityEngine;
 using static Assets.Scripts.Game.Units.MeshDrawableUnit;
@@ -67,7 +68,7 @@ namespace Assets.Scripts.Game.Units.Groups
 
         public static Contubernium CreateCustomUnit(Faction faction, SoldierType unitType)
         {
-            var contuberium = new Contubernium(faction) {Formation = new SquareFormation()};
+            var contuberium = new Contubernium(faction) {Formation = new SkirmisherFormation()};
 
             for (int i = 0; i < 8; ++i)
             {
