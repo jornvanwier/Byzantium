@@ -203,6 +203,8 @@ namespace Assets.Scripts.Game
                 Rotate(Vector3.up);
             if (Input.GetKey(KeyCode.LeftArrow))
                 Rotate(Vector3.up, Space.World, -1f);
+            if(Input.GetKey(KeyCode.Escape)) 
+                DeselectAll();
 
             //Mouse scroll zoom
             Vector3 prevPos;
