@@ -135,33 +135,33 @@ namespace Assets.Scripts.Game.Units.Controllers
             collider.size = new Vector3(4.84f, 1, 29.39f);
             collider.center = new Vector3(-1.69f, 0.44f, -4.84f);
             collider.center = new Vector3(0, 0.5f, 0);
-
-            InitParticleSystem();
         }
 
-        private void InitParticleSystem()
+        public void InitParticleSystem(Material smokeMaterial)
         {
             battleSmokeSystem = gameObject.AddComponent<ParticleSystem>();
             SetSmokeEmission(false);
 
             ParticleSystem.MainModule mainModule = battleSmokeSystem.main;
             mainModule.simulationSpace = ParticleSystemSimulationSpace.Local;
-            mainModule.startColor = new Color(0, 0, 0, 120);
+            mainModule.startColor = new Color(.6f, .6f, .6f, .3f);
+            mainModule.startSize = 13;
 
             ParticleSystem.LimitVelocityOverLifetimeModule limitVelocityOverLifetimeModule =
                 battleSmokeSystem.limitVelocityOverLifetime;
             limitVelocityOverLifetimeModule.enabled = true;
             limitVelocityOverLifetimeModule.separateAxes = true;
+            limitVelocityOverLifetimeModule.limitX = float.MaxValue;
             limitVelocityOverLifetimeModule.limitY = 0;
+            limitVelocityOverLifetimeModule.limitZ = float.MaxValue;
 
             ParticleSystem.ShapeModule shapeModule = battleSmokeSystem.shape;
             shapeModule.shapeType = ParticleSystemShapeType.Sphere;
             shapeModule.radius = Mathf.Max(AttachedUnit.DrawSize.x, AttachedUnit.DrawSize.y) * 2;
 
             var pRenderer = GetComponent<ParticleSystemRenderer>();
-            pRenderer.renderMode = ParticleSystemRenderMode.HorizontalBillboard;
-            pRenderer.material = Resources.Load<Material>("Default-Particle");
-
+            pRenderer.renderMode = ParticleSystemRenderMode.Billboard;
+            pRenderer.material = smokeMaterial;
         }
 
         private void SetSmokeEmission(float rate)
