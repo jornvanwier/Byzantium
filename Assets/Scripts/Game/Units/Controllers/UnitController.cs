@@ -228,6 +228,22 @@ namespace Assets.Scripts.Game.Units.Controllers
             HealthBar.Value = AttachedUnit.Health;
         }
 
+        protected UnitController NearestEnemy()
+        {
+            if (Enemies.Count == 0) return null;
+            UnitController nearest = Enemies[0];
+            float nearestDistance = Vector3.Distance(nearest.AttachedUnit.Position, AttachedUnit.Position);
+            for (int i = 1; i < Enemies.Count; i++)
+            {
+                UnitController enemy = Enemies[i];
+                float distance = Vector3.Distance(enemy.AttachedUnit.Position, AttachedUnit.Position);
+                if (!(distance < nearestDistance)) continue;
+                nearestDistance = distance;
+                nearest = enemy;
+            }
+            return nearest;
+        }
+
         private void Attack(UnitController enemy)
         {
             if (enemy.AttachedUnit.Health <= 0)
@@ -235,6 +251,10 @@ namespace Assets.Scripts.Game.Units.Controllers
                 AttachedUnit.RespectFormation = true;
                 SetSmokeEmission(false);
                 Debug.Log("Battle is over, " + Faction.Name + " won!");
+                if (NearestEnemy() == null)
+                {
+                    Win();
+                }
             }
             else if (AttachedUnit.Health <= 0)
             {
@@ -255,6 +275,19 @@ namespace Assets.Scripts.Game.Units.Controllers
             }
         }
 
+        private bool hasWon;
+
+        public void Win()
+        {
+            if (hasWon) return;
+            hasWon = true;
+
+            foreach (MeshDrawableUnit unit in AttachedUnit.AllUnits)
+            {
+                unit.Bounce(Random.Range(50, 150) / 1000f);
+            }
+        }
+
         protected abstract void ConsiderFormation(Contubernium unit);
 
         protected abstract void ControllerTick();
@@ -267,6 +300,14 @@ namespace Assets.Scripts.Game.Units.Controllers
 
         public void Update()
         {
+            if (hasWon)
+            {
+                foreach (MeshDrawableUnit unit in AttachedUnit.AllUnits)
+                {
+                    unit.JumpUpdate();
+                }
+            }
+
             if (AttachedUnit.IsDead)
                 DestroyArmy();
             //if (AttachedUnit.IsDead) return;

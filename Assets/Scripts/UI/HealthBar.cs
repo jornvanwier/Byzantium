@@ -133,11 +133,11 @@ namespace Assets.Scripts.UI
             Destroy(gameObject);
         }
 
-        public Vector2 TextExtraSize = new Vector2(50, 80);
+       private readonly Vector2 textExtraSize = new Vector2(20, 40);
 
-        public Rect HitBox => new Rect(PosX - Size / 2 - TextExtraSize.x / 2,
-            PosY - Size * HeightWidthRatio / 2 - TextExtraSize.y, size + TextExtraSize.x,
-            size * HeightWidthRatio + TextExtraSize.y);
+        public Rect HitBox => new Rect(PosX - Size / 2 - textExtraSize.x / 2,
+            PosY - Size * HeightWidthRatio / 2 - textExtraSize.y, size + textExtraSize.x,
+            size * HeightWidthRatio + textExtraSize.y);
 
         protected override void Start()
         {
