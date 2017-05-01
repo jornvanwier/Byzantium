@@ -129,8 +129,13 @@ namespace Assets.Scripts.Game.Units.Controllers
 
         public void Start()
         {
-            winText = GameObject.Find("WinText");
-            winText?.SetActive(false);
+            GameObject obj = GameObject.Find("WinText");
+            if (obj != null)
+            {
+                WinText = obj;
+                WinText.SetActive(false);
+            }
+
             Position = MapRenderer.WorldToCubicalCoordinate(transform.position);
             previousPosition = Position;
 
@@ -281,15 +286,15 @@ namespace Assets.Scripts.Game.Units.Controllers
         }
 
         protected abstract void ControllerAttack();
-        private GameObject winText;
+        public static GameObject WinText;
 
         public void Win()
         {
             if (hasWon) return;
             hasWon = true;
 
-            winText.SetActive(true);
-            winText.GetComponent<Text>().text = $"{Faction.Name} Have won!";
+            WinText.SetActive(true);
+            WinText.GetComponent<Text>().text = $"{Faction.Name} Have won!";
             GameObject.Find("WorldManager").GetComponent<WorldManager>().DeselectAll();
 
             foreach (MeshDrawableUnit unit in AttachedUnit.AllUnits)
