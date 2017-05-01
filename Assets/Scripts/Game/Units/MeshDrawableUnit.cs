@@ -14,6 +14,7 @@ namespace Assets.Scripts.Game.Units
         public static readonly Vector2 manSize = new Vector2(0.4f, 0.5f);
         private readonly float gravity = -Physics.gravity.y / 1000;
         private readonly SoldierType soldierType;
+        private int health = StartHealth;
         private float jumpSpeed;
         private float nextJumpHeight;
 
@@ -61,8 +62,6 @@ namespace Assets.Scripts.Game.Units
         public Material Material { get; set; }
         public Transform Transform { get; set; }
 
-        private int health = StartHealth;
-
         public override int Health
         {
             // ReSharper disable ArrangeAccessorOwnerBody
@@ -72,9 +71,7 @@ namespace Assets.Scripts.Game.Units
             {
                 health = value;
                 if (health <= 0)
-                {
                     Rotation = IsCavalry ? Quaternion.Euler(-90, 90, 0) : Quaternion.Euler(-90, 0, 0);
-                }
             }
         }
 

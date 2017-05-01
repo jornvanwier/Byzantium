@@ -305,9 +305,7 @@ namespace Assets.Scripts.Game
                     break;
                 }
                 if (!spawnHit)
-                {
                     SelectedArmy = hit.transform.gameObject.GetComponent<UnitController>();
-                }
             }
         }
 

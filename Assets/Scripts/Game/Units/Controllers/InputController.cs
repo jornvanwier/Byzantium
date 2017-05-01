@@ -30,13 +30,14 @@ namespace Assets.Scripts.Game.Units.Controllers
             Vector3 intersection = ray.GetPoint(rayDistance);
 
             if (Input.GetKey(KeyCode.LeftControl))
+            {
                 Teleport(intersection);
+            }
             else
             {
                 CubicalCoordinate cc = MapRenderer.WorldToCubicalCoordinate(intersection);
                 if (MapRenderer.HexBoard.CheckCoordinate(cc))
                     Goal = cc;
-
             }
         }
     }

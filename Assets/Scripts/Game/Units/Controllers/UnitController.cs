@@ -15,6 +15,7 @@ namespace Assets.Scripts.Game.Units.Controllers
         private const float RotationSpeed = 3.5f;
 
         private static readonly float AttackRange = 8 * WorldManager.UnitScale;
+        public static GameObject WinText;
         private ParticleSystem battleSmokeSystem;
 
         protected Camera Camera;
@@ -286,7 +287,6 @@ namespace Assets.Scripts.Game.Units.Controllers
         }
 
         protected abstract void ControllerAttack();
-        public static GameObject WinText;
 
         public void Win()
         {
