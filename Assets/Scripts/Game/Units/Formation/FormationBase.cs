@@ -59,7 +59,7 @@ namespace Assets.Scripts.Game.Units.Formation
             if (speed < unit.WalkSpeed)
                 unit.WalkSpeed = speed / 10;
             else
-                unit.WalkSpeed = Stats.WalkSpeed;
+                unit.WalkSpeed = unit.DefaultWalkSpeed * unit.Formation.Stats.WalkSpeedMultiplier;
         }
     }
 }

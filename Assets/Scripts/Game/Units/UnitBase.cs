@@ -27,6 +27,11 @@ namespace Assets.Scripts.Game.Units
             // ReSharper restore ArrangeAccessorOwnerBody
         }
 
+        public float DefaultWalkSpeed
+        {
+            get { return 1.5f * (IsCavalry ? CavalrySpeedMultiplier : 1); }
+        }
+
         public abstract Vector2 DrawSize { get; }
 
         public bool IsCavalry { get; protected set; }

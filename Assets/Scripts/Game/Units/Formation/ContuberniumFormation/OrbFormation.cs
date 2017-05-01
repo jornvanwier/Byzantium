@@ -9,7 +9,7 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormation
     {
         public override FormationStats Stats { get; } = new FormationStats
         {
-            WalkSpeed = 0.4f,
+            WalkSpeedMultiplier = 0.5f,
             AttackDamageMultiplier = 1,
             DefenseMultiplier = 2
         };

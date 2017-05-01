@@ -73,7 +73,7 @@ namespace Assets.Scripts.Game.Units
                 health = value;
                 if (health <= 0)
                 {
-                    Rotation = IsCavalry ? Quaternion.Euler(-90, 0, 90) : Quaternion.Euler(-90, 0, 0);
+                    Rotation = IsCavalry ? Quaternion.Euler(-90, 90, 0) : Quaternion.Euler(-90, 0, 0);
                 }
             }
         }

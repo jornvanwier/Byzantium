@@ -10,7 +10,7 @@ namespace Assets.Scripts.Game.Units.Formation.ContuberniumFormation
     {
         public override FormationStats Stats { get; } = new FormationStats
         {
-            WalkSpeed = FormationStats.DefaultWalkSpeed,
+            WalkSpeedMultiplier = 1.05f,
             AttackDamageMultiplier = 1.5f,
             DefenseMultiplier = 0.6f
         };
