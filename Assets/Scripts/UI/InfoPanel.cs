@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts.Game;
 using Assets.Scripts.Game.Units;
 using Assets.Scripts.Game.Units.Controllers;
@@ -117,6 +118,7 @@ namespace Assets.Scripts.UI
             {
                 army.AttachedUnit.Formation = formation;
             }
+            UpdateHighlightedButton();
         }
 
         private void SetContuberniumFormation(IFormation formation)
@@ -125,7 +127,14 @@ namespace Assets.Scripts.UI
             {
                 contubernium.Formation = formation;
             }
+            UpdateHighlightedButton();
         }
+
+        private GameObject marchingButton;
+        private GameObject standardButton;
+        private GameObject squareButton;
+        private GameObject orbButton;
+        private GameObject skirmishButton;
 
         // Use this for initialization
         [UsedImplicitly]
@@ -134,25 +143,17 @@ namespace Assets.Scripts.UI
             legionFormation = GameObject.Find("LegioenFormatie");
             contuberniumFormation = GameObject.Find("ContuberniumFormatie");
 
-            GameObject.Find("Mars")
-                ?
-                .GetComponent<Button>()
-                .onClick.AddListener(() => SetLegionFormation(new MarchingFormation()));
-            GameObject.Find("Standard")
-                ?
-                .GetComponent<Button>()
-                .onClick.AddListener(() => SetLegionFormation(new StandardFormation()));
-            GameObject.Find("Square")
-                ?
-                .GetComponent<Button>()
+            marchingButton = GameObject.Find("Mars");
+            marchingButton.GetComponent<Button>().onClick.AddListener(() => SetLegionFormation(new MarchingFormation()));
+            standardButton = GameObject.Find("Standard");
+            standardButton.GetComponent<Button>().onClick.AddListener(() => SetLegionFormation(new StandardFormation()));
+            squareButton = GameObject.Find("Square");
+            squareButton.GetComponent<Button>()
                 .onClick.AddListener(() => SetContuberniumFormation(new SquareFormation()));
-            GameObject.Find("Orb")
-                ?
-                .GetComponent<Button>()
-                .onClick.AddListener(() => SetContuberniumFormation(new OrbFormation()));
-            GameObject.Find("Skirmish")
-                ?
-                .GetComponent<Button>()
+            orbButton = GameObject.Find("Orb");
+            orbButton.GetComponent<Button>().onClick.AddListener(() => SetContuberniumFormation(new OrbFormation()));
+            skirmishButton = GameObject.Find("Skirmish");
+            skirmishButton.GetComponent<Button>()
                 .onClick.AddListener(() => SetContuberniumFormation(new SkirmisherFormation()));
 
             titleText = GameObject.Find("InfoText").GetComponent<Text>();
@@ -178,6 +179,7 @@ namespace Assets.Scripts.UI
             panel.SetActive(false);
             IsVisible = false;
         }
+
         public bool Contains(Vector2 position)
         {
             var spawnPanelHitBox = new Rect(0, 0, SizeX, SizeY);
@@ -201,6 +203,8 @@ namespace Assets.Scripts.UI
             panel.SetActive(true);
             IsVisible = true;
 
+            UpdateHighlightedButton();
+
             if (army is InputController)
             {
                 SetFormationPanelActive(true);
@@ -208,6 +212,36 @@ namespace Assets.Scripts.UI
             else
             {
                 SetFormationPanelActive(false);
+            }
+        }
+
+        private void UpdateHighlightedButton()
+        {
+            var color = new Color(1, 0.807843137f, 0);
+            marchingButton.GetComponent<Image>().color = color;
+            standardButton.GetComponent<Image>().color = color;
+            squareButton.GetComponent<Image>().color = color;
+            skirmishButton.GetComponent<Image>().color = color;
+            orbButton.GetComponent<Image>().color = color;
+            if (army.AttachedUnit.Formation is MarchingFormation)
+            {
+                marchingButton.GetComponent<Image>().color = Color.magenta;
+            }
+            else if (army.AttachedUnit.Formation is StandardFormation)
+            {
+                standardButton.GetComponent<Image>().color = Color.magenta;
+            }
+            if (army.AttachedUnit.Contubernia.First().Formation is OrbFormation)
+            {
+                orbButton.GetComponent<Image>().color = Color.magenta;
+            }
+            else if (army.AttachedUnit.Contubernia.First().Formation is SquareFormation)
+            {
+                squareButton.GetComponent<Image>().color = Color.magenta;
+            }
+            else if (army.AttachedUnit.Contubernia.First().Formation is SkirmisherFormation)
+            {
+                skirmishButton.GetComponent<Image>().color = Color.magenta;
             }
         }
     }

@@ -33,11 +33,11 @@ namespace Assets.Scripts.Map
                 GameObject obj = instanceMatrix.Key;
                 List<Matrix4x4> matrices = instanceMatrix.Value;
 
-                DrawGameObjectRecursively(obj, matrices.ToArray());
+                DrawGameObject(obj, matrices.ToArray());
             }
         }
 
-        private static void DrawGameObjectRecursively(GameObject gameObject, Matrix4x4[] sourceMatrices,
+        private static void DrawGameObject(GameObject gameObject, Matrix4x4[] sourceMatrices,
             int maxDepth = 2)
         {
             if (maxDepth <= 0)
@@ -56,7 +56,7 @@ namespace Assets.Scripts.Map
             else
             {
                 foreach (Transform childTransform in gameObject.transform)
-                    DrawGameObjectRecursively(childTransform.gameObject, sourceMatrices, maxDepth--);
+                    DrawGameObject(childTransform.gameObject, sourceMatrices, maxDepth--);
             }
         }
 

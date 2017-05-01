@@ -64,6 +64,7 @@ MonoBehaviour:
   - {fileID: 100000, guid: 57cfa17230bf99046b3286979947dbda, type: 3}
   - {fileID: 100000, guid: 6b8aa908bd028d245bae73805cc7b7cb, type: 3}
   - {fileID: 139582, guid: ac78ecb533d06e2469684ffaa8788765, type: 2}
+  OneTreePer: 50
   PalmTree:
   - {fileID: 100000, guid: 94005be276160534dbb7ee6b9bd932a0, type: 2}
   - {fileID: 100000, guid: 28df92b683e358240b9e0d6b437440f2, type: 2}
@@ -80,4 +81,3 @@ MonoBehaviour:
   - {fileID: 1807101039048426, guid: 2eccc5652aeada14580b45d4922ab7f7, type: 2}
   - {fileID: 1335322749562678, guid: c38df915aac7dac47933e866df1be51f, type: 2}
   - {fileID: 1383614408900354, guid: 6e68289d20ccf1141b0e02520a63ce0d, type: 2}
-  OneTreePer: 50
