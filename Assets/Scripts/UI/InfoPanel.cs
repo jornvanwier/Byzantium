@@ -144,14 +144,20 @@ namespace Assets.Scripts.UI
             contuberniumFormation = GameObject.Find("ContuberniumFormatie");
 
             marchingButton = GameObject.Find("Mars");
-            marchingButton.GetComponent<Button>().onClick.AddListener(() => SetLegionFormation(new MarchingFormation()));
+            marchingButton.GetComponent<Button>()
+                .onClick.AddListener(() => SetLegionFormation(new MarchingFormation()));
+
             standardButton = GameObject.Find("Standard");
-            standardButton.GetComponent<Button>().onClick.AddListener(() => SetLegionFormation(new StandardFormation()));
+            standardButton.GetComponent<Button>()
+                .onClick.AddListener(() => SetLegionFormation(new StandardFormation()));
+
             squareButton = GameObject.Find("Square");
             squareButton.GetComponent<Button>()
                 .onClick.AddListener(() => SetContuberniumFormation(new SquareFormation()));
+
             orbButton = GameObject.Find("Orb");
             orbButton.GetComponent<Button>().onClick.AddListener(() => SetContuberniumFormation(new OrbFormation()));
+
             skirmishButton = GameObject.Find("Skirmish");
             skirmishButton.GetComponent<Button>()
                 .onClick.AddListener(() => SetContuberniumFormation(new SkirmisherFormation()));

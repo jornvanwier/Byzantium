@@ -129,6 +129,8 @@ namespace Assets.Scripts.Game.Units.Controllers
 
         public void Start()
         {
+            winText = GameObject.Find("WinText");
+            winText?.SetActive(false);
             Position = MapRenderer.WorldToCubicalCoordinate(transform.position);
             previousPosition = Position;
 
@@ -279,13 +281,14 @@ namespace Assets.Scripts.Game.Units.Controllers
         }
 
         protected abstract void ControllerAttack();
+        private GameObject winText;
 
         public void Win()
         {
             if (hasWon) return;
             hasWon = true;
 
-            GameObject.Find("WinText").GetComponent<Text>().text = $"{Faction.Name} Have won!";
+            winText.GetComponent<Text>().text = $"{Faction.Name} Have won!";
             GameObject.Find("WorldManager").GetComponent<WorldManager>().DeselectAll();
 
             foreach (MeshDrawableUnit unit in AttachedUnit.AllUnits)
