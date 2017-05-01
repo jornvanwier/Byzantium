@@ -288,6 +288,7 @@ namespace Assets.Scripts.Game.Units.Controllers
             if (hasWon) return;
             hasWon = true;
 
+            winText.SetActive(true);
             winText.GetComponent<Text>().text = $"{Faction.Name} Have won!";
             GameObject.Find("WorldManager").GetComponent<WorldManager>().DeselectAll();
 

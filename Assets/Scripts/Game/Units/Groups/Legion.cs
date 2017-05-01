@@ -72,7 +72,7 @@ namespace Assets.Scripts.Game.Units.Groups
             for (int i = 0; i < 6; i++)
                 legion.AddUnit(Cohort.CreateCavalryUnit(faction));
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
                 legion.AddUnit(Cohort.CreateUniformMixedUnit(faction));
 
             legion.IsCavalry = false;

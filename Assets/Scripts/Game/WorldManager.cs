@@ -104,6 +104,7 @@ namespace Assets.Scripts.Game
             camera.farClipPlane = 200000;
             camera.nearClipPlane = 0.01f;
             camera.fieldOfView = 40;
+            camera.allowMSAA = false;
 
             MapRendererScript = MapRendererObject.GetComponent<MapRenderer>();
 
