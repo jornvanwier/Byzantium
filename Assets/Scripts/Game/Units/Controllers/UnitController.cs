@@ -342,7 +342,7 @@ namespace Assets.Scripts.Game.Units.Controllers
             UpdateHealthBar();
             AttachedUnit.Draw();
 
-            if (currentPathInfo?.Path != null)
+            if (!IsAi && currentPathInfo?.Path != null)
                 foreach (CubicalCoordinate c in currentPathInfo.Path)
                     MapRenderer.MarkTileSelectedForNextFrame(c);
 
